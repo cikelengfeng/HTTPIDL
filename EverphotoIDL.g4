@@ -87,6 +87,8 @@ baseType
     | INT64
     | FLOAT
     | STRING
+    | FILE
+    | BLOB
     | structName
     ;
 

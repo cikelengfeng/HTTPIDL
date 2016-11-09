@@ -80,6 +80,14 @@ STRING
     : 'STRING'
     ;
 
+FILE
+    : 'FILE'
+    ;
+
+BLOB
+    : 'BLOB'
+    ;
+
 ARRAY
     : 'ARRAY'
     ;
