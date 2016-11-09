@@ -1,0 +1,15 @@
+MESSAGE /x/x/$yy {
+    GET REQUEST {
+        ARRAY<FLOAT> modelX = ARRAY<INT32> resp_x;
+        DICT<INT32, STRING> modelY = DICT<INT64, STRING> resp_y;
+        }
+
+    GET RESPONSE {
+        Media media = resp_data;
+    }
+}
+
+STRUCT Media {
+    INT64 id = INT32 mid;
+    STRING desc = STRING description;
+}
