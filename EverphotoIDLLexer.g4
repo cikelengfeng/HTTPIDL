@@ -48,6 +48,17 @@ DOLLAR
     : '$'
     ;
 
+LABRACKET
+    : '<'
+    ;
+
+RABRACKET
+    : '>'
+    ;
+
+COMMA
+    : ','
+    ;
 
 ASSIGN
     : '='
@@ -69,8 +80,12 @@ STRING
     : 'STRING'
     ;
 
-REPEATED
-    : 'REPEATED'
+ARRAY
+    : 'ARRAY'
+    ;
+
+DICT
+    : 'DICT'
     ;
 
 SEMICOLON

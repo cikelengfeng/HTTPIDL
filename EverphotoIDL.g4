@@ -61,14 +61,28 @@ parameterInUri
 
 parameterMap
     :
-    ( repeatedType | type ) key ASSIGN type? value SEMICOLON
-    ;
-
-repeatedType
-    : REPEATED type
+    type key ASSIGN type? value SEMICOLON
     ;
 
 type
+    : genericType
+    | baseType
+    ;
+
+genericType
+    : (ARRAY arrayGenericParam)
+    | (DICT dictGenericParam)
+    ;
+
+arrayGenericParam
+    : LABRACKET baseType RABRACKET
+    ;
+
+dictGenericParam
+    : LABRACKET baseType COMMA baseType RABRACKET
+    ;
+
+baseType
     : INT32
     | INT64
     | FLOAT
