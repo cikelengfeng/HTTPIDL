@@ -61,10 +61,10 @@ parameterInUri
 
 parameterMap
     :
-    type key ASSIGN type? value SEMICOLON
+    paramType key ASSIGN paramType? value SEMICOLON
     ;
 
-type
+paramType
     : genericType
     | baseType
     ;
