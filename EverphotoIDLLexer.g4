@@ -84,8 +84,8 @@ FILE
     : 'FILE'
     ;
 
-BLOB
-    : 'BLOB'
+STREAM
+    : 'STREAM'
     ;
 
 ARRAY

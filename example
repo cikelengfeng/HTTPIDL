@@ -1,7 +1,7 @@
-MESSAGE /x/x/$yy {
+MESSAGE /your/uri/$param_in_path {
     GET REQUEST {
-        ARRAY<FLOAT> modelX = ARRAY<INT32> resp_x;
-        DICT<INT32, STRING> modelY = DICT<INT64, STRING> resp_y;
+        ARRAY<FLOAT> modelX = resp_x;
+        DICT<INT32, STRING> modelY = resp_y;
         }
 
     GET RESPONSE {

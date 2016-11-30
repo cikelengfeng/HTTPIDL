@@ -44,9 +44,14 @@ method
 
 uri
     :
-    ( BACKSLASH  ( identifier
-                 | parameterInUri)
+    ( BACKSLASH  uriPathComponent
     )*
+    ;
+
+uriPathComponent
+    : ( identifier
+      | parameterInUri
+      )
     ;
 
 structBody
@@ -88,7 +93,7 @@ baseType
     | FLOAT
     | STRING
     | FILE
-    | BLOB
+    | STREAM
     | structName
     ;
 
