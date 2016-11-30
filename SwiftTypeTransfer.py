@@ -2,10 +2,10 @@ idl_to_swift_type = { 'INT32': 'Int32', 'INT64': 'Int64', 'FLOAT': 'Float', 'STR
 
 
 def swift_base_type_name_from_idl_base_type(type_name):
-    builtin_type_name = idl_to_swift_type[type_name]
-    if builtin_type_name is None:
-        return type_name
-    return builtin_type_name
+    if type_name in idl_to_swift_type:
+        builtin_type_name = idl_to_swift_type[type_name]
+        return builtin_type_name
+    return type_name
 
 
 def swift_type_name(idl_param_type_context):
@@ -31,11 +31,11 @@ def swift_base_type_name(base_type_context):
 
 
 def swift_dict_type_name(dict_param_context):
-    key_type = idl_to_swift_type[dict_param_context.baseType()[0].getText()]
-    value_type = idl_to_swift_type[dict_param_context.baseType()[1].getText()]
+    key_type = swift_base_type_name_from_idl_base_type(dict_param_context.baseType()[0].getText())
+    value_type = swift_base_type_name_from_idl_base_type(dict_param_context.baseType()[1].getText())
     return '[' + key_type + ': ' + value_type + ']'
 
 
 def swift_array_type_name(array_param_context):
-    element_type = idl_to_swift_type[array_param_context.baseType().getText()]
+    element_type = swift_base_type_name_from_idl_base_type(array_param_context.baseType().getText())
     return '[' + element_type + ']'

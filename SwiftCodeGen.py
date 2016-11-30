@@ -36,7 +36,7 @@ class AlamofireCodeGenerator:
                 return so_far + '\(' + so_good.parameterInUri().identifier().getText() + ')'
             return so_far + so_good.getText()
         uri = reduce(reduceUriPathComponent, uri_context.children, '"') + '"'
-        url = 'HTTPIDLBaseURLString + ' + uri
+        url = 'baseURLString + ' + uri
         return url
 
 
@@ -85,18 +85,20 @@ class AlamofireCodeGenerator:
             return uri_path_component.parameterInUri() is not None
         params_in_uri = filter(filter_param_in_uri, uri_context.uriPathComponent())
         for param_in_uri in params_in_uri:
-            self.writeLine('let ' + param_in_uri.parameterInUri().identifier().getText() + ': ' + swift_base_type_name_from_idl_base_type('STRING'))
+            self.writeLine('let ' + param_in_uri.parameterInUri().identifier().getText() + ': String')
+        self.writeLine('var baseURLString = HTTPIDLBaseURLString')
         param_maps = request_context.structBody().parameterMap()
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.writeLine('var ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        init_param_list = ', '.join(map(lambda param_in_uri: param_in_uri.parameterInUri().identifier().getText() + ': ' + swift_base_type_name_from_idl_base_type('STRING'), params_in_uri))
-        self.writeLine('init(' + init_param_list + ') {')
-        self.pushIndent()
-        for param_in_uri in params_in_uri:
-            self.writeLine('self.' + param_in_uri.parameterInUri().identifier().getText() + ' = ' + param_in_uri.parameterInUri().identifier().getText())
-        self.popIndent()
-        self.writeLine('}')
+        init_param_list = ', '.join(map(lambda param_in_uri: param_in_uri.parameterInUri().identifier().getText() + ': String', params_in_uri))
+        if len(init_param_list) != 0:
+            self.writeLine('init(' + init_param_list + ') {')
+            self.pushIndent()
+            for param_in_uri in params_in_uri:
+                self.writeLine('self.' + param_in_uri.parameterInUri().identifier().getText() + ' = ' + param_in_uri.parameterInUri().identifier().getText())
+            self.popIndent()
+            self.writeLine('}')
 
     def request_name_from_message(self, message_method, message_name):
         request_name = message_method + message_name + 'Request'
@@ -167,7 +169,59 @@ class AlamofireCodeGenerator:
         self.pushIndent()
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
-            self.writeLine('self.' + param_map.key().getText() + ' = ' + swift_type_name(param_type) + '(with: json["' + param_map.value().getText() + '"])')
+            generic_type = param_type.genericType()
+            if generic_type is not None:
+                array_type = generic_type.arrayGenericParam()
+                dict_type = generic_type.dictGenericParam()
+                if array_type is not None:
+                    array_element_type = array_type.baseType()
+                    self.writeLine('if let anyArray = json["' + param_map.value().getText() + '"] as? [Any] {')
+                    self.pushIndent()
+                    self.writeLine('self.' + param_map.key().getText() + ' = anyArray.flatMap { ' + swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '(with: $0) }')
+                    self.popIndent()
+                    self.writeLine('} else {')
+                    self.pushIndent()
+                    self.writeLine('self.' + param_map.key().getText() + ' = nil')
+                    self.popIndent()
+                    self.writeLine('}')
+                elif dict_type is not None:
+                    dict_key_type = dict_type.baseType()[0]
+                    dict_value_type = dict_type.baseType()[1]
+                    self.writeLine('if let anyDict = json["' + param_map.value().getText() + '"] as? [String: Any] {')
+                    self.pushIndent()
+                    self.writeLine('var tmp: [String: String] = [:]')
+                    self.writeLine('anyDict.forEach({ (key, value) in')
+                    self.pushIndent()
+                    self.writeLine('guard let newKey = ' + swift_base_type_name_from_idl_base_type(dict_key_type.getText()) + '(with: key) else {')
+                    self.pushIndent()
+                    self.writeLine('return')
+                    self.popIndent()
+                    self.writeLine('}')
+                    self.writeLine('guard let newValue = ' + swift_base_type_name_from_idl_base_type(dict_value_type.getText()) + '(with: value) else {')
+                    self.pushIndent()
+                    self.writeLine('return')
+                    self.popIndent()
+                    self.writeLine('}')
+                    self.writeLine('tmp[newKey] = newValue')
+                    self.popIndent()
+                    self.writeLine('})')
+                    self.writeLine('if tmp.count > 0 {')
+                    self.pushIndent()
+                    self.writeLine('self.' + param_map.key().getText() + ' = tmp')
+                    self.popIndent()
+                    self.writeLine('} else {')
+                    self.pushIndent()
+                    self.writeLine('self.' + param_map.key().getText() + ' = nil')
+                    self.popIndent()
+                    self.writeLine('}')
+                    self.popIndent()
+                    self.writeLine('} else {')
+                    self.pushIndent()
+                    self.writeLine('self.' + param_map.key().getText() + ' = nil')
+                    self.popIndent()
+                    self.writeLine('}')
+            else:
+                self.writeLine('self.' + param_map.key().getText() + ' = ' + swift_type_name(param_type) + '(with: json["' + param_map.value().getText() + '"])')
         self.popIndent()
         self.writeLine('} else {')
         self.pushIndent()
@@ -217,6 +271,11 @@ def __parse_tree_from_idl(idl):
     return tree
 
 if __name__ == '__main__':
+    uri_template = '''STRUCT SettingsURITemplate {
+    STRING avatar = avatar;
+    STRING thumbnail = s240;
+    STRING origin = origin;
+}'''
     idl = '''MESSAGE /application/settings {
     GET REQUEST {
         INT32 test = test;
@@ -227,9 +286,18 @@ if __name__ == '__main__':
     }
 }
 
+
+
+STRUCT SettingsOnlineFilter {
+    STRING name = name;
+    STRING displayName = display_name;
+}
+
 STRUCT ApplicationSettingsStruct {
     INT32 tagVersion = system_tag_version;
     STRING smsCode = sms_code_number;
+    DICT<STRING, STRING> uriTemplate = uri_template;
+    ARRAY<SettingsOnlineFilter> onlineFilter = filters;
 }'''
     parse_tree = __parse_tree_from_idl(idl)
     with open('HTTPIDLDemo/HTTPIDLDemo/APIModel.swift', 'w') as output:

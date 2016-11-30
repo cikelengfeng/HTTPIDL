@@ -24,6 +24,13 @@ class ViewController: UIViewController {
             print(settings.smsCode ?? "no feedback info")
             print(settings.tagVersion ?? "no tag version")
         }
+        
+        let test: Any = ""
+        if let anyDict = test as? [String: Any] {
+            anyDict.map({ (key, value) in
+                return (Int64(with: key), Int64(with: value))
+            })
+        }
     }
 
     override func didReceiveMemoryWarning() {
