@@ -40,6 +40,7 @@ method
     | POST
     | DELETE
     | PUT
+    | PATCH
     ;
 
 uri

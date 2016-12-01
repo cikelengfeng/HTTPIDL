@@ -5,7 +5,7 @@ from gen.EverphotoIDLLexer import EverphotoIDLLexer
 class AlamofireCodeGenerator:
 
     def alamofire_http_method(self, idl_method_name):
-        map = { 'GET': '.get', 'POST': '.post', 'PUT': '.put', 'DELETE': '.delete' }
+        map = { 'GET': '.get', 'POST': '.post', 'PUT': '.put', 'DELETE': '.delete' , 'PATCH': '.patch'}
         return map[idl_method_name]
 
     def __init__(self, output=None):
