@@ -16,20 +16,13 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         let req = GETapplicationsettingsRequest()
         req.test = 12345
+        
+        
         req.send { (response, err) in
-            guard let settings = response?.settings else {
-                print(err ?? "no error, no settings")
+            guard response.isSucceed() else {
                 return
             }
-            print(settings.smsCode ?? "no feedback info")
-            print(settings.tagVersion ?? "no tag version")
-        }
-        
-        let test: Any = ""
-        if let anyDict = test as? [String: Any] {
-            anyDict.map({ (key, value) in
-                return (Int64(with: key), Int64(with: value))
-            })
+//            asdasdas
         }
     }
 

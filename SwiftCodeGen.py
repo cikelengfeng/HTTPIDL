@@ -42,21 +42,22 @@ class AlamofireCodeGenerator:
 
     def generate_request_send(self, request_context, message_name, uri_context):
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
-        self.writeLine('func send(with completion: @escaping (' + response_name +'?, Error?) -> Void) {')
+        self.writeLine('func send(with completion: @escaping (' + response_name +', Error?) -> Void) {')
         url = self.request_url_from_uri(uri_context)
         alamofire_method = self.alamofire_http_method(request_context.method().getText())
         self.pushIndent()
-        self.writeLine('Alamofire.request(' + url +', method:' + alamofire_method + ', parameters: parameters(), encoding: URLEncoding(), headers: nil).responseJSON { (response) in')
+        self.writeLine('Alamofire.request(' + url +', method:' + alamofire_method + ', parameters: parameters(), encoding: URLEncoding(), headers: nil).responseJSON { (dataResponse) in')
         self.pushIndent()
-        self.writeLine('switch response.result {')
+        self.writeLine('switch dataResponse.result {')
         self.pushIndent()
         self.writeLine('case .failure(let error):')
         self.pushIndent()
-        self.writeLine('completion(nil, error)')
+        self.writeLine('let responseModel = ' + response_name + '(with: nil, rawResponse: dataResponse.response)')
+        self.writeLine('completion(responseModel, error)')
         self.popIndent()
         self.writeLine('case .success(let data):')
         self.pushIndent()
-        self.writeLine('let responseModel = ' + response_name + '(with: data)')
+        self.writeLine('let responseModel = ' + response_name + '(with: data, rawResponse: dataResponse.response)')
         self.writeLine('completion(responseModel, nil)')
         self.popIndent()
         self.popIndent()
@@ -123,8 +124,10 @@ class AlamofireCodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.writeLine('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        self.writeLine('init?(with json: Any?) {')
+        self.writeLine('let rawResponse: HTTPURLResponse?')
+        self.writeLine('init(with json: Any?, rawResponse: HTTPURLResponse?) {')
         self.pushIndent()
+        self.writeLine('self.rawResponse = rawResponse')
         self.writeLine('if let json = json as? [String: Any] {')
         self.pushIndent()
         for param_map in param_maps:
@@ -133,7 +136,9 @@ class AlamofireCodeGenerator:
         self.popIndent()
         self.writeLine('} else {')
         self.pushIndent()
-        self.writeLine('return nil')
+        for param_map in param_maps:
+            param_type = param_map.paramType()[0]
+            self.writeLine('self.' + param_map.key().getText() + ' = nil')
         self.popIndent()
         self.writeLine('}')
         self.popIndent()
@@ -141,7 +146,7 @@ class AlamofireCodeGenerator:
 
     def generate_response(self, response_context, message_name):
         response_name = self.response_name_from_message(response_context.method().getText(), message_name)
-        self.writeLine('struct ' + response_name + ': JSONObject {')
+        self.writeLine('struct ' + response_name + ': RawHTTPResponseWrapper {')
         self.pushIndent()
         self.generate_response_init_and_member_var(response_context)
         self.popIndent()
@@ -286,7 +291,11 @@ if __name__ == '__main__':
     }
 }
 
-
+STRUCT SettingsURITemplate {
+    STRING avatar = avatar;
+    STRING thumbnail = s240;
+    STRING origin = origin;
+}
 
 STRUCT SettingsOnlineFilter {
     STRING name = name;
@@ -296,7 +305,8 @@ STRUCT SettingsOnlineFilter {
 STRUCT ApplicationSettingsStruct {
     INT32 tagVersion = system_tag_version;
     STRING smsCode = sms_code_number;
-    DICT<STRING, STRING> uriTemplate = uri_template;
+    DICT<STRING, STRING> uriTemplateDict = uri_template;
+    SettingsURITemplate uriTemplate = uri_template;
     ARRAY<SettingsOnlineFilter> onlineFilter = filters;
 }'''
     parse_tree = __parse_tree_from_idl(idl)

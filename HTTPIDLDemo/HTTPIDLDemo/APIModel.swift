@@ -1,5 +1,19 @@
 import Foundation
 import Alamofire
+struct SettingsURITemplate: JSONObject {
+    let avatar: String?
+    let thumbnail: String?
+    let origin: String?
+    init?(with json: Any?) {
+        if let json = json as? [String: Any] {
+            self.avatar = String(with: json["avatar"])
+            self.thumbnail = String(with: json["s240"])
+            self.origin = String(with: json["origin"])
+        } else {
+            return nil
+        }
+    }
+}
 struct SettingsOnlineFilter: JSONObject {
     let name: String?
     let displayName: String?
@@ -15,7 +29,8 @@ struct SettingsOnlineFilter: JSONObject {
 struct ApplicationSettingsStruct: JSONObject {
     let tagVersion: Int32?
     let smsCode: String?
-    let uriTemplate: [String: String]?
+    let uriTemplateDict: [String: String]?
+    let uriTemplate: SettingsURITemplate?
     let onlineFilter: [SettingsOnlineFilter]?
     init?(with json: Any?) {
         if let json = json as? [String: Any] {
@@ -33,13 +48,14 @@ struct ApplicationSettingsStruct: JSONObject {
                     tmp[newKey] = newValue
                 })
                 if tmp.count > 0 {
-                    self.uriTemplate = tmp
+                    self.uriTemplateDict = tmp
                 } else {
-                    self.uriTemplate = nil
+                    self.uriTemplateDict = nil
                 }
             } else {
-                self.uriTemplate = nil
+                self.uriTemplateDict = nil
             }
+            self.uriTemplate = SettingsURITemplate(with: json["uri_template"])
             if let anyArray = json["filters"] as? [Any] {
                 self.onlineFilter = anyArray.flatMap { SettingsOnlineFilter(with: $0) }
             } else {
@@ -60,25 +76,28 @@ class GETapplicationsettingsRequest {
         }
         return result
     }
-    func send(with completion: @escaping (GETapplicationsettingsResponse?, Error?) -> Void) {
-        Alamofire.request(baseURLString + "/application/settings", method:.get, parameters: parameters(), encoding: URLEncoding(), headers: nil).responseJSON { (response) in
-            switch response.result {
+    func send(with completion: @escaping (GETapplicationsettingsResponse, Error?) -> Void) {
+        Alamofire.request(baseURLString + "/application/settings", method:.get, parameters: parameters(), encoding: URLEncoding(), headers: nil).responseJSON { (dataResponse) in
+            switch dataResponse.result {
                 case .failure(let error):
-                    completion(nil, error)
+                    let responseModel = GETapplicationsettingsResponse(with: nil, rawResponse: dataResponse.response)
+                    completion(responseModel, error)
                 case .success(let data):
-                    let responseModel = GETapplicationsettingsResponse(with: data)
+                    let responseModel = GETapplicationsettingsResponse(with: data, rawResponse: dataResponse.response)
                     completion(responseModel, nil)
             }
         }
     }
 }
-struct GETapplicationsettingsResponse: JSONObject {
+struct GETapplicationsettingsResponse: RawHTTPResponseWrapper {
     let settings: ApplicationSettingsStruct?
-    init?(with json: Any?) {
+    let rawResponse: HTTPURLResponse?
+    init(with json: Any?, rawResponse: HTTPURLResponse?) {
+        self.rawResponse = rawResponse
         if let json = json as? [String: Any] {
             self.settings = ApplicationSettingsStruct(with: json["data"])
         } else {
-            return nil
+            self.settings = nil
         }
     }
 }
