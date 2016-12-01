@@ -50,9 +50,9 @@ extension Int64: JSONObject {
     }
 }
 
-extension Float: JSONObject {
+extension Double: JSONObject {
     public init?(with json: Any?) {
-        if let number = json as? Float {
+        if let number = json as? Double {
             self.init(number)
             return
         }

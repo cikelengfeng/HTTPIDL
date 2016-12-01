@@ -76,8 +76,8 @@ INT64
     : 'INT64'
     ;
 
-FLOAT
-    : 'FLOAT'
+DOUBLE
+    : 'DOUBLE'
     ;
 
 STRING
