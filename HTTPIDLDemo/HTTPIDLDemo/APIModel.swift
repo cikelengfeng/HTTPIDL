@@ -1,6 +1,11 @@
+//这是自动生成的代码，不要改动，否则你的改动会被覆盖！！！！！！！
+
 import Foundation
 import Alamofire
+
+
 struct SettingsURITemplate: JSONObject {
+    
     let avatar: String?
     let thumbnail: String?
     let origin: String?
@@ -14,7 +19,9 @@ struct SettingsURITemplate: JSONObject {
         }
     }
 }
+
 struct SettingsOnlineFilter: JSONObject {
+    
     let name: String?
     let displayName: String?
     init?(with json: Any?) {
@@ -26,7 +33,9 @@ struct SettingsOnlineFilter: JSONObject {
         }
     }
 }
+
 struct ApplicationSettingsStruct: JSONObject {
+    
     let tagVersion: Int32?
     let smsCode: String?
     let uriTemplateDict: [String: String]?
@@ -66,7 +75,9 @@ struct ApplicationSettingsStruct: JSONObject {
         }
     }
 }
+
 class GETapplicationsettingsRequest {
+    
     var baseURLString = HTTPIDLBaseURLString
     var test: Int32?
     func parameters() -> [String: Any] {
@@ -76,6 +87,7 @@ class GETapplicationsettingsRequest {
         }
         return result
     }
+    
     func send(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?, completion: @escaping (GETapplicationsettingsResponse, Error?) -> Void) {
         prepare(headers: headers).responseJSON { (dataResponse) in
             switch dataResponse.result {
@@ -95,7 +107,9 @@ class GETapplicationsettingsRequest {
         return Alamofire.request(baseURLString + "/application/settings", method:.get, parameters: parameters(), encoding: encoding, headers: headers)
     }
 }
+
 struct GETapplicationsettingsResponse: RawHTTPResponseWrapper {
+    
     let settings: ApplicationSettingsStruct?
     let rawResponse: HTTPURLResponse?
     init(with json: Any?, rawResponse: HTTPURLResponse?) {

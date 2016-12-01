@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# coding:utf-8
+
 from SwiftTypeTransfer import swift_type_name, swift_base_type_name_from_idl_base_type
 from gen.EverphotoIDL import EverphotoIDL
 from gen.EverphotoIDLLexer import EverphotoIDLLexer
@@ -15,11 +18,13 @@ class AlamofireCodeGenerator:
     def write_line(self, text):
         indent = reduce(lambda so_far, so_good: so_far + '    ', range(0, self.indent), '')
         print indent + text
-        self.output.write((indent + text).encode('utf-8') + '\n')
+        self.output.write((indent + text) + '\n')
 
     def write_blank_lines(self, count):
-        for i in range(0, count):
-            self.write_line('\n')
+        if count <= 0:
+            return
+        blank_lines = reduce(lambda so_far, so_good: so_far + '\n', range(0, count - 1), '')
+        self.write_line(blank_lines)
 
     def push_indent(self):
         self.indent += 1
@@ -45,6 +50,7 @@ class AlamofireCodeGenerator:
 
 
     def generate_request_send(self, request_context, message_name, uri_context):
+        self.write_blank_lines(1)
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
         self.write_line('func send(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?, completion: @escaping (' + response_name + ', Error?) -> Void) {')
         url = self.request_url_from_uri(uri_context)
@@ -97,6 +103,7 @@ class AlamofireCodeGenerator:
         self.write_line('}')
 
     def generate_request_init_and_member_var(self, request_context, uri_context):
+        self.write_blank_lines(1)
         def filter_param_in_uri(uri_path_component):
             return uri_path_component.parameterInUri() is not None
         params_in_uri = filter(filter_param_in_uri, uri_context.uriPathComponent())
@@ -121,6 +128,7 @@ class AlamofireCodeGenerator:
         return request_name
 
     def generate_request(self, request_context, message_name, uri_context):
+        self.write_blank_lines(1)
         request_name = self.request_name_from_message(request_context.method().getText(), message_name)
         self.write_line('class ' + request_name + ' {')
         self.push_indent()
@@ -135,6 +143,7 @@ class AlamofireCodeGenerator:
         return response_name
 
     def generate_response_init_and_member_var(self, response_context):
+        self.write_blank_lines(1)
         param_maps = response_context.structBody().parameterMap()
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
@@ -160,6 +169,7 @@ class AlamofireCodeGenerator:
         self.write_line('}')
 
     def generate_response(self, response_context, message_name):
+        self.write_blank_lines(1)
         response_name = self.response_name_from_message(response_context.method().getText(), message_name)
         self.write_line('struct ' + response_name + ': RawHTTPResponseWrapper {')
         self.push_indent()
@@ -179,6 +189,7 @@ class AlamofireCodeGenerator:
             self.generate_response(response, message_name)
 
     def generate_struct_init_and_member_var(self, struct_context):
+        self.write_blank_lines(1)
         param_maps = struct_context.structBody().parameterMap()
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
@@ -252,6 +263,7 @@ class AlamofireCodeGenerator:
         self.write_line('}')
 
     def generate_struct(self, struct_context):
+        self.write_blank_lines(1)
         self.write_line('struct ' + struct_context.structName().getText() + ': JSONObject {')
         self.push_indent()
         self.generate_struct_init_and_member_var(struct_context)
@@ -259,8 +271,11 @@ class AlamofireCodeGenerator:
         self.write_line('}')
 
     def generate_entry(self, entry_context):
+        self.write_line('//这是自动生成的代码，不要改动，否则你的改动会被覆盖！！！！！！！')
+        self.write_blank_lines(1)
         self.write_line('import Foundation')
         self.write_line('import Alamofire')
+        self.write_blank_lines(1)
         structs = entry_context.struct()
         for struct in structs:
             self.generate_struct(struct)
