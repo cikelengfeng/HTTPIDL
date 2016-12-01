@@ -76,7 +76,7 @@ struct ApplicationSettingsStruct: JSONObject {
     }
 }
 
-class GETapplicationsettingsRequest {
+class GetApplicationSettingsRequest {
     
     var baseURLString = HTTPIDLBaseURLString
     var test: Int32?
@@ -88,19 +88,19 @@ class GETapplicationsettingsRequest {
         return result
     }
     
-    func send(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?, completion: @escaping (GETapplicationsettingsResponse, Error?) -> Void) {
+    func send(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?, completion: @escaping (GetApplicationSettingsResponse, Error?) -> Void) {
         prepare(headers: headers).responseJSON { (dataResponse) in
             switch dataResponse.result {
                 case .failure(let error):
-                    let responseModel = GETapplicationsettingsResponse(with: nil, rawResponse: dataResponse.response)
+                    let responseModel = GetApplicationSettingsResponse(with: nil, rawResponse: dataResponse.response)
                     completion(responseModel, error)
                 case .success(let data):
-                    let responseModel = GETapplicationsettingsResponse(with: data, rawResponse: dataResponse.response)
+                    let responseModel = GetApplicationSettingsResponse(with: data, rawResponse: dataResponse.response)
                     completion(responseModel, nil)
             }
         }
     }
-    func send(with completion: @escaping (GETapplicationsettingsResponse, Error?) -> Void) {
+    func send(with completion: @escaping (GetApplicationSettingsResponse, Error?) -> Void) {
         send(headers: nil, completion: completion)
     }
     func prepare(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?) -> DataRequest {
@@ -108,7 +108,7 @@ class GETapplicationsettingsRequest {
     }
 }
 
-struct GETapplicationsettingsResponse: RawHTTPResponseWrapper {
+struct GetApplicationSettingsResponse: RawHTTPResponseWrapper {
     
     let settings: ApplicationSettingsStruct?
     let rawResponse: HTTPURLResponse?

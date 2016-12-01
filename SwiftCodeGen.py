@@ -35,8 +35,10 @@ class AlamofireCodeGenerator:
     def message_name_from_uri(self, uri_context):
         def uri_path_component_to_text(uri_path_component):
             if uri_path_component.parameterInUri() is not None:
-                return uri_path_component.parameterInUri().identifier().getText()
-            return uri_path_component.getText()
+                text = uri_path_component.parameterInUri().identifier().getText()
+            else:
+                text = uri_path_component.getText()
+            return text.title()
         return ''.join(map(uri_path_component_to_text, uri_context.uriPathComponent()))
 
     def request_url_from_uri(self, uri_context):
@@ -124,7 +126,7 @@ class AlamofireCodeGenerator:
             self.write_line('}')
 
     def request_name_from_message(self, message_method, message_name):
-        request_name = message_method + message_name + 'Request'
+        request_name = message_method.title() + message_name + 'Request'
         return request_name
 
     def generate_request(self, request_context, message_name, uri_context):
@@ -139,7 +141,7 @@ class AlamofireCodeGenerator:
         self.write_line('}')
 
     def response_name_from_message(self, message_method, message_name):
-        response_name = message_method + message_name + 'Response'
+        response_name = message_method.title() + message_name + 'Response'
         return response_name
 
     def generate_response_init_and_member_var(self, response_context):
