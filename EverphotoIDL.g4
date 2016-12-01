@@ -91,10 +91,10 @@ dictGenericParam
 baseType
     : INT32
     | INT64
-    | FLOAT
+    | DOUBLE
     | STRING
     | FILE
-    | STREAM
+    | BLOB
     | structName
     ;
 

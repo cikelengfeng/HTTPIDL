@@ -117,3 +117,63 @@ struct GetApplicationSettingsResponse: RawHTTPResponseWrapper {
         }
     }
 }
+
+class PostFiltersShinkaiRequest {
+    
+    var baseURLString = HTTPIDLBaseURLString
+    var image: URL?
+    func parameters() -> [String: Any] {
+        var result: [String: Any] = [:]
+        if let tmp = image {
+            result["media"] = tmp
+        }
+        return result
+    }
+    
+    func prepare(encodingCompletion: ((SessionManager.MultipartFormDataEncodingResult) -> Void)?) {
+        var dest = baseURLString + "/filters/shinkai"
+        if var urlComponents = URLComponents(string: dest) {
+            var queryItems = urlComponents.queryItems ?? []
+            urlComponents.queryItems = queryItems
+            if let urlString = urlComponents.string {
+                dest = urlString
+            }
+        }
+        Alamofire.upload(multipartFormData: { (multipart) in
+            if let tmp = self.image {
+                multipart.append(tmp, withName: "media")
+            }
+        }, to: dest, encodingCompletion: encodingCompletion)
+    }
+    func send(with completion: @escaping (PostFiltersShinkaiResponse, Error?) -> Void) {
+        prepare(encodingCompletion: { (encodingResult) in
+            switch encodingResult {
+                case .success(let upload, _, _):
+                    upload.responseJSON { (dataResponse) in
+                        switch dataResponse.result {
+                            case .failure(let error):
+                                let responseModel = PostFiltersShinkaiResponse(with: nil, rawResponse: dataResponse.response)
+                                completion(responseModel, error)
+                            case .success(let data):
+                                let responseModel = PostFiltersShinkaiResponse(with: data, rawResponse: dataResponse.response)
+                                completion(responseModel, nil)
+                        }
+                    }
+                case .failure(let encodingError):
+                let responseModel = PostFiltersShinkaiResponse(with: nil, rawResponse: nil)
+                completion(responseModel, encodingError)
+            }
+        })
+    }
+}
+
+struct PostFiltersShinkaiResponse: RawHTTPResponseWrapper {
+    
+    let rawResponse: HTTPURLResponse?
+    init(with json: Any?, rawResponse: HTTPURLResponse?) {
+        self.rawResponse = rawResponse
+        if let json = json as? [String: Any] {
+        } else {
+        }
+    }
+}
