@@ -42,11 +42,11 @@ class AlamofireCodeGenerator:
 
     def generate_request_send(self, request_context, message_name, uri_context):
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
-        self.writeLine('func send(with completion: @escaping (' + response_name +', Error?) -> Void) {')
+        self.writeLine('func send(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?, completion: @escaping (' + response_name +', Error?) -> Void) {')
         url = self.request_url_from_uri(uri_context)
         alamofire_method = self.alamofire_http_method(request_context.method().getText())
         self.pushIndent()
-        self.writeLine('Alamofire.request(' + url +', method:' + alamofire_method + ', parameters: parameters(), encoding: URLEncoding(), headers: nil).responseJSON { (dataResponse) in')
+        self.writeLine('prepare(headers: headers).responseJSON { (dataResponse) in')
         self.pushIndent()
         self.writeLine('switch dataResponse.result {')
         self.pushIndent()
@@ -66,6 +66,17 @@ class AlamofireCodeGenerator:
         self.writeLine('}')
         self.popIndent()
         self.writeLine('}')
+        self.writeLine('func send(with completion: @escaping (' + response_name +', Error?) -> Void) {')
+        self.pushIndent()
+        self.writeLine('send(headers: nil, completion: completion)')
+        self.popIndent()
+        self.writeLine('}')
+        self.writeLine('func prepare(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?) -> DataRequest {')
+        self.pushIndent()
+        self.writeLine('return Alamofire.request(' + url +', method:' + alamofire_method + ', parameters: parameters(), encoding: encoding, headers: headers)')
+        self.popIndent()
+        self.writeLine('}')
+
 
     def generate_request_parameters(self, request_context):
         self.writeLine('func parameters() -> [String: Any] {')

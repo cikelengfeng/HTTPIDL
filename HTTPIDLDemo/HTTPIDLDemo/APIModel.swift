@@ -76,8 +76,8 @@ class GETapplicationsettingsRequest {
         }
         return result
     }
-    func send(with completion: @escaping (GETapplicationsettingsResponse, Error?) -> Void) {
-        Alamofire.request(baseURLString + "/application/settings", method:.get, parameters: parameters(), encoding: URLEncoding(), headers: nil).responseJSON { (dataResponse) in
+    func send(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?, completion: @escaping (GETapplicationsettingsResponse, Error?) -> Void) {
+        prepare(headers: headers).responseJSON { (dataResponse) in
             switch dataResponse.result {
                 case .failure(let error):
                     let responseModel = GETapplicationsettingsResponse(with: nil, rawResponse: dataResponse.response)
@@ -87,6 +87,12 @@ class GETapplicationsettingsRequest {
                     completion(responseModel, nil)
             }
         }
+    }
+    func send(with completion: @escaping (GETapplicationsettingsResponse, Error?) -> Void) {
+        send(headers: nil, completion: completion)
+    }
+    func prepare(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?) -> DataRequest {
+        return Alamofire.request(baseURLString + "/application/settings", method:.get, parameters: parameters(), encoding: encoding, headers: headers)
     }
 }
 struct GETapplicationsettingsResponse: RawHTTPResponseWrapper {
