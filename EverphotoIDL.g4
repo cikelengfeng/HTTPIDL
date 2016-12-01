@@ -57,7 +57,7 @@ uriPathComponent
 
 structBody
     :
-    LCURLY parameterMap+ RCURLY
+    LCURLY parameterMap* RCURLY
     ;
 
 parameterInUri

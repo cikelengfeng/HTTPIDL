@@ -1,14 +1,16 @@
 #!/usr/bin/python
 # coding:utf-8
+import sys
 
 from SwiftTypeTransfer import swift_type_name, swift_base_type_name_from_idl_base_type
+from antlr4.error.ErrorListener import ErrorListener
 from gen.EverphotoIDL import EverphotoIDL
 from gen.EverphotoIDLLexer import EverphotoIDLLexer
 
-class AlamofireCodeGenerator:
 
+class AlamofireCodeGenerator:
     def alamofire_http_method(self, idl_method_name):
-        map = { 'GET': '.get', 'POST': '.post', 'PUT': '.put', 'DELETE': '.delete' , 'PATCH': '.patch'}
+        map = {'GET': '.get', 'POST': '.post', 'PUT': '.put', 'DELETE': '.delete', 'PATCH': '.patch'}
         return map[idl_method_name]
 
     def __init__(self, output=None):
@@ -39,6 +41,7 @@ class AlamofireCodeGenerator:
             else:
                 text = uri_path_component.getText()
             return text.title()
+
         return ''.join(map(uri_path_component_to_text, uri_context.uriPathComponent()))
 
     def request_url_from_uri(self, uri_context):
@@ -46,15 +49,16 @@ class AlamofireCodeGenerator:
             if isinstance(so_good, EverphotoIDL.UriPathComponentContext) and so_good.parameterInUri() is not None:
                 return so_far + '\(' + so_good.parameterInUri().identifier().getText() + ')'
             return so_far + so_good.getText()
+
         uri = reduce(reduceUriPathComponent, uri_context.children, '"') + '"'
         url = 'baseURLString + ' + uri
         return url
 
-
     def generate_request_send(self, request_context, message_name, uri_context):
         self.write_blank_lines(1)
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
-        self.write_line('func send(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?, completion: @escaping (' + response_name + ', Error?) -> Void) {')
+        self.write_line(
+            'func send(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?, completion: @escaping (' + response_name + ', Error?) -> Void) {')
         url = self.request_url_from_uri(uri_context)
         alamofire_method = self.alamofire_http_method(request_context.method().getText())
         self.push_indent()
@@ -83,12 +87,13 @@ class AlamofireCodeGenerator:
         self.write_line('send(headers: nil, completion: completion)')
         self.pop_indent()
         self.write_line('}')
-        self.write_line('func prepare(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?) -> DataRequest {')
+        self.write_line(
+            'func prepare(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?) -> DataRequest {')
         self.push_indent()
-        self.write_line('return Alamofire.request(' + url + ', method:' + alamofire_method + ', parameters: parameters(), encoding: encoding, headers: headers)')
+        self.write_line(
+            'return Alamofire.request(' + url + ', method:' + alamofire_method + ', parameters: parameters(), encoding: encoding, headers: headers)')
         self.pop_indent()
         self.write_line('}')
-
 
     def generate_request_parameters(self, request_context):
         self.write_line('func parameters() -> [String: Any] {')
@@ -106,8 +111,10 @@ class AlamofireCodeGenerator:
 
     def generate_request_init_and_member_var(self, request_context, uri_context):
         self.write_blank_lines(1)
+
         def filter_param_in_uri(uri_path_component):
             return uri_path_component.parameterInUri() is not None
+
         params_in_uri = filter(filter_param_in_uri, uri_context.uriPathComponent())
         for param_in_uri in params_in_uri:
             self.write_line('let ' + param_in_uri.parameterInUri().identifier().getText() + ': String')
@@ -116,12 +123,14 @@ class AlamofireCodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.write_line('var ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        init_param_list = ', '.join(map(lambda param_in_uri: param_in_uri.parameterInUri().identifier().getText() + ': String', params_in_uri))
+        init_param_list = ', '.join(
+            map(lambda param_in_uri: param_in_uri.parameterInUri().identifier().getText() + ': String', params_in_uri))
         if len(init_param_list) != 0:
             self.write_line('init(' + init_param_list + ') {')
             self.push_indent()
             for param_in_uri in params_in_uri:
-                self.write_line('self.' + param_in_uri.parameterInUri().identifier().getText() + ' = ' + param_in_uri.parameterInUri().identifier().getText())
+                self.write_line(
+                    'self.' + param_in_uri.parameterInUri().identifier().getText() + ' = ' + param_in_uri.parameterInUri().identifier().getText())
             self.pop_indent()
             self.write_line('}')
 
@@ -158,7 +167,8 @@ class AlamofireCodeGenerator:
         self.push_indent()
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
-            self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(param_type) + '(with: json["' + param_map.value().getText() + '"])')
+            self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
+                param_type) + '(with: json["' + param_map.value().getText() + '"])')
         self.pop_indent()
         self.write_line('} else {')
         self.push_indent()
@@ -210,7 +220,9 @@ class AlamofireCodeGenerator:
                     array_element_type = array_type.baseType()
                     self.write_line('if let anyArray = json["' + param_map.value().getText() + '"] as? [Any] {')
                     self.push_indent()
-                    self.write_line('self.' + param_map.key().getText() + ' = anyArray.flatMap { ' + swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '(with: $0) }')
+                    self.write_line(
+                        'self.' + param_map.key().getText() + ' = anyArray.flatMap { ' + swift_base_type_name_from_idl_base_type(
+                            array_element_type.getText()) + '(with: $0) }')
                     self.pop_indent()
                     self.write_line('} else {')
                     self.push_indent()
@@ -225,12 +237,14 @@ class AlamofireCodeGenerator:
                     self.write_line('var tmp: [String: String] = [:]')
                     self.write_line('anyDict.forEach({ (key, value) in')
                     self.push_indent()
-                    self.write_line('guard let newKey = ' + swift_base_type_name_from_idl_base_type(dict_key_type.getText()) + '(with: key) else {')
+                    self.write_line('guard let newKey = ' + swift_base_type_name_from_idl_base_type(
+                        dict_key_type.getText()) + '(with: key) else {')
                     self.push_indent()
                     self.write_line('return')
                     self.pop_indent()
                     self.write_line('}')
-                    self.write_line('guard let newValue = ' + swift_base_type_name_from_idl_base_type(dict_value_type.getText()) + '(with: value) else {')
+                    self.write_line('guard let newValue = ' + swift_base_type_name_from_idl_base_type(
+                        dict_value_type.getText()) + '(with: value) else {')
                     self.push_indent()
                     self.write_line('return')
                     self.pop_indent()
@@ -254,7 +268,8 @@ class AlamofireCodeGenerator:
                     self.pop_indent()
                     self.write_line('}')
             else:
-                self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(param_type) + '(with: json["' + param_map.value().getText() + '"])')
+                self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
+                    param_type) + '(with: json["' + param_map.value().getText() + '"])')
         self.pop_indent()
         self.write_line('} else {')
         self.push_indent()
@@ -286,26 +301,24 @@ class AlamofireCodeGenerator:
             self.generate_message(message)
 
 
+class HTTPIDLErrorListener(ErrorListener):
+    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
+        print 'parser failed!!!'
+        print 'error near line ' + str(line) + ':' + str(column) + ' reason:( ' + msg + ' )'
+        sys.exit(1)
 
 
-
-
-
-
-
-
-
-def __parse_tree_from_idl(idl):
+def __parse_tree_from_idl(idl, error_listener):
     from antlr4 import InputStream
     input_stream = InputStream(idl)
-
     lexer = EverphotoIDLLexer(input_stream)
     from antlr4 import CommonTokenStream
     stream = CommonTokenStream(lexer)
-
     parser = EverphotoIDL(stream)
+    parser.addErrorListener(error_listener)
     tree = parser.entry()
     return tree
+
 
 if __name__ == '__main__':
     uri_template = '''STRUCT SettingsURITemplate {
@@ -315,7 +328,7 @@ if __name__ == '__main__':
 }'''
     idl = '''MESSAGE /application/settings {
     GET REQUEST {
-        INT32 test = test;
+        
     }
 
     GET RESPONSE {
@@ -341,7 +354,8 @@ STRUCT ApplicationSettingsStruct {
     SettingsURITemplate uriTemplate = uri_template;
     ARRAY<SettingsOnlineFilter> onlineFilter = filters;
 }'''
-    parse_tree = __parse_tree_from_idl(idl)
+
+    parse_tree = __parse_tree_from_idl(idl, HTTPIDLErrorListener())
     with open('HTTPIDLDemo/HTTPIDLDemo/APIModel.swift', 'w') as output:
         generator = AlamofireCodeGenerator(output)
         generator.generate_entry(parse_tree)

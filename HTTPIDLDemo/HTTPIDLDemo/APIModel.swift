@@ -79,12 +79,8 @@ struct ApplicationSettingsStruct: JSONObject {
 class GetApplicationSettingsRequest {
     
     var baseURLString = HTTPIDLBaseURLString
-    var test: Int32?
     func parameters() -> [String: Any] {
         var result: [String: Any] = [:]
-        if let tmp = test {
-            result["test"] = tmp
-        }
         return result
     }
     
