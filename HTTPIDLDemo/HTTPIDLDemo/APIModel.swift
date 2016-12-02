@@ -78,14 +78,18 @@ struct ApplicationSettingsStruct: JSONObject {
 
 class GetApplicationSettingsRequest {
     
-    var baseURLString = HTTPIDLBaseURLString
+    var configuration = HTTPIDLConfiguration.shared
+    var test: [Int32]?
     func parameters() -> [String: Any] {
         var result: [String: Any] = [:]
+        if let tmp = test {
+            result["hahahah"] = tmp
+        }
         return result
     }
     
-    func send(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?, completion: @escaping (GetApplicationSettingsResponse, Error?) -> Void) {
-        prepare(headers: headers).responseJSON { (dataResponse) in
+    func send(with completion: @escaping (GetApplicationSettingsResponse, Error?) -> Void) {
+        prepare().responseJSON { (dataResponse) in
             switch dataResponse.result {
                 case .failure(let error):
                     let responseModel = GetApplicationSettingsResponse(with: nil, rawResponse: dataResponse.response)
@@ -96,11 +100,8 @@ class GetApplicationSettingsRequest {
             }
         }
     }
-    func send(with completion: @escaping (GetApplicationSettingsResponse, Error?) -> Void) {
-        send(headers: nil, completion: completion)
-    }
-    func prepare(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?) -> DataRequest {
-        return Alamofire.request(baseURLString + "/application/settings", method:.get, parameters: parameters(), encoding: encoding, headers: headers)
+    func prepare() -> DataRequest {
+        return Alamofire.request(configuration.baseURLString + "/application/settings", method:.get, parameters: parameters(), encoding: configuration.parameterEncoding, headers: configuration.headers)
     }
 }
 
@@ -120,7 +121,7 @@ struct GetApplicationSettingsResponse: RawHTTPResponseWrapper {
 
 class PostFiltersShinkaiRequest {
     
-    var baseURLString = HTTPIDLBaseURLString
+    var configuration = HTTPIDLConfiguration.shared
     var image: URL?
     func parameters() -> [String: Any] {
         var result: [String: Any] = [:]
@@ -131,7 +132,7 @@ class PostFiltersShinkaiRequest {
     }
     
     func prepare(encodingCompletion: ((SessionManager.MultipartFormDataEncodingResult) -> Void)?) {
-        var dest = baseURLString + "/filters/shinkai"
+        var dest = configuration.baseURLString + "/filters/shinkai"
         if var urlComponents = URLComponents(string: dest) {
             var queryItems = urlComponents.queryItems ?? []
             urlComponents.queryItems = queryItems

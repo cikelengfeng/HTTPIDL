@@ -7,5 +7,22 @@
 //
 
 import Foundation
+import Alamofire
 
-var HTTPIDLBaseURLString = "http://api.everphoto.cn"
+fileprivate var HTTPIDLBaseURLString = "http://api.everphoto.cn"
+fileprivate var HTTPIDLDefaultParameterEncoding = URLEncoding.default
+fileprivate var HTTPIDLDefaultHeaders: HTTPHeaders? = nil
+
+public struct HTTPIDLConfiguration {
+    public static var shared = HTTPIDLConfiguration(with: HTTPIDLBaseURLString, parameterEncoding: HTTPIDLDefaultParameterEncoding, headers: HTTPIDLDefaultHeaders)
+    
+    let baseURLString: String
+    let parameterEncoding: ParameterEncoding
+    let headers: HTTPHeaders?
+    
+    init(with baseURLString: String, parameterEncoding: ParameterEncoding, headers: HTTPHeaders?) {
+        self.baseURLString = baseURLString
+        self.parameterEncoding = parameterEncoding
+        self.headers = headers
+    }
+}

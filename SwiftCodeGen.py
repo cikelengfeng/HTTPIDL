@@ -51,7 +51,7 @@ class AlamofireCodeGenerator:
             return so_far + so_good.getText()
 
         uri = reduce(reduceUriPathComponent, uri_context.children, '"') + '"'
-        url = 'baseURLString + ' + uri
+        url = 'configuration.baseURLString + ' + uri
         return url
 
     def need_multipart(self, request_context):
@@ -186,11 +186,11 @@ class AlamofireCodeGenerator:
         self.write_blank_lines(1)
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
         self.write_line(
-            'func send(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?, completion: @escaping (' + response_name + ', Error?) -> Void) {')
+            'func send(with completion: @escaping (' + response_name + ', Error?) -> Void) {')
         url = self.request_url_from_uri(uri_context)
         alamofire_method = self.alamofire_http_method(request_context.method().getText())
         self.push_indent()
-        self.write_line('prepare(headers: headers).responseJSON { (dataResponse) in')
+        self.write_line('prepare().responseJSON { (dataResponse) in')
         self.push_indent()
         self.write_line('switch dataResponse.result {')
         self.push_indent()
@@ -210,16 +210,11 @@ class AlamofireCodeGenerator:
         self.write_line('}')
         self.pop_indent()
         self.write_line('}')
-        self.write_line('func send(with completion: @escaping (' + response_name + ', Error?) -> Void) {')
-        self.push_indent()
-        self.write_line('send(headers: nil, completion: completion)')
-        self.pop_indent()
-        self.write_line('}')
         self.write_line(
-            'func prepare(with encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders?) -> DataRequest {')
+            'func prepare() -> DataRequest {')
         self.push_indent()
         self.write_line(
-            'return Alamofire.request(' + url + ', method:' + alamofire_method + ', parameters: parameters(), encoding: encoding, headers: headers)')
+            'return Alamofire.request(' + url + ', method:' + alamofire_method + ', parameters: parameters(), encoding: configuration.parameterEncoding, headers: configuration.headers)')
         self.pop_indent()
         self.write_line('}')
 
@@ -246,7 +241,7 @@ class AlamofireCodeGenerator:
         params_in_uri = filter(filter_param_in_uri, uri_context.uriPathComponent())
         for param_in_uri in params_in_uri:
             self.write_line('let ' + param_in_uri.parameterInUri().identifier().getText() + ': String')
-        self.write_line('var baseURLString = HTTPIDLBaseURLString')
+        self.write_line('var configuration = HTTPIDLConfiguration.shared')
         param_maps = request_context.structBody().parameterMap()
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
@@ -458,7 +453,7 @@ if __name__ == '__main__':
 }'''
     idl = '''MESSAGE /application/settings {
     GET REQUEST {
-        
+        ARRAY<INT32> test = hahahah;
     }
 
     GET RESPONSE {

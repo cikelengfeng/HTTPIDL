@@ -12,16 +12,6 @@ public protocol JSONObject {
     init?(with json: Any?)
 }
 
-struct MultipartFile {
-    let key: String
-    let fileURL: URL
-    
-    init(with key: String, url: URL) {
-        self.key = key
-        self.fileURL = url
-    }
-}
-
 extension Int32: JSONObject {
     public init?(with json: Any?) {
         if let int = json as? Int32 {
