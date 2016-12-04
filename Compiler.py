@@ -2,9 +2,12 @@ import os
 import sys
 
 from SwiftCodeGen import AlamofireCodeGenerator
+from antlr4 import CommonTokenStream
+from antlr4 import InputStream
 from antlr4.error.ErrorListener import ErrorListener
-from gen.EverphotoIDL import EverphotoIDL
-from gen.EverphotoIDLLexer import EverphotoIDLLexer
+from HJIDLParser.EverphotoIDL import EverphotoIDL
+from HJIDLParser.EverphotoIDLLexer import EverphotoIDLLexer
+
 
 class HTTPIDLErrorListener(ErrorListener):
     def syntaxError(self, recognizer, offending_symbol, line, column, msg, e):
@@ -29,8 +32,8 @@ class HJCompiler:
     def compile(self, input_file_path, output_directory_path):
         with open(input_file_path, 'r') as input_file:
             idl = ''.join(input_file.readlines())
-        print 'compile idl '
-        print idl
+        # print 'compile idl:'
+        # print idl
         parse_tree = self.parse_tree_from_idl(idl, HTTPIDLErrorListener())
         input_file_name = os.path.splitext(os.path.basename(input_file_path))[0]
         generator = AlamofireCodeGenerator(input_file_name, output_directory_path)
@@ -48,10 +51,8 @@ class HJCompiler:
 
     @staticmethod
     def parse_tree_from_idl(input_idl, error_listener):
-        from antlr4 import InputStream
         input_stream = InputStream(input_idl)
         lexer = EverphotoIDLLexer(input_stream)
-        from antlr4 import CommonTokenStream
         stream = CommonTokenStream(lexer)
         parser = EverphotoIDL(stream)
         parser.addErrorListener(error_listener)

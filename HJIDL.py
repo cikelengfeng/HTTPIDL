@@ -20,7 +20,7 @@ from Compiler import HJCompiler
 
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='0.1.0')
-    print(arguments)
+    # print(arguments)
     output_directory_path = arguments['-o']
     compiler = HJCompiler()
     if '-d' in arguments:
