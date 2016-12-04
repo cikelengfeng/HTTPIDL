@@ -1,11 +1,11 @@
 #!/usr/bin/python
 # coding:utf-8
-import sys
+import os
+
+import errno
 
 from SwiftTypeTransfer import swift_type_name, swift_base_type_name_from_idl_base_type
-from antlr4.error.ErrorListener import ErrorListener
 from gen.EverphotoIDL import EverphotoIDL
-from gen.EverphotoIDLLexer import EverphotoIDLLexer
 
 
 class AlamofireCodeGenerator:
@@ -14,13 +14,23 @@ class AlamofireCodeGenerator:
         method_map = {'GET': '.get', 'POST': '.post', 'PUT': '.put', 'DELETE': '.delete', 'PATCH': '.patch'}
         return method_map[idl_method_name]
 
-    def __init__(self, output_file=None):
-        self.output_file = output_file
+    def __init__(self, output_file_name, output_directory_path):
+        if not os.path.exists(output_directory_path):
+            try:
+                os.makedirs(output_directory_path)
+            except OSError as exc:  # Python >2.5
+                if exc.errno == errno.EEXIST and os.path.isdir(output_directory_path):
+                    pass
+                else:
+                    raise
+
+        self.output_file = open(os.path.join(output_directory_path, output_file_name + '.swift'), 'w')
         self.indent = 0
 
     def write_line(self, text):
+        # 1 indent = 4 blank space
         indent = reduce(lambda so_far, so_good: so_far + '    ', range(0, self.indent), '')
-        print indent + text
+        # print indent + text
         self.output_file.write((indent + text) + '\n')
 
     def write_blank_lines(self, count):
@@ -442,74 +452,75 @@ class AlamofireCodeGenerator:
             self.generate_message(message)
 
 
-class HTTPIDLErrorListener(ErrorListener):
-    def syntaxError(self, recognizer, offending_symbol, line, column, msg, e):
-        print 'parser failed!!!'
-        print 'error near line ' + str(line) + ':' + str(column) + ' reason:( ' + msg + ' )'
-        sys.exit(1)
-
-
-def __parse_tree_from_idl(input_idl, error_listener):
-    from antlr4 import InputStream
-    input_stream = InputStream(input_idl)
-    lexer = EverphotoIDLLexer(input_stream)
-    from antlr4 import CommonTokenStream
-    stream = CommonTokenStream(lexer)
-    parser = EverphotoIDL(stream)
-    parser.addErrorListener(error_listener)
-    tree = parser.entry()
-    return tree
-
-
-if __name__ == '__main__':
-    uri_template = '''STRUCT SettingsURITemplate {
-    STRING avatar = avatar;
-    STRING thumbnail = s240;
-    STRING origin = origin;
-}'''
-    idl = '''MESSAGE /application/settings {
-    GET REQUEST {
-        ARRAY<INT32> test = hahahah;
-    }
-
-    GET RESPONSE {
-        ApplicationSettingsStruct settings = data;
-    }
-}
-
-STRUCT SettingsURITemplate {
-    STRING avatar = avatar;
-    STRING thumbnail = s240;
-    STRING origin = origin;
-}
-
-STRUCT SettingsOnlineFilter {
-    STRING name = name;
-    STRING displayName = display_name;
-}
-
-STRUCT ApplicationSettingsStruct {
-    INT32 tagVersion = system_tag_version;
-    STRING smsCode = sms_code_number;
-    DICT<STRING, STRING> uriTemplateDict = uri_template;
-    SettingsURITemplate uriTemplate = uri_template;
-    ARRAY<SettingsOnlineFilter> onlineFilter = filters;
-}
-
-MESSAGE /filters/shinkai {
-    POST REQUEST {
-        FILE image = media;
-    }
-
-    POST RESPONSE {
-
-    }
-}
-
-'''
-
-    parse_tree = __parse_tree_from_idl(idl, HTTPIDLErrorListener())
-    with open('HTTPIDLDemo/HTTPIDLDemo/APIModel.swift', 'w') as output:
-        generator = AlamofireCodeGenerator(output)
-        generator.generate_entry(parse_tree)
-    print 'end'
+# class HTTPIDLErrorListener(ErrorListener):
+#     def syntaxError(self, recognizer, offending_symbol, line, column, msg, e):
+#         print 'parser failed!!!'
+#         print 'error near line ' + str(line) + ':' + str(column) + ' reason:( ' + msg + ' )'
+#         sys.exit(1)
+#
+#
+# def __parse_tree_from_idl(input_idl, error_listener):
+#     from antlr4 import InputStream
+#     input_stream = InputStream(input_idl)
+#     lexer = EverphotoIDLLexer(input_stream)
+#     from antlr4 import CommonTokenStream
+#     stream = CommonTokenStream(lexer)
+#     parser = EverphotoIDL(stream)
+#     parser.addErrorListener(error_listener)
+#     tree = parser.entry()
+#     return tree
+#
+#
+# if __name__ == '__main__':
+#     uri_template = '''STRUCT SettingsURITemplate {
+#     STRING avatar = avatar;
+#     STRING thumbnail = s240;
+#     STRING origin = origin;
+# }'''
+#     idl = '''MESSAGE /application/settings {
+#     GET REQUEST {
+#         ARRAY<INT32> test = hahahah;
+#     }
+#
+#     GET RESPONSE {
+#         ApplicationSettingsStruct settings = data;
+#     }
+# }
+#
+# STRUCT SettingsURITemplate {
+#     STRING avatar = avatar;
+#     STRING thumbnail = s240;
+#     STRING origin = origin;
+# }
+#
+# STRUCT SettingsOnlineFilter {
+#     STRING name = name;
+#     STRING displayName = display_name;
+# }
+#
+# STRUCT ApplicationSettingsStruct {
+#     INT32 tagVersion = system_tag_version;
+#     STRING smsCode = sms_code_number;
+#     DICT<STRING, STRING> uriTemplateDict = uri_template;
+#     SettingsURITemplate uriTemplate = uri_template;
+#     ARRAY<SettingsOnlineFilter> onlineFilter = filters;
+# }
+#
+# MESSAGE /filters/shinkai {
+#     POST REQUEST {
+#         FILE image = media;
+#         INT32 test = tt;
+#     }
+#
+#     POST RESPONSE {
+#
+#     }
+# }
+#
+# '''
+#
+#     parse_tree = __parse_tree_from_idl(idl, HTTPIDLErrorListener())
+#     with open('HTTPIDLDemo/HTTPIDLDemo/APIModel.swift', 'w') as output:
+#         generator = AlamofireCodeGenerator(output)
+#         generator.generate_entry(parse_tree)
+#     print 'end'
