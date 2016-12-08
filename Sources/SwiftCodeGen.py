@@ -157,7 +157,8 @@ class AlamofireCodeGenerator:
         for param in multipart_params:
             self.write_line('if let tmp = self.' + param.key().getText() + ' {')
             self.push_indent()
-            self.write_line('multipart.append(tmp, withName: "' + param.value().getText() + '")')
+            self.write_line(
+                'multipart.append( tmp.payload, withName: "' + param.value().getText() + '", fileName: tmp.fileName, mimeType: tmp.mimeType)')
             self.pop_indent()
             self.write_line('}')
         self.pop_indent()
