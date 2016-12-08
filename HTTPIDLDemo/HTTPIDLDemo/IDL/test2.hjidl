@@ -1,0 +1,20 @@
+MESSAGE /my/testing {
+    GET REQUEST {
+        ARRAY<INT32> test = hahahah;
+    }
+
+    GET RESPONSE {
+        ApplicationSettingsStruct settings = data;
+    }
+}
+
+
+MESSAGE /filters/shinkai {
+    POST REQUEST {
+        FILE image = media;
+    }
+
+    POST RESPONSE {
+
+    }
+}

@@ -1,0 +1,28 @@
+MESSAGE /application/settings {
+    GET REQUEST {
+    }
+
+    GET RESPONSE {
+        ApplicationSettingsStruct settings = data;
+    }
+}
+
+STRUCT SettingsURITemplate {
+    STRING avatar = avatar;
+    STRING thumbnail = s240;
+    STRING origin = origin;
+}
+
+STRUCT SettingsOnlineFilter {
+    STRING name = name;
+    STRING displayName = display_name;
+}
+
+STRUCT ApplicationSettingsStruct {
+    INT32 tagVersion = system_tag_version;
+    STRING smsCode = sms_code_number;
+    DICT<STRING, STRING> uriTemplateDict = uri_template;
+    SettingsURITemplate uriTemplate = uri_template;
+    ARRAY<SettingsOnlineFilter> onlineFilter = filters;
+}
+
