@@ -162,7 +162,7 @@ class AlamofireCodeGenerator:
             self.pop_indent()
             self.write_line('}')
         self.pop_indent()
-        self.write_line('}, to: dest, encodingCompletion: encodingCompletion)')
+        self.write_line('}, to: dest, headers: configuration.headers, encodingCompletion: encodingCompletion)')
         self.pop_indent()
         self.write_line('}')
         # 生成send 方法

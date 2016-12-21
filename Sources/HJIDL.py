@@ -14,7 +14,6 @@ Options:
 
 
 """
-from docopt import docopt
 
 from Compiler import HJCompiler
 
