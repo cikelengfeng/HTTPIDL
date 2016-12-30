@@ -1,0 +1,30 @@
+//
+//  RequestProtocol.swift
+//  everfilter
+//
+//  Created by 徐 东 on 2016/12/28.
+//  Copyright © 2016年 Shanghai Infinite Memory. All rights reserved.
+//
+
+import Foundation
+
+
+protocol HTTPRequest {
+    
+    var method: String {get set}
+    var headers: [String: String] {get set}
+    var url: URL {get set}
+    var body: () throws -> Data {get set}
+    
+}
+
+protocol HTTPResponse {
+    var statusCode: Int {get}
+    var headers: [String: String] {get}
+    var body: Data? {get}
+}
+
+
+protocol HTTPClient {
+    func send(_ request: HTTPRequest, completion: @escaping (_ response: HTTPResponse?, _ error: Error?) -> Void)
+}
