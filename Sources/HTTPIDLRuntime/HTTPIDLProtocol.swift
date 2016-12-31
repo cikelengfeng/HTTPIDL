@@ -18,20 +18,19 @@ protocol HTTPIDLParameter {
 }
 
 protocol HTTPIDLRequest {
-    var parameters: [HTTPIDLParameter] {get set}
-    var encoder: HTTPRequestEncoder {get set}
-    var client: HTTPClient {get set}
-}
-
-protocol HTTPIDLResponse {
-    var httpResponse: HTTPResponse? {get}
+    var configration: HTTPIDLConfiguration {get set}
+    var parameters: [HTTPIDLParameter] {get}
 }
 
 protocol HTTPRequestEncoder {
-    func encode(_ request: HTTPIDLRequest) -> HTTPRequest?
+    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest
 }
 
-protocol HTTPResponseDecoder {
-    func decode(_ response: HTTPResponse) -> HTTPIDLResponse?
+protocol HTTPIDLResponse {
+    init(with httpResponse: HTTPResponse) throws
 }
 
+protocol HTTPResponseBodyDecoder {
+    associatedtype OutputType
+    func decode(_ responseBody: Data) throws -> OutputType
+}

@@ -8,11 +8,11 @@
 
 import Foundation
 
-struct IntegerParameter: HTTPParameter {
+struct IntegerParameter: HTTPIDLParameter {
     
     var key: String
     var rawValue: Int64
-    var value: () -> String {
+    var value: () throws -> String {
         get {
             return { String(self.rawValue) }
         }
@@ -25,7 +25,7 @@ struct IntegerParameter: HTTPParameter {
     
 }
 
-struct StringParameter: HTTPParameter {
+struct StringParameter: HTTPIDLParameter {
     var key: String
     var rawValue: String
     var value: () throws -> String {
@@ -41,7 +41,7 @@ struct StringParameter: HTTPParameter {
 }
 
 
-struct DoubleParameter: HTTPParameter {
+struct DoubleParameter: HTTPIDLParameter {
     var key: String
     var rawValue: Double
     var value: () throws -> String {
@@ -56,7 +56,7 @@ struct DoubleParameter: HTTPParameter {
     }
 }
 
-struct FileParameter: HTTPParameter {
+struct FileParameter: HTTPIDLParameter {
     var key: String
     var url: URL
     var name: String
@@ -76,7 +76,7 @@ struct FileParameter: HTTPParameter {
     }
 }
 
-struct DataParameter: HTTPParameter {
+struct DataParameter: HTTPIDLParameter {
     var key: String
     var data: Data
     var name: String
