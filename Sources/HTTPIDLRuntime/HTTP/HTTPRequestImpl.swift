@@ -12,9 +12,9 @@ struct HTTPBaseRequest: HTTPRequest {
     var method: String
     var headers: [String: String]
     var url: URL
-    var body: () throws -> Data
+    var body: () throws -> Data?
     
-    init(with method: String, url: URL, headers: [String: String], body: () throws -> Data) {
+    init(method: String, url: URL, headers: [String: String], body: @escaping () throws -> Data?) {
         self.method = method
         self.url = url
         self.headers = headers

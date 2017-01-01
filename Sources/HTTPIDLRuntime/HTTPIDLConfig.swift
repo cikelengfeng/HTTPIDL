@@ -9,15 +9,15 @@
 import Foundation
 import Alamofire
 
-fileprivate let HTTPIDLBaseURLString = "https://api.everfilter.me"
+fileprivate let HTTPIDLBaseURLString = "https://api.everphoto.cn"
 fileprivate let HTTPIDLDefaultParameterEncoding = URLEncoding.default
 
 protocol HTTPIDLConfiguration {
     var baseURLString: String {get set}
     var parameterEncoding: ParameterEncoding {get set}
-    var headers: HTTPHeaders? {get set}
+    var headers: [String: String] {get set}
     
-    mutating func append(headers: HTTPHeaders)
+    mutating func append(headers: [String: String])
 }
 
 public struct BaseHTTPIDLConfiguration: HTTPIDLConfiguration {
@@ -25,15 +25,15 @@ public struct BaseHTTPIDLConfiguration: HTTPIDLConfiguration {
     
     public var baseURLString: String
     public var parameterEncoding: ParameterEncoding
-    public var headers: HTTPHeaders? = nil
+    public var headers: [String: String] = [:]
     
     init(with baseURLString: String, parameterEncoding: ParameterEncoding) {
         self.baseURLString = baseURLString
         self.parameterEncoding = parameterEncoding
     }
     
-    mutating func append(headers: HTTPHeaders) {
-        let newHeader = headers.reduce(self.headers ?? [:], { (soFar, soGood) in
+    mutating func append(headers: [String: String]) {
+        let newHeader = headers.reduce(self.headers , { (soFar, soGood) in
             var mutableSoFar = soFar
             mutableSoFar[soGood.0] = soGood.1
             return mutableSoFar
