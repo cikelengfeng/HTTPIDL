@@ -13,20 +13,82 @@ enum HTTPBaseRequestEncoderError: Error {
     case constructURLFailed
 }
 
+enum HTTPParameterEncoderError: Error {
+    case methodNotImplemented
+}
+
+private protocol HTTPParameterEncoder {
+    associatedtype Output
+    func encode(_ parameter: HTTPIDLParameter) -> () throws -> Output
+    func can(encode parameter: HTTPIDLParameter) -> Bool
+}
+
+private func pick<T:HTTPParameterEncoder>(parameterEncoder encoders: [T], for parameter: HTTPIDLParameter) -> T? {
+    return encoders.first(where: { (encoder) -> Bool in
+        return encoder.can(encode: parameter)
+    })
+}
+
+fileprivate class HTTPBaseParameterUTF8Encoder: HTTPParameterEncoder {
+    typealias Output = String
+    
+    func can(encode parameter: HTTPIDLParameter) -> Bool {
+        return false
+    }
+    
+    func encode(_ parameter: HTTPIDLParameter) -> () throws -> String {
+        return {
+            throw HTTPParameterEncoderError.methodNotImplemented
+        }
+    }
+}
+
+fileprivate class HTTPParameterIntUTF8Encoder: HTTPBaseParameterUTF8Encoder {
+    fileprivate override func can(encode parameter: HTTPIDLParameter) -> Bool {
+        return parameter
+    }
+}
+
 struct HTTPBaseRequestEncoder: HTTPRequestEncoder {
     
     static let shared = HTTPBaseRequestEncoder()
+    private let parameterEncoders: [HTTPBaseParameterUTF8Encoder] = []
     
     func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
-        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configration.baseURLString)) else {
+        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
         
-        let encodedURL = try url.appendQuery(pairs: request.parameters.map({ (param) -> (String, String) in
-            let value = String(data: try param.value(), encoding: String.Encoding.utf8)
-            return (param.key, value ?? "")
-        }))
-        return HTTPBaseRequest(method: request.method, url: encodedURL, headers: request.configration.headers , body: { () -> Data? in
+        let queryItems = try request.parameters.map { (param) -> (HTTPIDLParameter, HTTPBaseParameterUTF8Encoder?) in
+            return (param, pick(parameterEncoder: parameterEncoders, for: param))
+        } .filter { (param, encoder) -> Bool in
+            return encoder != nil
+        } .map { (param, encoder) -> (String, String) in
+            let valueClosure = encoder!.encode(param)
+            let value = try valueClosure()
+            switch param {
+                case .int64(let key, _):
+                    return (key, value)
+            case .int32(let key, _):
+                return (key, value)
+            case .double(let key, _):
+                return (key, value)
+            case .string(let key, _):
+                return (key, value)
+            case .file(let key, _, _, _):
+                return (key, value)
+            case .data(let key, _, _, _):
+                return (key, value)
+            case .array(let key, _):
+                return (key, value)
+            case .dictionary(let key, _):
+                return (key, value)
+            }
+        }
+        
+        let encodedURL = url.appendQuery(pairs: queryItems)
+        
+        return HTTPBaseRequest(method: request.method, url: encodedURL, headers: request.configuration.headers , body: { () -> Data? in
             return nil
         })
     }
@@ -37,10 +99,10 @@ struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
     static let shared = HTTPJSONRequestEncoder()
     
     func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
-        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configration.baseURLString)) else {
+        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
-        var headers = request.configration.headers
+        var headers = request.configuration.headers
         if headers["Content-Type"] == nil {
             headers["Content-Type"] = "application/json"
         }
@@ -65,11 +127,11 @@ struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
     static let shared = HTTPMultipartRequestEncoder()
     
     func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
-        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configration.baseURLString)) else {
+        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
         let formData = MultipartFormData()
-        var headers = request.configration.headers
+        var headers = request.configuration.headers
         if headers["Content-Type"] == nil {
             headers["Content-Type"] = formData.contentType
         }
@@ -98,13 +160,13 @@ struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
 
 private struct HTTPIDLPlainRequest: HTTPIDLRequest {
     var method: String
-    var configration: HTTPIDLConfiguration
+    var configuration: HTTPIDLConfiguration
     var uri: String
     var parameters: [HTTPIDLParameter]
     
-    init(method: String, uri: String, configration: HTTPIDLConfiguration, parameters: [HTTPIDLParameter]) {
+    init(method: String, uri: String, configuration: HTTPIDLConfiguration, parameters: [HTTPIDLParameter]) {
         self.method = method
-        self.configration = configration
+        self.configuration = configuration
         self.uri = uri
         self.parameters = parameters
     }
@@ -121,7 +183,7 @@ struct HTTPCombinatedRequestEncoder: HTTPRequestEncoder {
     }
     
     func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
-        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configration.baseURLString)) else {
+        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
         
@@ -131,7 +193,7 @@ struct HTTPCombinatedRequestEncoder: HTTPRequestEncoder {
             let value = String(data: try param.value(), encoding: String.Encoding.utf8)
             return (param.key, value ?? "")
         }))
-        let washedReq = HTTPIDLPlainRequest(method: request.method, uri: encodedURL.relativeString, configration: request.configration, parameters: request.parameters.filter({ (param) -> Bool in
+        let washedReq = HTTPIDLPlainRequest(method: request.method, uri: encodedURL.relativeString, configuration: request.configuration, parameters: request.parameters.filter({ (param) -> Bool in
             return !urlParamKeys.contains(param.key)
         }))
         return try self.encoderImpl.encode(washedReq)
@@ -153,7 +215,7 @@ struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
     }
     
     func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
-        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configration.baseURLString)) else {
+        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
         
@@ -170,7 +232,7 @@ struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
             throw HTTPSingleBodyRequestEncoderError.NoSuchParameter
         }
         
-        var headers = request.configration.headers
+        var headers = request.configuration.headers
         if headers["Content-Type"] == nil, let mime = singleBody.mimeType {
             headers["Content-Type"] = mime
         }

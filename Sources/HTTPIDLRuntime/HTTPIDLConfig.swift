@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 
-fileprivate let HTTPIDLBaseURLString = "https://api.everphoto.cn"
+fileprivate let HTTPIDLBaseURLString = "https://api.everfilter.me"
 fileprivate let HTTPIDLDefaultParameterEncoding = URLEncoding.default
 
 protocol HTTPIDLConfiguration {

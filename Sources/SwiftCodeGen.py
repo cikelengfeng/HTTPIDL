@@ -68,76 +68,33 @@ class AlamofireCodeGenerator:
         return url
 
     @staticmethod
-    def need_multipart(request_context):
-        params = request_context.structBody().parameterMap()
-        if len(params) is 0:
-            return False
-        for param in params:
-            t = param.paramType()[0].baseType()
-            if t is None:
-                continue
-            file_type = t.FILE()
-            if file_type is not None:
-                return True
-            blob_type = t.BLOB()
-            if blob_type is not None:
-                return True
-        return False
+    def request_uri_from_uri(uri_context):
+        def reduce_uri_path_component(so_far, so_good):
+            if isinstance(so_good, EverphotoIDL.UriPathComponentContext) and so_good.parameterInUri() is not None:
+                return so_far + '\(' + so_good.parameterInUri().identifier().getText() + ')'
+            return so_far + so_good.getText()
 
-    @staticmethod
-    def multipart_params_from_request(request_context):
-        params = request_context.structBody().parameterMap()
-        if len(params) is 0:
-            return []
+        uri = reduce(reduce_uri_path_component, uri_context.children, '"') + '"'
+        return uri
 
-        def filter_func(param):
-            t = param.paramType()[0].baseType()
-            if t is None:
-                return False
-            file_type = t.FILE()
-            if file_type is not None:
-                return True
-            blob_type = t.BLOB()
-            if blob_type is not None:
-                return True
-            return False
-
-        return filter(filter_func, params)
-
-    @staticmethod
-    def normal_params_from_request(request_context):
-        params = request_context.structBody().parameterMap()
-        if len(params) is 0:
-            return []
-
-        def filter_func(param):
-            t = param.paramType()[0].baseType()
-            if t is None:
-                return False
-            file_type = t.FILE()
-            if file_type is not None:
-                return False
-            blob_type = t.BLOB()
-            if blob_type is not None:
-                return False
-            return True
-
-        return filter(filter_func, params)
+    def generate_request_send(self, request_context, message_name):
+        response_name = self.response_name_from_message(request_context.method().getText(), message_name)
+        self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = HTTPMultipartRequestEncoder.shared, '
+                        'completion: @escaping (' + response_name + '?, Error?) -> Void) {')
+        self.push_indent()
+        self.write_line('client.send(self, requestEncoder: requestEncoder, completion: completion)')
+        self.pop_indent()
+        self.write_line('}')
 
     def generate_request_parameters(self, request_context):
-
-        # var parameters: [HTTPIDLParameter] {
-        #     get {
-        #         return []
-        #     }
-        # }
-        self.write_line('func parameters() -> [String: Any] {')
+        self.write_line('var parameters: [HTTPIDLParameter] {')
         self.push_indent()
-        self.write_line('var result: [String: Any] = [:]')
+        self.write_line('var result: [HTTPIDLParameter] = []')
         for parameter_map in request_context.structBody().parameterMap():
             self.write_line('if let tmp = ' + parameter_map.key().getText() + ' {')
             self.push_indent()
-            self.write_line('result["' + parameter_map.value().getText() + '"] = tmp')
+            self.write_line('result.append(tmp.asHTTPIDLParameter(key: "'
+                            + parameter_map.value().getText() + '", fileName: nil, mimeType: nil))')
             self.pop_indent()
             self.write_line('}')
         self.write_line('return result')
@@ -154,17 +111,19 @@ class AlamofireCodeGenerator:
         for param_in_uri in params_in_uri:
             self.write_line('let ' + param_in_uri.parameterInUri().identifier().getText() + ': String')
 
-        # var method: String = "POST"
-        # var configration: HTTPIDLConfiguration = BaseHTTPIDLConfiguration.shared
-        # var client: HTTPIDLClient = HTTPIDLBaseClient()
-        #
-        # var uri: String = "/filters/comic/v1"
-
         self.write_line('var method: String = "' + request_context.method().getText() + '"')
         self.write_line('var configuration: HTTPIDLConfiguration = BaseHTTPIDLConfiguration.shared')
         self.write_line('var client: HTTPIDLClient = HTTPIDLBaseClient()')
-        self.write_line('var uri: String = "' +)
-        self.write_line('var configuration = HTTPIDLConfiguration.shared')
+        self.write_line('var uri: String {')
+        self.push_indent()
+        self.write_line('get {')
+        self.push_indent()
+        self.write_line('return ' + self.request_uri_from_uri(uri_context))
+        self.pop_indent()
+        self.write_line('}')
+        self.pop_indent()
+        self.write_line('}')
+
         param_maps = request_context.structBody().parameterMap()
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
@@ -189,14 +148,11 @@ class AlamofireCodeGenerator:
     def generate_request(self, request_context, message_name, uri_context):
         self.write_blank_lines(1)
         request_name = self.request_name_from_message(request_context.method().getText(), message_name)
-        self.write_line('class ' + request_name + ' {')
+        self.write_line('class ' + request_name + ': HTTPIDLRequest {')
         self.push_indent()
         self.generate_request_init_and_member_var(request_context, uri_context)
         self.generate_request_parameters(request_context)
-        if self.need_multipart(request_context):
-            self.generate_request_send_multipart(request_context, message_name, uri_context)
-        else:
-            self.generate_request_send_normal(request_context, message_name, uri_context)
+        self.generate_request_send(request_context, message_name)
         self.pop_indent()
         self.write_line('}')
 
@@ -205,14 +161,35 @@ class AlamofireCodeGenerator:
         response_name = message_method.title() + message_name + 'Response'
         return response_name
 
-    def generate_response_init_and_member_var(self, response_context):
+    def generate_response_init_and_member_var(self, response_context, message_name):
         self.write_blank_lines(1)
         param_maps = response_context.structBody().parameterMap()
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.write_line('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        self.write_line('let rawResponse: HTTPURLResponse?')
-        self.write_line('init(with json: Any?, rawResponse: HTTPURLResponse?) {')
+        self.write_line('var json: Any?')
+        self.write_line('let rawResponse: HTTPResponse?')
+        self.write_line('static var decoder: HTTPResponseBodyJSONDecoder = HTTPResponseBodyJSONDecoder.shared')
+
+        # 从 HTTPResponse 初始化
+        self.write_line('init(httpResponse: HTTPResponse) throws {')
+        self.push_indent()
+        self.write_line('guard let httpBody = httpResponse.body else {')
+        self.push_indent()
+        self.write_line('self.init(json: nil, rawResponse: httpResponse)')
+        self.write_line('json = nil')
+        self.write_line('return')
+        self.pop_indent()
+        self.write_line('}')
+        response_name = self.response_name_from_message(response_context.method().getText(), message_name)
+        self.write_line('let tmp = try ' + response_name + '.decoder.decode(httpBody)')
+        self.write_line('self.init(json: tmp, rawResponse: httpResponse)')
+        self.write_line('json = tmp')
+        self.pop_indent()
+        self.write_line('}')
+
+        # 从 json 或 httpResponse 初始化
+        self.write_line('init(json: Any?, rawResponse: HTTPResponse?) {')
         self.push_indent()
         self.write_line('self.rawResponse = rawResponse')
         self.write_line('if let json = json as? [String: Any] {')
@@ -234,9 +211,9 @@ class AlamofireCodeGenerator:
     def generate_response(self, response_context, message_name):
         self.write_blank_lines(1)
         response_name = self.response_name_from_message(response_context.method().getText(), message_name)
-        self.write_line('struct ' + response_name + ': RawHTTPResponseWrapper {')
+        self.write_line('struct ' + response_name + ': HTTPIDLResponse {')
         self.push_indent()
-        self.generate_response_init_and_member_var(response_context)
+        self.generate_response_init_and_member_var(response_context, message_name)
         self.pop_indent()
         self.write_line('}')
 

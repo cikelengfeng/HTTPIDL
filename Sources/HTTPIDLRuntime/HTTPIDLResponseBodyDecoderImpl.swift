@@ -9,6 +9,9 @@
 import Foundation
 
 struct HTTPResponseBodyJSONDecoder: HTTPResponseBodyDecoder {
+    
+    static let shared = HTTPResponseBodyJSONDecoder()
+    
     typealias OutputType = Any
     
     func decode(_ responseBody: Data) throws -> Any {

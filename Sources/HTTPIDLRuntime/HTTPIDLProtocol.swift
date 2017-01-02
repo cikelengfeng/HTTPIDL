@@ -8,26 +8,20 @@
 
 import Foundation
 
-protocol RawHTTPResponseWrapper {
-    var rawResponse: HTTPURLResponse? {get}
-}
-
-protocol HTTPIDLParameter {
-    var key: String {get}
-    var value: () throws -> Data {get}
-    var fileName: String? {get}
-    var mimeType: String? {get}
+protocol HTTPIDLParameterConvertible {
+    func asHTTPIDLParameter(key: String, fileName: String?, mimeType: String?) -> HTTPIDLParameter
 }
 
 protocol HTTPIDLRequest {
-    var configration: HTTPIDLConfiguration {get set}
-    var method: String {get set}
-    var uri: String {get set}
+    var configuration: HTTPIDLConfiguration {get set}
+    var method: String {get}
+    var uri: String {get}
     var parameters: [HTTPIDLParameter] {get}
 }
 
 protocol HTTPIDLClient {
     func send<ResponseType: HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: ResponseType?, _ error: Error?) -> Void)
+    func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: HTTPResponse?, _ error: Error?) -> Void)
 }
 
 protocol HTTPRequestEncoder {
@@ -35,7 +29,7 @@ protocol HTTPRequestEncoder {
 }
 
 protocol HTTPIDLResponse {
-    init(with httpResponse: HTTPResponse) throws
+    init(httpResponse: HTTPResponse) throws
 }
 
 protocol HTTPResponseBodyDecoder {

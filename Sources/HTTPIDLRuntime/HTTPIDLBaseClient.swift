@@ -20,11 +20,26 @@ struct HTTPIDLBaseClient: HTTPIDLClient {
                         completion(nil, clientError)
                         return
                     }
-                    let httpIdlResponse = try ResponseType(with: clientResponse)
+                    let httpIdlResponse = try ResponseType(httpResponse: clientResponse)
                     completion(httpIdlResponse, clientError)
                 } catch let error {
                     completion(nil, error)
                 }
+            }
+        } catch let error {
+            completion(nil, error)
+        }
+    }
+    
+    func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse?, Error?) -> Void) {
+        do {
+            let encodedRequest = try requestEncoder.encode(request)
+            clientImpl.send(encodedRequest) { (clientResponse, clientError) in
+                guard let clientResponse = clientResponse else {
+                    completion(nil, clientError)
+                    return
+                }
+                completion(clientResponse, clientError)
             }
         } catch let error {
             completion(nil, error)
