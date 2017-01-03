@@ -2,36 +2,23 @@
 //  HTTPIDLRequestImpl.swift
 //  everfilter
 //
-//  Created by 徐 东 on 2016/12/30.
-//  Copyright © 2016年 Shanghai Infinite Memory. All rights reserved.
+//  Created by 徐 东 on 2017/1/2.
+//  Copyright © 2017年 Shanghai Infinite Memory. All rights reserved.
 //
 
 import Foundation
 
-struct HTTPIDLBaseRequest: HTTPIDLRequest {
+struct HTTPIDLPlainRequest: HTTPIDLRequest {
+    static var defaultMethod: String = "GET"
+    var method: String
+    var configuration: HTTPIDLConfiguration
+    var uri: String
+    var parameters: [HTTPIDLParameter]
     
-    var parameters: [HTTPIDLParameter] = []
-    var encoder: HTTPRequestEncoder = HTTPBaseRequestEncoder()
-    var client: HTTPClient = AlamofireClient()
-    
-    func send<Response: HTTPIDLResponse>(_ completion: @escaping (_ repsonse: Response?, _ error: Error?) -> Void) {
-        do {
-            let encodedRequest = try encoder.encode(self)
-            client.send(encodedRequest) { (clientResponse, clientError) in
-                do {
-                    guard let clientResponse = clientResponse else {
-                        completion(nil, clientError)
-                        return
-                    }
-                    let httpIdlResponse = try Response(with: clientResponse)
-                    completion(httpIdlResponse, clientError)
-                } catch let error {
-                    completion(nil, error)
-                }
-            }
-        } catch let error {
-            completion(nil, error)
-        }
+    init(method: String, uri: String, configuration: HTTPIDLConfiguration, parameters: [HTTPIDLParameter]) {
+        self.method = method
+        self.configuration = configuration
+        self.uri = uri
+        self.parameters = parameters
     }
-    
 }

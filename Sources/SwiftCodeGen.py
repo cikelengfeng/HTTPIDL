@@ -9,11 +9,6 @@ from HJIDLParser.EverphotoIDL import EverphotoIDL
 
 
 class AlamofireCodeGenerator:
-    @staticmethod
-    def alamofire_http_method(idl_method_name):
-        method_map = {'GET': '.get', 'POST': '.post', 'PUT': '.put', 'DELETE': '.delete', 'PATCH': '.patch'}
-        return method_map[idl_method_name]
-
     def __init__(self, output_file_name, output_directory_path):
         if not os.path.exists(output_directory_path):
             try:
@@ -78,11 +73,19 @@ class AlamofireCodeGenerator:
         return uri
 
     def generate_request_send(self, request_context, message_name):
+        request_name = self.request_name_from_message(request_context.method().getText(), message_name)
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
-        self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = HTTPMultipartRequestEncoder.shared, '
+        self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = ' + request_name + '.defaultEncoder, '
                         'completion: @escaping (' + response_name + '?, Error?) -> Void) {')
         self.push_indent()
         self.write_line('client.send(self, requestEncoder: requestEncoder, completion: completion)')
+        self.pop_indent()
+        self.write_line('}')
+
+        self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = ' + request_name + '.defaultEncoder, '
+                        'rawResponseHandler: @escaping (HTTPResponse?, Error?) -> Void) {')
+        self.push_indent()
+        self.write_line('client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler)')
         self.pop_indent()
         self.write_line('}')
 
@@ -94,7 +97,7 @@ class AlamofireCodeGenerator:
             self.write_line('if let tmp = ' + parameter_map.key().getText() + ' {')
             self.push_indent()
             self.write_line('result.append(tmp.asHTTPIDLParameter(key: "'
-                            + parameter_map.value().getText() + '", fileName: nil, mimeType: nil))')
+                            + parameter_map.value().getText() + '"))')
             self.pop_indent()
             self.write_line('}')
         self.write_line('return result')
@@ -111,7 +114,11 @@ class AlamofireCodeGenerator:
         for param_in_uri in params_in_uri:
             self.write_line('let ' + param_in_uri.parameterInUri().identifier().getText() + ': String')
 
-        self.write_line('var method: String = "' + request_context.method().getText() + '"')
+        self.write_line('static let defaultMethod: String = "' + request_context.method().getText() + '"')
+        self.write_line('var method: String = ' +
+                        self.request_name_from_message(request_context.method().getText(),
+                                                       self.message_name_from_uri(uri_context)) + '.defaultMethod'
+                        )
         self.write_line('var configuration: HTTPIDLConfiguration = BaseHTTPIDLConfiguration.shared')
         self.write_line('var client: HTTPIDLClient = HTTPIDLBaseClient()')
         self.write_line('var uri: String {')
@@ -177,14 +184,12 @@ class AlamofireCodeGenerator:
         self.write_line('guard let httpBody = httpResponse.body else {')
         self.push_indent()
         self.write_line('self.init(json: nil, rawResponse: httpResponse)')
-        self.write_line('json = nil')
         self.write_line('return')
         self.pop_indent()
         self.write_line('}')
         response_name = self.response_name_from_message(response_context.method().getText(), message_name)
         self.write_line('let tmp = try ' + response_name + '.decoder.decode(httpBody)')
         self.write_line('self.init(json: tmp, rawResponse: httpResponse)')
-        self.write_line('json = tmp')
         self.pop_indent()
         self.write_line('}')
 
@@ -192,8 +197,10 @@ class AlamofireCodeGenerator:
         self.write_line('init(json: Any?, rawResponse: HTTPResponse?) {')
         self.push_indent()
         self.write_line('self.rawResponse = rawResponse')
+
         self.write_line('if let json = json as? [String: Any] {')
         self.push_indent()
+        self.write_line('self.json = json')
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
@@ -201,6 +208,7 @@ class AlamofireCodeGenerator:
         self.pop_indent()
         self.write_line('} else {')
         self.push_indent()
+        self.write_line('self.json = nil')
         for param_map in param_maps:
             self.write_line('self.' + param_map.key().getText() + ' = nil')
         self.pop_indent()
@@ -319,7 +327,6 @@ class AlamofireCodeGenerator:
         self.write_line('//这是自动生成的代码，不要改动，否则你的改动会被覆盖！！！！！！！')
         self.write_blank_lines(1)
         self.write_line('import Foundation')
-        self.write_line('import Alamofire')
         self.write_blank_lines(1)
         structs = entry_context.struct()
         for struct in structs:
@@ -327,7 +334,6 @@ class AlamofireCodeGenerator:
         messages = entry_context.message()
         for message in messages:
             self.generate_message(message)
-
 
 # class HTTPIDLErrorListener(ErrorListener):
 #     def syntaxError(self, recognizer, offending_symbol, line, column, msg, e):

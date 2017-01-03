@@ -10,26 +10,22 @@ import Foundation
 import Alamofire
 
 fileprivate let HTTPIDLBaseURLString = "https://api.everfilter.me"
-fileprivate let HTTPIDLDefaultParameterEncoding = URLEncoding.default
 
 protocol HTTPIDLConfiguration {
     var baseURLString: String {get set}
-    var parameterEncoding: ParameterEncoding {get set}
     var headers: [String: String] {get set}
     
     mutating func append(headers: [String: String])
 }
 
 public struct BaseHTTPIDLConfiguration: HTTPIDLConfiguration {
-    public static var shared = BaseHTTPIDLConfiguration(with: HTTPIDLBaseURLString, parameterEncoding: HTTPIDLDefaultParameterEncoding)
+    public static var shared = BaseHTTPIDLConfiguration(with: HTTPIDLBaseURLString)
     
     public var baseURLString: String
-    public var parameterEncoding: ParameterEncoding
     public var headers: [String: String] = [:]
     
-    init(with baseURLString: String, parameterEncoding: ParameterEncoding) {
+    init(with baseURLString: String) {
         self.baseURLString = baseURLString
-        self.parameterEncoding = parameterEncoding
     }
     
     mutating func append(headers: [String: String]) {
@@ -39,5 +35,18 @@ public struct BaseHTTPIDLConfiguration: HTTPIDLConfiguration {
             return mutableSoFar
         })
         self.headers = newHeader
+    }
+}
+
+extension HTTPIDLRequest {
+    static var defaultEncoder: HTTPRequestEncoder {
+        get {
+            switch self.defaultMethod {
+            case "POST", "PUT", "PATCH":
+                return HTTPURLEncodedFormRequestEncoder.shared
+            default:
+                return HTTPBaseRequestEncoder.shared
+            }
+        }
     }
 }

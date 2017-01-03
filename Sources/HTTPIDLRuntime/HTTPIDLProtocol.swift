@@ -8,13 +8,18 @@
 
 import Foundation
 
+protocol HTTPIDLParameterKey {
+    func asHTTPParamterKey() -> String
+}
+
 protocol HTTPIDLParameterConvertible {
-    func asHTTPIDLParameter(key: String, fileName: String?, mimeType: String?) -> HTTPIDLParameter
+    func asHTTPIDLParameter(key: String) -> HTTPIDLParameter
 }
 
 protocol HTTPIDLRequest {
-    var configuration: HTTPIDLConfiguration {get set}
+    static var defaultMethod: String {get}
     var method: String {get}
+    var configuration: HTTPIDLConfiguration {get set}
     var uri: String {get}
     var parameters: [HTTPIDLParameter] {get}
 }

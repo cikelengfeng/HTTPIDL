@@ -11,87 +11,112 @@ import Alamofire
 
 enum HTTPBaseRequestEncoderError: Error {
     case constructURLFailed
+    case nestedObjectInURLQuery
 }
 
-enum HTTPParameterEncoderError: Error {
-    case methodNotImplemented
-}
-
-private protocol HTTPParameterEncoder {
-    associatedtype Output
-    func encode(_ parameter: HTTPIDLParameter) -> () throws -> Output
-    func can(encode parameter: HTTPIDLParameter) -> Bool
-}
-
-private func pick<T:HTTPParameterEncoder>(parameterEncoder encoders: [T], for parameter: HTTPIDLParameter) -> T? {
-    return encoders.first(where: { (encoder) -> Bool in
-        return encoder.can(encode: parameter)
-    })
-}
-
-fileprivate class HTTPBaseParameterUTF8Encoder: HTTPParameterEncoder {
-    typealias Output = String
-    
-    func can(encode parameter: HTTPIDLParameter) -> Bool {
-        return false
-    }
-    
-    func encode(_ parameter: HTTPIDLParameter) -> () throws -> String {
-        return {
-            throw HTTPParameterEncoderError.methodNotImplemented
+private func queryItems(parameters: [HTTPIDLParameter]) throws -> [(String, String)] {
+    return try parameters.flatMap { (param) -> [(String, String)] in
+        switch param {
+        case .int64(let key, let value):
+            return [(key, String(value))]
+        case .int32(let key, let value):
+            return [(key, String(value))]
+        case .double(let key, let value):
+            return [(key, String(value))]
+        case .string(let key, let value):
+            return [(key, value)]
+        case .file(let key, let url, _, _):
+            return [(key, url.absoluteString)]
+        case .data(let key, let data, _, _):
+            return [(key, String(data: data, encoding: String.Encoding.utf8) ?? "")]
+        case .array(let key, let values):
+            return try values.map ({ (paramInArray) in
+                switch paramInArray {
+                case .int64(_, let value):
+                    return (key, String(value))
+                case .int32(_, let value):
+                    return (key, String(value))
+                case .double(_, let value):
+                    return (key, String(value))
+                case .string(_, let value):
+                    return (key, value)
+                case .file(_, let url, _, _):
+                    return (key, url.absoluteString)
+                case .data(_, let data, _, _):
+                    return (key, String(data: data, encoding: String.Encoding.utf8) ?? "")
+                case .array(_, _):
+                    throw HTTPBaseRequestEncoderError.nestedObjectInURLQuery
+                case .dictionary(_, _):
+                    throw HTTPBaseRequestEncoderError.nestedObjectInURLQuery
+                }
+            })
+        case .dictionary(_, _):
+            throw HTTPBaseRequestEncoderError.nestedObjectInURLQuery
         }
-    }
-}
-
-fileprivate class HTTPParameterIntUTF8Encoder: HTTPBaseParameterUTF8Encoder {
-    fileprivate override func can(encode parameter: HTTPIDLParameter) -> Bool {
-        return parameter
     }
 }
 
 struct HTTPBaseRequestEncoder: HTTPRequestEncoder {
     
     static let shared = HTTPBaseRequestEncoder()
-    private let parameterEncoders: [HTTPBaseParameterUTF8Encoder] = []
     
     func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
         
-        let queryItems = try request.parameters.map { (param) -> (HTTPIDLParameter, HTTPBaseParameterUTF8Encoder?) in
-            return (param, pick(parameterEncoder: parameterEncoders, for: param))
-        } .filter { (param, encoder) -> Bool in
-            return encoder != nil
-        } .map { (param, encoder) -> (String, String) in
-            let valueClosure = encoder!.encode(param)
-            let value = try valueClosure()
-            switch param {
-                case .int64(let key, _):
-                    return (key, value)
-            case .int32(let key, _):
-                return (key, value)
-            case .double(let key, _):
-                return (key, value)
-            case .string(let key, _):
-                return (key, value)
-            case .file(let key, _, _, _):
-                return (key, value)
-            case .data(let key, _, _, _):
-                return (key, value)
-            case .array(let key, _):
-                return (key, value)
-            case .dictionary(let key, _):
-                return (key, value)
-            }
-        }
+        let query = try queryItems(parameters: request.parameters)
         
-        let encodedURL = url.appendQuery(pairs: queryItems)
+        let encodedURL = url.appendQuery(pairs: query)
         
         return HTTPBaseRequest(method: request.method, url: encodedURL, headers: request.configuration.headers , body: { () -> Data? in
             return nil
         })
     }
+}
+
+
+enum HTTPJSONRequestEncoderError: Error {
+    case fileIsForbidden
+    case dataIsForbidden
+}
+
+private extension HTTPIDLParameter {
+    func json() throws -> Any {
+        switch self {
+        case .int64(let key, let value):
+            //int64 在json中可能会溢出，所以我们转换成字符串
+            return [key: String(value)]
+        case .int32(let key, let value):
+            return [key: value]
+        case .double(let key, let value):
+            return [key: value]
+        case .string(let key, let value):
+            return [key: value]
+        case .file(_, _, _, _):
+            throw HTTPJSONRequestEncoderError.fileIsForbidden
+        case .data(_, _, _, _):
+            throw HTTPJSONRequestEncoderError.dataIsForbidden
+        case .array(let key, let array):
+            return [key: try array.map({ (paramInArray) in
+                return try paramInArray.json()
+            })]
+        case .dictionary(let key, let dict):
+            return [key: try dict.reduce([:], { (soFar, soGood) in
+                var result = soFar
+                result[soGood.key] = try soGood.value.json()
+                return result
+            })]
+        }
+    }
+}
+
+private func json(parameters: [HTTPIDLParameter]) throws -> Any {
+    return try parameters.reduce([:], { (soFar, soGood) in
+        var result = soFar
+        result[soGood.key] = try soGood.json()
+        return result
+    })
 }
 
 struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
@@ -110,16 +135,55 @@ struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
             guard request.parameters.count != 0 else {
                 return nil
             }
-            let jsonDict = try request.parameters.reduce([String: String]()) { (soFar, soGood) in
-                var ret = soFar
-                let value = String(data: try soGood.value(), encoding: String.Encoding.utf8)
-                ret[soGood.key] = value ?? ""
-                return ret
-            }
+            let jsonDict = try json(parameters: request.parameters)
             let data = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
             return data
         }
         return HTTPBaseRequest(method: request.method, url: url, headers: headers, body: getJsonData)
+    }
+}
+
+enum HTTPMultipartRequestEncoderError: Error {
+    case unsupportedInt64
+    case unsupportedInt32
+    case unsupportedIntDouble
+    case unsupportedIntString
+    case arrayIsForbidden
+    case dictionaryIsForbidden
+}
+
+fileprivate extension MultipartFormData {
+    func append(parameter: HTTPIDLParameter) throws {
+        switch parameter {
+            case .int64(let key, let value):
+                guard let data = String(value).data(using: String.Encoding.utf8) else {
+                    throw HTTPMultipartRequestEncoderError.unsupportedInt64
+                }
+                append(data, withName: key)
+            case .int32(let key, let value):
+                guard let data = String(value).data(using: String.Encoding.utf8) else {
+                    throw HTTPMultipartRequestEncoderError.unsupportedInt32
+                }
+                append(data, withName: key)
+            case .double(let key, let value):
+                guard let data = String(value).data(using: String.Encoding.utf8) else {
+                    throw HTTPMultipartRequestEncoderError.unsupportedIntDouble
+                }
+                append(data, withName: key)
+            case .string(let key, let value):
+                guard let data = value.data(using: String.Encoding.utf8) else {
+                    throw HTTPMultipartRequestEncoderError.unsupportedIntString
+                }
+                append(data, withName: key)
+            case .file(let key, let url, let fileName, let mime):
+                append(url, withName: key, fileName: fileName ?? UUID().uuidString, mimeType: mime ?? "application/octet-stream")
+            case .data(let key, let data, let fileName, let mime):
+                append(data, withName: key, fileName: fileName ?? UUID().uuidString, mimeType: mime ?? "application/octet-stream")
+            case .array(_, _):
+                throw HTTPMultipartRequestEncoderError.arrayIsForbidden
+            case .dictionary(_, _):
+                throw HTTPMultipartRequestEncoderError.dictionaryIsForbidden
+        }
     }
 }
 
@@ -137,16 +201,7 @@ struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
         }
         let getData = { () throws -> Data? in
             let encodedMultipart = try request.parameters.reduce(formData, { (soFar, soGood) -> MultipartFormData in
-                let value = try soGood.value()
-                if let fileName = soGood.fileName, let mime = soGood.mimeType {
-                    soFar.append(value, withName: soGood.key, fileName: fileName, mimeType: mime)
-                } else if let mime = soGood.mimeType {
-                    soFar.append(value, withName: soGood.key, mimeType: mime)
-                } else if let fileName = soGood.fileName {
-                    soFar.append(value, withName: soGood.key, fileName: fileName, mimeType: "application/octet-stream")
-                } else {
-                    soFar.append(value, withName: soGood.key)
-                }
+                try soFar.append(parameter: soGood)
                 return soFar
             })
             
@@ -155,20 +210,6 @@ struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
             return data
         }
         return HTTPBaseRequest(method: request.method, url: url, headers: headers, body: getData)
-    }
-}
-
-private struct HTTPIDLPlainRequest: HTTPIDLRequest {
-    var method: String
-    var configuration: HTTPIDLConfiguration
-    var uri: String
-    var parameters: [HTTPIDLParameter]
-    
-    init(method: String, uri: String, configuration: HTTPIDLConfiguration, parameters: [HTTPIDLParameter]) {
-        self.method = method
-        self.configuration = configuration
-        self.uri = uri
-        self.parameters = parameters
     }
 }
 
@@ -187,12 +228,9 @@ struct HTTPCombinatedRequestEncoder: HTTPRequestEncoder {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
         
-        let encodedURL = try url.appendQuery(pairs: request.parameters.filter({ (param) -> Bool in
+        let encodedURL = try url.appendQuery(pairs: queryItems(parameters: request.parameters.filter({ (param) -> Bool in
             return urlParamKeys.contains(param.key)
-        }).map({ (param) -> (String, String) in
-            let value = String(data: try param.value(), encoding: String.Encoding.utf8)
-            return (param.key, value ?? "")
-        }))
+        })))
         let washedReq = HTTPIDLPlainRequest(method: request.method, uri: encodedURL.relativeString, configuration: request.configuration, parameters: request.parameters.filter({ (param) -> Bool in
             return !urlParamKeys.contains(param.key)
         }))
@@ -201,7 +239,52 @@ struct HTTPCombinatedRequestEncoder: HTTPRequestEncoder {
 }
 
 enum HTTPSingleBodyRequestEncoderError: Error {
-    case NoSuchParameter
+    case noSuchParameter
+    case unsupportedInt64
+    case unsupportedInt32
+    case unsupportedIntDouble
+    case unsupportedIntString
+    case arrayIsForbidden
+    case dictionaryIsForbidden
+}
+
+private extension HTTPIDLParameter {
+    var valueClosure: () throws -> Data {
+        get {
+            return {
+                switch self {
+                case .int64( _, let value):
+                    guard let data = String(value).data(using: String.Encoding.utf8) else {
+                        throw HTTPSingleBodyRequestEncoderError.unsupportedInt64
+                    }
+                    return data
+                case .int32(_, let value):
+                    guard let data = String(value).data(using: String.Encoding.utf8) else {
+                        throw HTTPSingleBodyRequestEncoderError.unsupportedInt32
+                    }
+                    return data
+                case .double(_, let value):
+                    guard let data = String(value).data(using: String.Encoding.utf8) else {
+                        throw HTTPSingleBodyRequestEncoderError.unsupportedIntDouble
+                    }
+                    return data
+                case .string(_, let value):
+                    guard let data = value.data(using: String.Encoding.utf8) else {
+                        throw HTTPSingleBodyRequestEncoderError.unsupportedIntString
+                    }
+                    return data
+                case .file(_, let url, _, _):
+                    return try Data(contentsOf: url, options: Data.ReadingOptions.mappedIfSafe)
+                case .data(_, let data, _, _):
+                    return data
+                case .array(_, _):
+                    throw HTTPSingleBodyRequestEncoderError.arrayIsForbidden
+                case .dictionary(_, _):
+                    throw HTTPSingleBodyRequestEncoderError.dictionaryIsForbidden
+                }
+            }
+        }
+    }
 }
 
 struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
@@ -219,23 +302,49 @@ struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
         
-        let encodedURL = try url.appendQuery(pairs: request.parameters.filter({ (param) -> Bool in
+        let encodedURL = try url.appendQuery(pairs: queryItems(parameters: request.parameters.filter({ (param) -> Bool in
             return urlParamKeys.contains(param.key)
-        }).map({ (param) -> (String, String) in
-            let value = String(data: try param.value(), encoding: String.Encoding.utf8)
-            return (param.key, value ?? "")
-        }))
+        })))
         
         guard let singleBody = (request.parameters.first { (param) -> Bool in
             return param.key == self.singleBodyKey
         }) else {
-            throw HTTPSingleBodyRequestEncoderError.NoSuchParameter
+            throw HTTPSingleBodyRequestEncoderError.noSuchParameter
         }
         
         var headers = request.configuration.headers
-        if headers["Content-Type"] == nil, let mime = singleBody.mimeType {
-            headers["Content-Type"] = mime
+        if headers["Content-Type"] == nil {
+            switch singleBody {
+            case .file(_, _, _, let mime):
+                headers["Content-Type"] = mime
+            case .data(_, _, _, let mime):
+                headers["Content-Type"] = mime
+            default:
+                headers["Content-Type"] = "application/octet-stream"
+            }
         }
-        return HTTPBaseRequest(method: request.method, url: encodedURL, headers: headers, body: singleBody.value)
+        return HTTPBaseRequest(method: request.method, url: encodedURL, headers: headers, body: singleBody.valueClosure)
+    }
+}
+
+struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
+    static let shared = HTTPURLEncodedFormRequestEncoder()
+    
+    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
+        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
+            throw HTTPBaseRequestEncoderError.constructURLFailed
+        }
+        
+        var headers = request.configuration.headers
+        if headers["Content-Type"] == nil {
+            headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8"
+        }
+
+        let bodyClosure = { () -> Data? in 
+            let query = try queryItems(parameters: request.parameters)
+            return query.map({ return "\($0)=\($1)" }).joined(separator: "&").data(using: String.Encoding.utf8)
+        }
+        
+        return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers , body: bodyClosure)
     }
 }
