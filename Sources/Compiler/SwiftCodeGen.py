@@ -5,7 +5,7 @@ import os
 import errno
 
 from SwiftTypeTransfer import swift_type_name, swift_base_type_name_from_idl_base_type
-from HJIDLParser.EverphotoIDL import EverphotoIDL
+from Parser.EverphotoIDL import EverphotoIDL
 
 
 class AlamofireCodeGenerator:

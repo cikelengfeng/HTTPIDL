@@ -5,8 +5,8 @@ from SwiftCodeGen import AlamofireCodeGenerator
 from antlr4 import CommonTokenStream
 from antlr4 import InputStream
 from antlr4.error.ErrorListener import ErrorListener
-from HJIDLParser.EverphotoIDL import EverphotoIDL
-from HJIDLParser.EverphotoIDLLexer import EverphotoIDLLexer
+from Parser.EverphotoIDL import EverphotoIDL
+from Parser.EverphotoIDLLexer import EverphotoIDLLexer
 
 
 class HTTPIDLErrorListener(ErrorListener):
@@ -16,7 +16,7 @@ class HTTPIDLErrorListener(ErrorListener):
         sys.exit(1)
 
 
-class HJCompiler:
+class HTTPIDLCompiler:
     def __init__(self):
         pass
 
