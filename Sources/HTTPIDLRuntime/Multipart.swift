@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct MultipartFile {
+struct HTTPFile {
     let payload: URL
     let fileName: String
     let mimeType: String
@@ -20,7 +20,7 @@ struct MultipartFile {
     }
 }
 
-struct MultipartData {
+struct HTTPData {
     let payload: Data
     let fileName: String
     let mimeType: String

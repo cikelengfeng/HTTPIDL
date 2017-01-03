@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import Gzip
 
 enum HTTPBaseRequestEncoderError: Error {
     case constructURLFailed
@@ -56,9 +57,9 @@ private func queryItems(parameters: [HTTPIDLParameter]) throws -> [(String, Stri
     }
 }
 
-struct HTTPBaseRequestEncoder: HTTPRequestEncoder {
+struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
     
-    static let shared = HTTPBaseRequestEncoder()
+    static let shared = HTTPURLEncodedQueryRequestEncoder()
     
     func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
@@ -82,31 +83,31 @@ enum HTTPJSONRequestEncoderError: Error {
 }
 
 private extension HTTPIDLParameter {
-    func json() throws -> Any {
+    func json() throws -> (String, Any) {
         switch self {
         case .int64(let key, let value):
             //int64 在json中可能会溢出，所以我们转换成字符串
-            return [key: String(value)]
+            return (key, String(value))
         case .int32(let key, let value):
-            return [key: value]
+            return (key, value)
         case .double(let key, let value):
-            return [key: value]
+            return (key, value)
         case .string(let key, let value):
-            return [key: value]
+            return (key, value)
         case .file(_, _, _, _):
             throw HTTPJSONRequestEncoderError.fileIsForbidden
         case .data(_, _, _, _):
             throw HTTPJSONRequestEncoderError.dataIsForbidden
         case .array(let key, let array):
-            return [key: try array.map({ (paramInArray) in
-                return try paramInArray.json()
-            })]
+            return (key, try array.map({ (paramInArray) in
+                return try paramInArray.json().1
+            }))
         case .dictionary(let key, let dict):
-            return [key: try dict.reduce([:], { (soFar, soGood) in
+            return (key, try dict.reduce([:], { (soFar, soGood) in
                 var result = soFar
-                result[soGood.key] = try soGood.value.json()
+                result[soGood.key] = try soGood.value.json().1
                 return result
-            })]
+            }))
         }
     }
 }
@@ -114,7 +115,7 @@ private extension HTTPIDLParameter {
 private func json(parameters: [HTTPIDLParameter]) throws -> Any {
     return try parameters.reduce([:], { (soFar, soGood) in
         var result = soFar
-        result[soGood.key] = try soGood.json()
+        result[soGood.key] = try soGood.json().1
         return result
     })
 }
@@ -213,7 +214,7 @@ struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
     }
 }
 
-struct HTTPCombinatedRequestEncoder: HTTPRequestEncoder {
+struct HTTPCombinatedQueryRequestEncoder: HTTPRequestEncoder {
 
     let encoderImpl: HTTPRequestEncoder
     let urlParamKeys: [String]
@@ -346,5 +347,31 @@ struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
         }
         
         return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers , body: bodyClosure)
+    }
+}
+
+struct HTTPGzipRequestEncoder: HTTPRequestEncoder {
+    
+    let encoderImpl: HTTPRequestEncoder
+    
+    init(encoder: HTTPRequestEncoder) {
+        self.encoderImpl = encoder
+    }
+    
+    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
+        var httpRequest = try encoderImpl.encode(request)
+        var headers = httpRequest.headers
+        if headers["Content-Encoding"] == nil {
+            headers["Content-Encoding"] = "gzip"
+        }
+        httpRequest.headers = headers
+        let rawBodyClosure = httpRequest.body
+        let bodyClosure = { [rawBodyClosure] () -> Data? in
+            let body = try rawBodyClosure()
+            let gzipData = try body?.gzipped()
+            return gzipData
+        }
+        httpRequest.body = bodyClosure
+        return httpRequest
     }
 }

@@ -114,13 +114,13 @@ extension Dictionary where Key: HTTPIDLParameterKey, Value: HTTPIDLParameterConv
     }
 }
 
-extension MultipartData: HTTPIDLParameterConvertible {
+extension HTTPData: HTTPIDLParameterConvertible {
     func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
         return .data(key: key, value: payload, fileName: fileName, mimeType: mimeType)
     }
 }
 
-extension MultipartFile: HTTPIDLParameterConvertible {
+extension HTTPFile: HTTPIDLParameterConvertible {
     func asHTTPIDLParameter(key: String) ->
         HTTPIDLParameter {
         return .file(key: key, value: payload, fileName: fileName, mimeType: mimeType)

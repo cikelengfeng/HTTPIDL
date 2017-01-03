@@ -120,7 +120,7 @@ class AlamofireCodeGenerator:
                                                        self.message_name_from_uri(uri_context)) + '.defaultMethod'
                         )
         self.write_line('var configuration: HTTPIDLConfiguration = BaseHTTPIDLConfiguration.shared')
-        self.write_line('var client: HTTPIDLClient = HTTPIDLBaseClient()')
+        self.write_line('var client: HTTPIDLClient = HTTPIDLBaseClient.shared')
         self.write_line('var uri: String {')
         self.push_indent()
         self.write_line('get {')

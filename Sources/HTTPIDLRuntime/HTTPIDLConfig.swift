@@ -45,7 +45,7 @@ extension HTTPIDLRequest {
             case "POST", "PUT", "PATCH":
                 return HTTPURLEncodedFormRequestEncoder.shared
             default:
-                return HTTPBaseRequestEncoder.shared
+                return HTTPURLEncodedQueryRequestEncoder.shared
             }
         }
     }

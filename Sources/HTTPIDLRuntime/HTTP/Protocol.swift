@@ -23,6 +23,7 @@ protocol HTTPResponse {
     var statusCode: Int {get}
     var headers: [String: String] {get}
     var body: Data? {get}
+    var request: HTTPRequest {get}
 }
 
 

@@ -15,7 +15,7 @@ struct AlamofireClient: HTTPClient {
         do {
             let dataRequest: DataRequest = try adapt(request)
             dataRequest.responseData(completionHandler: { (response) in
-                let callbackTuple = self.adapt(response)
+                let callbackTuple = self.adapt(response: response, request: request)
                 completion(callbackTuple.0, callbackTuple.1)
             })
         }catch let err {
@@ -33,13 +33,13 @@ struct AlamofireClient: HTTPClient {
         return Alamofire.request(urlRequest)
     }
     
-    func adapt(_ response: DataResponse<Data>) -> (HTTPResponse?, Error?) {
+    func adapt(response: DataResponse<Data>, request: HTTPRequest) -> (HTTPResponse?, Error?) {
         switch response.result {
         case .success(let data):
                 guard let rawResponse = response.response else {
                     return (nil, nil)
                 }
-                return (HTTPBaseResponse(with: rawResponse.statusCode, headers: rawResponse.allHeaderFields as! [String : String], body: data), nil)
+                return (HTTPBaseResponse(with: rawResponse.statusCode, headers: rawResponse.allHeaderFields as! [String : String], body: data, request: request), nil)
         case .failure(let error):
                 return (nil, error)
         }
