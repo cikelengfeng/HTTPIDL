@@ -25,6 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
+  HTTP message generator for Swift 3
                    DESC
 
   s.homepage     = "https://github.com/cikelengfeng/HTTPIDL"
@@ -38,8 +39,8 @@ Pod::Spec.new do |s|
   #  Popular ones are 'MIT', 'BSD' and 'Apache License, Version 2.0'.
   #
 
-  s.license      = "MIT (example)"
-  # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
+  #s.license      = "MIT (example)"
+   s.license      = { :type => "MIT", :file => "LICENSE" }
 
 
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -79,7 +80,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/cikelengfeng/HTTPIDL.git", :commit => "f5ef301a4689f7362d58df7e2cccd9f878080fe9" }
+  s.source       = { :git => "https://github.com/cikelengfeng/HTTPIDL.git", :tag => s.version.to_s }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -90,7 +91,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Sources/HTTPIDLRuntime/*.swift", "Sources/*.py", "Sources/antlr4/*.py", "Sources/HJIDLParser/*.{py,tokens}"
+  s.source_files  = "Sources/Runtime/*.swift", "Sources/*.py", "Sources/antlr4/*.py", "Sources/Parser/*.{py,tokens}"
   s.exclude_files = "Sources/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
