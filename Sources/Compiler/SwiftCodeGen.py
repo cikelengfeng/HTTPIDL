@@ -327,6 +327,7 @@ class AlamofireCodeGenerator:
         self.write_line('//这是自动生成的代码，不要改动，否则你的改动会被覆盖！！！！！！！')
         self.write_blank_lines(1)
         self.write_line('import Foundation')
+        self.write_line('import HTTPIDL')
         self.write_blank_lines(1)
         structs = entry_context.struct()
         for struct in structs:
