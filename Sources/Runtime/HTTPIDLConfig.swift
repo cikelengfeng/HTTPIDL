@@ -24,7 +24,7 @@ public struct BaseHTTPIDLConfiguration: HTTPIDLConfiguration {
     public var baseURLString: String
     public var headers: [String: String] = [:]
     
-    init(with baseURLString: String) {
+    public init(with baseURLString: String) {
         self.baseURLString = baseURLString
     }
     
