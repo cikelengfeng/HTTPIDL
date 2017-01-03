@@ -8,24 +8,24 @@
 
 import Foundation
 
-struct HTTPFile {
-    let payload: URL
-    let fileName: String
-    let mimeType: String
+public struct HTTPFile {
+    public let payload: URL
+    public let fileName: String
+    public let mimeType: String
     
-    init(with payload: URL, fileName: String, mimeType: String) {
+    public init(with payload: URL, fileName: String, mimeType: String) {
         self.payload = payload
         self.fileName = fileName
         self.mimeType = mimeType
     }
 }
 
-struct HTTPData {
-    let payload: Data
-    let fileName: String
-    let mimeType: String
+public struct HTTPData {
+    public let payload: Data
+    public let fileName: String
+    public let mimeType: String
     
-    init(with payload: Data, fileName: String, mimeType: String) {
+    public init(with payload: Data, fileName: String, mimeType: String) {
         self.payload = payload
         self.fileName = fileName
         self.mimeType = mimeType

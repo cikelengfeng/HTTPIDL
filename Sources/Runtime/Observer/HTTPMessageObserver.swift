@@ -8,14 +8,14 @@
 
 import Foundation
 
-protocol HTTPRequestObserver: class {
+public protocol HTTPRequestObserver: class {
     func willSend(request: HTTPIDLRequest)
     func didSend(request: HTTPIDLRequest)
     func willEncode(request: HTTPIDLRequest)
     func didEncode(request: HTTPIDLRequest, encoded: HTTPRequest)
 }
 
-protocol HTTPResponseObserver: class {
+public protocol HTTPResponseObserver: class {
     func receive(error: Error)
     func receive(rawResponse: HTTPResponse)
     func willDecode(rawResponse: HTTPResponse)

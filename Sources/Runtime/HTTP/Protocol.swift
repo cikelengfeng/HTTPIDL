@@ -9,7 +9,7 @@
 import Foundation
 
 
-protocol HTTPRequest {
+public protocol HTTPRequest {
     
     var method: String {get set}
     var headers: [String: String] {get set}
@@ -19,7 +19,7 @@ protocol HTTPRequest {
     
 }
 
-protocol HTTPResponse {
+public protocol HTTPResponse {
     var statusCode: Int {get}
     var headers: [String: String] {get}
     var body: Data? {get}
@@ -27,6 +27,6 @@ protocol HTTPResponse {
 }
 
 
-protocol HTTPClient {
+public protocol HTTPClient {
     func send(_ request: HTTPRequest, completion: @escaping (_ response: HTTPResponse?, _ error: Error?) -> Void)
 }

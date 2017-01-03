@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct HTTPResponseBodyJSONDecoder: HTTPResponseBodyDecoder {
+public struct HTTPResponseBodyJSONDecoder: HTTPResponseBodyDecoder {
     
-    static let shared = HTTPResponseBodyJSONDecoder()
+    public static let shared = HTTPResponseBodyJSONDecoder()
     
-    typealias OutputType = Any
+    public typealias OutputType = Any
     
-    func decode(_ responseBody: Data) throws -> Any {
+    public func decode(_ responseBody: Data) throws -> Any {
         return try JSONSerialization.jsonObject(with: responseBody, options: .allowFragments)
     }
 }

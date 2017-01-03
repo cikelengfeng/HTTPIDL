@@ -8,15 +8,15 @@
 
 import Foundation
 
-protocol HTTPIDLParameterKey {
+public protocol HTTPIDLParameterKey {
     func asHTTPParamterKey() -> String
 }
 
-protocol HTTPIDLParameterConvertible {
+public protocol HTTPIDLParameterConvertible {
     func asHTTPIDLParameter(key: String) -> HTTPIDLParameter
 }
 
-protocol HTTPIDLRequest {
+public protocol HTTPIDLRequest {
     static var defaultMethod: String {get}
     var method: String {get}
     var configuration: HTTPIDLConfiguration {get set}
@@ -24,7 +24,7 @@ protocol HTTPIDLRequest {
     var parameters: [HTTPIDLParameter] {get}
 }
 
-protocol HTTPIDLClient {
+public protocol HTTPIDLClient {
     func send<ResponseType: HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: ResponseType?, _ error: Error?) -> Void)
     func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: HTTPResponse?, _ error: Error?) -> Void)
     
@@ -34,15 +34,15 @@ protocol HTTPIDLClient {
     mutating func remove(responseObserver: HTTPResponseObserver)
 }
 
-protocol HTTPRequestEncoder {
+public protocol HTTPRequestEncoder {
     func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest
 }
 
-protocol HTTPIDLResponse {
+public protocol HTTPIDLResponse {
     init(httpResponse: HTTPResponse) throws
 }
 
-protocol HTTPResponseBodyDecoder {
+public protocol HTTPResponseBodyDecoder {
     associatedtype OutputType
     func decode(_ responseBody: Data) throws -> OutputType
 }

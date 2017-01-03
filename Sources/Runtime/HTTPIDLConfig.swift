@@ -11,7 +11,7 @@ import Alamofire
 
 fileprivate let HTTPIDLBaseURLString = "https://api.everfilter.me"
 
-protocol HTTPIDLConfiguration {
+public protocol HTTPIDLConfiguration {
     var baseURLString: String {get set}
     var headers: [String: String] {get set}
     
@@ -28,7 +28,7 @@ public struct BaseHTTPIDLConfiguration: HTTPIDLConfiguration {
         self.baseURLString = baseURLString
     }
     
-    mutating func append(headers: [String: String]) {
+    public mutating func append(headers: [String: String]) {
         let newHeader = headers.reduce(self.headers , { (soFar, soGood) in
             var mutableSoFar = soFar
             mutableSoFar[soGood.0] = soGood.1
@@ -38,7 +38,7 @@ public struct BaseHTTPIDLConfiguration: HTTPIDLConfiguration {
     }
 }
 
-extension HTTPIDLRequest {
+public extension HTTPIDLRequest {
     static var defaultEncoder: HTTPRequestEncoder {
         get {
             switch self.defaultMethod {

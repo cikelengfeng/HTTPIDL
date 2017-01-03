@@ -8,22 +8,22 @@
 
 import Foundation
 
-class HTTPIDLBaseClient: HTTPIDLClient {
+public class HTTPIDLBaseClient: HTTPIDLClient {
     
-    static let shared = HTTPIDLBaseClient()
+    public static let shared = HTTPIDLBaseClient()
     private var clientImpl: HTTPClient = AlamofireClient()
     private var requestObservers: [HTTPRequestObserver] = []
     private var responseObservers: [HTTPResponseObserver] = []
     private let requestObserverLock = NSLock()
     private let responseObserverLock = NSLock()
     
-    func add(requestObserver: HTTPRequestObserver) {
+    public func add(requestObserver: HTTPRequestObserver) {
         requestObserverLock.lock()
         requestObservers.append(requestObserver)
         requestObserverLock.unlock()
     }
     
-    func remove(requestObserver: HTTPRequestObserver) {
+    public func remove(requestObserver: HTTPRequestObserver) {
         requestObserverLock.lock()
         if let index = requestObservers.index(where: { (observer) -> Bool in
             return observer === requestObserver
@@ -33,13 +33,13 @@ class HTTPIDLBaseClient: HTTPIDLClient {
         requestObserverLock.unlock()
     }
     
-    func add(responseObserver: HTTPResponseObserver) {
+    public func add(responseObserver: HTTPResponseObserver) {
         responseObserverLock.lock()
         responseObservers.append(responseObserver)
         responseObserverLock.unlock()
     }
     
-    func remove(responseObserver: HTTPResponseObserver) {
+    public func remove(responseObserver: HTTPResponseObserver) {
         responseObserverLock.lock()
         if let index = responseObservers.index(where: { (observer) -> Bool in
             return observer === responseObserver
@@ -49,51 +49,51 @@ class HTTPIDLBaseClient: HTTPIDLClient {
         responseObserverLock.unlock()
     }
     
-    func willSend(request: HTTPIDLRequest) {
+    private func willSend(request: HTTPIDLRequest) {
         requestObservers.forEach { (observer) in
             observer.willSend(request: request)
         }
     }
-    func didSend(request: HTTPIDLRequest) {
+    private func didSend(request: HTTPIDLRequest) {
         requestObservers.forEach { (observer) in
             observer.didSend(request: request)
         }
     }
-    func willEncode(request: HTTPIDLRequest) {
+    private func willEncode(request: HTTPIDLRequest) {
         requestObservers.forEach { (observer) in
             observer.willEncode(request: request)
         }
     }
-    func didEncode(request: HTTPIDLRequest, encoded: HTTPRequest) {
+    private func didEncode(request: HTTPIDLRequest, encoded: HTTPRequest) {
         requestObservers.forEach { (observer) in
             observer.didEncode(request: request, encoded: encoded)
         }
     }
     
-    func receive(error: Error) {
+    private func receive(error: Error) {
         responseObservers.forEach { (observer) in
             observer.receive(error: error)
         }
     }
     
-    func receive(rawResponse: HTTPResponse) {
+    private func receive(rawResponse: HTTPResponse) {
         responseObservers.forEach { (observer) in
             observer.receive(rawResponse: rawResponse)
         }
     }
     
-    func willDecode(rawResponse: HTTPResponse) {
+    private func willDecode(rawResponse: HTTPResponse) {
         responseObservers.forEach { (observer) in
             observer.willDecode(rawResponse: rawResponse)
         }
     }
-    func didDecode(rawResponse: HTTPResponse, decodedResponse: HTTPIDLResponse) {
+    private func didDecode(rawResponse: HTTPResponse, decodedResponse: HTTPIDLResponse) {
         responseObservers.forEach { (observer) in
             observer.didDecode(rawResponse: rawResponse, decodedResponse: decodedResponse)
         }
     }
     
-    func send<ResponseType : HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (ResponseType?, Error?) -> Void) {
+    public func send<ResponseType : HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (ResponseType?, Error?) -> Void) {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -124,7 +124,7 @@ class HTTPIDLBaseClient: HTTPIDLClient {
         }
     }
     
-    func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse?, Error?) -> Void) {
+    public func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse?, Error?) -> Void) {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)

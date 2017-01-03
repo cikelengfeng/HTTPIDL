@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import Gzip
 
-enum HTTPBaseRequestEncoderError: Error {
+public enum HTTPBaseRequestEncoderError: Error {
     case constructURLFailed
     case nestedObjectInURLQuery
 }
@@ -57,11 +57,11 @@ private func queryItems(parameters: [HTTPIDLParameter]) throws -> [(String, Stri
     }
 }
 
-struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
+public struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
     
-    static let shared = HTTPURLEncodedQueryRequestEncoder()
+    public static let shared = HTTPURLEncodedQueryRequestEncoder()
     
-    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
+    public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
@@ -77,7 +77,7 @@ struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
 }
 
 
-enum HTTPJSONRequestEncoderError: Error {
+public enum HTTPJSONRequestEncoderError: Error {
     case fileIsForbidden
     case dataIsForbidden
 }
@@ -120,11 +120,11 @@ private func json(parameters: [HTTPIDLParameter]) throws -> Any {
     })
 }
 
-struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
+public struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
     
-    static let shared = HTTPJSONRequestEncoder()
+    public static let shared = HTTPJSONRequestEncoder()
     
-    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
+    public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
@@ -144,7 +144,7 @@ struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
     }
 }
 
-enum HTTPMultipartRequestEncoderError: Error {
+public enum HTTPMultipartRequestEncoderError: Error {
     case unsupportedInt64
     case unsupportedInt32
     case unsupportedIntDouble
@@ -188,10 +188,10 @@ fileprivate extension MultipartFormData {
     }
 }
 
-struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
-    static let shared = HTTPMultipartRequestEncoder()
+public struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
+    public static let shared = HTTPMultipartRequestEncoder()
     
-    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
+    public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
@@ -214,17 +214,17 @@ struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
     }
 }
 
-struct HTTPCombinatedQueryRequestEncoder: HTTPRequestEncoder {
+public struct HTTPCombinatedQueryRequestEncoder: HTTPRequestEncoder {
 
-    let encoderImpl: HTTPRequestEncoder
-    let urlParamKeys: [String]
+    public let encoderImpl: HTTPRequestEncoder
+    public let urlParamKeys: [String]
     
-    init(urlParamKeys: [String], encoderImpl: HTTPRequestEncoder) {
+    public init(urlParamKeys: [String], encoderImpl: HTTPRequestEncoder) {
         self.urlParamKeys = urlParamKeys
         self.encoderImpl = encoderImpl
     }
     
-    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
+    public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
@@ -239,7 +239,7 @@ struct HTTPCombinatedQueryRequestEncoder: HTTPRequestEncoder {
     }
 }
 
-enum HTTPSingleBodyRequestEncoderError: Error {
+public enum HTTPSingleBodyRequestEncoderError: Error {
     case noSuchParameter
     case unsupportedInt64
     case unsupportedInt32
@@ -288,17 +288,17 @@ private extension HTTPIDLParameter {
     }
 }
 
-struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
+public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
     
-    let urlParamKeys: [String]
-    let singleBodyKey: String
+    public let urlParamKeys: [String]
+    public let singleBodyKey: String
     
-    init(urlParamKeys: [String], singleBodyKey: String) {
+    public init(urlParamKeys: [String], singleBodyKey: String) {
         self.urlParamKeys = urlParamKeys
         self.singleBodyKey = singleBodyKey
     }
     
-    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
+    public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
@@ -328,10 +328,10 @@ struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
     }
 }
 
-struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
-    static let shared = HTTPURLEncodedFormRequestEncoder()
+public struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
+    public static let shared = HTTPURLEncodedFormRequestEncoder()
     
-    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
+    public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed
         }
@@ -350,15 +350,15 @@ struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
     }
 }
 
-struct HTTPGzipRequestEncoder: HTTPRequestEncoder {
+public struct HTTPGzipRequestEncoder: HTTPRequestEncoder {
     
-    let encoderImpl: HTTPRequestEncoder
+    public let encoderImpl: HTTPRequestEncoder
     
-    init(encoder: HTTPRequestEncoder) {
+    public init(encoder: HTTPRequestEncoder) {
         self.encoderImpl = encoder
     }
     
-    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
+    public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         var httpRequest = try encoderImpl.encode(request)
         var headers = httpRequest.headers
         if headers["Content-Encoding"] == nil {

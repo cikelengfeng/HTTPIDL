@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum HTTPIDLParameter {
+public enum HTTPIDLParameter {
     case int64(key: String, value: Int64)
     case int32(key: String, value: Int32)
     case double(key: String, value: Double)
@@ -42,60 +42,60 @@ enum HTTPIDLParameter {
     }
 }
 
-enum HTTPIDLParameterEncodeError: Error {
+public enum HTTPIDLParameterEncodeError: Error {
     case EncodeToStringFailed
 }
 
 extension Int64: HTTPIDLParameterKey {
-    func asHTTPParamterKey() -> String {
+    public func asHTTPParamterKey() -> String {
         return String(self)
     }
 }
 
 extension Int64: HTTPIDLParameterConvertible {
-    func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
         return .int64(key: key, value: self)
     }
 }
 
 extension Int32: HTTPIDLParameterKey {
-    func asHTTPParamterKey() -> String {
+    public func asHTTPParamterKey() -> String {
         return String(self)
     }
 }
 
 extension Int32: HTTPIDLParameterConvertible {
-    func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
         return .int32(key: key, value: self)
     }
 }
 
 extension Double: HTTPIDLParameterKey {
-    func asHTTPParamterKey() -> String {
+    public func asHTTPParamterKey() -> String {
         return String(self)
     }
 }
 
 extension Double: HTTPIDLParameterConvertible {
-    func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
         return .double(key: key, value: self)
     }
 }
 
 extension String: HTTPIDLParameterKey {
-    func asHTTPParamterKey() -> String {
+    public func asHTTPParamterKey() -> String {
         return self
     }
 }
 
 extension String: HTTPIDLParameterConvertible {
-    func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
         return .string(key: key, value: self)
     }
 }
 
 extension Array where Element: HTTPIDLParameterConvertible {
-    func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
         let value = self.map ({ (convertible) in
             return convertible.asHTTPIDLParameter(key: key)
         })
@@ -104,7 +104,7 @@ extension Array where Element: HTTPIDLParameterConvertible {
 }
 
 extension Dictionary where Key: HTTPIDLParameterKey, Value: HTTPIDLParameterConvertible {
-    func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
         let value = self.reduce([String: HTTPIDLParameter]()) { (soFar, soGood) -> [String: HTTPIDLParameter] in
             var result = soFar
             result[soGood.key.asHTTPParamterKey()] = soGood.value.asHTTPIDLParameter(key: key)
@@ -115,13 +115,13 @@ extension Dictionary where Key: HTTPIDLParameterKey, Value: HTTPIDLParameterConv
 }
 
 extension HTTPData: HTTPIDLParameterConvertible {
-    func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
         return .data(key: key, value: payload, fileName: fileName, mimeType: mimeType)
     }
 }
 
 extension HTTPFile: HTTPIDLParameterConvertible {
-    func asHTTPIDLParameter(key: String) ->
+    public func asHTTPIDLParameter(key: String) ->
         HTTPIDLParameter {
         return .file(key: key, value: payload, fileName: fileName, mimeType: mimeType)
     }
