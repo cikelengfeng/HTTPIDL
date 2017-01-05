@@ -8,23 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		0CECA864BFA4DB8E81697DE8 /* Pods_HTTPIDLDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD5664E73DED524B38DA9FA /* Pods_HTTPIDLDemo.framework */; };
-		4224CF9B1DEED54C00606A58 /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4224CF9A1DEED54C00606A58 /* APIModel.swift */; };
-		4224CF9E1DEED65200606A58 /* JSONConvertor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4224CF9D1DEED65200606A58 /* JSONConvertor.swift */; };
-		4224CFA01DEEDD0400606A58 /* HTTPIDLConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4224CF9F1DEEDD0400606A58 /* HTTPIDLConfig.swift */; };
 		4288467F1DEDAD3900D952A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4288467E1DEDAD3900D952A2 /* AppDelegate.swift */; };
 		428846811DEDAD3900D952A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428846801DEDAD3900D952A2 /* ViewController.swift */; };
 		428846841DEDAD3900D952A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428846821DEDAD3900D952A2 /* Main.storyboard */; };
 		428846861DEDAD3900D952A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 428846851DEDAD3900D952A2 /* Assets.xcassets */; };
 		428846891DEDAD3900D952A2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428846871DEDAD3900D952A2 /* LaunchScreen.storyboard */; };
-		42AD2E9A1DEFD6E900BB99DD /* HTTPIDLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD2E991DEFD6E900BB99DD /* HTTPIDLProtocol.swift */; };
-		42AD2E9C1DEFD82D00BB99DD /* HTTPIDLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD2E9B1DEFD82D00BB99DD /* HTTPIDLExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3A62EA8E4382BCAAD141C27E /* Pods-HTTPIDLDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemo/Pods-HTTPIDLDemo.release.xcconfig"; sourceTree = "<group>"; };
-		4224CF9A1DEED54C00606A58 /* APIModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
-		4224CF9D1DEED65200606A58 /* JSONConvertor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONConvertor.swift; sourceTree = "<group>"; };
-		4224CF9F1DEEDD0400606A58 /* HTTPIDLConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPIDLConfig.swift; sourceTree = "<group>"; };
 		4288467B1DEDAD3900D952A2 /* HTTPIDLDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPIDLDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4288467E1DEDAD3900D952A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		428846801DEDAD3900D952A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -32,8 +24,6 @@
 		428846851DEDAD3900D952A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		428846881DEDAD3900D952A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4288468A1DEDAD3900D952A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		42AD2E991DEFD6E900BB99DD /* HTTPIDLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPIDLProtocol.swift; sourceTree = "<group>"; };
-		42AD2E9B1DEFD82D00BB99DD /* HTTPIDLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPIDLExtension.swift; sourceTree = "<group>"; };
 		5ACEC624605DF3FE6D115633 /* Pods-HTTPIDLDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemo/Pods-HTTPIDLDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		6AD5664E73DED524B38DA9FA /* Pods_HTTPIDLDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HTTPIDLDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -59,16 +49,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		4224CF9C1DEED62A00606A58 /* HTTPIDLRuntime */ = {
-			isa = PBXGroup;
-			children = (
-				4224CF9D1DEED65200606A58 /* JSONConvertor.swift */,
-				4224CF9F1DEEDD0400606A58 /* HTTPIDLConfig.swift */,
-				42AD2E991DEFD6E900BB99DD /* HTTPIDLProtocol.swift */,
-			);
-			path = HTTPIDLRuntime;
-			sourceTree = "<group>";
-		};
 		428846721DEDAD3900D952A2 = {
 			isa = PBXGroup;
 			children = (
@@ -90,9 +70,6 @@
 		4288467D1DEDAD3900D952A2 /* HTTPIDLDemo */ = {
 			isa = PBXGroup;
 			children = (
-				4224CF9C1DEED62A00606A58 /* HTTPIDLRuntime */,
-				4224CF9A1DEED54C00606A58 /* APIModel.swift */,
-				42AD2E9B1DEFD82D00BB99DD /* HTTPIDLExtension.swift */,
 				4288467E1DEDAD3900D952A2 /* AppDelegate.swift */,
 				428846801DEDAD3900D952A2 /* ViewController.swift */,
 				428846821DEDAD3900D952A2 /* Main.storyboard */,
@@ -236,12 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				428846811DEDAD3900D952A2 /* ViewController.swift in Sources */,
-				42AD2E9C1DEFD82D00BB99DD /* HTTPIDLExtension.swift in Sources */,
-				4224CF9B1DEED54C00606A58 /* APIModel.swift in Sources */,
-				4224CF9E1DEED65200606A58 /* JSONConvertor.swift in Sources */,
 				4288467F1DEDAD3900D952A2 /* AppDelegate.swift in Sources */,
-				4224CFA01DEEDD0400606A58 /* HTTPIDLConfig.swift in Sources */,
-				42AD2E9A1DEFD6E900BB99DD /* HTTPIDLProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

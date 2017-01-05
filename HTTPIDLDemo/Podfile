@@ -6,5 +6,5 @@ target 'HTTPIDLDemo' do
   use_frameworks!
 
   # Pods for HTTPIDLDemo
-  pod 'Alamofire'
+  pod 'HTTPIDL', :path => '~/git/HTTPIDL'
 end

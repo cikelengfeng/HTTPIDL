@@ -13,40 +13,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-//        let req = GetApplicationSettingsRequest()
-//        
-//        req.send { (response, err) in
-//            guard response.isSucceed() else {
-//                return
-//            }
-////            asdasdas
-//        }
-        
-        guard let url = Bundle.main.url(forResource: "test", withExtension: "jpg") else {
-            return
-        }
-//        let shinkai = PostFiltersShinkaiRequest()
-        do {
-            let _ = try Data(contentsOf: url)
-            let req = PostFiltersShinkaiRequest()
-            req.baseURLString = "http://api.everphoto.me"
-            req.image = url
-            req.prepare { (encodeResult) in
-                switch encodeResult {
-                    case .success(let upload, _, _):
-                        upload.responseData(completionHandler: { response in
-                            guard let data = response.data, let image = UIImage(data: data) else {
-                                return
-                            }
-                        })
-                    case .failure(let encodingError):
-                        print(encodingError)
-                }
-            }
-        }catch {
-            
-        }
     }
 
     override func didReceiveMemoryWarning() {

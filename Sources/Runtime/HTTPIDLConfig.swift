@@ -9,8 +9,6 @@
 import Foundation
 import Alamofire
 
-fileprivate let HTTPIDLBaseURLString = "https://api.everfilter.me"
-
 public protocol HTTPIDLConfiguration {
     var baseURLString: String {get set}
     var headers: [String: String] {get set}
@@ -19,14 +17,10 @@ public protocol HTTPIDLConfiguration {
 }
 
 public struct BaseHTTPIDLConfiguration: HTTPIDLConfiguration {
-    public static var shared = BaseHTTPIDLConfiguration(with: HTTPIDLBaseURLString)
+    public static var shared = BaseHTTPIDLConfiguration()
     
-    public var baseURLString: String
+    public var baseURLString: String = ""
     public var headers: [String: String] = [:]
-    
-    public init(with baseURLString: String) {
-        self.baseURLString = baseURLString
-    }
     
     public mutating func append(headers: [String: String]) {
         let newHeader = headers.reduce(self.headers , { (soFar, soGood) in

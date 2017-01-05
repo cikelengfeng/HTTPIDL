@@ -1,12 +1,22 @@
 PODS:
   - Alamofire (4.2.0)
+  - GzipSwift (3.1.2)
+  - HTTPIDL (0.0.6):
+    - Alamofire
+    - GzipSwift
 
 DEPENDENCIES:
-  - Alamofire
+  - HTTPIDL (from `~/git/HTTPIDL`)
+
+EXTERNAL SOURCES:
+  HTTPIDL:
+    :path: ~/git/HTTPIDL
 
 SPEC CHECKSUMS:
   Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
+  GzipSwift: 86700e6530b3aa5e782ed7107cde2deea6b16688
+  HTTPIDL: cd9dc0003fd0882e3a4793f8a2f067cefc476f4e
 
-PODFILE CHECKSUM: 0bb6eb46bfcae0ffee59994caa229fd7435f9509
+PODFILE CHECKSUM: fa2e84630cc63582501e6fd7b77ca05f586f1e39
 
 COCOAPODS: 1.1.1
