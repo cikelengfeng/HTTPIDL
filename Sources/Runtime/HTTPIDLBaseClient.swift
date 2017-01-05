@@ -8,6 +8,10 @@
 
 import Foundation
 
+public enum HTTPIDLBaseClientError: Error {
+    case noResponse
+}
+
 public class HTTPIDLBaseClient: HTTPIDLClient {
     
     public static let shared = HTTPIDLBaseClient()
@@ -93,57 +97,50 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
         }
     }
     
-    public func send<ResponseType : HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (ResponseType?, Error?) -> Void) {
+    public func send<ResponseType : HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((Error) -> Void)?) {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
             let encodedRequest = try requestEncoder.encode(request)
             self.didEncode(request: request, encoded: encodedRequest)
-            clientImpl.send(encodedRequest) { (clientResponse, clientError) in
+            clientImpl.send(encodedRequest, completion: { (response) in
                 do {
-                    guard let clientResponse = clientResponse else {
-                        completion(nil, clientError)
-                        if let err = clientError {
-                            self.receive(error: err)
-                        }
-                        return
-                    }
-                    self.receive(rawResponse: clientResponse)
-                    self.willDecode(rawResponse: clientResponse)
-                    let httpIdlResponse = try ResponseType(httpResponse: clientResponse)
-                    completion(httpIdlResponse, clientError)
-                    self.didDecode(rawResponse: clientResponse, decodedResponse: httpIdlResponse)
+                    self.receive(rawResponse: response)
+                    self.willDecode(rawResponse: response)
+                    let httpIdlResponse = try ResponseType(httpResponse: response)
+                    completion(httpIdlResponse)
+                    self.didDecode(rawResponse: response, decodedResponse: httpIdlResponse)
                 } catch let error {
-                    completion(nil, error)
+                    errorHandler?(error)
                     self.receive(error: error)
                 }
-            }
+            }, errorHandler: { (error) in
+                errorHandler?(error)
+                self.receive(error: error)
+            })
             self.didSend(request: request)
         } catch let error {
-            completion(nil, error)
+            errorHandler?(error)
+            self.receive(error: error)
         }
     }
     
-    public func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse?, Error?) -> Void) {
+    public func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((Error) -> Void)?) {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
             let encodedRequest = try requestEncoder.encode(request)
             self.didEncode(request: request, encoded: encodedRequest)
-            clientImpl.send(encodedRequest) { (clientResponse, clientError) in
-                guard let clientResponse = clientResponse else {
-                    completion(nil, clientError)
-                    if let err = clientError {
-                        self.receive(error: err)
-                    }
-                    return
-                }
-                completion(clientResponse, clientError)
-                self.receive(rawResponse: clientResponse)
-            }
+            clientImpl.send(encodedRequest, completion: { (response) in
+                completion(response)
+                self.receive(rawResponse: response)
+            }, errorHandler: { (error) in
+                errorHandler?(error)
+                self.receive(error: error)
+            })
             self.didSend(request: request)
         } catch let error {
-            completion(nil, error)
+            errorHandler?(error)
             self.receive(error: error)
         }
     }

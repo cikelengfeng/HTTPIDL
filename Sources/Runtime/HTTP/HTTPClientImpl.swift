@@ -9,17 +9,29 @@
 import Foundation
 import Alamofire
 
+enum AlamofireClientError: Error {
+    case missingResponse
+}
+
 struct AlamofireClient: HTTPClient {
     
-    func send(_ request: HTTPRequest, completion: @escaping (HTTPResponse?, Error?) -> Void) {
+    func send(_ request: HTTPRequest, completion: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (Error) -> Void) {
         do {
             let dataRequest: DataRequest = try adapt(request)
             dataRequest.responseData(completionHandler: { (response) in
                 let callbackTuple = self.adapt(response: response, request: request)
-                completion(callbackTuple.0, callbackTuple.1)
+                if let error = callbackTuple.1 {
+                    errorHandler(error)
+                    return
+                }
+                if let httpResp = callbackTuple.0 {
+                    completion(httpResp)
+                    return
+                }
+                assert(false, "alamofire 请求结束后居然既没有error又没有response，介不可能！！！！")
             })
         }catch let err {
-            completion(nil, err)
+            errorHandler(err)
         }
     }
     
@@ -37,7 +49,7 @@ struct AlamofireClient: HTTPClient {
         switch response.result {
         case .success(let data):
                 guard let rawResponse = response.response else {
-                    return (nil, nil)
+                    return (nil, AlamofireClientError.missingResponse)
                 }
                 return (HTTPBaseResponse(with: rawResponse.statusCode, headers: rawResponse.allHeaderFields as! [String : String], body: data, request: request), nil)
         case .failure(let error):
