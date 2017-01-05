@@ -16,6 +16,9 @@ class HTTPIDLErrorListener(ErrorListener):
         sys.exit(1)
 
 
+idl_file_extension = '.http'
+
+
 class HTTPIDLCompiler:
     def __init__(self):
         pass
@@ -44,7 +47,7 @@ class HTTPIDLCompiler:
         hjidl_files = []
         for f in os.listdir(path):
             file_path = os.path.join(path, f)
-            if os.path.isfile(file_path) and file_path.endswith('.hjidl'):
+            if os.path.isfile(file_path) and file_path.endswith(idl_file_extension):
                 print "find compile target: " + file_path
                 hjidl_files.append(file_path)
         return hjidl_files
