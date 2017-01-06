@@ -32,6 +32,10 @@ public protocol HTTPIDLClient {
     mutating func remove(requestObserver: HTTPRequestObserver)
     mutating func add(responseObserver: HTTPResponseObserver)
     mutating func remove(responseObserver: HTTPResponseObserver)
+    mutating func add(requestRewriter: HTTPRequestRewriter)
+    mutating func remove(requestRewriter: HTTPRequestRewriter)
+    mutating func add(responseRewriter: HTTPResponseRewriter)
+    mutating func remove(responseRewriter: HTTPResponseRewriter)
 }
 
 public protocol HTTPRequestEncoder {
