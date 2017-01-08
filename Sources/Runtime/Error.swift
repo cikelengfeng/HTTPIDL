@@ -8,6 +8,5 @@
 
 import Foundation
 
-public protocol HTTPIDLError: Error {
-    var message: String {get}
+public protocol HTTPIDLError: LocalizedError {
 }

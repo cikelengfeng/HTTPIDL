@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import Gzip
 
-public enum HTTPBaseRequestEncoderError: Error {
+public enum HTTPBaseRequestEncoderError: HTTPIDLError {
     case constructURLFailed
     case nestedObjectInURLQuery
 }
@@ -77,7 +77,7 @@ public struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
 }
 
 
-public enum HTTPJSONRequestEncoderError: Error {
+public enum HTTPJSONRequestEncoderError: HTTPIDLError {
     case fileIsForbidden
     case dataIsForbidden
 }
@@ -144,7 +144,7 @@ public struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
     }
 }
 
-public enum HTTPMultipartRequestEncoderError: Error {
+public enum HTTPMultipartRequestEncoderError: HTTPIDLError {
     case unsupportedInt64
     case unsupportedInt32
     case unsupportedIntDouble
@@ -239,7 +239,7 @@ public struct HTTPCombinatedQueryRequestEncoder: HTTPRequestEncoder {
     }
 }
 
-public enum HTTPSingleBodyRequestEncoderError: Error {
+public enum HTTPSingleBodyRequestEncoderError: HTTPIDLError {
     case noSuchParameter
     case unsupportedInt64
     case unsupportedInt32

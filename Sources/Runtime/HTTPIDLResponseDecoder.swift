@@ -47,7 +47,7 @@ private func decodeRoot(json: Any) throws -> [String: HTTPIDLResponseParameter] 
     }
 }
 
-public enum HTTPResponseJSONDecoderError: LocalizedError {
+public enum HTTPResponseJSONDecoderError: HTTPIDLError {
     case parameterKeyNotFound
     case illegalJSONObject
     case unsupportedParameterType

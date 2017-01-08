@@ -8,8 +8,9 @@
 
 import Foundation
 
-public enum HTTPIDLBaseClientError: Error {
+public enum HTTPIDLBaseClientError: HTTPIDLError {
     case noResponse
+    case unhownError(rawError: Error)
 }
 
 public class HTTPIDLBaseClient: HTTPIDLClient {
@@ -120,7 +121,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
         }
     }
     
-    private func receive(error: Error) {
+    private func receive(error: HTTPIDLError) {
         responseObserverQueue.async {
             self.responseObservers.forEach { (observer) in
                 observer.receive(error: error)
@@ -189,7 +190,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
         return ret
     }
     
-    private func handle<ResponseType : HTTPIDLResponse>(response: HTTPResponse, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((Error) -> Void)?) {
+    private func handle<ResponseType : HTTPIDLResponse>(response: HTTPResponse, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HTTPIDLError) -> Void)?) {
         var resp = response
         if let responseRewriteResult = self.rewrite(response: response) {
             switch responseRewriteResult {
@@ -207,12 +208,15 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
             let httpIdlResponse = try ResponseType(parameters: parameters, rawResponse: resp)
             completion(httpIdlResponse)
             self.didDecode(rawResponse: resp, decodedResponse: httpIdlResponse)
-        }catch let error {
+        } catch let error as HTTPIDLError {
             self.handle(error: error, errorHandler: errorHandler)
+        } catch let error {
+            assert(false, "抓到非 HTTPIDLError 类型的错误！！！")
+            self.handle(error: HTTPIDLBaseClientError.unhownError(rawError: error), errorHandler: errorHandler)
         }
     }
     
-    private func handle(response: HTTPResponse, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((Error) -> Void)?) {
+    private func handle(response: HTTPResponse, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((HTTPIDLError) -> Void)?) {
         var resp = response
         if let responseRewriteResult = self.rewrite(response: response) {
             switch responseRewriteResult {
@@ -227,12 +231,12 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
         self.receive(rawResponse: resp)
     }
     
-    private func handle(error: Error, errorHandler: ((Error) -> Void)?) {
+    private func handle(error: HTTPIDLError, errorHandler: ((HTTPIDLError) -> Void)?) {
         errorHandler?(error)
         self.receive(error: error)
     }
     
-    public func send<ResponseType : HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((Error) -> Void)?) {
+    public func send<ResponseType : HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HTTPIDLError) -> Void)?) {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -254,12 +258,15 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
                 self.handle(error: error, errorHandler: errorHandler)
             })
             self.didSend(request: request)
-        } catch let error {
+        } catch let error as HTTPIDLError {
             self.handle(error: error, errorHandler: errorHandler)
+        } catch let error {
+            assert(false, "抓到非 HTTPIDLError 类型的错误！！！")
+            self.handle(error: HTTPIDLBaseClientError.unhownError(rawError: error), errorHandler: errorHandler)
         }
     }
     
-    public func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((Error) -> Void)?) {
+    public func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((HTTPIDLError) -> Void)?) {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -282,8 +289,11 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
                 self.handle(error: error, errorHandler: errorHandler)
             })
             self.didSend(request: request)
-        } catch let error {
+        } catch let error as HTTPIDLError {
             self.handle(error: error, errorHandler: errorHandler)
+        } catch let error {
+            assert(false, "抓到非 HTTPIDLError 类型的错误！！！")
+            self.handle(error: HTTPIDLBaseClientError.unhownError(rawError: error), errorHandler: errorHandler)
         }
     }
 }

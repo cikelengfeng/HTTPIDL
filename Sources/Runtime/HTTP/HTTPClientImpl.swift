@@ -9,13 +9,15 @@
 import Foundation
 import Alamofire
 
-enum AlamofireClientError: Error {
+enum AlamofireClientError: HTTPIDLError {
     case missingResponse
+    case adaptAlamofireRequestFailed(rawError: Error)
+    case adaptAlamofireResponseFailed(rawError: Error)
 }
 
 struct AlamofireClient: HTTPClient {
     
-    func send(_ request: HTTPRequest, completion: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (Error) -> Void) {
+    func send(_ request: HTTPRequest, completion: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HTTPIDLError) -> Void) {
         do {
             let dataRequest: DataRequest = try adapt(request)
             dataRequest.responseData(completionHandler: { (response) in
@@ -31,7 +33,7 @@ struct AlamofireClient: HTTPClient {
                 assert(false, "alamofire 请求结束后居然既没有error又没有response，介不可能！！！！")
             })
         }catch let err {
-            errorHandler(err)
+            errorHandler(AlamofireClientError.adaptAlamofireRequestFailed(rawError: err))
         }
     }
     
@@ -45,15 +47,16 @@ struct AlamofireClient: HTTPClient {
         return Alamofire.request(urlRequest)
     }
     
-    func adapt(response: DataResponse<Data>, request: HTTPRequest) -> (HTTPResponse?, Error?) {
+    func adapt(response: DataResponse<Data>, request: HTTPRequest) -> (HTTPResponse?, HTTPIDLError?) {
         switch response.result {
         case .success(let data):
                 guard let rawResponse = response.response else {
                     return (nil, AlamofireClientError.missingResponse)
                 }
+                //TODO: handle header fields
                 return (HTTPBaseResponse(with: rawResponse.statusCode, headers: rawResponse.allHeaderFields as! [String : String], body: data, request: request), nil)
         case .failure(let error):
-                return (nil, error)
+                return (nil, AlamofireClientError.adaptAlamofireResponseFailed(rawError: error))
         }
     }
 }

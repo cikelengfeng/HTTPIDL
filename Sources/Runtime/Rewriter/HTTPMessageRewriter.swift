@@ -11,7 +11,7 @@ import Foundation
 public enum HTTPRequestRewriterResult {
     case request(request: HTTPRequest)
     case response(response: HTTPResponse)
-    case error(error: Error)
+    case error(error: HTTPIDLError)
 }
 
 public protocol HTTPRequestRewriter: class {
@@ -20,7 +20,7 @@ public protocol HTTPRequestRewriter: class {
 
 public enum HTTPResponseRewriterResult {
     case response(response: HTTPResponse)
-    case error(error: Error)
+    case error(error: HTTPIDLError)
 }
 
 public protocol HTTPResponseRewriter: class {

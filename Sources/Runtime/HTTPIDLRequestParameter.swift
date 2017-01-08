@@ -42,7 +42,7 @@ public enum HTTPIDLRequestParameter {
     }
 }
 
-public enum HTTPIDLRequestParameterEncodeError: Error {
+public enum HTTPIDLRequestParameterEncodeError: HTTPIDLError {
     case EncodeToStringFailed
 }
 

@@ -34,7 +34,7 @@ extension Int64: HTTPIDLResponseParameterConvertible {
             self.init(value)
         case .string(let value):
             self.init(value)
-        default:
+        case .array, .dictionary, .data, .double:
             return nil
         }
     }
@@ -52,7 +52,7 @@ extension Int32: HTTPIDLResponseParameterConvertible {
             self.init(value)
         case .string(let value):
             self.init(value)
-        default:
+        case .array, .dictionary, .data, .double:
             return nil
         }
     }
@@ -72,7 +72,7 @@ extension Double: HTTPIDLResponseParameterConvertible {
             self.init(value)
         case .string(let value):
             self.init(value)
-        default:
+        case .array, .dictionary, .data:
             return nil
         }
     }
@@ -92,7 +92,7 @@ extension String: HTTPIDLResponseParameterConvertible {
             self.init(value)
         case .data(let value, _, _):
             self.init(data: value, encoding: String.Encoding.utf8)
-        default:
+        case .array, .dictionary, .double:
             return nil
         }
     }
@@ -106,7 +106,7 @@ extension HTTPData: HTTPIDLResponseParameterConvertible {
         switch parameter {
         case .data(let value, let fileName, let mimeType):
             self.init(with: value, fileName: fileName ?? "", mimeType: mimeType)
-        default:
+        case .array, .dictionary, .double, .int32, .int64, .string:
             return nil
         }
     }
@@ -129,7 +129,7 @@ public extension Array where Element: HTTPIDLResponseParameterConvertible {
             self.init(value.flatMap({
                 return Element(parameter: $0)
             }))
-        default:
+        case .dictionary, .data, .double, .int32, .int64, .string:
             return nil
         }
     }
@@ -160,7 +160,7 @@ public extension Dictionary where Key: HTTPIDLResponseParameterKeyType, Value: H
                 ret[Key(string: soGood.key)] = v
                 return ret
             })
-        default:
+            case .array, .data, .double, .int32, .int64, .string:
             return nil
         }
     }
