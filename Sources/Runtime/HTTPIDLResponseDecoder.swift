@@ -45,7 +45,6 @@ private func decodeRoot(json: Any) throws -> [String: HTTPIDLResponseParameter] 
     } else {
         throw HTTPResponseJSONDecoderError.illegalJSONObject
     }
-    return ret
 }
 
 public enum HTTPResponseJSONDecoderError: LocalizedError {
