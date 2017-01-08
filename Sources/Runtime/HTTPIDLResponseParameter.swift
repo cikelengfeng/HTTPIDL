@@ -19,11 +19,14 @@ public enum HTTPIDLResponseParameter {
 }
 
 public protocol HTTPIDLResponseParameterConvertible {
-    init?(parameter: HTTPIDLResponseParameter)
+    init?(parameter: HTTPIDLResponseParameter?)
 }
 
 extension Int64: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter) {
+    public init?(parameter: HTTPIDLResponseParameter?) {
+        guard let parameter = parameter else {
+            return nil
+        }
         switch parameter {
         case .int64(let value):
             self.init(value)
@@ -38,7 +41,10 @@ extension Int64: HTTPIDLResponseParameterConvertible {
 }
 
 extension Int32: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter) {
+    public init?(parameter: HTTPIDLResponseParameter?) {
+        guard let parameter = parameter else {
+            return nil
+        }
         switch parameter {
         case .int64(let value):
             self.init(value)
@@ -53,7 +59,10 @@ extension Int32: HTTPIDLResponseParameterConvertible {
 }
 
 extension Double: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter) {
+    public init?(parameter: HTTPIDLResponseParameter?) {
+        guard let parameter = parameter else {
+            return nil
+        }
         switch parameter {
         case .int64(let value):
             self.init(value)
@@ -70,7 +79,10 @@ extension Double: HTTPIDLResponseParameterConvertible {
 }
 
 extension String: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter) {
+    public init?(parameter: HTTPIDLResponseParameter?) {
+        guard let parameter = parameter else {
+            return nil
+        }
         switch parameter {
         case .int64(let value):
             self.init(value)
@@ -87,7 +99,10 @@ extension String: HTTPIDLResponseParameterConvertible {
 }
 
 extension HTTPData: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter) {
+    public init?(parameter: HTTPIDLResponseParameter?) {
+        guard let parameter = parameter else {
+            return nil
+        }
         switch parameter {
         case .data(let value, let fileName, let mimeType):
             self.init(with: value, fileName: fileName ?? "", mimeType: mimeType)
@@ -98,14 +113,17 @@ extension HTTPData: HTTPIDLResponseParameterConvertible {
 }
 
 extension HTTPFile: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter) {
+    public init?(parameter: HTTPIDLResponseParameter?) {
         //暂不支持，后续打算把参数内容写进临时文件，然后用临时文件地址初始化
             return nil
     }
 }
 
 public extension Array where Element: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter) {
+    public init?(parameter: HTTPIDLResponseParameter?) {
+        guard let parameter = parameter else {
+            return nil
+        }
         switch parameter {
         case .array(let value):
             self.init(value.flatMap({
@@ -117,26 +135,29 @@ public extension Array where Element: HTTPIDLResponseParameterConvertible {
     }
 }
 
-public protocol HTTPIDLResponseParameterKey {
-    func asString() -> String
+public protocol HTTPIDLResponseParameterKeyType: Hashable {
+    init(string: String)
 }
 
-extension String: HTTPIDLResponseParameterKey {
-    public func asString() -> String {
-        return self
+extension String: HTTPIDLResponseParameterKeyType {
+    public init(string: String) {
+        self = string
     }
 }
 
-public extension Dictionary where Key: HTTPIDLResponseParameterKey & Hashable, Value: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter) {
+public extension Dictionary where Key: HTTPIDLResponseParameterKeyType, Value: HTTPIDLResponseParameterConvertible {
+    public init?(parameter: HTTPIDLResponseParameter?) {
+        guard let parameter = parameter else {
+            return nil
+        }
         switch parameter {
         case .dictionary(let value):
-            self = value.reduce([String: Value](), { (soFar, soGood) in
+            self = value.reduce([Key: Value](), { (soFar, soGood) in
                 guard let v = Value(parameter: soGood.value) else {
                     return soFar
                 }
                 var ret = soFar
-                ret[soGood.key] = v
+                ret[Key(string: soGood.key)] = v
                 return ret
             })
         default:

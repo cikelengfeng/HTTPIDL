@@ -9,8 +9,8 @@ struct Testing: HTTPIDLResponseParameterConvertible {
     let t1: [Int32]?
     let t2: [String: String]?
     let t3: Double?
-    init?(parameter: HTTPIDLResponseParameter) {
-        guard case .dictionary(value) = parameter else {
+    init?(parameter: HTTPIDLResponseParameter?) {
+        guard let parameter = parameter, case .dictionary(let value) = parameter else {
             return nil
         }
         self.t1 = [Int32](parameter: value["t"])

@@ -214,9 +214,9 @@ class AlamofireCodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.write_line('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        self.write_line('init?(parameter: HTTPIDLResponseParameter) {')
+        self.write_line('init?(parameter: HTTPIDLResponseParameter?) {')
         self.push_indent()
-        self.write_line('guard case .dictionary(value) = parameter else {')
+        self.write_line('guard let parameter = parameter, case .dictionary(let value) = parameter else {')
         self.push_indent()
         self.write_line('return nil')
         self.pop_indent()
@@ -230,17 +230,6 @@ class AlamofireCodeGenerator:
                 if array_type is not None:
                     array_element_type = array_type.baseType()
                     self.write_line('self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '](parameter: value["' + param_map.value().getText() + '"])')
-                    # self.write_line('if let anyArray = json["' + param_map.value().getText() + '"] as? [Any] {')
-                    # self.push_indent()
-                    # self.write_line(
-                    #     'self.' + param_map.key().getText() + ' = anyArray.flatMap { ' +
-                    #     swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '(with: $0) }')
-                    # self.pop_indent()
-                    # self.write_line('} else {')
-                    # self.push_indent()
-                    # self.write_line('self.' + param_map.key().getText() + ' = nil')
-                    # self.pop_indent()
-                    # self.write_line('}')
                 elif dict_type is not None:
                     dict_key_type = dict_type.baseType()[0]
                     dict_value_type = dict_type.baseType()[1]
@@ -248,41 +237,6 @@ class AlamofireCodeGenerator:
                         'self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(
                             dict_key_type.getText()) + ': ' + swift_base_type_name_from_idl_base_type(
                             dict_value_type.getText()) + '](parameter: value["' + param_map.value().getText() + '"])')
-                    # self.write_line('if let anyDict = json["' + param_map.value().getText() + '"] as? [String: Any] {')
-                    # self.push_indent()
-                    # self.write_line('var tmp: [String: String] = [:]')
-                    # self.write_line('anyDict.forEach({ (key, value) in')
-                    # self.push_indent()
-                    # self.write_line('guard let newKey = ' + swift_base_type_name_from_idl_base_type(
-                    #     dict_key_type.getText()) + '(with: key) else {')
-                    # self.push_indent()
-                    # self.write_line('return')
-                    # self.pop_indent()
-                    # self.write_line('}')
-                    # self.write_line('guard let newValue = ' + swift_base_type_name_from_idl_base_type(
-                    #     dict_value_type.getText()) + '(with: value) else {')
-                    # self.push_indent()
-                    # self.write_line('return')
-                    # self.pop_indent()
-                    # self.write_line('}')
-                    # self.write_line('tmp[newKey] = newValue')
-                    # self.pop_indent()
-                    # self.write_line('})')
-                    # self.write_line('if tmp.count > 0 {')
-                    # self.push_indent()
-                    # self.write_line('self.' + param_map.key().getText() + ' = tmp')
-                    # self.pop_indent()
-                    # self.write_line('} else {')
-                    # self.push_indent()
-                    # self.write_line('self.' + param_map.key().getText() + ' = nil')
-                    # self.pop_indent()
-                    # self.write_line('}')
-                    # self.pop_indent()
-                    # self.write_line('} else {')
-                    # self.push_indent()
-                    # self.write_line('self.' + param_map.key().getText() + ' = nil')
-                    # self.pop_indent()
-                    # self.write_line('}')
             else:
                 self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
                     param_type) + '(parameter: value["' + param_map.value().getText() + '"])')
@@ -309,76 +263,3 @@ class AlamofireCodeGenerator:
         messages = entry_context.message()
         for message in messages:
             self.generate_message(message)
-
-# class HTTPIDLErrorListener(ErrorListener):
-#     def syntaxError(self, recognizer, offending_symbol, line, column, msg, e):
-#         print 'parser failed!!!'
-#         print 'error near line ' + str(line) + ':' + str(column) + ' reason:( ' + msg + ' )'
-#         sys.exit(1)
-#
-#
-# def __parse_tree_from_idl(input_idl, error_listener):
-#     from antlr4 import InputStream
-#     input_stream = InputStream(input_idl)
-#     lexer = EverphotoIDLLexer(input_stream)
-#     from antlr4 import CommonTokenStream
-#     stream = CommonTokenStream(lexer)
-#     parser = EverphotoIDL(stream)
-#     parser.addErrorListener(error_listener)
-#     tree = parser.entry()
-#     return tree
-#
-#
-# if __name__ == '__main__':
-#     uri_template = '''STRUCT SettingsURITemplate {
-#     STRING avatar = avatar;
-#     STRING thumbnail = s240;
-#     STRING origin = origin;
-# }'''
-#     idl = '''MESSAGE /application/settings {
-#     GET REQUEST {
-#         ARRAY<INT32> test = hahahah;
-#     }
-#
-#     GET RESPONSE {
-#         ApplicationSettingsStruct settings = data;
-#     }
-# }
-#
-# STRUCT SettingsURITemplate {
-#     STRING avatar = avatar;
-#     STRING thumbnail = s240;
-#     STRING origin = origin;
-# }
-#
-# STRUCT SettingsOnlineFilter {
-#     STRING name = name;
-#     STRING displayName = display_name;
-# }
-#
-# STRUCT ApplicationSettingsStruct {
-#     INT32 tagVersion = system_tag_version;
-#     STRING smsCode = sms_code_number;
-#     DICT<STRING, STRING> uriTemplateDict = uri_template;
-#     SettingsURITemplate uriTemplate = uri_template;
-#     ARRAY<SettingsOnlineFilter> onlineFilter = filters;
-# }
-#
-# MESSAGE /filters/shinkai {
-#     POST REQUEST {
-#         FILE image = media;
-#         INT32 test = tt;
-#     }
-#
-#     POST RESPONSE {
-#
-#     }
-# }
-#
-# '''
-#
-#     parse_tree = __parse_tree_from_idl(idl, HTTPIDLErrorListener())
-#     with open('HTTPIDLDemo/HTTPIDLDemo/APIModel.swift', 'w') as output:
-#         generator = AlamofireCodeGenerator(output)
-#         generator.generate_entry(parse_tree)
-#     print 'end'
