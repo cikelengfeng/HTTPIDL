@@ -13,6 +13,8 @@ private func decode(json: Any) throws -> HTTPIDLResponseParameter {
         return .int64(value: tmp)
     } else if let tmp = json as? Int32 {
         return .int32(value: tmp)
+    } else if let tmp = json as? Bool {
+        return .int32(value: tmp ? 1 : 0)
     } else if let tmp = json as? Double {
         return .double(value: tmp)
     } else if let tmp = json as? String {

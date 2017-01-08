@@ -83,9 +83,9 @@ class AlamofireCodeGenerator:
         self.write_line('}')
 
         self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = ' + request_name + '.defaultEncoder, '
-                        'completion: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (Error) -> Void) {')
+                        'rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (Error) -> Void) {')
         self.push_indent()
-        self.write_line('client.send(self, requestEncoder: requestEncoder, completion: completion, errorHandler: errorHandler)')
+        self.write_line('client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)')
         self.pop_indent()
         self.write_line('}')
 

@@ -4,12 +4,10 @@ INT64 x = x;
 }
 GET RESPONSE {
 STRING tttt = jfjjfjfjfj;
-Testing test = jude;
+Testing t2 = data;
 }
 }
 
 STRUCT Testing {
-ARRAY<INT32> t1 = t;
-DICT<STRING, STRING> t2 = tt;
-DOUBLE t3 = ttt;
+STRING sms = sms_code_number;
 }
