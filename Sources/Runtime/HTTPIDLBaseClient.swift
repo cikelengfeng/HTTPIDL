@@ -189,7 +189,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
         return ret
     }
     
-    private func handle<ResponseType : HTTPIDLResponse>(response: HTTPResponse, completion: @escaping (ResponseType) -> Void, errorHandler: ((Error) -> Void)?) {
+    private func handle<ResponseType : HTTPIDLResponse>(response: HTTPResponse, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((Error) -> Void)?) {
         var resp = response
         if let responseRewriteResult = self.rewrite(response: response) {
             switch responseRewriteResult {
@@ -203,7 +203,8 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
         self.receive(rawResponse: resp)
         self.willDecode(rawResponse: resp)
         do {
-            let httpIdlResponse = try ResponseType(httpResponse: resp)
+            let parameters = try responseDecoder.decode(resp)
+            let httpIdlResponse = try ResponseType(parameters: parameters, rawResponse: resp)
             completion(httpIdlResponse)
             self.didDecode(rawResponse: resp, decodedResponse: httpIdlResponse)
         }catch let error {
@@ -231,7 +232,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
         self.receive(error: error)
     }
     
-    public func send<ResponseType : HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((Error) -> Void)?) {
+    public func send<ResponseType : HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((Error) -> Void)?) {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -242,13 +243,13 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
                 case .request(let rewritedRequest):
                     encodedRequest = rewritedRequest
                 case .response(let response):
-                    self.handle(response: response, completion: completion, errorHandler: errorHandler)
+                    self.handle(response: response, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
                 case .error(let error):
                     self.handle(error: error, errorHandler: errorHandler)
                 }
             }
             clientImpl.send(encodedRequest, completion: { (response) in
-                self.handle(response: response, completion: completion, errorHandler: errorHandler)
+                self.handle(response: response, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
             }, errorHandler: { (error) in
                 self.handle(error: error, errorHandler: errorHandler)
             })

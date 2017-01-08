@@ -4,6 +4,21 @@ import Foundation
 import HTTPIDL
 
 
+struct Testing: HTTPIDLResponseParameterConvertible {
+    
+    let t1: [Int32]?
+    let t2: [String: String]?
+    let t3: Double?
+    init?(parameter: HTTPIDLResponseParameter) {
+        guard case .dictionary(value) = parameter else {
+            return nil
+        }
+        self.t1 = [Int32](parameter: value["t"])
+        self.t2 = [String: String](parameter: value["tt"])
+        self.t3 = Double(parameter: value["ttt"])
+    }
+}
+
 class GetApplicationSettingsRequest: HTTPIDLRequest {
     
     static let defaultMethod: String = "GET"
@@ -16,15 +31,15 @@ class GetApplicationSettingsRequest: HTTPIDLRequest {
         }
     }
     var x: Int64?
-    var parameters: [HTTPIDLParameter] {
-        var result: [HTTPIDLParameter] = []
+    var parameters: [HTTPIDLRequestParameter] {
+        var result: [HTTPIDLRequestParameter] = []
         if let tmp = x {
-            result.append(tmp.asHTTPIDLParameter(key: "x"))
+            result.append(tmp.asHTTPIDLRequestParameter(key: "x"))
         }
         return result
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetApplicationSettingsRequest.defaultEncoder, completion: @escaping (GetApplicationSettingsResponse) -> Void, errorHandler: @escaping (Error) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, completion: completion, errorHandler: errorHandler)
+    func send(_ requestEncoder: HTTPRequestEncoder = GetApplicationSettingsRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetApplicationSettingsResponse.defaultDecoder, completion: @escaping (GetApplicationSettingsResponse) -> Void, errorHandler: @escaping (Error) -> Void) {
+        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
     }
     func send(_ requestEncoder: HTTPRequestEncoder = GetApplicationSettingsRequest.defaultEncoder, completion: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (Error) -> Void) {
         client.send(self, requestEncoder: requestEncoder, completion: completion, errorHandler: errorHandler)
@@ -34,25 +49,11 @@ class GetApplicationSettingsRequest: HTTPIDLRequest {
 struct GetApplicationSettingsResponse: HTTPIDLResponse {
     
     let tttt: String?
-    var json: Any?
-    let rawResponse: HTTPResponse?
-    static var decoder: HTTPResponseBodyJSONDecoder = HTTPResponseBodyJSONDecoder.shared
-    init(httpResponse: HTTPResponse) throws {
-        guard let httpBody = httpResponse.body else {
-            self.init(json: nil, rawResponse: httpResponse)
-            return
-        }
-        let tmp = try GetApplicationSettingsResponse.decoder.decode(httpBody)
-        self.init(json: tmp, rawResponse: httpResponse)
-    }
-    init(json: Any?, rawResponse: HTTPResponse?) {
+    let test: Testing?
+    let rawResponse: HTTPResponse
+    init(parameters: [String: HTTPIDLResponseParameter], rawResponse: HTTPResponse) throws {
         self.rawResponse = rawResponse
-        if let json = json as? [String: Any] {
-            self.json = json
-            self.tttt = String(with: json["jfjjfjfjfj"])
-        } else {
-            self.json = nil
-            self.tttt = nil
-        }
+        self.tttt = String(parameter: parameters["jfjjfjfjfj"])
+        self.test = Testing(parameter: parameters["jude"])
     }
 }

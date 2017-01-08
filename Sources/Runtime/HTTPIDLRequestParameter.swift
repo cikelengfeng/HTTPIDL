@@ -1,5 +1,5 @@
 //
-//  HTTPIDLParameter.swift
+//  HTTPIDLRequestParameter.swift
 //  everfilter
 //
 //  Created by 徐 东 on 2017/1/2.
@@ -8,15 +8,15 @@
 
 import Foundation
 
-public enum HTTPIDLParameter {
+public enum HTTPIDLRequestParameter {
     case int64(key: String, value: Int64)
     case int32(key: String, value: Int32)
     case double(key: String, value: Double)
     case string(key: String, value: String)
     case file(key: String, value: URL, fileName: String?, mimeType: String?)
     case data(key: String, value: Data, fileName: String?, mimeType: String?)
-    case array(key: String, value: [HTTPIDLParameter])
-    case dictionary(key: String, value: [String: HTTPIDLParameter])
+    case array(key: String, value: [HTTPIDLRequestParameter])
+    case dictionary(key: String, value: [String: HTTPIDLRequestParameter])
     
     var key: String {
         get {
@@ -42,87 +42,87 @@ public enum HTTPIDLParameter {
     }
 }
 
-public enum HTTPIDLParameterEncodeError: Error {
+public enum HTTPIDLRequestParameterEncodeError: Error {
     case EncodeToStringFailed
 }
 
-extension Int64: HTTPIDLParameterKey {
+extension Int64: HTTPIDLRequestParameterKey {
     public func asHTTPParamterKey() -> String {
         return String(self)
     }
 }
 
-extension Int64: HTTPIDLParameterConvertible {
-    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+extension Int64: HTTPIDLRequestParameterConvertible {
+    public func asHTTPIDLRequestParameter(key: String) -> HTTPIDLRequestParameter {
         return .int64(key: key, value: self)
     }
 }
 
-extension Int32: HTTPIDLParameterKey {
+extension Int32: HTTPIDLRequestParameterKey {
     public func asHTTPParamterKey() -> String {
         return String(self)
     }
 }
 
-extension Int32: HTTPIDLParameterConvertible {
-    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+extension Int32: HTTPIDLRequestParameterConvertible {
+    public func asHTTPIDLRequestParameter(key: String) -> HTTPIDLRequestParameter {
         return .int32(key: key, value: self)
     }
 }
 
-extension Double: HTTPIDLParameterKey {
+extension Double: HTTPIDLRequestParameterKey {
     public func asHTTPParamterKey() -> String {
         return String(self)
     }
 }
 
-extension Double: HTTPIDLParameterConvertible {
-    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+extension Double: HTTPIDLRequestParameterConvertible {
+    public func asHTTPIDLRequestParameter(key: String) -> HTTPIDLRequestParameter {
         return .double(key: key, value: self)
     }
 }
 
-extension String: HTTPIDLParameterKey {
+extension String: HTTPIDLRequestParameterKey {
     public func asHTTPParamterKey() -> String {
         return self
     }
 }
 
-extension String: HTTPIDLParameterConvertible {
-    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+extension String: HTTPIDLRequestParameterConvertible {
+    public func asHTTPIDLRequestParameter(key: String) -> HTTPIDLRequestParameter {
         return .string(key: key, value: self)
     }
 }
 
-extension Array where Element: HTTPIDLParameterConvertible {
-    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+extension Array where Element: HTTPIDLRequestParameterConvertible {
+    public func asHTTPIDLRequestParameter(key: String) -> HTTPIDLRequestParameter {
         let value = self.map ({ (convertible) in
-            return convertible.asHTTPIDLParameter(key: key)
+            return convertible.asHTTPIDLRequestParameter(key: key)
         })
         return .array(key: key, value: value)
     }
 }
 
-extension Dictionary where Key: HTTPIDLParameterKey, Value: HTTPIDLParameterConvertible {
-    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
-        let value = self.reduce([String: HTTPIDLParameter]()) { (soFar, soGood) -> [String: HTTPIDLParameter] in
+extension Dictionary where Key: HTTPIDLRequestParameterKey, Value: HTTPIDLRequestParameterConvertible {
+    public func asHTTPIDLRequestParameter(key: String) -> HTTPIDLRequestParameter {
+        let value = self.reduce([String: HTTPIDLRequestParameter]()) { (soFar, soGood) -> [String: HTTPIDLRequestParameter] in
             var result = soFar
-            result[soGood.key.asHTTPParamterKey()] = soGood.value.asHTTPIDLParameter(key: key)
+            result[soGood.key.asHTTPParamterKey()] = soGood.value.asHTTPIDLRequestParameter(key: key)
             return result
         }
         return .dictionary(key: key, value: value)
     }
 }
 
-extension HTTPData: HTTPIDLParameterConvertible {
-    public func asHTTPIDLParameter(key: String) -> HTTPIDLParameter {
+extension HTTPData: HTTPIDLRequestParameterConvertible {
+    public func asHTTPIDLRequestParameter(key: String) -> HTTPIDLRequestParameter {
         return .data(key: key, value: payload, fileName: fileName, mimeType: mimeType)
     }
 }
 
-extension HTTPFile: HTTPIDLParameterConvertible {
-    public func asHTTPIDLParameter(key: String) ->
-        HTTPIDLParameter {
+extension HTTPFile: HTTPIDLRequestParameterConvertible {
+    public func asHTTPIDLRequestParameter(key: String) ->
+        HTTPIDLRequestParameter {
         return .file(key: key, value: payload, fileName: fileName, mimeType: mimeType)
     }
 }

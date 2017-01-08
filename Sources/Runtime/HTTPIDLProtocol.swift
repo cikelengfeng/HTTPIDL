@@ -8,12 +8,12 @@
 
 import Foundation
 
-public protocol HTTPIDLParameterKey {
+public protocol HTTPIDLRequestParameterKey {
     func asHTTPParamterKey() -> String
 }
 
-public protocol HTTPIDLParameterConvertible {
-    func asHTTPIDLParameter(key: String) -> HTTPIDLParameter
+public protocol HTTPIDLRequestParameterConvertible {
+    func asHTTPIDLRequestParameter(key: String) -> HTTPIDLRequestParameter
 }
 
 public protocol HTTPIDLRequest {
@@ -21,11 +21,24 @@ public protocol HTTPIDLRequest {
     var method: String {get}
     var configuration: HTTPIDLConfiguration {get set}
     var uri: String {get}
-    var parameters: [HTTPIDLParameter] {get}
+    var parameters: [HTTPIDLRequestParameter] {get}
+}
+
+
+public protocol HTTPRequestEncoder {
+    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest
+}
+
+public protocol HTTPIDLResponse {
+    init(parameters: [String: HTTPIDLResponseParameter], rawResponse: HTTPResponse) throws
+}
+
+public protocol HTTPResponseDecoder {
+    func decode(_ response: HTTPResponse) throws -> [String: HTTPIDLResponseParameter]
 }
 
 public protocol HTTPIDLClient {
-    func send<ResponseType: HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: ResponseType) -> Void, errorHandler: ((_ error: Error) -> Void)?)
+    func send<ResponseType: HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder ,completion: @escaping (_ repsonse: ResponseType) -> Void, errorHandler: ((_ error: Error) -> Void)?)
     func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: HTTPResponse) -> Void, errorHandler: ((_ error: Error) -> Void)?)
     
     mutating func add(requestObserver: HTTPRequestObserver)
@@ -36,17 +49,4 @@ public protocol HTTPIDLClient {
     mutating func remove(requestRewriter: HTTPRequestRewriter)
     mutating func add(responseRewriter: HTTPResponseRewriter)
     mutating func remove(responseRewriter: HTTPResponseRewriter)
-}
-
-public protocol HTTPRequestEncoder {
-    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest
-}
-
-public protocol HTTPIDLResponse {
-    init(httpResponse: HTTPResponse) throws
-}
-
-public protocol HTTPResponseBodyDecoder {
-    associatedtype OutputType
-    func decode(_ responseBody: Data) throws -> OutputType
 }

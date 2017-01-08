@@ -75,10 +75,10 @@ class AlamofireCodeGenerator:
     def generate_request_send(self, request_context, message_name):
         request_name = self.request_name_from_message(request_context.method().getText(), message_name)
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
-        self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = ' + request_name + '.defaultEncoder, '
-                        'completion: @escaping (' + response_name + ') -> Void, errorHandler: @escaping (Error) -> Void) {')
+        self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = ' + request_name + '.defaultEncoder, responseDecoder: HTTPResponseDecoder = '
+                         + response_name + '.defaultDecoder, completion: @escaping (' + response_name + ') -> Void, errorHandler: @escaping (Error) -> Void) {')
         self.push_indent()
-        self.write_line('client.send(self, requestEncoder: requestEncoder, completion: completion, errorHandler: errorHandler)')
+        self.write_line('client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)')
         self.pop_indent()
         self.write_line('}')
 
@@ -90,13 +90,14 @@ class AlamofireCodeGenerator:
         self.write_line('}')
 
     def generate_request_parameters(self, request_context):
-        self.write_line('var parameters: [HTTPIDLParameter] {')
+        httpidl_parameter = 'HTTPIDLRequestParameter'
+        self.write_line('var parameters: [%s] {' % httpidl_parameter)
         self.push_indent()
-        self.write_line('var result: [HTTPIDLParameter] = []')
+        self.write_line('var result: [%s] = []' % httpidl_parameter)
         for parameter_map in request_context.structBody().parameterMap():
             self.write_line('if let tmp = ' + parameter_map.key().getText() + ' {')
             self.push_indent()
-            self.write_line('result.append(tmp.asHTTPIDLParameter(key: "'
+            self.write_line('result.append(tmp.as' + httpidl_parameter + '(key: "'
                             + parameter_map.value().getText() + '"))')
             self.pop_indent()
             self.write_line('}')
@@ -174,45 +175,16 @@ class AlamofireCodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.write_line('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        self.write_line('var json: Any?')
-        self.write_line('let rawResponse: HTTPResponse?')
-        self.write_line('static var decoder: HTTPResponseBodyJSONDecoder = HTTPResponseBodyJSONDecoder.shared')
+        self.write_line('let rawResponse: HTTPResponse')
 
-        # 从 HTTPResponse 初始化
-        self.write_line('init(httpResponse: HTTPResponse) throws {')
-        self.push_indent()
-        self.write_line('guard let httpBody = httpResponse.body else {')
-        self.push_indent()
-        self.write_line('self.init(json: nil, rawResponse: httpResponse)')
-        self.write_line('return')
-        self.pop_indent()
-        self.write_line('}')
-        response_name = self.response_name_from_message(response_context.method().getText(), message_name)
-        self.write_line('let tmp = try ' + response_name + '.decoder.decode(httpBody)')
-        self.write_line('self.init(json: tmp, rawResponse: httpResponse)')
-        self.pop_indent()
-        self.write_line('}')
-
-        # 从 json 或 httpResponse 初始化
-        self.write_line('init(json: Any?, rawResponse: HTTPResponse?) {')
+        # 从 raw parameter 初始化
+        self.write_line('init(parameters: [String: HTTPIDLResponseParameter], rawResponse: HTTPResponse) throws {')
         self.push_indent()
         self.write_line('self.rawResponse = rawResponse')
-
-        self.write_line('if let json = json as? [String: Any] {')
-        self.push_indent()
-        self.write_line('self.json = json')
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
-                param_type) + '(with: json["' + param_map.value().getText() + '"])')
-        self.pop_indent()
-        self.write_line('} else {')
-        self.push_indent()
-        self.write_line('self.json = nil')
-        for param_map in param_maps:
-            self.write_line('self.' + param_map.key().getText() + ' = nil')
-        self.pop_indent()
-        self.write_line('}')
+                param_type) + '(parameter: parameters["' + param_map.value().getText() + '"])')
         self.pop_indent()
         self.write_line('}')
 
@@ -242,10 +214,13 @@ class AlamofireCodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.write_line('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        self.write_line('init?(with json: Any?) {')
+        self.write_line('init?(parameter: HTTPIDLResponseParameter) {')
         self.push_indent()
-        self.write_line('if let json = json as? [String: Any] {')
+        self.write_line('guard case .dictionary(value) = parameter else {')
         self.push_indent()
+        self.write_line('return nil')
+        self.pop_indent()
+        self.write_line('}')
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             generic_type = param_type.genericType()
@@ -254,70 +229,69 @@ class AlamofireCodeGenerator:
                 dict_type = generic_type.dictGenericParam()
                 if array_type is not None:
                     array_element_type = array_type.baseType()
-                    self.write_line('if let anyArray = json["' + param_map.value().getText() + '"] as? [Any] {')
-                    self.push_indent()
-                    self.write_line(
-                        'self.' + param_map.key().getText() + ' = anyArray.flatMap { ' +
-                        swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '(with: $0) }')
-                    self.pop_indent()
-                    self.write_line('} else {')
-                    self.push_indent()
-                    self.write_line('self.' + param_map.key().getText() + ' = nil')
-                    self.pop_indent()
-                    self.write_line('}')
+                    self.write_line('self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '](parameter: value["' + param_map.value().getText() + '"])')
+                    # self.write_line('if let anyArray = json["' + param_map.value().getText() + '"] as? [Any] {')
+                    # self.push_indent()
+                    # self.write_line(
+                    #     'self.' + param_map.key().getText() + ' = anyArray.flatMap { ' +
+                    #     swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '(with: $0) }')
+                    # self.pop_indent()
+                    # self.write_line('} else {')
+                    # self.push_indent()
+                    # self.write_line('self.' + param_map.key().getText() + ' = nil')
+                    # self.pop_indent()
+                    # self.write_line('}')
                 elif dict_type is not None:
                     dict_key_type = dict_type.baseType()[0]
                     dict_value_type = dict_type.baseType()[1]
-                    self.write_line('if let anyDict = json["' + param_map.value().getText() + '"] as? [String: Any] {')
-                    self.push_indent()
-                    self.write_line('var tmp: [String: String] = [:]')
-                    self.write_line('anyDict.forEach({ (key, value) in')
-                    self.push_indent()
-                    self.write_line('guard let newKey = ' + swift_base_type_name_from_idl_base_type(
-                        dict_key_type.getText()) + '(with: key) else {')
-                    self.push_indent()
-                    self.write_line('return')
-                    self.pop_indent()
-                    self.write_line('}')
-                    self.write_line('guard let newValue = ' + swift_base_type_name_from_idl_base_type(
-                        dict_value_type.getText()) + '(with: value) else {')
-                    self.push_indent()
-                    self.write_line('return')
-                    self.pop_indent()
-                    self.write_line('}')
-                    self.write_line('tmp[newKey] = newValue')
-                    self.pop_indent()
-                    self.write_line('})')
-                    self.write_line('if tmp.count > 0 {')
-                    self.push_indent()
-                    self.write_line('self.' + param_map.key().getText() + ' = tmp')
-                    self.pop_indent()
-                    self.write_line('} else {')
-                    self.push_indent()
-                    self.write_line('self.' + param_map.key().getText() + ' = nil')
-                    self.pop_indent()
-                    self.write_line('}')
-                    self.pop_indent()
-                    self.write_line('} else {')
-                    self.push_indent()
-                    self.write_line('self.' + param_map.key().getText() + ' = nil')
-                    self.pop_indent()
-                    self.write_line('}')
+                    self.write_line(
+                        'self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(
+                            dict_key_type.getText()) + ': ' + swift_base_type_name_from_idl_base_type(
+                            dict_value_type.getText()) + '](parameter: value["' + param_map.value().getText() + '"])')
+                    # self.write_line('if let anyDict = json["' + param_map.value().getText() + '"] as? [String: Any] {')
+                    # self.push_indent()
+                    # self.write_line('var tmp: [String: String] = [:]')
+                    # self.write_line('anyDict.forEach({ (key, value) in')
+                    # self.push_indent()
+                    # self.write_line('guard let newKey = ' + swift_base_type_name_from_idl_base_type(
+                    #     dict_key_type.getText()) + '(with: key) else {')
+                    # self.push_indent()
+                    # self.write_line('return')
+                    # self.pop_indent()
+                    # self.write_line('}')
+                    # self.write_line('guard let newValue = ' + swift_base_type_name_from_idl_base_type(
+                    #     dict_value_type.getText()) + '(with: value) else {')
+                    # self.push_indent()
+                    # self.write_line('return')
+                    # self.pop_indent()
+                    # self.write_line('}')
+                    # self.write_line('tmp[newKey] = newValue')
+                    # self.pop_indent()
+                    # self.write_line('})')
+                    # self.write_line('if tmp.count > 0 {')
+                    # self.push_indent()
+                    # self.write_line('self.' + param_map.key().getText() + ' = tmp')
+                    # self.pop_indent()
+                    # self.write_line('} else {')
+                    # self.push_indent()
+                    # self.write_line('self.' + param_map.key().getText() + ' = nil')
+                    # self.pop_indent()
+                    # self.write_line('}')
+                    # self.pop_indent()
+                    # self.write_line('} else {')
+                    # self.push_indent()
+                    # self.write_line('self.' + param_map.key().getText() + ' = nil')
+                    # self.pop_indent()
+                    # self.write_line('}')
             else:
                 self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
-                    param_type) + '(with: json["' + param_map.value().getText() + '"])')
-        self.pop_indent()
-        self.write_line('} else {')
-        self.push_indent()
-        self.write_line('return nil')
-        self.pop_indent()
-        self.write_line('}')
+                    param_type) + '(parameter: value["' + param_map.value().getText() + '"])')
         self.pop_indent()
         self.write_line('}')
 
     def generate_struct(self, struct_context):
         self.write_blank_lines(1)
-        self.write_line('struct ' + struct_context.structName().getText() + ': JSONObject {')
+        self.write_line('struct ' + struct_context.structName().getText() + ': HTTPIDLResponseParameterConvertible {')
         self.push_indent()
         self.generate_struct_init_and_member_var(struct_context)
         self.pop_indent()

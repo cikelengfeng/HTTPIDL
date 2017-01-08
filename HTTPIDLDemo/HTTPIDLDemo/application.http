@@ -4,5 +4,12 @@ INT64 x = x;
 }
 GET RESPONSE {
 STRING tttt = jfjjfjfjfj;
+Testing test = jude;
 }
+}
+
+STRUCT Testing {
+ARRAY<INT32> t1 = t;
+DICT<STRING, STRING> t2 = tt;
+DOUBLE t3 = ttt;
 }

@@ -44,3 +44,11 @@ public extension HTTPIDLRequest {
         }
     }
 }
+
+public extension HTTPIDLResponse {
+    static var defaultDecoder: HTTPResponseDecoder {
+        get {
+            return HTTPResponseJSONDecoder.shared
+        }
+    }
+}

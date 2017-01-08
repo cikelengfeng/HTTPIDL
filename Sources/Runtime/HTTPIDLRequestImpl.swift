@@ -13,9 +13,9 @@ struct HTTPIDLPlainRequest: HTTPIDLRequest {
     var method: String
     var configuration: HTTPIDLConfiguration
     var uri: String
-    var parameters: [HTTPIDLParameter]
+    var parameters: [HTTPIDLRequestParameter]
     
-    init(method: String, uri: String, configuration: HTTPIDLConfiguration, parameters: [HTTPIDLParameter]) {
+    init(method: String, uri: String, configuration: HTTPIDLConfiguration, parameters: [HTTPIDLRequestParameter]) {
         self.method = method
         self.configuration = configuration
         self.uri = uri

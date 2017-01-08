@@ -15,7 +15,7 @@ public enum HTTPBaseRequestEncoderError: Error {
     case nestedObjectInURLQuery
 }
 
-private func queryItems(parameters: [HTTPIDLParameter]) throws -> [(String, String)] {
+private func queryItems(parameters: [HTTPIDLRequestParameter]) throws -> [(String, String)] {
     return try parameters.flatMap { (param) -> [(String, String)] in
         switch param {
         case .int64(let key, let value):
@@ -82,7 +82,7 @@ public enum HTTPJSONRequestEncoderError: Error {
     case dataIsForbidden
 }
 
-private extension HTTPIDLParameter {
+private extension HTTPIDLRequestParameter {
     func json() throws -> (String, Any) {
         switch self {
         case .int64(let key, let value):
@@ -112,7 +112,7 @@ private extension HTTPIDLParameter {
     }
 }
 
-private func json(parameters: [HTTPIDLParameter]) throws -> Any {
+private func json(parameters: [HTTPIDLRequestParameter]) throws -> Any {
     return try parameters.reduce([:], { (soFar, soGood) in
         var result = soFar
         result[soGood.key] = try soGood.json().1
@@ -154,7 +154,7 @@ public enum HTTPMultipartRequestEncoderError: Error {
 }
 
 fileprivate extension MultipartFormData {
-    func append(parameter: HTTPIDLParameter) throws {
+    func append(parameter: HTTPIDLRequestParameter) throws {
         switch parameter {
             case .int64(let key, let value):
                 guard let data = String(value).data(using: String.Encoding.utf8) else {
@@ -249,7 +249,7 @@ public enum HTTPSingleBodyRequestEncoderError: Error {
     case dictionaryIsForbidden
 }
 
-private extension HTTPIDLParameter {
+private extension HTTPIDLRequestParameter {
     var valueClosure: () throws -> Data {
         get {
             return {
