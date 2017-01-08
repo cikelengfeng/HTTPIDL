@@ -42,10 +42,6 @@ public enum HTTPIDLRequestParameter {
     }
 }
 
-public enum HTTPIDLRequestParameterEncodeError: HTTPIDLError {
-    case EncodeToStringFailed
-}
-
 extension Int64: HTTPIDLRequestParameterKey {
     public func asHTTPParamterKey() -> String {
         return String(self)

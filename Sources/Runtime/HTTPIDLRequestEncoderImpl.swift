@@ -11,8 +11,19 @@ import Alamofire
 import Gzip
 
 public enum HTTPBaseRequestEncoderError: HTTPIDLError {
-    case constructURLFailed
-    case nestedObjectInURLQuery
+    case constructURLFailed(urlString: String)
+    case nestedObjectInURLQuery(errorSource: Any)
+    
+    public var errorDescription: String? {
+        get {
+            switch self {
+            case .constructURLFailed(let urlString):
+                return "构造URL对象失败，原始url字符串: " + urlString
+            case .nestedObjectInURLQuery(let errorSource):
+                return "企图在query中加入嵌套的对象: \(errorSource)"
+            }
+        }
+    }
 }
 
 private func queryItems(parameters: [HTTPIDLRequestParameter]) throws -> [(String, String)] {
@@ -46,13 +57,13 @@ private func queryItems(parameters: [HTTPIDLRequestParameter]) throws -> [(Strin
                 case .data(_, let data, _, _):
                     return (key, String(data: data, encoding: String.Encoding.utf8) ?? "")
                 case .array(_, _):
-                    throw HTTPBaseRequestEncoderError.nestedObjectInURLQuery
+                    throw HTTPBaseRequestEncoderError.nestedObjectInURLQuery(errorSource: values)
                 case .dictionary(_, _):
-                    throw HTTPBaseRequestEncoderError.nestedObjectInURLQuery
+                    throw HTTPBaseRequestEncoderError.nestedObjectInURLQuery(errorSource: values)
                 }
             })
         case .dictionary(_, _):
-            throw HTTPBaseRequestEncoderError.nestedObjectInURLQuery
+            throw HTTPBaseRequestEncoderError.nestedObjectInURLQuery(errorSource: param)
         }
     }
 }
@@ -63,7 +74,7 @@ public struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
     
     public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
-            throw HTTPBaseRequestEncoderError.constructURLFailed
+            throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         
         let query = try queryItems(parameters: request.parameters)
@@ -78,8 +89,19 @@ public struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
 
 
 public enum HTTPJSONRequestEncoderError: HTTPIDLError {
-    case fileIsForbidden
-    case dataIsForbidden
+    case fileIsForbidden(key: String, file: URL)
+    case dataIsForbidden(key: String, data: Data)
+    
+    public var errorDescription: String? {
+        get {
+            switch self {
+            case .fileIsForbidden(let key, let _):
+                return "json request encoder 不支持文件, 参数的key: " + key
+            case .dataIsForbidden(let key, let _):
+                return "json request encoder 不支持Data, 参数的key: " + key
+            }
+        }
+    }
 }
 
 private extension HTTPIDLRequestParameter {
@@ -94,10 +116,10 @@ private extension HTTPIDLRequestParameter {
             return (key, value)
         case .string(let key, let value):
             return (key, value)
-        case .file(_, _, _, _):
-            throw HTTPJSONRequestEncoderError.fileIsForbidden
-        case .data(_, _, _, _):
-            throw HTTPJSONRequestEncoderError.dataIsForbidden
+        case .file(let key, let url, _, _):
+            throw HTTPJSONRequestEncoderError.fileIsForbidden(key: key, file: url)
+        case .data(let key, let data, _, _):
+            throw HTTPJSONRequestEncoderError.dataIsForbidden(key: key, data: data)
         case .array(let key, let array):
             return (key, try array.map({ (paramInArray) in
                 return try paramInArray.json().1
@@ -126,7 +148,7 @@ public struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
     
     public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
-            throw HTTPBaseRequestEncoderError.constructURLFailed
+            throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         var headers = request.configuration.headers
         if headers["Content-Type"] == nil {
@@ -145,12 +167,31 @@ public struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
 }
 
 public enum HTTPMultipartRequestEncoderError: HTTPIDLError {
-    case unsupportedInt64
-    case unsupportedInt32
-    case unsupportedIntDouble
-    case unsupportedIntString
-    case arrayIsForbidden
-    case dictionaryIsForbidden
+    case unsupportedInt64(key: String, value: Int64)
+    case unsupportedInt32(key: String, value: Int32)
+    case unsupportedIntDouble(key: String, value: Double)
+    case unsupportedIntString(key: String, value: String)
+    case arrayIsForbidden(key: String, value: [HTTPIDLRequestParameter])
+    case dictionaryIsForbidden(key: String, value: [String: HTTPIDLRequestParameter])
+    
+    public var errorDescription: String? {
+        get {
+            switch self {
+            case .unsupportedInt64(let key, let value):
+                return "multipart request encoder error: 不支持的Int64, key : \(key), value: \(value)"
+            case .unsupportedInt32(let key, let value):
+                return "multipart request encoder error: 不支持的Int32, key : \(key), value: \(value)"
+            case .unsupportedIntDouble(let key, let value):
+                return "multipart request encoder error: 不支持的Double, key : \(key), value: \(value)"
+            case .unsupportedIntString(let key, let value):
+                return "multipart request encoder error: 不支持的String, key : \(key), value: \(value)"
+            case .arrayIsForbidden(let key, let value):
+                return "multipart request encoder error: 不支持数组类型的参数, key : \(key), value: \(value)"
+            case .dictionaryIsForbidden(let key, let value):
+                return "multipart request encoder error: 不支持字典类型的参数, key : \(key), value: \(value)"
+            }
+        }
+    }
 }
 
 fileprivate extension MultipartFormData {
@@ -158,32 +199,32 @@ fileprivate extension MultipartFormData {
         switch parameter {
             case .int64(let key, let value):
                 guard let data = String(value).data(using: String.Encoding.utf8) else {
-                    throw HTTPMultipartRequestEncoderError.unsupportedInt64
+                    throw HTTPMultipartRequestEncoderError.unsupportedInt64(key: key, value: value)
                 }
                 append(data, withName: key)
             case .int32(let key, let value):
                 guard let data = String(value).data(using: String.Encoding.utf8) else {
-                    throw HTTPMultipartRequestEncoderError.unsupportedInt32
+                    throw HTTPMultipartRequestEncoderError.unsupportedInt32(key: key, value: value)
                 }
                 append(data, withName: key)
             case .double(let key, let value):
                 guard let data = String(value).data(using: String.Encoding.utf8) else {
-                    throw HTTPMultipartRequestEncoderError.unsupportedIntDouble
+                    throw HTTPMultipartRequestEncoderError.unsupportedIntDouble(key: key, value: value)
                 }
                 append(data, withName: key)
             case .string(let key, let value):
                 guard let data = value.data(using: String.Encoding.utf8) else {
-                    throw HTTPMultipartRequestEncoderError.unsupportedIntString
+                    throw HTTPMultipartRequestEncoderError.unsupportedIntString(key: key, value: value)
                 }
                 append(data, withName: key)
             case .file(let key, let url, let fileName, let mime):
                 append(url, withName: key, fileName: fileName ?? UUID().uuidString, mimeType: mime ?? "application/octet-stream")
             case .data(let key, let data, let fileName, let mime):
                 append(data, withName: key, fileName: fileName ?? UUID().uuidString, mimeType: mime ?? "application/octet-stream")
-            case .array(_, _):
-                throw HTTPMultipartRequestEncoderError.arrayIsForbidden
-            case .dictionary(_, _):
-                throw HTTPMultipartRequestEncoderError.dictionaryIsForbidden
+            case .array(let key, let value):
+                throw HTTPMultipartRequestEncoderError.arrayIsForbidden(key: key, value: value)
+            case .dictionary(let key, let value):
+                throw HTTPMultipartRequestEncoderError.dictionaryIsForbidden(key: key, value: value)
         }
     }
 }
@@ -193,7 +234,7 @@ public struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
     
     public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
-            throw HTTPBaseRequestEncoderError.constructURLFailed
+            throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         let formData = MultipartFormData()
         var headers = request.configuration.headers
@@ -226,7 +267,7 @@ public struct HTTPCombinatedQueryRequestEncoder: HTTPRequestEncoder {
     
     public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
-            throw HTTPBaseRequestEncoderError.constructURLFailed
+            throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         
         let encodedURL = try url.appendQuery(pairs: queryItems(parameters: request.parameters.filter({ (param) -> Bool in
@@ -240,13 +281,34 @@ public struct HTTPCombinatedQueryRequestEncoder: HTTPRequestEncoder {
 }
 
 public enum HTTPSingleBodyRequestEncoderError: HTTPIDLError {
-    case noSuchParameter
-    case unsupportedInt64
-    case unsupportedInt32
-    case unsupportedIntDouble
-    case unsupportedIntString
-    case arrayIsForbidden
-    case dictionaryIsForbidden
+    case noSuchParameter(key: String)
+    case unsupportedInt64(key: String, value: Int64)
+    case unsupportedInt32(key: String, value: Int32)
+    case unsupportedIntDouble(key: String, value: Double)
+    case unsupportedIntString(key: String, value: String)
+    case arrayIsForbidden(key: String, value: [HTTPIDLRequestParameter])
+    case dictionaryIsForbidden(key: String, value: [String: HTTPIDLRequestParameter])
+    
+    public var errorDescription: String? {
+        get {
+            switch self {
+            case .noSuchParameter(let key):
+                return "single body request encoder error: 没有此参数, key : \(key)"
+            case .unsupportedInt64(let key, let value):
+                return "single body request encoder error: 不支持的Int64, key : \(key), value: \(value)"
+            case .unsupportedInt32(let key, let value):
+                return "single body request encoder error: 不支持的Int32, key : \(key), value: \(value)"
+            case .unsupportedIntDouble(let key, let value):
+                return "single body request encoder error: 不支持的Double, key : \(key), value: \(value)"
+            case .unsupportedIntString(let key, let value):
+                return "single body request encoder error: 不支持的String, key : \(key), value: \(value)"
+            case .arrayIsForbidden(let key, let value):
+                return "single body request encoder error: 不支持数组类型的参数, key : \(key), value: \(value)"
+            case .dictionaryIsForbidden(let key, let value):
+                return "single body request encoder error: 不支持字典类型的参数, key : \(key), value: \(value)"
+            }
+        }
+    }
 }
 
 private extension HTTPIDLRequestParameter {
@@ -254,34 +316,34 @@ private extension HTTPIDLRequestParameter {
         get {
             return {
                 switch self {
-                case .int64( _, let value):
+                case .int64(let key, let value):
                     guard let data = String(value).data(using: String.Encoding.utf8) else {
-                        throw HTTPSingleBodyRequestEncoderError.unsupportedInt64
+                        throw HTTPSingleBodyRequestEncoderError.unsupportedInt64(key: key, value: value)
                     }
                     return data
-                case .int32(_, let value):
+                case .int32(let key, let value):
                     guard let data = String(value).data(using: String.Encoding.utf8) else {
-                        throw HTTPSingleBodyRequestEncoderError.unsupportedInt32
+                        throw HTTPSingleBodyRequestEncoderError.unsupportedInt32(key: key, value: value)
                     }
                     return data
-                case .double(_, let value):
+                case .double(let key, let value):
                     guard let data = String(value).data(using: String.Encoding.utf8) else {
-                        throw HTTPSingleBodyRequestEncoderError.unsupportedIntDouble
+                        throw HTTPSingleBodyRequestEncoderError.unsupportedIntDouble(key: key, value: value)
                     }
                     return data
-                case .string(_, let value):
+                case .string(let key, let value):
                     guard let data = value.data(using: String.Encoding.utf8) else {
-                        throw HTTPSingleBodyRequestEncoderError.unsupportedIntString
+                        throw HTTPSingleBodyRequestEncoderError.unsupportedIntString(key: key, value: value)
                     }
                     return data
                 case .file(_, let url, _, _):
                     return try Data(contentsOf: url, options: Data.ReadingOptions.mappedIfSafe)
                 case .data(_, let data, _, _):
                     return data
-                case .array(_, _):
-                    throw HTTPSingleBodyRequestEncoderError.arrayIsForbidden
-                case .dictionary(_, _):
-                    throw HTTPSingleBodyRequestEncoderError.dictionaryIsForbidden
+                case .array(let key, let value):
+                    throw HTTPSingleBodyRequestEncoderError.arrayIsForbidden(key: key, value: value)
+                case .dictionary(let key, let value):
+                    throw HTTPSingleBodyRequestEncoderError.dictionaryIsForbidden(key: key, value: value)
                 }
             }
         }
@@ -300,7 +362,7 @@ public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
     
     public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
-            throw HTTPBaseRequestEncoderError.constructURLFailed
+            throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         
         let encodedURL = try url.appendQuery(pairs: queryItems(parameters: request.parameters.filter({ (param) -> Bool in
@@ -310,7 +372,7 @@ public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
         guard let singleBody = (request.parameters.first { (param) -> Bool in
             return param.key == self.singleBodyKey
         }) else {
-            throw HTTPSingleBodyRequestEncoderError.noSuchParameter
+            throw HTTPSingleBodyRequestEncoderError.noSuchParameter(key: self.singleBodyKey)
         }
         
         var headers = request.configuration.headers
@@ -333,7 +395,7 @@ public struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
     
     public func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
-            throw HTTPBaseRequestEncoderError.constructURLFailed
+            throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         
         var headers = request.configuration.headers

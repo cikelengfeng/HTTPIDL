@@ -9,8 +9,16 @@
 import Foundation
 
 public enum HTTPIDLBaseClientError: HTTPIDLError {
-    case noResponse
-    case unhownError(rawError: Error)
+    case unknownError(rawError: Error)
+    
+    public var errorDescription: String? {
+        get {
+            switch self {
+            case .unknownError(let error):
+                return "未知错误，通常是某个各组件抛出了非HTTPIDLError类型的错误导致的, 原是错误: \(error)"
+            }
+        }
+    }
 }
 
 public class HTTPIDLBaseClient: HTTPIDLClient {
@@ -212,7 +220,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
             self.handle(error: error, errorHandler: errorHandler)
         } catch let error {
             assert(false, "抓到非 HTTPIDLError 类型的错误！！！")
-            self.handle(error: HTTPIDLBaseClientError.unhownError(rawError: error), errorHandler: errorHandler)
+            self.handle(error: HTTPIDLBaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
         }
     }
     
@@ -262,7 +270,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
             self.handle(error: error, errorHandler: errorHandler)
         } catch let error {
             assert(false, "抓到非 HTTPIDLError 类型的错误！！！")
-            self.handle(error: HTTPIDLBaseClientError.unhownError(rawError: error), errorHandler: errorHandler)
+            self.handle(error: HTTPIDLBaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
         }
     }
     
@@ -293,7 +301,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
             self.handle(error: error, errorHandler: errorHandler)
         } catch let error {
             assert(false, "抓到非 HTTPIDLError 类型的错误！！！")
-            self.handle(error: HTTPIDLBaseClientError.unhownError(rawError: error), errorHandler: errorHandler)
+            self.handle(error: HTTPIDLBaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
         }
     }
 }

@@ -30,7 +30,7 @@ private func decode(json: Any) throws -> HTTPIDLResponseParameter {
             return ret
         }))
     }else {
-        throw HTTPResponseJSONDecoderError.unsupportedParameterType
+        throw HTTPResponseJSONDecoderError.unsupportedParameterType(value: json)
     }
 }
 
@@ -43,14 +43,24 @@ private func decodeRoot(json: Any) throws -> [String: HTTPIDLResponseParameter] 
             return ret
         })
     } else {
-        throw HTTPResponseJSONDecoderError.illegalJSONObject
+        throw HTTPResponseJSONDecoderError.illegalJSONObject(errorSource: json)
     }
 }
 
 public enum HTTPResponseJSONDecoderError: HTTPIDLError {
-    case parameterKeyNotFound
-    case illegalJSONObject
-    case unsupportedParameterType
+    case illegalJSONObject(errorSource: Any)
+    case unsupportedParameterType(value: Any)
+    
+    public var errorDescription: String? {
+        get {
+            switch self {
+            case .illegalJSONObject(let errorSource):
+                return "response json decoder error: response不是字典类型，导致无法给response的属性赋值, error source: \(errorSource)"
+            case .unsupportedParameterType(let value):
+                return "response json decoder error: 不支持的参数类型 value: \(value)"
+            }
+        }
+    }
 }
 
 public struct HTTPResponseJSONDecoder: HTTPResponseDecoder {

@@ -10,9 +10,22 @@ import Foundation
 import Alamofire
 
 enum AlamofireClientError: HTTPIDLError {
-    case missingResponse
+    case missingResponse(request: HTTPRequest)
     case adaptAlamofireRequestFailed(rawError: Error)
     case adaptAlamofireResponseFailed(rawError: Error)
+    
+    var errorDescription: String? {
+        get {
+            switch self {
+            case .missingResponse(let request):
+                return "HTTPURLResponse为空, request: \(request)"
+            case .adaptAlamofireRequestFailed(let error):
+                return "生成alamofire DataRequest出错, 原始错误: \(error)"
+            case .adaptAlamofireResponseFailed(let error):
+                return "从alamofire http 请求出错, 原始错误: \(error)"
+            }
+        }
+    }
 }
 
 struct AlamofireClient: HTTPClient {
@@ -51,7 +64,7 @@ struct AlamofireClient: HTTPClient {
         switch response.result {
         case .success(let data):
                 guard let rawResponse = response.response else {
-                    return (nil, AlamofireClientError.missingResponse)
+                    return (nil, AlamofireClientError.missingResponse(request: request))
                 }
                 //TODO: handle header fields
                 return (HTTPBaseResponse(with: rawResponse.statusCode, headers: rawResponse.allHeaderFields as! [String : String], body: data, request: request), nil)
