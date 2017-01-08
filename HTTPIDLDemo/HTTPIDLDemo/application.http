@@ -1,0 +1,8 @@
+MESSAGE /application/settings {
+GET REQUEST {
+INT64 x = x;
+}
+GET RESPONSE {
+STRING tttt = jfjjfjfjfj;
+}
+}

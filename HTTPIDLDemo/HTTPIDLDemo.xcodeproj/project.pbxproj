@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0CECA864BFA4DB8E81697DE8 /* Pods_HTTPIDLDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD5664E73DED524B38DA9FA /* Pods_HTTPIDLDemo.framework */; };
+		423C31EC1E21E82800D74B2E /* application.http in Resources */ = {isa = PBXBuildFile; fileRef = 423C31EA1E21E82800D74B2E /* application.http */; };
+		423C31ED1E21E82800D74B2E /* application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423C31EB1E21E82800D74B2E /* application.swift */; };
 		4288467F1DEDAD3900D952A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4288467E1DEDAD3900D952A2 /* AppDelegate.swift */; };
 		428846811DEDAD3900D952A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428846801DEDAD3900D952A2 /* ViewController.swift */; };
 		428846841DEDAD3900D952A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428846821DEDAD3900D952A2 /* Main.storyboard */; };
@@ -17,6 +19,8 @@
 
 /* Begin PBXFileReference section */
 		3A62EA8E4382BCAAD141C27E /* Pods-HTTPIDLDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemo/Pods-HTTPIDLDemo.release.xcconfig"; sourceTree = "<group>"; };
+		423C31EA1E21E82800D74B2E /* application.http */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = application.http; sourceTree = "<group>"; };
+		423C31EB1E21E82800D74B2E /* application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = application.swift; sourceTree = "<group>"; };
 		4288467B1DEDAD3900D952A2 /* HTTPIDLDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPIDLDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4288467E1DEDAD3900D952A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		428846801DEDAD3900D952A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +76,8 @@
 			children = (
 				4288467E1DEDAD3900D952A2 /* AppDelegate.swift */,
 				428846801DEDAD3900D952A2 /* ViewController.swift */,
+				423C31EA1E21E82800D74B2E /* application.http */,
+				423C31EB1E21E82800D74B2E /* application.swift */,
 				428846821DEDAD3900D952A2 /* Main.storyboard */,
 				428846851DEDAD3900D952A2 /* Assets.xcassets */,
 				428846871DEDAD3900D952A2 /* LaunchScreen.storyboard */,
@@ -153,6 +159,7 @@
 			files = (
 				428846891DEDAD3900D952A2 /* LaunchScreen.storyboard in Resources */,
 				428846861DEDAD3900D952A2 /* Assets.xcassets in Resources */,
+				423C31EC1E21E82800D74B2E /* application.http in Resources */,
 				428846841DEDAD3900D952A2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -213,6 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				428846811DEDAD3900D952A2 /* ViewController.swift in Sources */,
+				423C31ED1E21E82800D74B2E /* application.swift in Sources */,
 				4288467F1DEDAD3900D952A2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
