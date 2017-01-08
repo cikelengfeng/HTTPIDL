@@ -35,7 +35,6 @@ private func decode(json: Any) throws -> HTTPIDLResponseParameter {
 }
 
 private func decodeRoot(json: Any) throws -> [String: HTTPIDLResponseParameter] {
-    let ret:  [String: HTTPIDLResponseParameter]
     if let tmp = json as? [String: Any] {
         return try tmp.reduce([String: HTTPIDLResponseParameter](), { (soFar, soGood) in
             var ret = soFar

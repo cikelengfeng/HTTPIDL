@@ -95,9 +95,9 @@ public enum HTTPJSONRequestEncoderError: HTTPIDLError {
     public var errorDescription: String? {
         get {
             switch self {
-            case .fileIsForbidden(let key, let _):
+            case .fileIsForbidden(let key, _):
                 return "json request encoder 不支持文件, 参数的key: " + key
-            case .dataIsForbidden(let key, let _):
+            case .dataIsForbidden(let key, _):
                 return "json request encoder 不支持Data, 参数的key: " + key
             }
         }
