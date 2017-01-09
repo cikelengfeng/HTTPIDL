@@ -166,14 +166,15 @@ public class BaseClient: Client {
             var req = request
             for rewriter in requestRewriters {
                 let rewriterResult = rewriter.rewrite(request: req)
+                ret = rewriterResult
                 switch rewriterResult {
                     //如果任何一个结果被重写成了response或error都结束循环，直接返回最后的rewrite结果
                     //如果重写后还是一个request，则将重写后的request交给下一个rewriter重写，如果后面没有rewriter了，就将这次重写的结果返回
                     case .request(let rewritedRequest):
                         req = rewritedRequest
-                    default: break
+                    case .response(_), .error(_):
+                        break
                 }
-                ret = rewriterResult
             }
         }
         return ret
@@ -185,14 +186,15 @@ public class BaseClient: Client {
             var resp = response
             for rewriter in responseRewriters {
                 let rewriterResult = rewriter.rewrite(response: resp)
+                ret = rewriterResult
                 switch rewriterResult {
                     //如果任何一个结果被重写成了error都结束循环，直接返回最后的rewrite结果
                     //如果重写后还是一个response，则将重写后的response交给下一个rewriter重写，如果后面没有rewriter了，就将这次重写的结果返回
                 case .response(let rewritedResponse):
                     resp = rewritedResponse
-                default: break
+                case .error(_):
+                    break
                 }
-                ret = rewriterResult
             }
         }
         return ret
