@@ -161,7 +161,7 @@ public class BaseClient: Client {
     }
     
     private func rewrite(request: HTTPRequest) -> HTTPRequestRewriterResult? {
-        var ret: HTTPRequestRewriterResult? = nil
+        var ret: HTTPRequestRewriterResult = HTTPRequestRewriterResult.request(request: request)
         requestRewriterQueue.sync {
             var req = request
             for rewriter in requestRewriters {
@@ -181,7 +181,7 @@ public class BaseClient: Client {
     }
     
     private func rewrite(response: HTTPResponse) -> HTTPResponseRewriterResult? {
-        var ret: HTTPResponseRewriterResult? = nil
+        var ret: HTTPResponseRewriterResult = HTTPResponseRewriterResult.response(response: response)
         requestRewriterQueue.sync {
             var resp = response
             for rewriter in responseRewriters {
