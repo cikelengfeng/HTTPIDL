@@ -1,5 +1,5 @@
 //
-//  HTTPIDLResponseBodyDecoderImpl.swift
+//  ResponseBodyDecoderImpl.swift
 //  everfilter
 //
 //  Created by 徐 东 on 2016/12/31.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-private func decode(json: Any) throws -> HTTPIDLResponseParameter {
+private func decode(json: Any) throws -> ResponseParameter {
     if let tmp = json as? Int64 {
         return .int64(value: tmp)
     } else if let tmp = json as? Int32 {
@@ -24,7 +24,7 @@ private func decode(json: Any) throws -> HTTPIDLResponseParameter {
             return try decode(json: $0)
         }))
     } else if let tmp = json as? [String: Any] {
-        return .dictionary(value: try tmp.reduce([String: HTTPIDLResponseParameter](), { (soFar, soGood) in
+        return .dictionary(value: try tmp.reduce([String: ResponseParameter](), { (soFar, soGood) in
             var ret = soFar
             ret[soGood.key] = try decode(json: soGood.value)
             return ret
@@ -34,9 +34,9 @@ private func decode(json: Any) throws -> HTTPIDLResponseParameter {
     }
 }
 
-private func decodeRoot(json: Any) throws -> [String: HTTPIDLResponseParameter] {
+private func decodeRoot(json: Any) throws -> [String: ResponseParameter] {
     if let tmp = json as? [String: Any] {
-        return try tmp.reduce([String: HTTPIDLResponseParameter](), { (soFar, soGood) in
+        return try tmp.reduce([String: ResponseParameter](), { (soFar, soGood) in
             var ret = soFar
             ret[soGood.key] = try decode(json: soGood.value)
             return ret
@@ -67,7 +67,7 @@ public struct HTTPResponseJSONDecoder: HTTPResponseDecoder {
     public static let shared = HTTPResponseJSONDecoder()
     public var jsonReadOptions: JSONSerialization.ReadingOptions = .allowFragments
     
-    public func decode(_ response: HTTPResponse) throws -> [String: HTTPIDLResponseParameter] {
+    public func decode(_ response: HTTPResponse) throws -> [String: ResponseParameter] {
         guard let body = response.body else {
             return [:]
         }

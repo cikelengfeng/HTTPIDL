@@ -90,7 +90,7 @@ class AlamofireCodeGenerator:
         self.write_line('}')
 
     def generate_request_parameters(self, request_context):
-        httpidl_parameter = 'HTTPIDLRequestParameter'
+        httpidl_parameter = 'RequestParameter'
         self.write_line('var parameters: [%s] {' % httpidl_parameter)
         self.push_indent()
         self.write_line('var result: [%s] = []' % httpidl_parameter)
@@ -120,8 +120,8 @@ class AlamofireCodeGenerator:
                         self.request_name_from_message(request_context.method().getText(),
                                                        self.message_name_from_uri(uri_context)) + '.defaultMethod'
                         )
-        self.write_line('var configuration: HTTPIDLConfiguration = BaseHTTPIDLConfiguration.shared')
-        self.write_line('var client: HTTPIDLClient = HTTPIDLBaseClient.shared')
+        self.write_line('var configuration: Configuration = BaseConfiguration.shared')
+        self.write_line('var client: Client = BaseClient.shared')
         self.write_line('var uri: String {')
         self.push_indent()
         self.write_line('get {')
@@ -156,7 +156,7 @@ class AlamofireCodeGenerator:
     def generate_request(self, request_context, message_name, uri_context):
         self.write_blank_lines(1)
         request_name = self.request_name_from_message(request_context.method().getText(), message_name)
-        self.write_line('class ' + request_name + ': HTTPIDLRequest {')
+        self.write_line('class ' + request_name + ': Request {')
         self.push_indent()
         self.generate_request_init_and_member_var(request_context, uri_context)
         self.generate_request_parameters(request_context)
@@ -178,7 +178,7 @@ class AlamofireCodeGenerator:
         self.write_line('let rawResponse: HTTPResponse')
 
         # 从 raw parameter 初始化
-        self.write_line('init(parameters: [String: HTTPIDLResponseParameter], rawResponse: HTTPResponse) throws {')
+        self.write_line('init(parameters: [String: ResponseParameter], rawResponse: HTTPResponse) throws {')
         self.push_indent()
         self.write_line('self.rawResponse = rawResponse')
         for param_map in param_maps:
@@ -191,7 +191,7 @@ class AlamofireCodeGenerator:
     def generate_response(self, response_context, message_name):
         self.write_blank_lines(1)
         response_name = self.response_name_from_message(response_context.method().getText(), message_name)
-        self.write_line('struct ' + response_name + ': HTTPIDLResponse {')
+        self.write_line('struct ' + response_name + ': Response {')
         self.push_indent()
         self.generate_response_init_and_member_var(response_context, message_name)
         self.pop_indent()
@@ -214,7 +214,7 @@ class AlamofireCodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.write_line('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        self.write_line('init?(parameter: HTTPIDLResponseParameter?) {')
+        self.write_line('init?(parameter: ResponseParameter?) {')
         self.push_indent()
         self.write_line('guard let parameter = parameter, case .dictionary(let value) = parameter else {')
         self.push_indent()
@@ -245,7 +245,7 @@ class AlamofireCodeGenerator:
 
     def generate_struct(self, struct_context):
         self.write_blank_lines(1)
-        self.write_line('struct ' + struct_context.structName().getText() + ': HTTPIDLResponseParameterConvertible {')
+        self.write_line('struct ' + struct_context.structName().getText() + ': ResponseParameterConvertible {')
         self.push_indent()
         self.generate_struct_init_and_member_var(struct_context)
         self.pop_indent()

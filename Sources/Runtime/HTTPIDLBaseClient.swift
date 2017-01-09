@@ -1,5 +1,5 @@
 //
-//  HTTPIDLBaseClient.swift
+//  BaseClient.swift
 //  everfilter
 //
 //  Created by 徐 东 on 2016/12/31.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum HTTPIDLBaseClientError: HIError {
+public enum BaseClientError: HIError {
     case unknownError(rawError: Error)
     
     public var errorDescription: String? {
@@ -21,9 +21,9 @@ public enum HTTPIDLBaseClientError: HIError {
     }
 }
 
-public class HTTPIDLBaseClient: HTTPIDLClient {
+public class BaseClient: Client {
     
-    public static let shared = HTTPIDLBaseClient()
+    public static let shared = BaseClient()
     private var clientImpl: HTTPClient = AlamofireClient()
     private var requestObservers: [HTTPRequestObserver] = []
     private var responseObservers: [HTTPResponseObserver] = []
@@ -100,28 +100,28 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
     }
 
     
-    private func willSend(request: HTTPIDLRequest) {
+    private func willSend(request: Request) {
         requestObserverQueue.async {
             self.requestObservers.forEach { (observer) in
                 observer.willSend(request: request)
             }
         }
     }
-    private func didSend(request: HTTPIDLRequest) {
+    private func didSend(request: Request) {
         requestObserverQueue.async {
             self.requestObservers.forEach { (observer) in
                 observer.didSend(request: request)
             }
         }
     }
-    private func willEncode(request: HTTPIDLRequest) {
+    private func willEncode(request: Request) {
         requestObserverQueue.async {
             self.requestObservers.forEach { (observer) in
                 observer.willEncode(request: request)
             }
         }
     }
-    private func didEncode(request: HTTPIDLRequest, encoded: HTTPRequest) {
+    private func didEncode(request: Request, encoded: HTTPRequest) {
         requestObserverQueue.async {
             self.requestObservers.forEach { (observer) in
                 observer.didEncode(request: request, encoded: encoded)
@@ -152,7 +152,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
             }
         }
     }
-    private func didDecode(rawResponse: HTTPResponse, decodedResponse: HTTPIDLResponse) {
+    private func didDecode(rawResponse: HTTPResponse, decodedResponse: Response) {
         responseObserverQueue.async {
             self.responseObservers.forEach { (observer) in
                 observer.didDecode(rawResponse: rawResponse, decodedResponse: decodedResponse)
@@ -198,7 +198,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
         return ret
     }
     
-    private func handle<ResponseType : HTTPIDLResponse>(response: HTTPResponse, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) {
+    private func handle<ResponseType : Response>(response: HTTPResponse, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) {
         var resp = response
         if let responseRewriteResult = self.rewrite(response: response) {
             switch responseRewriteResult {
@@ -220,7 +220,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
             self.handle(error: error, errorHandler: errorHandler)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(error: HTTPIDLBaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
+            self.handle(error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
         }
     }
     
@@ -244,7 +244,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
         self.receive(error: error)
     }
     
-    public func send<ResponseType : HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) {
+    public func send<ResponseType : Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -270,11 +270,11 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
             self.handle(error: error, errorHandler: errorHandler)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(error: HTTPIDLBaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
+            self.handle(error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
         }
     }
     
-    public func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((HIError) -> Void)?) {
+    public func send(_ request: Request, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((HIError) -> Void)?) {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -301,7 +301,7 @@ public class HTTPIDLBaseClient: HTTPIDLClient {
             self.handle(error: error, errorHandler: errorHandler)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(error: HTTPIDLBaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
+            self.handle(error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
         }
     }
 }

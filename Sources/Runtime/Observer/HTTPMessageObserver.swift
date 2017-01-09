@@ -9,15 +9,15 @@
 import Foundation
 
 public protocol HTTPRequestObserver: class {
-    func willSend(request: HTTPIDLRequest)
-    func didSend(request: HTTPIDLRequest)
-    func willEncode(request: HTTPIDLRequest)
-    func didEncode(request: HTTPIDLRequest, encoded: HTTPRequest)
+    func willSend(request: Request)
+    func didSend(request: Request)
+    func willEncode(request: Request)
+    func didEncode(request: Request, encoded: HTTPRequest)
 }
 
 public protocol HTTPResponseObserver: class {
     func receive(error: HIError)
     func receive(rawResponse: HTTPResponse)
     func willDecode(rawResponse: HTTPResponse)
-    func didDecode(rawResponse: HTTPResponse, decodedResponse: HTTPIDLResponse)
+    func didDecode(rawResponse: HTTPResponse, decodedResponse: Response)
 }

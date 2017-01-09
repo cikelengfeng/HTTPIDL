@@ -1,5 +1,5 @@
 //
-//  HTTPIDLResponseParameter.swift
+//  ResponseParameter.swift
 //  Pods
 //
 //  Created by 徐 东 on 2017/1/7.
@@ -8,22 +8,22 @@
 
 import Foundation
 
-public enum HTTPIDLResponseParameter {
+public enum ResponseParameter {
     case int64(value: Int64)
     case int32(value: Int32)
     case double(value: Double)
     case string(value: String)
     case data(value: Data, fileName: String?, mimeType: String)
-    case array(value: [HTTPIDLResponseParameter])
-    case dictionary(value: [String: HTTPIDLResponseParameter])
+    case array(value: [ResponseParameter])
+    case dictionary(value: [String: ResponseParameter])
 }
 
-public protocol HTTPIDLResponseParameterConvertible {
-    init?(parameter: HTTPIDLResponseParameter?)
+public protocol ResponseParameterConvertible {
+    init?(parameter: ResponseParameter?)
 }
 
-extension Int64: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter?) {
+extension Int64: ResponseParameterConvertible {
+    public init?(parameter: ResponseParameter?) {
         guard let parameter = parameter else {
             return nil
         }
@@ -40,8 +40,8 @@ extension Int64: HTTPIDLResponseParameterConvertible {
     }
 }
 
-extension Int32: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter?) {
+extension Int32: ResponseParameterConvertible {
+    public init?(parameter: ResponseParameter?) {
         guard let parameter = parameter else {
             return nil
         }
@@ -58,8 +58,8 @@ extension Int32: HTTPIDLResponseParameterConvertible {
     }
 }
 
-extension Double: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter?) {
+extension Double: ResponseParameterConvertible {
+    public init?(parameter: ResponseParameter?) {
         guard let parameter = parameter else {
             return nil
         }
@@ -78,8 +78,8 @@ extension Double: HTTPIDLResponseParameterConvertible {
     }
 }
 
-extension String: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter?) {
+extension String: ResponseParameterConvertible {
+    public init?(parameter: ResponseParameter?) {
         guard let parameter = parameter else {
             return nil
         }
@@ -98,8 +98,8 @@ extension String: HTTPIDLResponseParameterConvertible {
     }
 }
 
-extension HTTPData: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter?) {
+extension HTTPData: ResponseParameterConvertible {
+    public init?(parameter: ResponseParameter?) {
         guard let parameter = parameter else {
             return nil
         }
@@ -112,15 +112,15 @@ extension HTTPData: HTTPIDLResponseParameterConvertible {
     }
 }
 
-extension HTTPFile: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter?) {
+extension HTTPFile: ResponseParameterConvertible {
+    public init?(parameter: ResponseParameter?) {
         //暂不支持，后续打算把参数内容写进临时文件，然后用临时文件地址初始化
             return nil
     }
 }
 
-public extension Array where Element: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter?) {
+public extension Array where Element: ResponseParameterConvertible {
+    public init?(parameter: ResponseParameter?) {
         guard let parameter = parameter else {
             return nil
         }
@@ -135,18 +135,18 @@ public extension Array where Element: HTTPIDLResponseParameterConvertible {
     }
 }
 
-public protocol HTTPIDLResponseParameterKeyType: Hashable {
+public protocol ResponseParameterKeyType: Hashable {
     init(string: String)
 }
 
-extension String: HTTPIDLResponseParameterKeyType {
+extension String: ResponseParameterKeyType {
     public init(string: String) {
         self = string
     }
 }
 
-public extension Dictionary where Key: HTTPIDLResponseParameterKeyType, Value: HTTPIDLResponseParameterConvertible {
-    public init?(parameter: HTTPIDLResponseParameter?) {
+public extension Dictionary where Key: ResponseParameterKeyType, Value: ResponseParameterConvertible {
+    public init?(parameter: ResponseParameter?) {
         guard let parameter = parameter else {
             return nil
         }

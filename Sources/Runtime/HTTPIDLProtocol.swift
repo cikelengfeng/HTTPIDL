@@ -1,6 +1,6 @@
 //
-//  HTTPIDLProtocol.swift
-//  HTTPIDLDemo
+//  Protocol.swift
+//  Demo
 //
 //  Created by 徐 东 on 2016/12/1.
 //  Copyright © 2016年 dx lab. All rights reserved.
@@ -8,38 +8,38 @@
 
 import Foundation
 
-public protocol HTTPIDLRequestParameterKey {
+public protocol RequestParameterKey {
     func asHTTPParamterKey() -> String
 }
 
-public protocol HTTPIDLRequestParameterConvertible {
-    func asHTTPIDLRequestParameter(key: String) -> HTTPIDLRequestParameter
+public protocol RequestParameterConvertible {
+    func asRequestParameter(key: String) -> RequestParameter
 }
 
-public protocol HTTPIDLRequest {
+public protocol Request {
     static var defaultMethod: String {get}
     var method: String {get}
-    var configuration: HTTPIDLConfiguration {get set}
+    var configuration: Configuration {get set}
     var uri: String {get}
-    var parameters: [HTTPIDLRequestParameter] {get}
+    var parameters: [RequestParameter] {get}
 }
 
 
 public protocol HTTPRequestEncoder {
-    func encode(_ request: HTTPIDLRequest) throws -> HTTPRequest
+    func encode(_ request: Request) throws -> HTTPRequest
 }
 
-public protocol HTTPIDLResponse {
-    init(parameters: [String: HTTPIDLResponseParameter], rawResponse: HTTPResponse) throws
+public protocol Response {
+    init(parameters: [String: ResponseParameter], rawResponse: HTTPResponse) throws
 }
 
 public protocol HTTPResponseDecoder {
-    func decode(_ response: HTTPResponse) throws -> [String: HTTPIDLResponseParameter]
+    func decode(_ response: HTTPResponse) throws -> [String: ResponseParameter]
 }
 
-public protocol HTTPIDLClient {
-    func send<ResponseType: HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder ,completion: @escaping (_ repsonse: ResponseType) -> Void, errorHandler: ((_ error: HIError) -> Void)?)
-    func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: HTTPResponse) -> Void, errorHandler: ((_ error: HIError) -> Void)?)
+public protocol Client {
+    func send<ResponseType: Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder ,completion: @escaping (_ repsonse: ResponseType) -> Void, errorHandler: ((_ error: HIError) -> Void)?)
+    func send(_ request: Request, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: HTTPResponse) -> Void, errorHandler: ((_ error: HIError) -> Void)?)
     
     mutating func add(requestObserver: HTTPRequestObserver)
     mutating func remove(requestObserver: HTTPRequestObserver)

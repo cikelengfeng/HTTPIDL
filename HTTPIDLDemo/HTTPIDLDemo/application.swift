@@ -4,10 +4,10 @@ import Foundation
 import HTTPIDL
 
 
-struct Testing: HTTPIDLResponseParameterConvertible {
+struct Testing: ResponseParameterConvertible {
     
     let sms: String?
-    init?(parameter: HTTPIDLResponseParameter?) {
+    init?(parameter: ResponseParameter?) {
         guard let parameter = parameter, case .dictionary(let value) = parameter else {
             return nil
         }
@@ -15,22 +15,22 @@ struct Testing: HTTPIDLResponseParameterConvertible {
     }
 }
 
-class GetApplicationSettingsRequest: HTTPIDLRequest {
+class GetApplicationSettingsRequest: Request {
     
     static let defaultMethod: String = "GET"
     var method: String = GetApplicationSettingsRequest.defaultMethod
-    var configuration: HTTPIDLConfiguration = BaseHTTPIDLConfiguration.shared
-    var client: HTTPIDLClient = HTTPIDLBaseClient.shared
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
     var uri: String {
         get {
             return "/application/settings"
         }
     }
     var x: Int64?
-    var parameters: [HTTPIDLRequestParameter] {
-        var result: [HTTPIDLRequestParameter] = []
+    var parameters: [RequestParameter] {
+        var result: [RequestParameter] = []
         if let tmp = x {
-            result.append(tmp.asHTTPIDLRequestParameter(key: "x"))
+            result.append(tmp.asRequestParameter(key: "x"))
         }
         return result
     }
@@ -42,12 +42,12 @@ class GetApplicationSettingsRequest: HTTPIDLRequest {
     }
 }
 
-struct GetApplicationSettingsResponse: HTTPIDLResponse {
+struct GetApplicationSettingsResponse: Response {
     
     let tttt: String?
     let t2: Testing?
     let rawResponse: HTTPResponse
-    init(parameters: [String: HTTPIDLResponseParameter], rawResponse: HTTPResponse) throws {
+    init(parameters: [String: ResponseParameter], rawResponse: HTTPResponse) throws {
         self.rawResponse = rawResponse
         self.tttt = String(parameter: parameters["jfjjfjfjfj"])
         self.t2 = Testing(parameter: parameters["data"])

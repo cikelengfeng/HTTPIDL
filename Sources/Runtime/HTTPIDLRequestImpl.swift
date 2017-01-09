@@ -1,5 +1,5 @@
 //
-//  HTTPIDLRequestImpl.swift
+//  RequestImpl.swift
 //  everfilter
 //
 //  Created by 徐 东 on 2017/1/2.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-struct HTTPIDLPlainRequest: HTTPIDLRequest {
+struct PlainRequest: Request {
     static var defaultMethod: String = "GET"
     var method: String
-    var configuration: HTTPIDLConfiguration
+    var configuration: Configuration
     var uri: String
-    var parameters: [HTTPIDLRequestParameter]
+    var parameters: [RequestParameter]
     
-    init(method: String, uri: String, configuration: HTTPIDLConfiguration, parameters: [HTTPIDLRequestParameter]) {
+    init(method: String, uri: String, configuration: Configuration, parameters: [RequestParameter]) {
         self.method = method
         self.configuration = configuration
         self.uri = uri
