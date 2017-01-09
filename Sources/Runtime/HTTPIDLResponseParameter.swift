@@ -98,27 +98,6 @@ extension String: ResponseParameterConvertible {
     }
 }
 
-extension HTTPData: ResponseParameterConvertible {
-    public init?(parameter: ResponseParameter?) {
-        guard let parameter = parameter else {
-            return nil
-        }
-        switch parameter {
-        case .data(let value, let fileName, let mimeType):
-            self.init(with: value, fileName: fileName ?? "", mimeType: mimeType)
-        case .array, .dictionary, .double, .int32, .int64, .string:
-            return nil
-        }
-    }
-}
-
-extension HTTPFile: ResponseParameterConvertible {
-    public init?(parameter: ResponseParameter?) {
-        //暂不支持，后续打算把参数内容写进临时文件，然后用临时文件地址初始化
-            return nil
-    }
-}
-
 public extension Array where Element: ResponseParameterConvertible {
     public init?(parameter: ResponseParameter?) {
         guard let parameter = parameter else {

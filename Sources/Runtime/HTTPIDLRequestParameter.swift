@@ -110,15 +110,3 @@ extension Dictionary where Key: RequestParameterKey, Value: RequestParameterConv
     }
 }
 
-extension HTTPData: RequestParameterConvertible {
-    public func asRequestParameter(key: String) -> RequestParameter {
-        return .data(key: key, value: payload, fileName: fileName, mimeType: mimeType)
-    }
-}
-
-extension HTTPFile: RequestParameterConvertible {
-    public func asRequestParameter(key: String) ->
-        RequestParameter {
-        return .file(key: key, value: payload, fileName: fileName, mimeType: mimeType)
-    }
-}
