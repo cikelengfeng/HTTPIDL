@@ -38,8 +38,8 @@ public protocol HTTPResponseDecoder {
 }
 
 public protocol HTTPIDLClient {
-    func send<ResponseType: HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder ,completion: @escaping (_ repsonse: ResponseType) -> Void, errorHandler: ((_ error: HTTPIDLError) -> Void)?)
-    func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: HTTPResponse) -> Void, errorHandler: ((_ error: HTTPIDLError) -> Void)?)
+    func send<ResponseType: HTTPIDLResponse>(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder ,completion: @escaping (_ repsonse: ResponseType) -> Void, errorHandler: ((_ error: HIError) -> Void)?)
+    func send(_ request: HTTPIDLRequest, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: HTTPResponse) -> Void, errorHandler: ((_ error: HIError) -> Void)?)
     
     mutating func add(requestObserver: HTTPRequestObserver)
     mutating func remove(requestObserver: HTTPRequestObserver)

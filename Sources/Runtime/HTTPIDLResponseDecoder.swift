@@ -46,7 +46,7 @@ private func decodeRoot(json: Any) throws -> [String: HTTPIDLResponseParameter] 
     }
 }
 
-public enum HTTPResponseJSONDecoderError: HTTPIDLError {
+public enum HTTPResponseJSONDecoderError: HIError {
     case illegalJSONObject(errorSource: Any)
     case unsupportedParameterType(value: Any)
     

@@ -28,5 +28,5 @@ public protocol HTTPResponse {
 
 
 public protocol HTTPClient {
-    func send(_ request: HTTPRequest, completion: @escaping (_ response: HTTPResponse) -> Void, errorHandler: @escaping (_ error: HTTPIDLError) -> Void)
+    func send(_ request: HTTPRequest, completion: @escaping (_ response: HTTPResponse) -> Void, errorHandler: @escaping (_ error: HIError) -> Void)
 }

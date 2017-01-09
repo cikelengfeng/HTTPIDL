@@ -8,5 +8,5 @@
 
 import Foundation
 
-public protocol HTTPIDLError: LocalizedError {
+public protocol HIError: LocalizedError {
 }

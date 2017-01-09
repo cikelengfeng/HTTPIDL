@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 
-enum AlamofireClientError: HTTPIDLError {
+enum AlamofireClientError: HIError {
     case missingResponse(request: HTTPRequest)
     case adaptAlamofireRequestFailed(rawError: Error)
     case adaptAlamofireResponseFailed(rawError: Error)
@@ -30,7 +30,7 @@ enum AlamofireClientError: HTTPIDLError {
 
 struct AlamofireClient: HTTPClient {
     
-    func send(_ request: HTTPRequest, completion: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HTTPIDLError) -> Void) {
+    func send(_ request: HTTPRequest, completion: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
         do {
             let dataRequest: DataRequest = try adapt(request)
             dataRequest.responseData(completionHandler: { (response) in
@@ -60,7 +60,7 @@ struct AlamofireClient: HTTPClient {
         return Alamofire.request(urlRequest)
     }
     
-    func adapt(response: DataResponse<Data>, request: HTTPRequest) -> (HTTPResponse?, HTTPIDLError?) {
+    func adapt(response: DataResponse<Data>, request: HTTPRequest) -> (HTTPResponse?, HIError?) {
         switch response.result {
         case .success(let data):
                 guard let rawResponse = response.response else {
