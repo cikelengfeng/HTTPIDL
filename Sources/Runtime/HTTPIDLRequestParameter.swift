@@ -20,7 +20,7 @@ public enum RequestContent {
     case dictionary(value: [String: RequestContent])
 }
 
-extension Int64: RequestContentKey {
+extension Int64: RequestContentKeyType {
     public func asHTTPParamterKey() -> String {
         return String(self)
     }
@@ -32,7 +32,7 @@ extension Int64: RequestContentConvertible {
     }
 }
 
-extension Int32: RequestContentKey {
+extension Int32: RequestContentKeyType {
     public func asHTTPParamterKey() -> String {
         return String(self)
     }
@@ -51,7 +51,7 @@ extension Bool: RequestContentConvertible {
 }
 
 
-extension Double: RequestContentKey {
+extension Double: RequestContentKeyType {
     public func asHTTPParamterKey() -> String {
         return String(self)
     }
@@ -63,7 +63,7 @@ extension Double: RequestContentConvertible {
     }
 }
 
-extension String: RequestContentKey {
+extension String: RequestContentKeyType {
     public func asHTTPParamterKey() -> String {
         return self
     }
@@ -84,7 +84,7 @@ extension Array where Element: RequestContentConvertible {
     }
 }
 
-extension Dictionary where Key: RequestContentKey, Value: RequestContentConvertible {
+extension Dictionary where Key: RequestContentKeyType, Value: RequestContentConvertible {
     public func asRequestContent() -> RequestContent {
         let value = self.reduce([String: RequestContent]()) { (soFar, soGood) -> [String: RequestContent] in
             var result = soFar

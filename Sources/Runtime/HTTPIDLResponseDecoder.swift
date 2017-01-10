@@ -8,13 +8,13 @@
 
 import Foundation
 
-private func decode(json: Any) throws -> ResponseParameter {
+private func decode(json: Any) throws -> ResponseContent {
     if let tmp = json as? Int64 {
         return .int64(value: tmp)
     } else if let tmp = json as? Int32 {
         return .int32(value: tmp)
     } else if let tmp = json as? Bool {
-        return .int32(value: tmp ? 1 : 0)
+        return .bool(value: tmp)
     } else if let tmp = json as? Double {
         return .double(value: tmp)
     } else if let tmp = json as? String {
@@ -24,7 +24,7 @@ private func decode(json: Any) throws -> ResponseParameter {
             return try decode(json: $0)
         }))
     } else if let tmp = json as? [String: Any] {
-        return .dictionary(value: try tmp.reduce([String: ResponseParameter](), { (soFar, soGood) in
+        return .dictionary(value: try tmp.reduce([String: ResponseContent](), { (soFar, soGood) in
             var ret = soFar
             ret[soGood.key] = try decode(json: soGood.value)
             return ret
@@ -34,13 +34,13 @@ private func decode(json: Any) throws -> ResponseParameter {
     }
 }
 
-private func decodeRoot(json: Any) throws -> [String: ResponseParameter] {
+private func decodeRoot(json: Any) throws -> ResponseContent {
     if let tmp = json as? [String: Any] {
-        return try tmp.reduce([String: ResponseParameter](), { (soFar, soGood) in
+        return .dictionary(value: try tmp.reduce([String: ResponseContent](), { (soFar, soGood) in
             var ret = soFar
             ret[soGood.key] = try decode(json: soGood.value)
             return ret
-        })
+        }))
     } else {
         throw HTTPResponseJSONDecoderError.illegalJSONObject(errorSource: json)
     }
@@ -67,9 +67,9 @@ public struct HTTPResponseJSONDecoder: HTTPResponseDecoder {
     public static let shared = HTTPResponseJSONDecoder()
     public var jsonReadOptions: JSONSerialization.ReadingOptions = .allowFragments
     
-    public func decode(_ response: HTTPResponse) throws -> [String: ResponseParameter] {
+    public func decode(_ response: HTTPResponse) throws -> ResponseContent? {
         guard let body = response.body else {
-            return [:]
+            return nil
         }
         let json = try JSONSerialization.jsonObject(with: body, options: jsonReadOptions)
         

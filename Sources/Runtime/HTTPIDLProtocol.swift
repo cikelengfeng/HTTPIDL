@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol RequestContentKey {
+public protocol RequestContentKeyType {
     func asHTTPParamterKey() -> String
 }
 
@@ -30,11 +30,11 @@ public protocol HTTPRequestEncoder {
 }
 
 public protocol Response {
-    init(parameters: [String: ResponseParameter], rawResponse: HTTPResponse) throws
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws
 }
 
 public protocol HTTPResponseDecoder {
-    func decode(_ response: HTTPResponse) throws -> [String: ResponseParameter]
+    func decode(_ response: HTTPResponse) throws -> ResponseContent?
 }
 
 public protocol Client {

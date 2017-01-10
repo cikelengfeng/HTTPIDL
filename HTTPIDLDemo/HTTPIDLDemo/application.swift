@@ -4,14 +4,14 @@ import Foundation
 import HTTPIDL
 
 
-struct Testing: ResponseParameterConvertible {
+struct Testing: ResponseContentConvertible {
     
     let sms: String?
-    init?(parameter: ResponseParameter?) {
-        guard let parameter = parameter, case .dictionary(let value) = parameter else {
+    init?(content: ResponseContent?) {
+        guard let content = content, case .dictionary(let value) = content else {
             return nil
         }
-        self.sms = String(parameter: value["sms_code_number"])
+        self.sms = String(content: value["sms_code_number"])
     }
 }
 
@@ -28,7 +28,7 @@ class GetApplicationSettingsRequest: Request {
     }
     var x: Int64?
     var content: RequestContent? {
-        var result = [String: RequestContent]()
+        var result = [String:RequestContent]()
         if let tmp = x {
             result["x"] = tmp.asRequestContent()
         }
@@ -47,9 +47,14 @@ struct GetApplicationSettingsResponse: Response {
     let tttt: String?
     let t2: Testing?
     let rawResponse: HTTPResponse
-    init(parameters: [String: ResponseParameter], rawResponse: HTTPResponse) throws {
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
         self.rawResponse = rawResponse
-        self.tttt = String(parameter: parameters["jfjjfjfjfj"])
-        self.t2 = Testing(parameter: parameters["data"])
+        guard let content = content, case .dictionary(let value) = content else {
+            self.tttt = nil
+            self.t2 = nil
+            return
+        }
+        self.tttt = String(content: value["jfjjfjfjfj"])
+        self.t2 = Testing(content: value["data"])
     }
 }

@@ -26,15 +26,15 @@ extension HTTPData: RequestContentConvertible {
     }
 }
 
-extension HTTPData: ResponseParameterConvertible {
-    public init?(parameter: ResponseParameter?) {
-        guard let parameter = parameter else {
+extension HTTPData: ResponseContentConvertible {
+    public init?(content: ResponseContent?) {
+        guard let content = content else {
             return nil
         }
-        switch parameter {
+        switch content {
         case .data(let value, let fileName, let mimeType):
             self.init(with: value, fileName: fileName ?? "", mimeType: mimeType)
-        case .array, .dictionary, .double, .int32, .int64, .string:
+        case .array, .dictionary, .double, .int32, .int64, .string, .bool:
             return nil
         }
     }
@@ -61,8 +61,8 @@ extension HTTPFile: RequestContentConvertible {
 
 
 
-extension HTTPFile: ResponseParameterConvertible {
-    public init?(parameter: ResponseParameter?) {
+extension HTTPFile: ResponseContentConvertible {
+    public init?(content: ResponseContent?) {
         //暂不支持，后续打算把参数内容写进临时文件，然后用临时文件地址初始化
         return nil
     }

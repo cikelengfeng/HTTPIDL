@@ -224,8 +224,8 @@ public class BaseClient: Client {
         self.receive(rawResponse: resp)
         self.willDecode(rawResponse: resp)
         do {
-            let parameters = try responseDecoder.decode(resp)
-            let httpIdlResponse = try ResponseType(parameters: parameters, rawResponse: resp)
+            let content = try responseDecoder.decode(resp)
+            let httpIdlResponse = try ResponseType(content: content, rawResponse: resp)
             completion(httpIdlResponse)
             self.didDecode(rawResponse: resp, decodedResponse: httpIdlResponse)
         } catch let error as HIError {

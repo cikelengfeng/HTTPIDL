@@ -90,18 +90,18 @@ class AlamofireCodeGenerator:
         self.write_line('}')
 
     def generate_request_parameters(self, request_context):
-        httpidl_parameter = 'RequestParameter'
-        self.write_line('var parameters: [%s] {' % httpidl_parameter)
+        httpidl_content_type = 'RequestContent'
+        self.write_line('var content: %s? {' % httpidl_content_type)
         self.push_indent()
-        self.write_line('var result: [%s] = []' % httpidl_parameter)
+        self.write_line('var result = [String:%s]()' % httpidl_content_type)
         for parameter_map in request_context.structBody().parameterMap():
             self.write_line('if let tmp = ' + parameter_map.key().getText() + ' {')
             self.push_indent()
-            self.write_line('result.append(tmp.as' + httpidl_parameter + '(key: "'
-                            + parameter_map.value().getText() + '"))')
+            self.write_line('result["'
+                            + parameter_map.value().getText() + '"] = tmp.as%s()' % httpidl_content_type)
             self.pop_indent()
             self.write_line('}')
-        self.write_line('return result')
+        self.write_line('return .dictionary(value: result)')
         self.pop_indent()
         self.write_line('}')
 
@@ -178,13 +178,20 @@ class AlamofireCodeGenerator:
         self.write_line('let rawResponse: HTTPResponse')
 
         # 从 raw parameter 初始化
-        self.write_line('init(parameters: [String: ResponseParameter], rawResponse: HTTPResponse) throws {')
+        self.write_line('init(content: ResponseContent?, rawResponse: HTTPResponse) throws {')
         self.push_indent()
         self.write_line('self.rawResponse = rawResponse')
+        self.write_line('guard let content = content, case .dictionary(let value) = content else {')
+        self.push_indent()
+        for param_map in param_maps:
+            self.write_line('self.' + param_map.key().getText() + ' = nil')
+        self.write_line('return')
+        self.pop_indent()
+        self.write_line('}')
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
-                param_type) + '(parameter: parameters["' + param_map.value().getText() + '"])')
+                param_type) + '(content: value["' + param_map.value().getText() + '"])')
         self.pop_indent()
         self.write_line('}')
 
@@ -214,9 +221,9 @@ class AlamofireCodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()[0]
             self.write_line('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        self.write_line('init?(parameter: ResponseParameter?) {')
+        self.write_line('init?(content: ResponseContent?) {')
         self.push_indent()
-        self.write_line('guard let parameter = parameter, case .dictionary(let value) = parameter else {')
+        self.write_line('guard let content = content, case .dictionary(let value) = content else {')
         self.push_indent()
         self.write_line('return nil')
         self.pop_indent()
@@ -236,16 +243,16 @@ class AlamofireCodeGenerator:
                     self.write_line(
                         'self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(
                             dict_key_type.getText()) + ': ' + swift_base_type_name_from_idl_base_type(
-                            dict_value_type.getText()) + '](parameter: value["' + param_map.value().getText() + '"])')
+                            dict_value_type.getText()) + '](content: value["' + param_map.value().getText() + '"])')
             else:
                 self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
-                    param_type) + '(parameter: value["' + param_map.value().getText() + '"])')
+                    param_type) + '(content: value["' + param_map.value().getText() + '"])')
         self.pop_indent()
         self.write_line('}')
 
     def generate_struct(self, struct_context):
         self.write_blank_lines(1)
-        self.write_line('struct ' + struct_context.structName().getText() + ': ResponseParameterConvertible {')
+        self.write_line('struct ' + struct_context.structName().getText() + ': ResponseContentConvertible {')
         self.push_indent()
         self.generate_struct_init_and_member_var(struct_context)
         self.pop_indent()
