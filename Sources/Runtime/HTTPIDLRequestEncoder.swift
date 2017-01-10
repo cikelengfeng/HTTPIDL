@@ -303,7 +303,7 @@ public struct HTTPCombinatedQueryRequestEncoder: HTTPRequestEncoder {
             throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         
-        guard var content = request.content else {
+        guard let content = request.content else {
             return try self.encoderImpl.encode(request)
         }
         
@@ -420,7 +420,7 @@ public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
             throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         
-        guard var content = request.content else {
+        guard let content = request.content else {
             return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers, body: { nil } )
         }
         
@@ -464,7 +464,7 @@ public struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
             headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8"
         }
 
-        guard var content = request.content else {
+        guard let content = request.content else {
             return HTTPBaseRequest(method: request.method, url: url, headers: headers , body: { () -> Data? in
                 return nil
             })
