@@ -27,12 +27,12 @@ class GetApplicationSettingsRequest: Request {
         }
     }
     var x: Int64?
-    var parameters: [RequestParameter] {
-        var result: [RequestParameter] = []
+    var content: RequestContent? {
+        var result = [String: RequestContent]()
         if let tmp = x {
-            result.append(tmp.asRequestParameter(key: "x"))
+            result["x"] = tmp.asRequestContent()
         }
-        return result
+        return .dictionary(value: result)
     }
     func send(_ requestEncoder: HTTPRequestEncoder = GetApplicationSettingsRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetApplicationSettingsResponse.defaultDecoder, completion: @escaping (GetApplicationSettingsResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
         client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)

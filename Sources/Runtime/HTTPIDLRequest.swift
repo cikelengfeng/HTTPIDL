@@ -13,12 +13,12 @@ struct PlainRequest: Request {
     var method: String
     var configuration: Configuration
     var uri: String
-    var parameters: [RequestParameter]
+    var content: RequestContent?
     
-    init(method: String, uri: String, configuration: Configuration, parameters: [RequestParameter]) {
+    init(method: String, uri: String, configuration: Configuration, content: RequestContent?) {
         self.method = method
         self.configuration = configuration
         self.uri = uri
-        self.parameters = parameters
+        self.content = content
     }
 }

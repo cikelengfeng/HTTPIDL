@@ -1,5 +1,5 @@
 //
-//  RequestParameter.swift
+//  RequestContent.swift
 //  everfilter
 //
 //  Created by 徐 东 on 2017/1/2.
@@ -8,105 +8,90 @@
 
 import Foundation
 
-public enum RequestParameter {
-    case int64(key: String, value: Int64)
-    case int32(key: String, value: Int32)
-    case double(key: String, value: Double)
-    case string(key: String, value: String)
-    case file(key: String, value: URL, fileName: String?, mimeType: String?)
-    case data(key: String, value: Data, fileName: String?, mimeType: String?)
-    case array(key: String, value: [RequestParameter])
-    case dictionary(key: String, value: [String: RequestParameter])
-    
-    var key: String {
-        get {
-            switch self {
-                case .int64(let key, _):
-                    return key
-                case .int32(let key, _):
-                    return key
-                case .double(let key, _):
-                    return key
-                case .string(let key, _):
-                    return key
-                case .file(let key, _, _, _):
-                    return key
-                case .data(let key, _, _, _):
-                    return key
-                case .array(let key, _):
-                    return key
-                case .dictionary(let key, _):
-                    return key
-            }
-        }
-    }
+public enum RequestContent {
+    case int64(value: Int64)
+    case int32(value: Int32)
+    case bool(value: Bool)
+    case double(value: Double)
+    case string(value: String)
+    case file(value: URL, fileName: String?, mimeType: String?)
+    case data(value: Data, fileName: String?, mimeType: String?)
+    case array(value: [RequestContent])
+    case dictionary(value: [String: RequestContent])
 }
 
-extension Int64: RequestParameterKey {
+extension Int64: RequestContentKey {
     public func asHTTPParamterKey() -> String {
         return String(self)
     }
 }
 
-extension Int64: RequestParameterConvertible {
-    public func asRequestParameter(key: String) -> RequestParameter {
-        return .int64(key: key, value: self)
+extension Int64: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        return .int64(value: self)
     }
 }
 
-extension Int32: RequestParameterKey {
+extension Int32: RequestContentKey {
     public func asHTTPParamterKey() -> String {
         return String(self)
     }
 }
 
-extension Int32: RequestParameterConvertible {
-    public func asRequestParameter(key: String) -> RequestParameter {
-        return .int32(key: key, value: self)
+extension Int32: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        return .int32(value: self)
     }
 }
 
-extension Double: RequestParameterKey {
+extension Bool: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        return .bool(value: self)
+    }
+}
+
+
+extension Double: RequestContentKey {
     public func asHTTPParamterKey() -> String {
         return String(self)
     }
 }
 
-extension Double: RequestParameterConvertible {
-    public func asRequestParameter(key: String) -> RequestParameter {
-        return .double(key: key, value: self)
+extension Double: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        return .double(value: self)
     }
 }
 
-extension String: RequestParameterKey {
+extension String: RequestContentKey {
     public func asHTTPParamterKey() -> String {
         return self
     }
 }
 
-extension String: RequestParameterConvertible {
-    public func asRequestParameter(key: String) -> RequestParameter {
-        return .string(key: key, value: self)
+extension String: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        return .string(value: self)
     }
 }
 
-extension Array where Element: RequestParameterConvertible {
-    public func asRequestParameter(key: String) -> RequestParameter {
+extension Array where Element: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
         let value = self.map ({ (convertible) in
-            return convertible.asRequestParameter(key: key)
+            return convertible.asRequestContent()
         })
-        return .array(key: key, value: value)
+        return .array(value: value)
     }
 }
 
-extension Dictionary where Key: RequestParameterKey, Value: RequestParameterConvertible {
-    public func asRequestParameter(key: String) -> RequestParameter {
-        let value = self.reduce([String: RequestParameter]()) { (soFar, soGood) -> [String: RequestParameter] in
+extension Dictionary where Key: RequestContentKey, Value: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        let value = self.reduce([String: RequestContent]()) { (soFar, soGood) -> [String: RequestContent] in
             var result = soFar
-            result[soGood.key.asHTTPParamterKey()] = soGood.value.asRequestParameter(key: key)
+            result[soGood.key.asHTTPParamterKey()] = soGood.value.asRequestContent()
             return result
         }
-        return .dictionary(key: key, value: value)
+        return .dictionary(value: value)
     }
 }
 

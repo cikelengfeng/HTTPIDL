@@ -8,12 +8,12 @@
 
 import Foundation
 
-public protocol RequestParameterKey {
+public protocol RequestContentKey {
     func asHTTPParamterKey() -> String
 }
 
-public protocol RequestParameterConvertible {
-    func asRequestParameter(key: String) -> RequestParameter
+public protocol RequestContentConvertible {
+    func asRequestContent() -> RequestContent
 }
 
 public protocol Request {
@@ -21,7 +21,7 @@ public protocol Request {
     var method: String {get}
     var configuration: Configuration {get set}
     var uri: String {get}
-    var parameters: [RequestParameter] {get}
+    var content: RequestContent? {get}
 }
 
 

@@ -20,9 +20,9 @@ public struct HTTPData {
     }
 }
 
-extension HTTPData: RequestParameterConvertible {
-    public func asRequestParameter(key: String) -> RequestParameter {
-        return .data(key: key, value: payload, fileName: fileName, mimeType: mimeType)
+extension HTTPData: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        return .data(value: payload, fileName: fileName, mimeType: mimeType)
     }
 }
 
@@ -53,10 +53,9 @@ public struct HTTPFile {
 }
 
 
-extension HTTPFile: RequestParameterConvertible {
-    public func asRequestParameter(key: String) ->
-        RequestParameter {
-            return .file(key: key, value: payload, fileName: fileName, mimeType: mimeType)
+extension HTTPFile: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+            return .file(value: payload, fileName: fileName, mimeType: mimeType)
     }
 }
 

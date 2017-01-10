@@ -20,4 +20,9 @@ struct HTTPBaseRequest: HTTPRequest {
         self.headers = headers
         self.body = body
     }
+    
+    init(httpRequest: HTTPRequest) {
+        self.init(method: httpRequest.method, url: httpRequest.url, headers: httpRequest.headers, body: httpRequest.body)
+    }
+    
 }
