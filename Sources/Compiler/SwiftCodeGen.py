@@ -236,7 +236,7 @@ class AlamofireCodeGenerator:
                 dict_type = generic_type.dictGenericParam()
                 if array_type is not None:
                     array_element_type = array_type.baseType()
-                    self.write_line('self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '](parameter: value["' + param_map.value().getText() + '"])')
+                    self.write_line('self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '](content: value["' + param_map.value().getText() + '"])')
                 elif dict_type is not None:
                     dict_key_type = dict_type.baseType()[0]
                     dict_value_type = dict_type.baseType()[1]
