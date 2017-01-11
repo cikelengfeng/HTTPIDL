@@ -115,11 +115,23 @@ public enum HTTPJSONRequestEncoderError: HIError {
 
 private extension RequestContent {
     
-    func json() throws -> Any {
+    func asJSONRoot() throws -> Any {
+        switch self {
+        case .int64, .int32, .bool, .double, .string:
+            throw HTTPJSONRequestEncoderError.illegalRootParameter(parameter: self)
+        case .file(let url, _, _):
+            throw HTTPJSONRequestEncoderError.fileIsForbidden(file: url)
+        case .data(let data, _, _):
+            throw HTTPJSONRequestEncoderError.dataIsForbidden(data: data)
+        case .array, .dictionary:
+            return try self.asJSONObject()
+        }
+    }
+    
+    func asJSONObject() throws -> Any {
         switch self {
         case .int64(let value):
-            //int64 在json中可能会溢出，所以我们转换成字符串
-            return String(value)
+            return value
         case .int32(let value):
             return value
         case .bool(let value):
@@ -134,12 +146,12 @@ private extension RequestContent {
             throw HTTPJSONRequestEncoderError.dataIsForbidden(data: data)
         case .array(let array):
             return try array.map({ (paramInArray) in
-                return try paramInArray.json()
+                return try paramInArray.asJSONObject()
             })
         case .dictionary(let dict):
             return try dict.reduce([:], { (soFar, soGood) in
                 var result = soFar
-                result[soGood.key] = try soGood.value.json()
+                result[soGood.key] = try soGood.value.asJSONObject()
                 return result
             })
         }
@@ -162,7 +174,7 @@ public struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
             guard let rootParameter = request.content else {
                 return nil
             }
-            let jsonDict = try rootParameter.json()
+            let jsonDict = try rootParameter.asJSONRoot()
             let data = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
             return data
         }
