@@ -8,16 +8,34 @@
 
 /* Begin PBXBuildFile section */
 		0CECA864BFA4DB8E81697DE8 /* Pods_HTTPIDLDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD5664E73DED524B38DA9FA /* Pods_HTTPIDLDemo.framework */; };
+		423A3F331E26209D00806D65 /* HTTPIDLDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423A3F311E26209D00806D65 /* HTTPIDLDemoTests.swift */; };
+		423A3F341E26209D00806D65 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 423A3F321E26209D00806D65 /* Info.plist */; };
+		423A3F361E26331100806D65 /* URLHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423A3F351E26331100806D65 /* URLHelper.swift */; };
 		423C32011E21F08000D74B2E /* application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423C32001E21F08000D74B2E /* application.swift */; };
 		4288467F1DEDAD3900D952A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4288467E1DEDAD3900D952A2 /* AppDelegate.swift */; };
 		428846811DEDAD3900D952A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428846801DEDAD3900D952A2 /* ViewController.swift */; };
 		428846841DEDAD3900D952A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428846821DEDAD3900D952A2 /* Main.storyboard */; };
 		428846861DEDAD3900D952A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 428846851DEDAD3900D952A2 /* Assets.xcassets */; };
 		428846891DEDAD3900D952A2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428846871DEDAD3900D952A2 /* LaunchScreen.storyboard */; };
+		AD64C5C6E070C5E4E5ACEDD0 /* Pods_HTTPIDLDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9899E738CC72F3BAF233F097 /* Pods_HTTPIDLDemoTests.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		423A3F271E26201C00806D65 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 428846731DEDAD3900D952A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4288467A1DEDAD3900D952A2;
+			remoteInfo = HTTPIDLDemo;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		3A62EA8E4382BCAAD141C27E /* Pods-HTTPIDLDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemo/Pods-HTTPIDLDemo.release.xcconfig"; sourceTree = "<group>"; };
+		423A3F221E26201C00806D65 /* HTTPIDLDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HTTPIDLDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		423A3F311E26209D00806D65 /* HTTPIDLDemoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPIDLDemoTests.swift; sourceTree = "<group>"; };
+		423A3F321E26209D00806D65 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		423A3F351E26331100806D65 /* URLHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLHelper.swift; sourceTree = "<group>"; };
 		423C31EA1E21E82800D74B2E /* application.http */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = application.http; sourceTree = "<group>"; };
 		423C32001E21F08000D74B2E /* application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = application.swift; sourceTree = "<group>"; };
 		4288467B1DEDAD3900D952A2 /* HTTPIDLDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPIDLDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -29,9 +47,20 @@
 		4288468A1DEDAD3900D952A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5ACEC624605DF3FE6D115633 /* Pods-HTTPIDLDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemo/Pods-HTTPIDLDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		6AD5664E73DED524B38DA9FA /* Pods_HTTPIDLDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HTTPIDLDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E013AD07FE7ADA2CC23F1D5 /* Pods-HTTPIDLDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemoTests/Pods-HTTPIDLDemoTests.release.xcconfig"; sourceTree = "<group>"; };
+		9899E738CC72F3BAF233F097 /* Pods_HTTPIDLDemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HTTPIDLDemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAFC9D15CDF8C7D2A3808F54 /* Pods-HTTPIDLDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemoTests/Pods-HTTPIDLDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		423A3F1F1E26201C00806D65 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AD64C5C6E070C5E4E5ACEDD0 /* Pods_HTTPIDLDemoTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		428846781DEDAD3900D952A2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -48,14 +77,27 @@
 			children = (
 				5ACEC624605DF3FE6D115633 /* Pods-HTTPIDLDemo.debug.xcconfig */,
 				3A62EA8E4382BCAAD141C27E /* Pods-HTTPIDLDemo.release.xcconfig */,
+				EAFC9D15CDF8C7D2A3808F54 /* Pods-HTTPIDLDemoTests.debug.xcconfig */,
+				7E013AD07FE7ADA2CC23F1D5 /* Pods-HTTPIDLDemoTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		423A3F231E26201C00806D65 /* HTTPIDLDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				423A3F311E26209D00806D65 /* HTTPIDLDemoTests.swift */,
+				423A3F321E26209D00806D65 /* Info.plist */,
+				423A3F351E26331100806D65 /* URLHelper.swift */,
+			);
+			path = HTTPIDLDemoTests;
 			sourceTree = "<group>";
 		};
 		428846721DEDAD3900D952A2 = {
 			isa = PBXGroup;
 			children = (
 				4288467D1DEDAD3900D952A2 /* HTTPIDLDemo */,
+				423A3F231E26201C00806D65 /* HTTPIDLDemoTests */,
 				4288467C1DEDAD3900D952A2 /* Products */,
 				39E1F1D174276FF0A2C03102 /* Pods */,
 				8FCD4116C9220F5F6E5BE6DE /* Frameworks */,
@@ -66,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				4288467B1DEDAD3900D952A2 /* HTTPIDLDemo.app */,
+				423A3F221E26201C00806D65 /* HTTPIDLDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				6AD5664E73DED524B38DA9FA /* Pods_HTTPIDLDemo.framework */,
+				9899E738CC72F3BAF233F097 /* Pods_HTTPIDLDemoTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -96,6 +140,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		423A3F211E26201C00806D65 /* HTTPIDLDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 423A3F291E26201C00806D65 /* Build configuration list for PBXNativeTarget "HTTPIDLDemoTests" */;
+			buildPhases = (
+				86B4D19A1A7C72BAD1CABF54 /* [CP] Check Pods Manifest.lock */,
+				423A3F1E1E26201C00806D65 /* Sources */,
+				423A3F1F1E26201C00806D65 /* Frameworks */,
+				423A3F201E26201C00806D65 /* Resources */,
+				AD744AC26A7A0102C757C1C8 /* [CP] Embed Pods Frameworks */,
+				784EB82635AAF3A57B8D077A /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				423A3F281E26201C00806D65 /* PBXTargetDependency */,
+			);
+			name = HTTPIDLDemoTests;
+			productName = HTTPIDLDemoTests;
+			productReference = 423A3F221E26201C00806D65 /* HTTPIDLDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4288467A1DEDAD3900D952A2 /* HTTPIDLDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4288468D1DEDAD3900D952A2 /* Build configuration list for PBXNativeTarget "HTTPIDLDemo" */;
@@ -126,6 +191,13 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "dx lab";
 				TargetAttributes = {
+					423A3F211E26201C00806D65 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = PBPY62KKV5;
+						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 4288467A1DEDAD3900D952A2;
+					};
 					4288467A1DEDAD3900D952A2 = {
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = PBPY62KKV5;
@@ -147,11 +219,20 @@
 			projectRoot = "";
 			targets = (
 				4288467A1DEDAD3900D952A2 /* HTTPIDLDemo */,
+				423A3F211E26201C00806D65 /* HTTPIDLDemoTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		423A3F201E26201C00806D65 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				423A3F341E26209D00806D65 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		428846791DEDAD3900D952A2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -165,6 +246,51 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		784EB82635AAF3A57B8D077A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HTTPIDLDemoTests/Pods-HTTPIDLDemoTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		86B4D19A1A7C72BAD1CABF54 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		AD744AC26A7A0102C757C1C8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HTTPIDLDemoTests/Pods-HTTPIDLDemoTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		BE288E58F6FAEA26E94C34CA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -213,6 +339,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		423A3F1E1E26201C00806D65 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				423A3F331E26209D00806D65 /* HTTPIDLDemoTests.swift in Sources */,
+				423A3F361E26331100806D65 /* URLHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		428846771DEDAD3900D952A2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -224,6 +359,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		423A3F281E26201C00806D65 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4288467A1DEDAD3900D952A2 /* HTTPIDLDemo */;
+			targetProxy = 423A3F271E26201C00806D65 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		428846821DEDAD3900D952A2 /* Main.storyboard */ = {
@@ -245,6 +388,39 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		423A3F2A1E26201C00806D65 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EAFC9D15CDF8C7D2A3808F54 /* Pods-HTTPIDLDemoTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = PBPY62KKV5;
+				INFOPLIST_FILE = HTTPIDLDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.deanxu.HTTPIDLDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HTTPIDLDemo.app/HTTPIDLDemo";
+			};
+			name = Debug;
+		};
+		423A3F2B1E26201C00806D65 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7E013AD07FE7ADA2CC23F1D5 /* Pods-HTTPIDLDemoTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = PBPY62KKV5;
+				INFOPLIST_FILE = HTTPIDLDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.deanxu.HTTPIDLDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HTTPIDLDemo.app/HTTPIDLDemo";
+			};
+			name = Release;
+		};
 		4288468B1DEDAD3900D952A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -367,6 +543,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		423A3F291E26201C00806D65 /* Build configuration list for PBXNativeTarget "HTTPIDLDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				423A3F2A1E26201C00806D65 /* Debug */,
+				423A3F2B1E26201C00806D65 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		428846761DEDAD3900D952A2 /* Build configuration list for PBXProject "HTTPIDLDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
