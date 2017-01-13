@@ -61,7 +61,6 @@ MESSAGE /my/example {
 import Foundation
 import HTTPIDL
 
-
 class GetMyExampleRequest: Request {
     
     static let defaultMethod: String = "GET"
@@ -75,19 +74,15 @@ class GetMyExampleRequest: Request {
     }
     var t1: Int32?
     var t2: String?
-    var t3: BOOL?
-    var parameters: [RequestParameter] {
-        var result: [RequestParameter] = []
+    var content: RequestContent? {
+        var result = [String:RequestContent]()
         if let tmp = t1 {
-            result.append(tmp.asRequestParameter(key: "t"))
+            result["t"] = tmp.asRequestContent()
         }
         if let tmp = t2 {
-            result.append(tmp.asRequestParameter(key: "tt"))
+            result["tt"] = tmp.asRequestContent()
         }
-        if let tmp = t3 {
-            result.append(tmp.asRequestParameter(key: "ttt"))
-        }
-        return result
+        return .dictionary(value: result)
     }
     func send(_ requestEncoder: HTTPRequestEncoder = GetMyExampleRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetMyExampleResponse.defaultDecoder, completion: @escaping (GetMyExampleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
         client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
@@ -102,10 +97,15 @@ struct GetMyExampleResponse: Response {
     let x1: Int64?
     let x2: Double?
     let rawResponse: HTTPResponse
-    init(parameters: [String: ResponseParameter], rawResponse: HTTPResponse) throws {
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
         self.rawResponse = rawResponse
-        self.x1 = Int64(parameter: parameters["x"])
-        self.x2 = Double(parameter: parameters["xx"])
+        guard let content = content, case .dictionary(let value) = content else {
+            self.x1 = nil
+            self.x2 = nil
+            return
+        }
+        self.x1 = Int64(content: value["x"])
+        self.x2 = Double(content: value["xx"])
     }
 }
 ```
@@ -132,7 +132,7 @@ public protocol Request {
     var method: String {get} //此请求对象的method
     var configuration: Configuration {get set} //此请求对象的配置，包括baseURLString, headers
     var uri: String {get} //此请求对象的uri
-    var content: RequestContent {get} //此请求的内容，对应http request body
+    var content: RequestContent? {get} //此请求的内容，对应http request body
 }
 ```
 
