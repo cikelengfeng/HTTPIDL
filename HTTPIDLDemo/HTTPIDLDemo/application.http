@@ -1,13 +1,49 @@
-MESSAGE /application/settings {
+MESSAGE /test/urlencoded/query/encoder {
 GET REQUEST {
-INT64 x = x;
+INT64 t1 = t;
+INT32 t2 = tt;
+DOUBLE t3 = ttt;
+STRING t4 = tttt;
 }
 GET RESPONSE {
-STRING tttt = jfjjfjfjfj;
-Testing t2 = data;
+STRING x1 = x;
 }
 }
 
-STRUCT Testing {
-STRING sms = sms_code_number;
+MESSAGE /test/urlencoded/form/encoder {
+POST REQUEST {
+INT64 t1 = t;
+INT32 t2 = tt;
+DOUBLE t3 = ttt;
+STRING t4 = tttt;
+}
+POST RESPONSE {
+STRING x1 = x;
+}
+}
+
+MESSAGE /test/multipart/encoder {
+POST REQUEST {
+INT64 t1 = t;
+INT32 t2 = tt;
+DOUBLE t3 = ttt;
+STRING t4 = tttt;
+BLOB t5 = tttttt;
+}
+POST RESPONSE {
+STRING x1 = x;
+}
+}
+
+MESSAGE /test/json/encoder {
+POST REQUEST {
+INT64 t1 = t;
+INT32 t2 = tt;
+DOUBLE t3 = ttt;
+STRING t4 = tttt;
+ARRAY<STRING> t5 = ttttt;
+}
+POST RESPONSE {
+STRING x1 = x;
+}
 }

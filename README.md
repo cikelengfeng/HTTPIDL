@@ -1,7 +1,7 @@
 # HTTPIDL
 HTTPIDL是一套HTTP网络库和代码生成工具的集合，目前支持Swift 3。
 
-## 功能
+## 特色
 * 自动生成swift 3代码，同时支持手写
 * URL / JSON / URLEncodedForm 请求内容编码方式（甚至支持组合编码方式）
 * 上传 File / Data / MultipartFormData
@@ -11,7 +11,6 @@ HTTPIDL是一套HTTP网络库和代码生成工具的集合，目前支持Swift 
 * 可扩展的HTTP客户端库 （默认使用Alamofire）
 * 支持请求和响应观察者
 * 支持请求和响应重写
-* 单元测试
 
 ## 要求
 * iOS 8.0 +
@@ -44,7 +43,6 @@ MESSAGE /my/example {
 	GET REQUEST {
 		INT32 t1 = t;
 		STRING t2 = tt;
-		BOOL t3 = ttt;
 	}
 	GET RESPONSE {
 		INT64 x1 = x;
@@ -143,4 +141,155 @@ let requestEncoder = HTTPURLEncodedQueryRequestEncoder.shared
 BaseClient.shared.send(request, requestEncoder: requestEncoder, completion: yourCompletionClosure, errorHandler: yourErrorHandler)
 ```
 
+## 内置编码器
+### URL Encoded Query 编码器
+类名：HTTPURLEncodedQueryRequestEncoder
+此编码器会将请求的content属性加入到url的query中，例如有如下请求：
+```
+class GetMyExampleRequest: Request {
+    
+    static let defaultMethod: String = "GET"
+    var method: String = GetMyExampleRequest.defaultMethod
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        get {
+            return "/my/example"
+        }
+    }
+    var t1: Int32?
+    var t2: String?
+    var content: RequestContent? {
+        var result = [String:RequestContent]()
+        if let tmp = t1 {
+            result["t"] = tmp.asRequestContent()
+        }
+        if let tmp = t2 {
+            result["tt"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
 
+func test() {
+	let request = GetMyExampleRequest()
+	request.t1 = 123
+	request.t2 = "hey"
+	let requestEncoder = HTTPURLEncodedQueryRequestEncoder.shared
+	BaseClient.shared.send(request, requestEncoder: requestEncoder, completion: yourCompletionClosure, errorHandler: yourErrorHandler)
+}
+```
+
+
+此请求最终发送的http request如下：
+```
+GET /my/example?t2=hey&t1=123 HTTP/1.1
+Host: here.is.you.host
+```
+
+### URL Encoded Form 编码器
+类名：HTTPURLEncodedFormRequestEncoder
+此编码器会将请求的content转换成request body中url encode编码的表单，例如有如下请求：
+```
+class PostMyExampleRequest: Request {
+    
+    static let defaultMethod: String = "POST"
+    var method: String = PostMyExampleRequest.defaultMethod
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        get {
+            return "/my/example"
+        }
+    }
+    var t1: Int32?
+    var t2: String?
+    var content: RequestContent? {
+        var result = [String:RequestContent]()
+        if let tmp = t1 {
+            result["t"] = tmp.asRequestContent()
+        }
+        if let tmp = t2 {
+            result["tt"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
+
+func test() {
+	let request = PostMyExampleRequest()
+	request.t1 = 123
+	request.t2 = "hey"
+	let requestEncoder = HTTPURLEncodedFormRequestEncoder.shared
+	BaseClient.shared.send(request, requestEncoder: requestEncoder, completion: yourCompletionClosure, errorHandler: yourErrorHandler)
+}
+```
+
+此请求最终发送的http request如下：
+```
+POST /my/example HTTP/1.1
+Host: here.is.you.host
+Content-Type: application/x-www-form-urlencoded; charset=utf-8
+Content-Length: 13
+
+t1=123&t2=hey
+```
+
+### JSON 编码器
+类名：HTTPJSONRequestEncoder
+此编码器会将请求的content转换成request body中的JSON，例如有如下请求：
+```
+class PostTestJsonEncoderRequest: Request {
+    
+    static let defaultMethod: String = "POST"
+    var method: String = PostTestJsonEncoderRequest.defaultMethod
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        get {
+            return "/test/json/encoder"
+        }
+    }
+    var t1: Int64?
+    var t2: Int32?
+    var t3: Double?
+    var t4: String?
+    var t5: [String]?
+    var content: RequestContent? {
+        var result = [String:RequestContent]()
+        if let tmp = t1 {
+            result["t"] = tmp.asRequestContent()
+        }
+        if let tmp = t2 {
+            result["tt"] = tmp.asRequestContent()
+        }
+        if let tmp = t3 {
+            result["ttt"] = tmp.asRequestContent()
+        }
+        if let tmp = t4 {
+            result["tttt"] = tmp.asRequestContent()
+        }
+        if let tmp = t5 {
+            result["ttttt"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
+}
+
+func test() {
+		let request = PostTestJsonEncoderRequest()
+        request.t1 = 123123123123
+        request.t2 = 123
+        request.t3 = 1.1
+        request.t4 = "jude"
+		 request.t5 = ["don't", "make", "it", "bad"]
+}
+```
+
+此请求最终发送的http request如下：
+```
+POST /test/json/encoder HTTP/1.1
+Host: your.api.host
+Content-Type: application/json
+Content-Length: 87
+
+{"ttt":1.1,"tttt":"jude","t":123123123123,"ttttt":["don't","make","it","bad"],"tt":123}
+```
