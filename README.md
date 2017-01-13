@@ -379,3 +379,55 @@ Content-Disposition: form-data; name="ttt"
 1.1
 --alamofire.boundary.2ebcd6891b6c4c27--
 ```
+
+## 内置解码器
+### JSON 解码器
+类名：HTTPResponseJSONDecoder
+此解码器会将response body 当做JSON 来解析成与之同构的ResponseContent
+
+## 观察者（Observer）
+观察者是一组由Client协议实现类管理的对象，他们需要实现HTTPRequestObserver 或 HTTPResponseObserver协议：
+```
+public protocol HTTPRequestObserver: class {
+    func willSend(request: Request)
+    func didSend(request: Request)
+    func willEncode(request: Request)
+    func didEncode(request: Request, encoded: HTTPRequest)
+}
+
+public protocol HTTPResponseObserver: class {
+    func receive(error: HIError)
+    func receive(rawResponse: HTTPResponse)
+    func willDecode(rawResponse: HTTPResponse)
+    func didDecode(rawResponse: HTTPResponse, decodedResponse: Response)
+}
+```
+
+观察者可以在请求发送中的各个时间点接收到回调，在这些回调中可以做一些特殊逻辑，如：打印日志
+
+## Rewriter
+Rewriter是一组由Client协议实现类管理的对象，他们需要实现HTTPRequestRewriter 或 HTTPResponseRewriter协议：
+```
+public enum HTTPRequestRewriterResult {
+    case request(request: HTTPRequest)
+    case response(response: HTTPResponse)
+    case error(error: HIError)
+}
+
+public protocol HTTPRequestRewriter: class {
+    func rewrite(request: HTTPRequest) -> HTTPRequestRewriterResult
+}
+
+public enum HTTPResponseRewriterResult {
+    case response(response: HTTPResponse)
+    case error(error: HIError)
+}
+
+public protocol HTTPResponseRewriter: class {
+    func rewrite(response: HTTPResponse) -> HTTPResponseRewriterResult
+}
+```
+
+request rewriter可以将request重写成另一个request、 response 或 error
+response rewriter可以将response重写成另一个response 或 error
+
