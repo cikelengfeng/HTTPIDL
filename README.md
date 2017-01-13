@@ -29,7 +29,7 @@ CocoaPods 是一个包管理器，你可以通过下面的命令安装它：
 use_frameworks!
 
 target '<Your Target Name>' do
-pod 'Alamofire', '~> 4.0'
+    pod 'HTTPIDL'
 end
 ```
 
@@ -41,15 +41,15 @@ end
 在 /your/httpidl/directory 文件夹中创建一个扩展名为.http的文本文件，并在文件中添加以下代码:
 ```
 MESSAGE /my/example {
-GET REQUEST {
-INT32 t1 = t;
-STRING t2 = tt;
-BOOL t3 = ttt;
-}
-GET RESPONSE {
-INT64 x1 = x;
-DOUBLE x2 = xx;
-}
+	GET REQUEST {
+		INT32 t1 = t;
+		STRING t2 = tt;
+		BOOL t3 = ttt;
+	}
+	GET RESPONSE {
+		INT64 x1 = x;
+		DOUBLE x2 = xx;
+	}
 }
 ```
 
@@ -63,50 +63,50 @@ import HTTPIDL
 
 
 class GetMyExampleRequest: Request {
-
-static let defaultMethod: String = "GET"
-var method: String = GetMyExampleRequest.defaultMethod
-var configuration: Configuration = BaseConfiguration.shared
-var client: Client = BaseClient.shared
-var uri: String {
-get {
-return "/my/example"
-}
-}
-var t1: Int32?
-var t2: String?
-var t3: BOOL?
-var parameters: [RequestParameter] {
-var result: [RequestParameter] = []
-if let tmp = t1 {
-result.append(tmp.asRequestParameter(key: "t"))
-}
-if let tmp = t2 {
-result.append(tmp.asRequestParameter(key: "tt"))
-}
-if let tmp = t3 {
-result.append(tmp.asRequestParameter(key: "ttt"))
-}
-return result
-}
-func send(_ requestEncoder: HTTPRequestEncoder = GetMyExampleRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetMyExampleResponse.defaultDecoder, completion: @escaping (GetMyExampleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
-}
-func send(_ requestEncoder: HTTPRequestEncoder = GetMyExampleRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
-}
+    
+    static let defaultMethod: String = "GET"
+    var method: String = GetMyExampleRequest.defaultMethod
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        get {
+            return "/my/example"
+        }
+    }
+    var t1: Int32?
+    var t2: String?
+    var t3: BOOL?
+    var parameters: [RequestParameter] {
+        var result: [RequestParameter] = []
+        if let tmp = t1 {
+            result.append(tmp.asRequestParameter(key: "t"))
+        }
+        if let tmp = t2 {
+            result.append(tmp.asRequestParameter(key: "tt"))
+        }
+        if let tmp = t3 {
+            result.append(tmp.asRequestParameter(key: "ttt"))
+        }
+        return result
+    }
+    func send(_ requestEncoder: HTTPRequestEncoder = GetMyExampleRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetMyExampleResponse.defaultDecoder, completion: @escaping (GetMyExampleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    }
+    func send(_ requestEncoder: HTTPRequestEncoder = GetMyExampleRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    }
 }
 
 struct GetMyExampleResponse: Response {
-
-let x1: Int64?
-let x2: Double?
-let rawResponse: HTTPResponse
-init(parameters: [String: ResponseParameter], rawResponse: HTTPResponse) throws {
-self.rawResponse = rawResponse
-self.x1 = Int64(parameter: parameters["x"])
-self.x2 = Double(parameter: parameters["xx"])
-}
+    
+    let x1: Int64?
+    let x2: Double?
+    let rawResponse: HTTPResponse
+    init(parameters: [String: ResponseParameter], rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+        self.x1 = Int64(parameter: parameters["x"])
+        self.x2 = Double(parameter: parameters["xx"])
+    }
 }
 ```
 
@@ -117,10 +117,10 @@ import HTTPIDL
 
 let request = GetMyExampleRequest()
 request.send(completion: { (response) in
-//handle GetMyExampleResponse
-}) { (error) in
-//handle error
-}
+            //handle GetMyExampleResponse
+        }) { (error) in
+            //handle error
+        }
 ```
 
 ### 手写请求
@@ -128,11 +128,11 @@ request.send(completion: { (response) in
 在HTTPIDL中，无论自动生成还是手写的请求都要实现Request协议：
 ```
 public protocol Request {
-static var defaultMethod: String {get} //该类请求的默认method
-var method: String {get} //此请求对象的method
-var configuration: Configuration {get set} //此请求对象的配置，包括baseURLString, headers
-var uri: String {get} //此请求对象的uri
-var content: RequestContent {get} //此请求的内容，对应http request body
+    static var defaultMethod: String {get} //该类请求的默认method
+    var method: String {get} //此请求对象的method
+    var configuration: Configuration {get set} //此请求对象的配置，包括baseURLString, headers
+    var uri: String {get} //此请求对象的uri
+    var content: RequestContent {get} //此请求的内容，对应http request body
 }
 ```
 
