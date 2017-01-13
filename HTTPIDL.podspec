@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "HTTPIDL"
-  s.version      = "0.4.3"
+  s.version      = "0.4.4"
   s.summary      = "http idl"
 
   # This description is used to generate tags and improve search results.
@@ -25,7 +25,18 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-  HTTP message generator for Swift 3
+  HTTPIDL是一套HTTP网络库和代码生成工具的集合，目前支持Swift 3。
+
+  ## 特色
+  * 自动生成swift 3代码，同时支持手写
+  * URL / JSON / URLEncodedForm 请求内容编码方式（甚至支持组合编码方式）
+  * 上传 File / Data / MultipartFormData
+  * JSON 响应内容自动转换为 Model
+  * 可扩展的请求内容编码器
+  * 可扩展的响应内容解码器
+  * 可扩展的HTTP客户端库 （默认使用Alamofire）
+  * 支持请求和响应观察者
+  * 支持请求和响应重写
                    DESC
 
   s.homepage     = "https://github.com/cikelengfeng/HTTPIDL"
