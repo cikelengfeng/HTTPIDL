@@ -293,3 +293,89 @@ Content-Length: 87
 
 {"ttt":1.1,"tttt":"jude","t":123123123123,"ttttt":["don't","make","it","bad"],"tt":123}
 ```
+
+### Multipart 编码器
+类名：HTTPMultipartRequestEncoder
+此编码器会将请求的content转换成request body中的multipart form，例如有如下请求：
+```
+
+class PostTestMultipartEncoderRequest: Request {
+    
+    static let defaultMethod: String = "POST"
+    var method: String = PostTestMultipartEncoderRequest.defaultMethod
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        get {
+            return "/test/multipart/encoder"
+        }
+    }
+    var t1: Int64?
+    var t2: Int32?
+    var t3: Double?
+    var t4: String?
+    var t5: HTTPData?
+    var content: RequestContent? {
+        var result = [String:RequestContent]()
+        if let tmp = t1 {
+            result["t"] = tmp.asRequestContent()
+        }
+        if let tmp = t2 {
+            result["tt"] = tmp.asRequestContent()
+        }
+        if let tmp = t3 {
+            result["ttt"] = tmp.asRequestContent()
+        }
+        if let tmp = t4 {
+            result["tttt"] = tmp.asRequestContent()
+        }
+        if let tmp = t5 {
+            result["tttttt"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
+}
+let request = PostTestMultipartEncoderRequest()
+        request.t1 = 123123123123
+        request.t2 = 123
+        request.t3 = 1.1
+        request.t4 = "jude"
+        let data = try! Data(contentsOf: Bundle.main.url(forResource: "test", withExtension: "JPG")!)
+        request.t5 = HTTPData(with: data, fileName: "test", mimeType: "image/jpeg")
+        request.send(HTTPMultipartRequestEncoder.shared, responseDecoder: HTTPResponseJSONDecoder.shared, completion: { (response) in
+            
+        }) { (error) in
+            
+        }
+```
+
+此请求最终发送的http request如下：
+```
+POST /test/multipart/encoder HTTP/1.1
+Host: your.api.host
+Content-Type: multipart/form-data; boundary=alamofire.boundary.2ebcd6891b6c4c27
+Content-Length: 186158
+
+--alamofire.boundary.2ebcd6891b6c4c27
+Content-Disposition: form-data; name="tt"
+
+123
+--alamofire.boundary.2ebcd6891b6c4c27
+Content-Disposition: form-data; name="tttttt"; filename="test"
+Content-Type: image/jpeg
+
+<very long data>
+--alamofire.boundary.2ebcd6891b6c4c27
+Content-Disposition: form-data; name="tttt"
+
+jude
+--alamofire.boundary.2ebcd6891b6c4c27
+Content-Disposition: form-data; name="t"
+
+123123123123
+--alamofire.boundary.2ebcd6891b6c4c27
+Content-Disposition: form-data; name="ttt"
+
+1.1
+--alamofire.boundary.2ebcd6891b6c4c27--
+```
