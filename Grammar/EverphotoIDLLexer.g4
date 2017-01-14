@@ -76,6 +76,10 @@ INT64
     : 'INT64'
     ;
 
+BOOL
+    : 'BOOL'
+    ;
+
 DOUBLE
     : 'DOUBLE'
     ;

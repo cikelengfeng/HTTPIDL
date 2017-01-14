@@ -25,7 +25,7 @@ STRING x1 = x;
 MESSAGE /test/multipart/encoder {
 POST REQUEST {
 INT64 number = number;
-Bool bool = bool;
+BOOL bool = bool;
 STRING string = string;
 BLOB data = data;
 FILE file = file;

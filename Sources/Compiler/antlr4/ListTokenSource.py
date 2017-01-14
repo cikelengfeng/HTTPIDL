@@ -1,4 +1,10 @@
 #
+# Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
+# Use of this file is governed by the BSD 3-clause license that
+# can be found in the LICENSE.txt file in the project root.
+#
+
+#
 # Provides an implementation of {@link TokenSource} as a wrapper around a list
 # of {@link Token} objects.
 #
@@ -81,7 +87,7 @@ class ListTokenSource(TokenSource):
             return self.eofToken
         t = self.tokens[self.pos]
         if self.pos == len(self.tokens) - 1 and t.type == Token.EOF:
-            eofToken = t
+            self.eofToken = t
         self.pos += 1
         return t
 
@@ -101,9 +107,7 @@ class ListTokenSource(TokenSource):
             line = lastToken.line
             tokenText = lastToken.text
             if tokenText is not None:
-                for c in tokenText:
-                    if c  == '\n':
-                        line += 1
+                line += tokenText.count('\n')
 
             # if no text is available, assume the token did not contain any newline characters.
             return line
