@@ -35,17 +35,19 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        BaseConfiguration.shared.baseURLString = "https://api.everphoto.cn/"
+        BaseConfiguration.shared.baseURLString = "https://httpbin.org/"
         BaseClient.shared.add(responseObserver: TestObserver())
         
         let request = PostTestMultipartEncoderRequest()
-        request.t1 = 123123123123
-        request.t2 = 123
-        request.t3 = 1.1
-        request.t4 = "jude"
-        let data = try! Data(contentsOf: Bundle.main.url(forResource: "test", withExtension: "JPG")!)
-        request.t5 = HTTPData(with: data, fileName: "test", mimeType: "image/jpeg")
-        request.send(HTTPMultipartRequestEncoder.shared, responseDecoder: HTTPResponseJSONDecoder.shared, completion: { (response) in
+        request.number = 123123123123
+        request.bool = false
+        request.string = "yellow submarine"
+        let dataString = "xxxxx"
+        let data = dataString.data(using: String.Encoding.utf8)!
+        request.data = HTTPData(with: data, fileName: "test_data", mimeType: "text/plain")
+        let url = Bundle.main.url(forResource: "China", withExtension: "png")!
+        request.file = HTTPFile(with: url, fileName: "test_file", mimeType: "image/png")
+        request.send(HTTPMultipartRequestEncoder.shared, rawResponseHandler: { (response) in
             
         }) { (error) in
             

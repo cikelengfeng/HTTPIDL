@@ -530,4 +530,81 @@ class HTTPIDLDemoTests: XCTestCase {
         }
     }
     
+    func testMultipartFormEncoder() {
+        let encoder = HTTPMultipartRequestEncoder.shared
+        var testRequest = TestRequest(content: RequestContent.int64(value: 12312312312321313))
+        do {
+            let _ = try encoder.encode(testRequest).body()
+            XCTFail("multipart encode 不支持int64型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.int32(value: 12312313)
+        do {
+            let _ = try encoder.encode(testRequest).body()
+            XCTFail("multipart encode 不支持int32型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.bool(value: false)
+        do {
+            let _ = try encoder.encode(testRequest).body()
+            XCTFail("multipart encode 不支持bool型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.double(value: 0.22)
+        do {
+            let _ = try encoder.encode(testRequest).body()
+            XCTFail("multipart encode 不支持double型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.string(value: "yyyy")
+        do {
+            let _ = try encoder.encode(testRequest).body()
+            XCTFail("multipart encode 不支持string型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.file(value: URL(fileURLWithPath: "xxx"), fileName: nil, mimeType: "image/*")
+        do {
+            let _ = try encoder.encode(testRequest).body()
+            XCTFail("multipart encode 不支持file型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.data(value: Data(), fileName: "xxx", mimeType: "image/jpeg")
+        do {
+            let _ = try encoder.encode(testRequest).body()
+            XCTFail("multipart encode 不支持data型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.array(value: [RequestContent.int64(value: 12312312312321313)])
+        do {
+            let _ = try encoder.encode(testRequest).body()
+            XCTFail("multipart encode 不支持array型的根参数")
+        } catch _ {
+        }
+        
+        let dataString = "xxxxx"
+        let data = dataString.data(using: String.Encoding.utf8)!
+        testRequest.content = RequestContent.dictionary(value: [
+                        "number": RequestContent.int64(value: 123123123123),
+                        "bool": RequestContent.bool(value: false),
+                        "string": RequestContent.string(value: "yellow submarine"),
+                        "file": RequestContent.file(value: Bundle.main.url(forResource: "China", withExtension: "png")!, fileName: "test_file", mimeType: "image/png"),
+                        "data": RequestContent.data(value: data, fileName: "test_data", mimeType: "text/plain")
+                        ])
+        do {
+            let encoded = try encoder.encode(testRequest)
+            let body = try! encoded.body()!
+            XCTAssert(body.count == 46945)
+        } catch _ {
+            XCTFail()
+        }
+    }
+        
+    
 }

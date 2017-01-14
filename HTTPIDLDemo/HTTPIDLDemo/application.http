@@ -24,11 +24,11 @@ STRING x1 = x;
 
 MESSAGE /test/multipart/encoder {
 POST REQUEST {
-INT64 t1 = t;
-INT32 t2 = tt;
-DOUBLE t3 = ttt;
-STRING t4 = tttt;
-BLOB t5 = tttttt;
+INT64 number = number;
+Bool bool = bool;
+STRING string = string;
+BLOB data = data;
+FILE file = file;
 }
 POST RESPONSE {
 STRING x1 = x;

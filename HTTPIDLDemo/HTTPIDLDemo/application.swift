@@ -121,27 +121,27 @@ class PostTestMultipartEncoderRequest: Request {
             return "/test/multipart/encoder"
         }
     }
-    var t1: Int64?
-    var t2: Int32?
-    var t3: Double?
-    var t4: String?
-    var t5: HTTPData?
+    var number: Int64?
+    var bool: Bool?
+    var string: String?
+    var data: HTTPData?
+    var file: HTTPFile?
     var content: RequestContent? {
         var result = [String:RequestContent]()
-        if let tmp = t1 {
-            result["t"] = tmp.asRequestContent()
+        if let tmp = number {
+            result["number"] = tmp.asRequestContent()
         }
-        if let tmp = t2 {
-            result["tt"] = tmp.asRequestContent()
+        if let tmp = bool {
+            result["bool"] = tmp.asRequestContent()
         }
-        if let tmp = t3 {
-            result["ttt"] = tmp.asRequestContent()
+        if let tmp = string {
+            result["string"] = tmp.asRequestContent()
         }
-        if let tmp = t4 {
-            result["tttt"] = tmp.asRequestContent()
+        if let tmp = data {
+            result["data"] = tmp.asRequestContent()
         }
-        if let tmp = t5 {
-            result["tttttt"] = tmp.asRequestContent()
+        if let tmp = file {
+            result["file"] = tmp.asRequestContent()
         }
         return .dictionary(value: result)
     }
