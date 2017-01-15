@@ -20,6 +20,7 @@
 		428846891DEDAD3900D952A2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428846871DEDAD3900D952A2 /* LaunchScreen.storyboard */; };
 		42C475C01E29F65E0044415F /* China.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C475BF1E29F65E0044415F /* China.png */; };
 		42C475C21E2A06AC0044415F /* China.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C475C11E2A06AC0044415F /* China.png */; };
+		42C475C41E2A701F0044415F /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C475C31E2A701F0044415F /* Package.swift */; };
 		AD64C5C6E070C5E4E5ACEDD0 /* Pods_HTTPIDLDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9899E738CC72F3BAF233F097 /* Pods_HTTPIDLDemoTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		4288468A1DEDAD3900D952A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42C475BF1E29F65E0044415F /* China.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = China.png; sourceTree = "<group>"; };
 		42C475C11E2A06AC0044415F /* China.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = China.png; sourceTree = "<group>"; };
+		42C475C31E2A701F0044415F /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		5ACEC624605DF3FE6D115633 /* Pods-HTTPIDLDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemo/Pods-HTTPIDLDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		6AD5664E73DED524B38DA9FA /* Pods_HTTPIDLDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HTTPIDLDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E013AD07FE7ADA2CC23F1D5 /* Pods-HTTPIDLDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemoTests/Pods-HTTPIDLDemoTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 		428846721DEDAD3900D952A2 = {
 			isa = PBXGroup;
 			children = (
+				42C475C31E2A701F0044415F /* Package.swift */,
 				4288467D1DEDAD3900D952A2 /* HTTPIDLDemo */,
 				423A3F231E26201C00806D65 /* HTTPIDLDemoTests */,
 				4288467C1DEDAD3900D952A2 /* Products */,
@@ -364,6 +367,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42C475C41E2A701F0044415F /* Package.swift in Sources */,
 				423C32011E21F08000D74B2E /* application.swift in Sources */,
 				428846811DEDAD3900D952A2 /* ViewController.swift in Sources */,
 				4288467F1DEDAD3900D952A2 /* AppDelegate.swift in Sources */,
