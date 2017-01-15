@@ -114,6 +114,8 @@ struct GetMyExampleResponse: Response {
 import HTTPIDL
 
 let request = GetMyExampleRequest()
+request.t1 = 123
+request.t2 = "while my guitar gently weeps"
 request.send(completion: { (response) in
             //handle GetMyExampleResponse
         }) { (error) in
