@@ -63,6 +63,20 @@ extension Int32: ResponseContentConvertible {
     }
 }
 
+extension Bool: ResponseContentConvertible {
+    public init?(content: ResponseContent?) {
+        guard let content = content else {
+            return nil
+        }
+        switch content {
+        case .bool(let value):
+            self.init(value)
+        case .array, .dictionary, .data, .double, .int64, .int32, .string:
+            return nil
+        }
+    }
+}
+
 extension Double: ResponseContentConvertible {
     public init?(content: ResponseContent?) {
         guard let content = content else {
