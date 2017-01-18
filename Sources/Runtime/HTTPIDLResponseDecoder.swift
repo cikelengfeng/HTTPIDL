@@ -13,14 +13,14 @@ private func decode(json: Any) throws -> ResponseContent {
         let numberType = CFNumberGetType(number)
         switch numberType {
         case .charType:
-            return .bool(value: number as! Bool)
+            return .bool(value: number as Bool)
         //Bool
         case .sInt8Type, .sInt16Type, .sInt32Type, .sInt64Type, .shortType, .intType, .longType, .longLongType, .cfIndexType, .nsIntegerType:
         //Int
-            return .int64(value: number as! Int64)
+            return .int64(value: number as Int64)
         case .float32Type, .float64Type, .floatType, .doubleType, .cgFloatType:
             //Double
-            return .double(value: number as! Double)
+            return .double(value: number as Double)
         }
     }else if let tmp = json as? String {
         return .string(value: tmp)
