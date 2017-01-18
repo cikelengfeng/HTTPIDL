@@ -8,14 +8,14 @@
 
 import Foundation
 
-struct HTTPBaseResponse: HTTPResponse {
+public struct HTTPBaseResponse: HTTPResponse {
     
-    var statusCode: Int
-    var headers: [String: String]
-    var body: Data?
-    var request: HTTPRequest
+    public var statusCode: Int
+    public var headers: [String: String]
+    public var body: Data?
+    public var request: HTTPRequest
     
-    init(with statusCode: Int, headers: [String: String], body: Data?, request: HTTPRequest) {
+    public init(with statusCode: Int, headers: [String: String], body: Data?, request: HTTPRequest) {
         self.statusCode = statusCode
         self.headers = headers
         self.body = body

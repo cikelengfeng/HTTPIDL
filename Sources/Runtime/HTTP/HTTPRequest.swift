@@ -8,20 +8,20 @@
 
 import Foundation
 
-struct HTTPBaseRequest: HTTPRequest {
-    var method: String
-    var headers: [String: String]
-    var url: URL
-    var body: () throws -> Data?
+public struct HTTPBaseRequest: HTTPRequest {
+    public var method: String
+    public var headers: [String: String]
+    public var url: URL
+    public var body: () throws -> Data?
     
-    init(method: String, url: URL, headers: [String: String], body: @escaping () throws -> Data?) {
+    public init(method: String, url: URL, headers: [String: String], body: @escaping () throws -> Data?) {
         self.method = method
         self.url = url
         self.headers = headers
         self.body = body
     }
     
-    init(httpRequest: HTTPRequest) {
+    public init(httpRequest: HTTPRequest) {
         self.init(method: httpRequest.method, url: httpRequest.url, headers: httpRequest.headers, body: httpRequest.body)
     }
     
