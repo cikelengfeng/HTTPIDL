@@ -4,6 +4,27 @@ import Foundation
 import HTTPIDL
 
 
+struct OnlineStickerTemplate: ResponseContentConvertible {
+    
+    let url: String?
+    let x: Double?
+    let y: Double?
+    let width: Double?
+    let height: Double?
+    let angle: Double?
+    init?(content: ResponseContent?) {
+        guard let content = content, case .dictionary(let value) = content else {
+            return nil
+        }
+        self.url = String(content: value["url"])
+        self.x = Double(content: value["x"])
+        self.y = Double(content: value["y"])
+        self.width = Double(content: value["w"])
+        self.height = Double(content: value["h"])
+        self.angle = Double(content: value["angle"])
+    }
+}
+
 class GetTestUrlencodedQueryEncoderRequest: Request {
     
     static let defaultMethod: String = "GET"
@@ -221,5 +242,49 @@ struct PostTestJsonEncoderResponse: Response {
             return
         }
         self.x1 = String(content: value["x"])
+    }
+}
+
+class GetStickerMediaidRequest: Request {
+    
+    let mediaId: String
+    static let defaultMethod: String = "GET"
+    var method: String = GetStickerMediaidRequest.defaultMethod
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        get {
+            return "/sticker/\(mediaId)"
+        }
+    }
+    init(mediaId: String) {
+        self.mediaId = mediaId
+    }
+    var content: RequestContent? {
+        var result = [String:RequestContent]()
+        return .dictionary(value: result)
+    }
+    func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaidRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetStickerMediaidResponse.defaultDecoder, completion: @escaping (GetStickerMediaidResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    }
+    func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaidRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    }
+}
+
+struct GetStickerMediaidResponse: Response {
+    
+    let code: Int32?
+    let templates: [OnlineStickerTemplate]?
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+        guard let content = content, case .dictionary(let value) = content else {
+            self.code = nil
+            self.templates = nil
+            return
+        }
+        self.code = Int32(content: value["code"])
+        self.templates = [OnlineStickerTemplate](content: value["data"])
     }
 }

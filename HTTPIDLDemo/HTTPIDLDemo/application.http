@@ -47,3 +47,23 @@ POST RESPONSE {
 STRING x1 = x;
 }
 }
+
+MESSAGE /sticker/$mediaId {
+GET REQUEST {
+}
+
+GET RESPONSE {
+INT32 code = code;
+ARRAY<OnlineStickerTemplate> templates = data;
+}
+}
+
+STRUCT OnlineStickerTemplate {
+STRING url = url;
+DOUBLE x = x;
+DOUBLE y = y;
+DOUBLE width = w;
+DOUBLE height = h;
+DOUBLE angle = angle;
+}
+
