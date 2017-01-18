@@ -9,21 +9,26 @@
 import Foundation
 
 private func decode(json: Any) throws -> ResponseContent {
-    if let tmp = json as? Int64 {
-        return .int64(value: tmp)
-    } else if let tmp = json as? Int32 {
-        return .int32(value: tmp)
-    } else if let tmp = json as? Bool {
-        return .bool(value: tmp)
-    } else if let tmp = json as? Double {
-        return .double(value: tmp)
-    } else if let tmp = json as? String {
+    if let number = json as? NSNumber {
+        let numberType = CFNumberGetType(number)
+        switch numberType {
+        case .charType:
+            return .bool(value: number as! Bool)
+        //Bool
+        case .sInt8Type, .sInt16Type, .sInt32Type, .sInt64Type, .shortType, .intType, .longType, .longLongType, .cfIndexType, .nsIntegerType:
+        //Int
+            return .int64(value: number as! Int64)
+        case .float32Type, .float64Type, .floatType, .doubleType, .cgFloatType:
+            //Double
+            return .double(value: number as! Double)
+        }
+    }else if let tmp = json as? String {
         return .string(value: tmp)
     } else if let tmp = json as? [Any] {
         return .array(value: try tmp.map({
             return try decode(json: $0)
         }))
-    } else if let tmp = json as? [String: Any] {
+    } else if json is [String: Any], let tmp = json as? [String: Any] {
         return .dictionary(value: try tmp.reduce([String: ResponseContent](), { (soFar, soGood) in
             var ret = soFar
             ret[soGood.key] = try decode(json: soGood.value)
