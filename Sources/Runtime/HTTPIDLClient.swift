@@ -226,8 +226,10 @@ public class BaseClient: Client {
         do {
             let content = try responseDecoder.decode(resp)
             let httpIdlResponse = try ResponseType(content: content, rawResponse: resp)
-            completion(httpIdlResponse)
             self.didDecode(rawResponse: resp, decodedResponse: httpIdlResponse)
+            DispatchQueue.main.async {
+                completion(httpIdlResponse)
+            }
         } catch let error as HIError {
             self.handle(error: error, errorHandler: errorHandler)
         } catch let error {
@@ -247,12 +249,16 @@ public class BaseClient: Client {
                 return
             }
         }
-        completion(resp)
+        DispatchQueue.main.async {
+            completion(resp)
+        }
         self.receive(rawResponse: resp)
     }
     
     private func handle(error: HIError, errorHandler: ((HIError) -> Void)?) {
-        errorHandler?(error)
+        DispatchQueue.main.async {
+            errorHandler?(error)
+        }
         self.receive(error: error)
     }
     
@@ -268,8 +274,12 @@ public class BaseClient: Client {
                     encodedRequest = rewritedRequest
                 case .response(let response):
                     self.handle(response: response, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+                    //rewriter已经将request重写成response了，不需要再发请求了
+                    return
                 case .error(let error):
                     self.handle(error: error, errorHandler: errorHandler)
+                    //rewriter已经将request重写成error了，不需要再发请求了
+                    return
                 }
             }
             clientImpl.send(encodedRequest, completion: { (response) in
@@ -299,8 +309,12 @@ public class BaseClient: Client {
                     encodedRequest = rewritedRequest
                 case .response(let response):
                     self.handle(response: response, completion: completion, errorHandler: errorHandler)
+                    //rewriter已经将request重写成response了，不需要再发请求了
+                    return
                 case .error(let error):
                     self.handle(error: error, errorHandler: errorHandler)
+                    //rewriter已经将request重写成error了，不需要再发请求了
+                    return
                 }
             }
             clientImpl.send(encodedRequest, completion: { (response) in
