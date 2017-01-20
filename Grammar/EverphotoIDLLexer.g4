@@ -12,6 +12,22 @@ GET
     : 'GET'
     ;
 
+HEAD
+    : 'HEAD'
+    ;
+
+TRACE
+    : 'TRACE'
+    ;
+
+CONNECT
+    : 'CONNECT'
+    ;
+
+OPTIONS
+    : 'OPTIONS'
+    ;
+
 POST
     : 'POST'
     ;

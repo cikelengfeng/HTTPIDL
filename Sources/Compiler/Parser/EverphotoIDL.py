@@ -7,7 +7,7 @@ from io import StringIO
 def serializedATN():
     with StringIO() as buf:
         buf.write(u"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3")
-        buf.write(u"!\u0095\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t")
+        buf.write(u"%\u0092\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t")
         buf.write(u"\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r")
         buf.write(u"\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4")
         buf.write(u"\23\t\23\4\24\t\24\4\25\t\25\3\2\3\2\7\2-\n\2\f\2\16")
@@ -15,48 +15,46 @@ def serializedATN():
         buf.write(u"\3\f\3\16\3=\13\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\5")
         buf.write(u"\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\b\3\b\7\bQ\n\b\f\b\16")
         buf.write(u"\bT\13\b\3\t\3\t\5\tX\n\t\3\n\3\n\7\n\\\n\n\f\n\16\n")
-        buf.write(u"_\13\n\3\n\3\n\3\13\3\13\3\13\3\f\3\f\3\f\3\f\5\fj\n")
-        buf.write(u"\f\3\f\3\f\3\f\3\r\3\r\5\rq\n\r\3\16\3\16\3\16\3\16\5")
-        buf.write(u"\16w\n\16\3\17\3\17\3\17\3\17\3\20\3\20\3\20\3\20\3\20")
-        buf.write(u"\3\20\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u008b")
-        buf.write(u"\n\21\3\22\3\22\3\23\3\23\3\24\3\24\3\25\3\25\3\25\2")
-        buf.write(u"\2\26\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(\2")
-        buf.write(u"\3\3\2\5\t\u0092\2\62\3\2\2\2\4\64\3\2\2\2\6@\3\2\2\2")
-        buf.write(u"\bD\3\2\2\2\nH\3\2\2\2\fL\3\2\2\2\16R\3\2\2\2\20W\3\2")
-        buf.write(u"\2\2\22Y\3\2\2\2\24b\3\2\2\2\26e\3\2\2\2\30p\3\2\2\2")
-        buf.write(u"\32v\3\2\2\2\34x\3\2\2\2\36|\3\2\2\2 \u008a\3\2\2\2\"")
-        buf.write(u"\u008c\3\2\2\2$\u008e\3\2\2\2&\u0090\3\2\2\2(\u0092\3")
-        buf.write(u"\2\2\2*-\5\4\3\2+-\5\6\4\2,*\3\2\2\2,+\3\2\2\2-\60\3")
-        buf.write(u"\2\2\2.,\3\2\2\2./\3\2\2\2/\63\3\2\2\2\60.\3\2\2\2\61")
-        buf.write(u"\63\7\2\2\3\62.\3\2\2\2\62\61\3\2\2\2\63\3\3\2\2\2\64")
-        buf.write(u"\65\7\3\2\2\65\66\5\16\b\2\66;\7\r\2\2\67:\5\b\5\28:")
-        buf.write(u"\5\n\6\29\67\3\2\2\298\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<")
-        buf.write(u"\3\2\2\2<>\3\2\2\2=;\3\2\2\2>?\7\16\2\2?\5\3\2\2\2@A")
-        buf.write(u"\7\4\2\2AB\5&\24\2BC\5\22\n\2C\7\3\2\2\2DE\5\f\7\2EF")
-        buf.write(u"\7\n\2\2FG\5\22\n\2G\t\3\2\2\2HI\5\f\7\2IJ\7\13\2\2J")
-        buf.write(u"K\5\22\n\2K\13\3\2\2\2LM\t\2\2\2M\r\3\2\2\2NO\7\f\2\2")
-        buf.write(u"OQ\5\20\t\2PN\3\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2\2\2S")
-        buf.write(u"\17\3\2\2\2TR\3\2\2\2UX\5(\25\2VX\5\24\13\2WU\3\2\2\2")
-        buf.write(u"WV\3\2\2\2X\21\3\2\2\2Y]\7\r\2\2Z\\\5\26\f\2[Z\3\2\2")
-        buf.write(u"\2\\_\3\2\2\2][\3\2\2\2]^\3\2\2\2^`\3\2\2\2_]\3\2\2\2")
-        buf.write(u"`a\7\16\2\2a\23\3\2\2\2bc\7\17\2\2cd\5(\25\2d\25\3\2")
-        buf.write(u"\2\2ef\5\30\r\2fg\5\"\22\2gi\7\23\2\2hj\5\30\r\2ih\3")
-        buf.write(u"\2\2\2ij\3\2\2\2jk\3\2\2\2kl\5$\23\2lm\7\35\2\2m\27\3")
-        buf.write(u"\2\2\2nq\5\32\16\2oq\5 \21\2pn\3\2\2\2po\3\2\2\2q\31")
-        buf.write(u"\3\2\2\2rs\7\33\2\2sw\5\34\17\2tu\7\34\2\2uw\5\36\20")
-        buf.write(u"\2vr\3\2\2\2vt\3\2\2\2w\33\3\2\2\2xy\7\20\2\2yz\5 \21")
-        buf.write(u"\2z{\7\21\2\2{\35\3\2\2\2|}\7\20\2\2}~\5 \21\2~\177\7")
-        buf.write(u"\22\2\2\177\u0080\5 \21\2\u0080\u0081\7\21\2\2\u0081")
-        buf.write(u"\37\3\2\2\2\u0082\u008b\7\24\2\2\u0083\u008b\7\25\2\2")
-        buf.write(u"\u0084\u008b\7\26\2\2\u0085\u008b\7\27\2\2\u0086\u008b")
-        buf.write(u"\7\30\2\2\u0087\u008b\7\31\2\2\u0088\u008b\7\32\2\2\u0089")
-        buf.write(u"\u008b\5&\24\2\u008a\u0082\3\2\2\2\u008a\u0083\3\2\2")
-        buf.write(u"\2\u008a\u0084\3\2\2\2\u008a\u0085\3\2\2\2\u008a\u0086")
-        buf.write(u"\3\2\2\2\u008a\u0087\3\2\2\2\u008a\u0088\3\2\2\2\u008a")
-        buf.write(u"\u0089\3\2\2\2\u008b!\3\2\2\2\u008c\u008d\5(\25\2\u008d")
-        buf.write(u"#\3\2\2\2\u008e\u008f\5(\25\2\u008f%\3\2\2\2\u0090\u0091")
-        buf.write(u"\5(\25\2\u0091\'\3\2\2\2\u0092\u0093\7!\2\2\u0093)\3")
-        buf.write(u"\2\2\2\16,.\629;RW]ipv\u008a")
+        buf.write(u"_\13\n\3\n\3\n\3\13\3\13\3\13\3\f\3\f\3\f\3\f\3\f\3\f")
+        buf.write(u"\3\r\3\r\5\rn\n\r\3\16\3\16\3\16\3\16\5\16t\n\16\3\17")
+        buf.write(u"\3\17\3\17\3\17\3\20\3\20\3\20\3\20\3\20\3\20\3\21\3")
+        buf.write(u"\21\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u0088\n\21\3\22")
+        buf.write(u"\3\22\3\23\3\23\3\24\3\24\3\25\3\25\3\25\2\2\26\2\4\6")
+        buf.write(u"\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(\2\3\3\2\5\r\u008e")
+        buf.write(u"\2\62\3\2\2\2\4\64\3\2\2\2\6@\3\2\2\2\bD\3\2\2\2\nH\3")
+        buf.write(u"\2\2\2\fL\3\2\2\2\16R\3\2\2\2\20W\3\2\2\2\22Y\3\2\2\2")
+        buf.write(u"\24b\3\2\2\2\26e\3\2\2\2\30m\3\2\2\2\32s\3\2\2\2\34u")
+        buf.write(u"\3\2\2\2\36y\3\2\2\2 \u0087\3\2\2\2\"\u0089\3\2\2\2$")
+        buf.write(u"\u008b\3\2\2\2&\u008d\3\2\2\2(\u008f\3\2\2\2*-\5\4\3")
+        buf.write(u"\2+-\5\6\4\2,*\3\2\2\2,+\3\2\2\2-\60\3\2\2\2.,\3\2\2")
+        buf.write(u"\2./\3\2\2\2/\63\3\2\2\2\60.\3\2\2\2\61\63\7\2\2\3\62")
+        buf.write(u".\3\2\2\2\62\61\3\2\2\2\63\3\3\2\2\2\64\65\7\3\2\2\65")
+        buf.write(u"\66\5\16\b\2\66;\7\21\2\2\67:\5\b\5\28:\5\n\6\29\67\3")
+        buf.write(u"\2\2\298\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<\3\2\2\2<>\3\2")
+        buf.write(u"\2\2=;\3\2\2\2>?\7\22\2\2?\5\3\2\2\2@A\7\4\2\2AB\5&\24")
+        buf.write(u"\2BC\5\22\n\2C\7\3\2\2\2DE\5\f\7\2EF\7\16\2\2FG\5\22")
+        buf.write(u"\n\2G\t\3\2\2\2HI\5\f\7\2IJ\7\17\2\2JK\5\22\n\2K\13\3")
+        buf.write(u"\2\2\2LM\t\2\2\2M\r\3\2\2\2NO\7\20\2\2OQ\5\20\t\2PN\3")
+        buf.write(u"\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2\2\2S\17\3\2\2\2TR\3")
+        buf.write(u"\2\2\2UX\5(\25\2VX\5\24\13\2WU\3\2\2\2WV\3\2\2\2X\21")
+        buf.write(u"\3\2\2\2Y]\7\21\2\2Z\\\5\26\f\2[Z\3\2\2\2\\_\3\2\2\2")
+        buf.write(u"][\3\2\2\2]^\3\2\2\2^`\3\2\2\2_]\3\2\2\2`a\7\22\2\2a")
+        buf.write(u"\23\3\2\2\2bc\7\23\2\2cd\5(\25\2d\25\3\2\2\2ef\5\30\r")
+        buf.write(u"\2fg\5\"\22\2gh\7\27\2\2hi\5$\23\2ij\7!\2\2j\27\3\2\2")
+        buf.write(u"\2kn\5\32\16\2ln\5 \21\2mk\3\2\2\2ml\3\2\2\2n\31\3\2")
+        buf.write(u"\2\2op\7\37\2\2pt\5\34\17\2qr\7 \2\2rt\5\36\20\2so\3")
+        buf.write(u"\2\2\2sq\3\2\2\2t\33\3\2\2\2uv\7\24\2\2vw\5 \21\2wx\7")
+        buf.write(u"\25\2\2x\35\3\2\2\2yz\7\24\2\2z{\5 \21\2{|\7\26\2\2|")
+        buf.write(u"}\5 \21\2}~\7\25\2\2~\37\3\2\2\2\177\u0088\7\30\2\2\u0080")
+        buf.write(u"\u0088\7\31\2\2\u0081\u0088\7\32\2\2\u0082\u0088\7\33")
+        buf.write(u"\2\2\u0083\u0088\7\34\2\2\u0084\u0088\7\35\2\2\u0085")
+        buf.write(u"\u0088\7\36\2\2\u0086\u0088\5&\24\2\u0087\177\3\2\2\2")
+        buf.write(u"\u0087\u0080\3\2\2\2\u0087\u0081\3\2\2\2\u0087\u0082")
+        buf.write(u"\3\2\2\2\u0087\u0083\3\2\2\2\u0087\u0084\3\2\2\2\u0087")
+        buf.write(u"\u0085\3\2\2\2\u0087\u0086\3\2\2\2\u0088!\3\2\2\2\u0089")
+        buf.write(u"\u008a\5(\25\2\u008a#\3\2\2\2\u008b\u008c\5(\25\2\u008c")
+        buf.write(u"%\3\2\2\2\u008d\u008e\5(\25\2\u008e\'\3\2\2\2\u008f\u0090")
+        buf.write(u"\7%\2\2\u0090)\3\2\2\2\r,.\629;RW]ms\u0087")
         return buf.getvalue()
 
 
@@ -71,17 +69,19 @@ class EverphotoIDL ( Parser ):
     sharedContextCache = PredictionContextCache()
 
     literalNames = [ u"<INVALID>", u"'MESSAGE'", u"'STRUCT'", u"'GET'", 
+                     u"'HEAD'", u"'TRACE'", u"'CONNECT'", u"'OPTIONS'", 
                      u"'POST'", u"'PUT'", u"'PATCH'", u"'DELETE'", u"'REQUEST'", 
                      u"'RESPONSE'", u"'/'", u"'{'", u"'}'", u"'$'", u"'<'", 
                      u"'>'", u"','", u"'='", u"'INT32'", u"'INT64'", u"'BOOL'", 
                      u"'DOUBLE'", u"'STRING'", u"'FILE'", u"'BLOB'", u"'ARRAY'", 
                      u"'DICT'", u"';'" ]
 
-    symbolicNames = [ u"<INVALID>", u"MESSAGE", u"STRUCT", u"GET", u"POST", 
-                      u"PUT", u"PATCH", u"DELETE", u"REQUEST", u"RESPONSE", 
-                      u"BACKSLASH", u"LCURLY", u"RCURLY", u"DOLLAR", u"LABRACKET", 
-                      u"RABRACKET", u"COMMA", u"ASSIGN", u"INT32", u"INT64", 
-                      u"BOOL", u"DOUBLE", u"STRING", u"FILE", u"BLOB", u"ARRAY", 
+    symbolicNames = [ u"<INVALID>", u"MESSAGE", u"STRUCT", u"GET", u"HEAD", 
+                      u"TRACE", u"CONNECT", u"OPTIONS", u"POST", u"PUT", 
+                      u"PATCH", u"DELETE", u"REQUEST", u"RESPONSE", u"BACKSLASH", 
+                      u"LCURLY", u"RCURLY", u"DOLLAR", u"LABRACKET", u"RABRACKET", 
+                      u"COMMA", u"ASSIGN", u"INT32", u"INT64", u"BOOL", 
+                      u"DOUBLE", u"STRING", u"FILE", u"BLOB", u"ARRAY", 
                       u"DICT", u"SEMICOLON", u"COMMENT", u"NL", u"WS", u"IDENT" ]
 
     RULE_entry = 0
@@ -115,34 +115,38 @@ class EverphotoIDL ( Parser ):
     MESSAGE=1
     STRUCT=2
     GET=3
-    POST=4
-    PUT=5
-    PATCH=6
-    DELETE=7
-    REQUEST=8
-    RESPONSE=9
-    BACKSLASH=10
-    LCURLY=11
-    RCURLY=12
-    DOLLAR=13
-    LABRACKET=14
-    RABRACKET=15
-    COMMA=16
-    ASSIGN=17
-    INT32=18
-    INT64=19
-    BOOL=20
-    DOUBLE=21
-    STRING=22
-    FILE=23
-    BLOB=24
-    ARRAY=25
-    DICT=26
-    SEMICOLON=27
-    COMMENT=28
-    NL=29
-    WS=30
-    IDENT=31
+    HEAD=4
+    TRACE=5
+    CONNECT=6
+    OPTIONS=7
+    POST=8
+    PUT=9
+    PATCH=10
+    DELETE=11
+    REQUEST=12
+    RESPONSE=13
+    BACKSLASH=14
+    LCURLY=15
+    RCURLY=16
+    DOLLAR=17
+    LABRACKET=18
+    RABRACKET=19
+    COMMA=20
+    ASSIGN=21
+    INT32=22
+    INT64=23
+    BOOL=24
+    DOUBLE=25
+    STRING=26
+    FILE=27
+    BLOB=28
+    ARRAY=29
+    DICT=30
+    SEMICOLON=31
+    COMMENT=32
+    NL=33
+    WS=34
+    IDENT=35
 
     def __init__(self, input):
         super(EverphotoIDL, self).__init__(input)
@@ -286,7 +290,7 @@ class EverphotoIDL ( Parser ):
             self.state = 57
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << EverphotoIDL.GET) | (1 << EverphotoIDL.POST) | (1 << EverphotoIDL.PUT) | (1 << EverphotoIDL.PATCH) | (1 << EverphotoIDL.DELETE))) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << EverphotoIDL.GET) | (1 << EverphotoIDL.HEAD) | (1 << EverphotoIDL.TRACE) | (1 << EverphotoIDL.CONNECT) | (1 << EverphotoIDL.OPTIONS) | (1 << EverphotoIDL.POST) | (1 << EverphotoIDL.PUT) | (1 << EverphotoIDL.PATCH) | (1 << EverphotoIDL.DELETE))) != 0):
                 self.state = 55
                 self._errHandler.sync(self)
                 la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
@@ -465,6 +469,18 @@ class EverphotoIDL ( Parser ):
         def PATCH(self):
             return self.getToken(EverphotoIDL.PATCH, 0)
 
+        def HEAD(self):
+            return self.getToken(EverphotoIDL.HEAD, 0)
+
+        def TRACE(self):
+            return self.getToken(EverphotoIDL.TRACE, 0)
+
+        def CONNECT(self):
+            return self.getToken(EverphotoIDL.CONNECT, 0)
+
+        def OPTIONS(self):
+            return self.getToken(EverphotoIDL.OPTIONS, 0)
+
         def getRuleIndex(self):
             return EverphotoIDL.RULE_method
 
@@ -480,7 +496,7 @@ class EverphotoIDL ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 74
             _la = self._input.LA(1)
-            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << EverphotoIDL.GET) | (1 << EverphotoIDL.POST) | (1 << EverphotoIDL.PUT) | (1 << EverphotoIDL.PATCH) | (1 << EverphotoIDL.DELETE))) != 0)):
+            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << EverphotoIDL.GET) | (1 << EverphotoIDL.HEAD) | (1 << EverphotoIDL.TRACE) | (1 << EverphotoIDL.CONNECT) | (1 << EverphotoIDL.OPTIONS) | (1 << EverphotoIDL.POST) | (1 << EverphotoIDL.PUT) | (1 << EverphotoIDL.PATCH) | (1 << EverphotoIDL.DELETE))) != 0)):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -690,11 +706,8 @@ class EverphotoIDL ( Parser ):
             super(EverphotoIDL.ParameterMapContext, self).__init__(parent, invokingState)
             self.parser = parser
 
-        def paramType(self, i=None):
-            if i is None:
-                return self.getTypedRuleContexts(EverphotoIDL.ParamTypeContext)
-            else:
-                return self.getTypedRuleContext(EverphotoIDL.ParamTypeContext,i)
+        def paramType(self):
+            return self.getTypedRuleContext(EverphotoIDL.ParamTypeContext,0)
 
 
         def key(self):
@@ -729,17 +742,9 @@ class EverphotoIDL ( Parser ):
             self.key()
             self.state = 101
             self.match(EverphotoIDL.ASSIGN)
-            self.state = 103
-            self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,8,self._ctx)
-            if la_ == 1:
-                self.state = 102
-                self.paramType()
-
-
-            self.state = 105
+            self.state = 102
             self.value()
-            self.state = 106
+            self.state = 103
             self.match(EverphotoIDL.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -774,17 +779,17 @@ class EverphotoIDL ( Parser ):
         localctx = EverphotoIDL.ParamTypeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 22, self.RULE_paramType)
         try:
-            self.state = 110
+            self.state = 107
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [EverphotoIDL.ARRAY, EverphotoIDL.DICT]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 108
+                self.state = 105
                 self.genericType()
                 pass
             elif token in [EverphotoIDL.INT32, EverphotoIDL.INT64, EverphotoIDL.BOOL, EverphotoIDL.DOUBLE, EverphotoIDL.STRING, EverphotoIDL.FILE, EverphotoIDL.BLOB, EverphotoIDL.IDENT]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 109
+                self.state = 106
                 self.baseType()
                 pass
             else:
@@ -829,21 +834,21 @@ class EverphotoIDL ( Parser ):
         localctx = EverphotoIDL.GenericTypeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 24, self.RULE_genericType)
         try:
-            self.state = 116
+            self.state = 113
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [EverphotoIDL.ARRAY]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 112
+                self.state = 109
                 self.match(EverphotoIDL.ARRAY)
-                self.state = 113
+                self.state = 110
                 self.arrayGenericParam()
                 pass
             elif token in [EverphotoIDL.DICT]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 114
+                self.state = 111
                 self.match(EverphotoIDL.DICT)
-                self.state = 115
+                self.state = 112
                 self.dictGenericParam()
                 pass
             else:
@@ -885,11 +890,11 @@ class EverphotoIDL ( Parser ):
         self.enterRule(localctx, 26, self.RULE_arrayGenericParam)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 118
+            self.state = 115
             self.match(EverphotoIDL.LABRACKET)
-            self.state = 119
+            self.state = 116
             self.baseType()
-            self.state = 120
+            self.state = 117
             self.match(EverphotoIDL.RABRACKET)
         except RecognitionException as re:
             localctx.exception = re
@@ -933,15 +938,15 @@ class EverphotoIDL ( Parser ):
         self.enterRule(localctx, 28, self.RULE_dictGenericParam)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 122
+            self.state = 119
             self.match(EverphotoIDL.LABRACKET)
-            self.state = 123
+            self.state = 120
             self.baseType()
-            self.state = 124
+            self.state = 121
             self.match(EverphotoIDL.COMMA)
-            self.state = 125
+            self.state = 122
             self.baseType()
-            self.state = 126
+            self.state = 123
             self.match(EverphotoIDL.RABRACKET)
         except RecognitionException as re:
             localctx.exception = re
@@ -993,47 +998,47 @@ class EverphotoIDL ( Parser ):
         localctx = EverphotoIDL.BaseTypeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 30, self.RULE_baseType)
         try:
-            self.state = 136
+            self.state = 133
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [EverphotoIDL.INT32]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 128
+                self.state = 125
                 self.match(EverphotoIDL.INT32)
                 pass
             elif token in [EverphotoIDL.INT64]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 129
+                self.state = 126
                 self.match(EverphotoIDL.INT64)
                 pass
             elif token in [EverphotoIDL.BOOL]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 130
+                self.state = 127
                 self.match(EverphotoIDL.BOOL)
                 pass
             elif token in [EverphotoIDL.DOUBLE]:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 131
+                self.state = 128
                 self.match(EverphotoIDL.DOUBLE)
                 pass
             elif token in [EverphotoIDL.STRING]:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 132
+                self.state = 129
                 self.match(EverphotoIDL.STRING)
                 pass
             elif token in [EverphotoIDL.FILE]:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 133
+                self.state = 130
                 self.match(EverphotoIDL.FILE)
                 pass
             elif token in [EverphotoIDL.BLOB]:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 134
+                self.state = 131
                 self.match(EverphotoIDL.BLOB)
                 pass
             elif token in [EverphotoIDL.IDENT]:
                 self.enterOuterAlt(localctx, 8)
-                self.state = 135
+                self.state = 132
                 self.structName()
                 pass
             else:
@@ -1069,7 +1074,7 @@ class EverphotoIDL ( Parser ):
         self.enterRule(localctx, 32, self.RULE_key)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 138
+            self.state = 135
             self.identifier()
         except RecognitionException as re:
             localctx.exception = re
@@ -1101,7 +1106,7 @@ class EverphotoIDL ( Parser ):
         self.enterRule(localctx, 34, self.RULE_value)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 140
+            self.state = 137
             self.identifier()
         except RecognitionException as re:
             localctx.exception = re
@@ -1133,7 +1138,7 @@ class EverphotoIDL ( Parser ):
         self.enterRule(localctx, 36, self.RULE_structName)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 142
+            self.state = 139
             self.identifier()
         except RecognitionException as re:
             localctx.exception = re
@@ -1164,7 +1169,7 @@ class EverphotoIDL ( Parser ):
         self.enterRule(localctx, 38, self.RULE_identifier)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 144
+            self.state = 141
             self.match(EverphotoIDL.IDENT)
         except RecognitionException as re:
             localctx.exception = re

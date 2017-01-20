@@ -134,7 +134,7 @@ class AlamofireCodeGenerator:
 
         param_maps = request_context.structBody().parameterMap()
         for param_map in param_maps:
-            param_type = param_map.paramType()[0]
+            param_type = param_map.paramType()
             self.write_line('var ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
         init_param_list = ', '.join(
             map(lambda p: p.parameterInUri().identifier().getText() + ': String', params_in_uri))
@@ -173,7 +173,7 @@ class AlamofireCodeGenerator:
         self.write_blank_lines(1)
         param_maps = response_context.structBody().parameterMap()
         for param_map in param_maps:
-            param_type = param_map.paramType()[0]
+            param_type = param_map.paramType()
             self.write_line('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
         self.write_line('let rawResponse: HTTPResponse')
 
@@ -189,7 +189,7 @@ class AlamofireCodeGenerator:
         self.pop_indent()
         self.write_line('}')
         for param_map in param_maps:
-            param_type = param_map.paramType()[0]
+            param_type = param_map.paramType()
             self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
                 param_type) + '(content: value["' + param_map.value().getText() + '"])')
         self.pop_indent()
@@ -219,7 +219,7 @@ class AlamofireCodeGenerator:
         self.write_blank_lines(1)
         param_maps = struct_context.structBody().parameterMap()
         for param_map in param_maps:
-            param_type = param_map.paramType()[0]
+            param_type = param_map.paramType()
             self.write_line('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
         self.write_line('init?(content: ResponseContent?) {')
         self.push_indent()
@@ -229,7 +229,7 @@ class AlamofireCodeGenerator:
         self.pop_indent()
         self.write_line('}')
         for param_map in param_maps:
-            param_type = param_map.paramType()[0]
+            param_type = param_map.paramType()
             generic_type = param_type.genericType()
             if generic_type is not None:
                 array_type = generic_type.arrayGenericParam()

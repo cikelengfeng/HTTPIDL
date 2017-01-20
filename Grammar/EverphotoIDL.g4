@@ -41,6 +41,10 @@ method
     | DELETE
     | PUT
     | PATCH
+    | HEAD
+    | TRACE
+    | CONNECT
+    | OPTIONS
     ;
 
 uri
@@ -67,7 +71,7 @@ parameterInUri
 
 parameterMap
     :
-    paramType key ASSIGN paramType? value SEMICOLON
+    paramType key ASSIGN value SEMICOLON
     ;
 
 paramType
