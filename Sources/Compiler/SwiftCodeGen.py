@@ -91,10 +91,15 @@ class AlamofireCodeGenerator:
 
     def generate_request_parameters(self, request_context):
         httpidl_content_type = 'RequestContent'
+        parameter_maps = request_context.structBody().parameterMap()
+        if len(parameter_maps) == 0:
+            self.write_line('var content: %s? = nil' % httpidl_content_type)
+            return
+
         self.write_line('var content: %s? {' % httpidl_content_type)
         self.push_indent()
         self.write_line('var result = [String:%s]()' % httpidl_content_type)
-        for parameter_map in request_context.structBody().parameterMap():
+        for parameter_map in parameter_maps:
             self.write_line('if let tmp = ' + parameter_map.key().getText() + ' {')
             self.push_indent()
             self.write_line('result["'

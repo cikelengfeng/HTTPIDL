@@ -260,10 +260,7 @@ class GetStickerMediaidRequest: Request {
     init(mediaId: String) {
         self.mediaId = mediaId
     }
-    var content: RequestContent? {
-        var result = [String:RequestContent]()
-        return .dictionary(value: result)
-    }
+    var content: RequestContent? = nil
     func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaidRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetStickerMediaidResponse.defaultDecoder, completion: @escaping (GetStickerMediaidResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
         client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
     }
