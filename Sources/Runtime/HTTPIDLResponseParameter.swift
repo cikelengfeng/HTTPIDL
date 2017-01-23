@@ -113,9 +113,11 @@ extension String: ResponseContentConvertible {
             self.init(value ? "1" : "0")
         case .string(let value):
             self.init(value)
+        case .double(let value):
+            self.init(format: "%f", value)
         case .data(let value, _, _):
             self.init(data: value, encoding: String.Encoding.utf8)
-        case .array, .dictionary, .double:
+        case .array, .dictionary:
             return nil
         }
     }
