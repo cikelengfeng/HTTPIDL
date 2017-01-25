@@ -293,7 +293,7 @@ public struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
 
 fileprivate extension RequestContent {
     mutating func removeShallowly(key: String) {
-        guard case .dictionary(var value) = self else {
+        guard case .dictionary(let value) = self else {
             return
         }
         var copy = value
