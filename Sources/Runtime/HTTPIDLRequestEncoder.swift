@@ -292,11 +292,13 @@ public struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
 }
 
 fileprivate extension RequestContent {
-    func removeShallowly(key: String) {
+    mutating func removeShallowly(key: String) {
         guard case .dictionary(var value) = self else {
             return
         }
-        value.removeValue(forKey: key)
+        var copy = value
+        copy.removeValue(forKey: key)
+        self = .dictionary(value: copy)
     }
 }
 
@@ -315,7 +317,7 @@ public struct HTTPCombinatedQueryRequestEncoder: HTTPRequestEncoder {
             throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         
-        guard let content = request.content else {
+        guard var content = request.content else {
             return try self.encoderImpl.encode(request)
         }
         
