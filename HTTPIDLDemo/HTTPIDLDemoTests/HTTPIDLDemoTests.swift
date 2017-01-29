@@ -598,7 +598,7 @@ class HTTPIDLDemoTests: XCTestCase {
         do {
             let encoded = try encoder.encode(testRequest)
             let body = try! encoded.body()!
-            XCTAssert(body.count == 46945)
+            XCTAssert(body.count == 46933)
         } catch _ {
             XCTFail()
         }
