@@ -2,9 +2,7 @@
 //  URLHelper.swift
 //  HTTPIDLDemo
 //
-//  Created by 徐 东 on 2017/1/11.
-//  Copyright © 2017年 dx lab. All rights reserved.
-//
+//  Created by 徐 东 on 2017/1/11//  Copyright © 2017年 dx lab. All rights reserved//
 
 import Foundation
 

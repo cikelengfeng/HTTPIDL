@@ -2,9 +2,7 @@
 //  Multipart.swift
 //  everfilter
 //
-//  Created by 徐 东 on 2016/12/5.
-//  Copyright © 2016年 Shanghai Infinite Memory. All rights reserved.
-//
+//  Created by 徐 东 on 2016/12/5//
 
 import Foundation
 

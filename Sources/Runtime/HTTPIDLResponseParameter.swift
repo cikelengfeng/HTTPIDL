@@ -2,8 +2,7 @@
 //  ResponseContent.swift
 //  Pods
 //
-//  Created by 徐 东 on 2017/1/7.
-//
+//  Created by 徐 东 on 2017/1/7//
 //
 
 import Foundation

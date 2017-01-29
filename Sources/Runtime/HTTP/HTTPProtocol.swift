@@ -2,9 +2,7 @@
 //  RequestProtocol.swift
 //  everfilter
 //
-//  Created by 徐 东 on 2016/12/28.
-//  Copyright © 2016年 Shanghai Infinite Memory. All rights reserved.
-//
+//  Created by 徐 东 on 2016/12/28//
 
 import Foundation
 

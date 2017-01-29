@@ -2,9 +2,7 @@
 //  Config.swift
 //  Demo
 //
-//  Created by 徐 东 on 2016/11/30.
-//  Copyright © 2016年 dx lab. All rights reserved.
-//
+//  Created by 徐 东 on 2016/11/30//  Copyright © 2016年 dx lab. All rights reserved//
 
 import Foundation
 import Alamofire
