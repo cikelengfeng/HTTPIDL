@@ -7,12 +7,12 @@
 import Foundation
 import Alamofire
 
-enum AlamofireClientError: HIError {
+public enum AlamofireClientError: HIError {
     case missingResponse(request: HTTPRequest)
     case adaptAlamofireRequestFailed(rawError: Error)
     case adaptAlamofireResponseFailed(rawError: Error)
     
-    var errorDescription: String? {
+    public var errorDescription: String? {
         get {
             switch self {
             case .missingResponse(let request):
