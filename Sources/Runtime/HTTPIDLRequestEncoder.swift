@@ -92,70 +92,6 @@ public struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
 }
 
 
-public enum HTTPJSONRequestEncoderError: HIError {
-    case fileIsForbidden(file: URL)
-    case dataIsForbidden(data: Data)
-    case illegalRootParameter(parameter: RequestContent)
-    
-    public var errorDescription: String? {
-        get {
-            switch self {
-            case .fileIsForbidden(_):
-                return "json request encoder 不支持文件参数, \(self)"
-            case .dataIsForbidden(_):
-                return "json request encoder 不支持Data参数, \(self)"
-            case .illegalRootParameter(let parameter):
-                return "json request encoder 只支持数组和字典类型做根参数, 错误参数: \(parameter)"
-            }
-        }
-    }
-}
-
-private extension RequestContent {
-    
-    func asJSONRoot() throws -> Any {
-        switch self {
-        case .int64, .int32, .bool, .double, .string:
-            throw HTTPJSONRequestEncoderError.illegalRootParameter(parameter: self)
-        case .file(let url, _, _):
-            throw HTTPJSONRequestEncoderError.fileIsForbidden(file: url)
-        case .data(let data, _, _):
-            throw HTTPJSONRequestEncoderError.dataIsForbidden(data: data)
-        case .array, .dictionary:
-            return try self.asJSONObject()
-        }
-    }
-    
-    func asJSONObject() throws -> Any {
-        switch self {
-        case .int64(let value):
-            return value
-        case .int32(let value):
-            return value
-        case .bool(let value):
-            return value
-        case .double(let value):
-            return value
-        case .string(let value):
-            return value
-        case .file(let url, _, _):
-            throw HTTPJSONRequestEncoderError.fileIsForbidden(file: url)
-        case .data(let data, _, _):
-            throw HTTPJSONRequestEncoderError.dataIsForbidden(data: data)
-        case .array(let array):
-            return try array.map({ (paramInArray) in
-                return try paramInArray.asJSONObject()
-            })
-        case .dictionary(let dict):
-            return try dict.reduce([:], { (soFar, soGood) in
-                var result = soFar
-                result[soGood.key] = try soGood.value.asJSONObject()
-                return result
-            })
-        }
-    }
-}
-
 public struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
     
     public static let shared = HTTPJSONRequestEncoder()
@@ -172,7 +108,7 @@ public struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
             guard let rootParameter = request.content else {
                 return nil
             }
-            let jsonDict = try rootParameter.asJSONRoot()
+            let jsonDict = try rootParameter.jsonObject()
             let data = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
             return data
         }
