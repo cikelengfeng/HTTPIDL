@@ -50,11 +50,13 @@ STRING x1 = x;
 
 MESSAGE /sticker/$mediaId {
 GET REQUEST {
+    STRING defaultMap;
 }
 
 GET RESPONSE {
 INT32 code = code;
 ARRAY<OnlineStickerTemplate> templates = data;
+    STRING defaultMap;
 }
 }
 
@@ -65,5 +67,8 @@ DOUBLE y = y;
 DOUBLE width = w;
 DOUBLE height = h;
 DOUBLE angle = angle;
+    STRING defaultMap;
 }
+
+
 

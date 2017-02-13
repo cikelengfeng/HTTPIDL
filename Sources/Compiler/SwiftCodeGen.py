@@ -8,7 +8,7 @@ from SwiftTypeTransfer import swift_type_name, swift_base_type_name_from_idl_bas
 from Parser.EverphotoIDL import EverphotoIDL
 
 
-class AlamofireCodeGenerator:
+class Swift3CodeGenerator:
     def __init__(self, output_file_name, output_directory_path):
         if not os.path.exists(output_directory_path):
             try:
@@ -100,10 +100,11 @@ class AlamofireCodeGenerator:
         self.push_indent()
         self.write_line('var result = [String:%s]()' % httpidl_content_type)
         for parameter_map in parameter_maps:
+            param_value_name = parameter_map.value().getText() if parameter_map.value() is not None else parameter_map.key().getText()
             self.write_line('if let tmp = ' + parameter_map.key().getText() + ' {')
             self.push_indent()
             self.write_line('result["'
-                            + parameter_map.value().getText() + '"] = tmp.as%s()' % httpidl_content_type)
+                            + param_value_name + '"] = tmp.as%s()' % httpidl_content_type)
             self.pop_indent()
             self.write_line('}')
         self.write_line('return .dictionary(value: result)')
@@ -195,8 +196,9 @@ class AlamofireCodeGenerator:
         self.write_line('}')
         for param_map in param_maps:
             param_type = param_map.paramType()
+            param_value_name = param_map.value().getText() if param_map.value() is not None else param_map.key().getText()
             self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
-                param_type) + '(content: value["' + param_map.value().getText() + '"])')
+                param_type) + '(content: value["' + param_value_name + '"])')
         self.pop_indent()
         self.write_line('}')
 
@@ -236,22 +238,23 @@ class AlamofireCodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()
             generic_type = param_type.genericType()
+            param_value_name = param_map.value().getText() if param_map.value() is not None else param_map.key().getText()
             if generic_type is not None:
                 array_type = generic_type.arrayGenericParam()
                 dict_type = generic_type.dictGenericParam()
                 if array_type is not None:
                     array_element_type = array_type.baseType()
-                    self.write_line('self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '](content: value["' + param_map.value().getText() + '"])')
+                    self.write_line('self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '](content: value["' + param_value_name + '"])')
                 elif dict_type is not None:
                     dict_key_type = dict_type.baseType()[0]
                     dict_value_type = dict_type.baseType()[1]
                     self.write_line(
                         'self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(
                             dict_key_type.getText()) + ': ' + swift_base_type_name_from_idl_base_type(
-                            dict_value_type.getText()) + '](content: value["' + param_map.value().getText() + '"])')
+                            dict_value_type.getText()) + '](content: value["' + param_value_name + '"])')
             else:
                 self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
-                    param_type) + '(content: value["' + param_map.value().getText() + '"])')
+                    param_type) + '(content: value["' + param_value_name + '"])')
         self.pop_indent()
         self.write_line('}')
 

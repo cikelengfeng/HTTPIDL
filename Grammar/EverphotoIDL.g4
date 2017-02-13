@@ -71,7 +71,7 @@ parameterInUri
 
 parameterMap
     :
-    paramType key ASSIGN value SEMICOLON
+    paramType key (ASSIGN value)? SEMICOLON
     ;
 
 paramType

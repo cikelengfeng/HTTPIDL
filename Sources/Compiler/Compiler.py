@@ -1,7 +1,7 @@
 import os
 import sys
 
-from SwiftCodeGen import AlamofireCodeGenerator
+from SwiftCodeGen import Swift3CodeGenerator
 from antlr4 import CommonTokenStream
 from antlr4 import InputStream
 from antlr4.error.ErrorListener import ErrorListener
@@ -39,7 +39,7 @@ class HTTPIDLCompiler:
         # print idl
         parse_tree = self.parse_tree_from_idl(idl, HTTPIDLErrorListener())
         input_file_name = os.path.splitext(os.path.basename(input_file_path))[0]
-        generator = AlamofireCodeGenerator(input_file_name, output_directory_path)
+        generator = Swift3CodeGenerator(input_file_name, output_directory_path)
         generator.generate_entry(parse_tree)
 
     @staticmethod

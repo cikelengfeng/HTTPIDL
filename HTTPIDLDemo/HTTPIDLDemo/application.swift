@@ -12,6 +12,7 @@ struct OnlineStickerTemplate: ResponseContentConvertible {
     let width: Double?
     let height: Double?
     let angle: Double?
+    let defaultMap: String?
     init?(content: ResponseContent?) {
         guard let content = content, case .dictionary(let value) = content else {
             return nil
@@ -22,6 +23,7 @@ struct OnlineStickerTemplate: ResponseContentConvertible {
         self.width = Double(content: value["w"])
         self.height = Double(content: value["h"])
         self.angle = Double(content: value["angle"])
+        self.defaultMap = String(content: value["defaultMap"])
     }
 }
 
@@ -257,10 +259,17 @@ class GetStickerMediaidRequest: Request {
             return "/sticker/\(mediaId)"
         }
     }
+    var defaultMap: String?
     init(mediaId: String) {
         self.mediaId = mediaId
     }
-    var content: RequestContent? = nil
+    var content: RequestContent? {
+        var result = [String:RequestContent]()
+        if let tmp = defaultMap {
+            result["defaultMap"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
     func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaidRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetStickerMediaidResponse.defaultDecoder, completion: @escaping (GetStickerMediaidResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
         client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
     }
@@ -273,15 +282,18 @@ struct GetStickerMediaidResponse: Response {
     
     let code: Int32?
     let templates: [OnlineStickerTemplate]?
+    let defaultMap: String?
     let rawResponse: HTTPResponse
     init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
         self.rawResponse = rawResponse
         guard let content = content, case .dictionary(let value) = content else {
             self.code = nil
             self.templates = nil
+            self.defaultMap = nil
             return
         }
         self.code = Int32(content: value["code"])
         self.templates = [OnlineStickerTemplate](content: value["data"])
+        self.defaultMap = String(content: value["defaultMap"])
     }
 }
