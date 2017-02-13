@@ -357,31 +357,31 @@ let request = PostTestMultipartEncoderRequest()
 ```
 POST /test/multipart/encoder HTTP/1.1
 Host: your.api.host
-Content-Type: multipart/form-data; boundary=alamofire.boundary.2ebcd6891b6c4c27
-Content-Length: 186158
+Content-Type: multipart/form-data; boundary=httpidl.boundary.2ebcd6891b6c4c27
+Content-Length: 186144
 
---alamofire.boundary.2ebcd6891b6c4c27
+--httpidl.boundary.2ebcd6891b6c4c27
 Content-Disposition: form-data; name="tt"
 
 123
---alamofire.boundary.2ebcd6891b6c4c27
+--httpidl.boundary.2ebcd6891b6c4c27
 Content-Disposition: form-data; name="tttttt"; filename="test"
 Content-Type: image/jpeg
 
 <very long data>
---alamofire.boundary.2ebcd6891b6c4c27
+--httpidl.boundary.2ebcd6891b6c4c27
 Content-Disposition: form-data; name="tttt"
 
 jude
---alamofire.boundary.2ebcd6891b6c4c27
+--httpidl.boundary.2ebcd6891b6c4c27
 Content-Disposition: form-data; name="t"
 
 123123123123
---alamofire.boundary.2ebcd6891b6c4c27
+--httpidl.boundary.2ebcd6891b6c4c27
 Content-Disposition: form-data; name="ttt"
 
 1.1
---alamofire.boundary.2ebcd6891b6c4c27--
+--httpidl.boundary.2ebcd6891b6c4c27--
 ```
 
 ## 内置解码器
