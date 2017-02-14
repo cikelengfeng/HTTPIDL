@@ -14,7 +14,7 @@ public protocol HTTPRequestObserver: class {
 }
 
 public protocol HTTPResponseObserver: class {
-    func receive(error: HIError)
+    func receive(error: HIError, request: Request)
     func receive(rawResponse: HTTPResponse)
     func willDecode(rawResponse: HTTPResponse)
     func didDecode(rawResponse: HTTPResponse, decodedResponse: Response)

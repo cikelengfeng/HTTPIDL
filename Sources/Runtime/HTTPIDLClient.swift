@@ -127,10 +127,10 @@ public class BaseClient: Client {
         }
     }
     
-    private func receive(error: HIError) {
+    private func receive(error: HIError, request: Request) {
         responseObserverQueue.async {
             self.responseObservers.forEach { (observer) in
-                observer.receive(error: error)
+                observer.receive(error: error, request: request)
             }
         }
     }
@@ -208,14 +208,14 @@ public class BaseClient: Client {
         return ret
     }
     
-    private func handle<ResponseType : Response>(response: HTTPResponse, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) {
+    private func handle<ResponseType : Response>(request: Request, response: HTTPResponse, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) {
         var resp = response
         if let responseRewriteResult = self.rewrite(response: response) {
             switch responseRewriteResult {
             case .response(let rewritedResponse):
                 resp = rewritedResponse
             case .error(let error):
-                self.handle(error: error, errorHandler: errorHandler)
+                self.handle(request: request, error: error, errorHandler: errorHandler)
                 return
             }
         }
@@ -229,21 +229,21 @@ public class BaseClient: Client {
                 completion(httpIdlResponse)
             }
         } catch let error as HIError {
-            self.handle(error: error, errorHandler: errorHandler)
+            self.handle(request: request, error: error, errorHandler: errorHandler)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
+            self.handle(request: request, error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
         }
     }
     
-    private func handle(response: HTTPResponse, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((HIError) -> Void)?) {
+    private func handle(request: Request, response: HTTPResponse, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((HIError) -> Void)?) {
         var resp = response
         if let responseRewriteResult = self.rewrite(response: response) {
             switch responseRewriteResult {
             case .response(let rewritedResponse):
                 resp = rewritedResponse
             case .error(let error):
-                self.handle(error: error, errorHandler: errorHandler)
+                self.handle(request: request, error: error, errorHandler: errorHandler)
                 return
             }
         }
@@ -253,11 +253,11 @@ public class BaseClient: Client {
         self.receive(rawResponse: resp)
     }
     
-    private func handle(error: HIError, errorHandler: ((HIError) -> Void)?) {
+    private func handle(request: Request, error: HIError, errorHandler: ((HIError) -> Void)?) {
         DispatchQueue.main.async {
             errorHandler?(error)
         }
-        self.receive(error: error)
+        self.receive(error: error, request: request)
     }
     
     public func send<ResponseType : Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) {
@@ -271,26 +271,26 @@ public class BaseClient: Client {
                 case .request(let rewritedRequest):
                     encodedRequest = rewritedRequest
                 case .response(let response):
-                    self.handle(response: response, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+                    self.handle(request: request, response: response, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
                     //rewriter已经将request重写成response了，不需要再发请求了
                     return
                 case .error(let error):
-                    self.handle(error: error, errorHandler: errorHandler)
+                    self.handle(request: request, error: error, errorHandler: errorHandler)
                     //rewriter已经将request重写成error了，不需要再发请求了
                     return
                 }
             }
             clientImpl.send(encodedRequest, completion: { (response) in
-                self.handle(response: response, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+                self.handle(request: request, response: response, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
             }, errorHandler: { (error) in
-                self.handle(error: error, errorHandler: errorHandler)
+                self.handle(request: request, error: error, errorHandler: errorHandler)
             })
             self.didSend(request: request)
         } catch let error as HIError {
-            self.handle(error: error, errorHandler: errorHandler)
+            self.handle(request: request, error: error, errorHandler: errorHandler)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
+            self.handle(request: request, error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
         }
     }
     
@@ -306,26 +306,26 @@ public class BaseClient: Client {
                 case .request(let rewritedRequest):
                     encodedRequest = rewritedRequest
                 case .response(let response):
-                    self.handle(response: response, completion: completion, errorHandler: errorHandler)
+                    self.handle(request: request, response: response, completion: completion, errorHandler: errorHandler)
                     //rewriter已经将request重写成response了，不需要再发请求了
                     return
                 case .error(let error):
-                    self.handle(error: error, errorHandler: errorHandler)
+                    self.handle(request: request, error: error, errorHandler: errorHandler)
                     //rewriter已经将request重写成error了，不需要再发请求了
                     return
                 }
             }
             clientImpl.send(encodedRequest, completion: { (response) in
-                self.handle(response: response, completion: completion, errorHandler: errorHandler)
+                self.handle(request: request, response: response, completion: completion, errorHandler: errorHandler)
             }, errorHandler: { (error) in
-                self.handle(error: error, errorHandler: errorHandler)
+                self.handle(request: request, error: error, errorHandler: errorHandler)
             })
             self.didSend(request: request)
         } catch let error as HIError {
-            self.handle(error: error, errorHandler: errorHandler)
+            self.handle(request: request, error: error, errorHandler: errorHandler)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
+            self.handle(request: request, error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
         }
     }
 }

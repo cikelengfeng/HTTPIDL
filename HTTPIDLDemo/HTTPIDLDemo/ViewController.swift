@@ -10,7 +10,7 @@ import HTTPIDL
 
 
 class TestObserver: HTTPResponseObserver {
-    func receive(error: HIError) {
+    func receive(error: HIError, request: HTTPIDL.Request) {
         
     }
     func receive(rawResponse: HTTPResponse) {
