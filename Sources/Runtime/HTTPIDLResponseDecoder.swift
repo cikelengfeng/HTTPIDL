@@ -18,6 +18,11 @@ private func decode(json: Any) throws -> ResponseContent {
         //Int
             return .int64(value: number as Int64)
         case .float32Type, .float64Type, .floatType, .doubleType, .cgFloatType:
+            if number.isKind(of: NSDecimalNumber.self) {
+                if String(number.int64Value) == String(number.uint64Value) {
+                    return .int64(value: number.int64Value)
+                }
+            }
             //Double
             return .double(value: number as Double)
         }
