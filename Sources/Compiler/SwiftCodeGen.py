@@ -6,6 +6,7 @@ import errno
 
 from SwiftTypeTransfer import swift_type_name, swift_base_type_name_from_idl_base_type
 from Parser.EverphotoIDL import EverphotoIDL
+from NameMethod import underline_to_upper_camel_case
 
 
 class Swift3CodeGenerator:
@@ -47,7 +48,7 @@ class Swift3CodeGenerator:
                 text = uri_path_component.parameterInUri().identifier().getText()
             else:
                 text = uri_path_component.getText()
-            return text.title()
+            return underline_to_upper_camel_case(text)
 
         return ''.join(map(uri_path_component_to_text, uri_context.uriPathComponent()))
 

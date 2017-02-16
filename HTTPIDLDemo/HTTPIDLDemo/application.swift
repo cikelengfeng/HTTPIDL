@@ -247,11 +247,11 @@ struct PostTestJsonEncoderResponse: Response {
     }
 }
 
-class GetStickerMediaidRequest: Request {
+class GetStickerMediaIdRequest: Request {
     
     let mediaId: String
     static let defaultMethod: String = "GET"
-    var method: String = GetStickerMediaidRequest.defaultMethod
+    var method: String = GetStickerMediaIdRequest.defaultMethod
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
@@ -270,15 +270,15 @@ class GetStickerMediaidRequest: Request {
         }
         return .dictionary(value: result)
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaidRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetStickerMediaidResponse.defaultDecoder, completion: @escaping (GetStickerMediaidResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+    func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaIdRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetStickerMediaIdResponse.defaultDecoder, completion: @escaping (GetStickerMediaIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
         client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaidRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+    func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaIdRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
         client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
     }
 }
 
-struct GetStickerMediaidResponse: Response {
+struct GetStickerMediaIdResponse: Response {
     
     let code: Int32?
     let templates: [OnlineStickerTemplate]?
@@ -295,5 +295,36 @@ struct GetStickerMediaidResponse: Response {
         self.code = Int32(content: value["code"])
         self.templates = [OnlineStickerTemplate](content: value["data"])
         self.defaultMap = String(content: value["defaultMap"])
+    }
+}
+
+class GetUnderLineRequest: Request {
+    
+    static let defaultMethod: String = "GET"
+    var method: String = GetUnderLineRequest.defaultMethod
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        get {
+            return "/under_line"
+        }
+    }
+    var content: RequestContent? = nil
+    func send(_ requestEncoder: HTTPRequestEncoder = GetUnderLineRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetUnderLineResponse.defaultDecoder, completion: @escaping (GetUnderLineResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    }
+    func send(_ requestEncoder: HTTPRequestEncoder = GetUnderLineRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    }
+}
+
+struct GetUnderLineResponse: Response {
+    
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+        guard let content = content, case .dictionary(let value) = content else {
+            return
+        }
     }
 }
