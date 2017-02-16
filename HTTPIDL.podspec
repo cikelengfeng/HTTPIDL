@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "HTTPIDL"
-  s.version      = "0.8.0"
+  s.version      = "0.8.1"
   s.summary      = "http idl"
 
   # This description is used to generate tags and improve search results.
@@ -145,7 +145,7 @@ Pod::Spec.new do |s|
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   # s.dependency "JSONKit", "~> 1.4"
-    s.dependency "Alamofire"
-    s.dependency "GzipSwift"
+    s.dependency "Alamofire", "4.3.0"
+    s.dependency "GzipSwift", "3.1.4"
 
 end
