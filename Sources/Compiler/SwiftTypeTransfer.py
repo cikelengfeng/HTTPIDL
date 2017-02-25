@@ -1,4 +1,4 @@
-idl_to_swift_type = { 'INT32': 'Int32', 'INT64': 'Int64', 'BOOL': 'Bool', 'DOUBLE': 'Double', 'STRING': 'String', 'FILE': 'HTTPFile', 'BLOB': 'HTTPData'}
+idl_to_swift_type = {'INT32': 'Int32', 'INT64': 'Int64', 'BOOL': 'Bool', 'DOUBLE': 'Double', 'STRING': 'String', 'FILE': 'HTTPFile', 'BLOB': 'HTTPData'}
 
 
 def swift_base_type_name_from_idl_base_type(type_name):
@@ -31,11 +31,11 @@ def swift_base_type_name(base_type_context):
 
 
 def swift_dict_type_name(dict_param_context):
-    key_type = swift_base_type_name_from_idl_base_type(dict_param_context.baseType()[0].getText())
-    value_type = swift_base_type_name_from_idl_base_type(dict_param_context.baseType()[1].getText())
+    key_type = swift_base_type_name_from_idl_base_type(dict_param_context.baseType().getText())
+    value_type = swift_type_name(dict_param_context.paramType())
     return '[' + key_type + ': ' + value_type + ']'
 
 
 def swift_array_type_name(array_param_context):
-    element_type = swift_base_type_name_from_idl_base_type(array_param_context.baseType().getText())
+    element_type = swift_type_name(array_param_context.paramType())
     return '[' + element_type + ']'

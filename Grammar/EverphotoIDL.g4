@@ -85,11 +85,11 @@ genericType
     ;
 
 arrayGenericParam
-    : LABRACKET baseType RABRACKET
+    : LABRACKET paramType RABRACKET
     ;
 
 dictGenericParam
-    : LABRACKET baseType COMMA baseType RABRACKET
+    : LABRACKET baseType COMMA paramType RABRACKET
     ;
 
 baseType

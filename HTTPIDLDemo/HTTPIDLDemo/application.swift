@@ -27,6 +27,211 @@ struct OnlineStickerTemplate: ResponseContentConvertible {
     }
 }
 
+struct TestNested: ResponseContentConvertible {
+    
+    let a: [String]?
+    let d: [String: String]?
+    let aa: [[String]]?
+    let ad: [[String: String]]?
+    let dd: [String: [String: String]]?
+    let da: [String: [String]]?
+    let dada: [String: [[String: [String]]]]?
+    let a1: [String]?
+    let d1: [String: String]?
+    let aa1: [[String]]?
+    let ad1: [[String: String]]?
+    let dd1: [String: [String: String]]?
+    let da1: [String: [String]]?
+    init?(content: ResponseContent?) {
+        guard let content = content, case .dictionary(let value) = content else {
+            return nil
+        }
+        if let content = value["a"] {
+            let a = [String](content: content)
+            self.a = a
+        } else {
+            self.a = nil
+        }
+        if let content = value["d"] {
+            let d = [String: String](content: content)
+            self.d = d
+        } else {
+            self.d = nil
+        }
+        if let content = value["aa"] {
+            var aa: [[String]]? = nil
+            if case .array(let value) = content {
+                aa = [[String]]()
+                value.forEach { (content) in
+                    let _aa = [String](content: content)
+                    if let tmp = _aa {
+                        aa!.append(tmp)
+                    }
+                }
+            }
+            self.aa = aa
+        } else {
+            self.aa = nil
+        }
+        if let content = value["ad"] {
+            var ad: [[String: String]]? = nil
+            if case .array(let value) = content {
+                ad = [[String: String]]()
+                value.forEach { (content) in
+                    let _ad = [String: String](content: content)
+                    if let tmp = _ad {
+                        ad!.append(tmp)
+                    }
+                }
+            }
+            self.ad = ad
+        } else {
+            self.ad = nil
+        }
+        if let content = value["dd"] {
+            var dd: [String: [String: String]]? = nil
+            if case .dictionary(let value) = content {
+                dd = [String: [String: String]]()
+                value.forEach { (kv) in
+                    let content = kv.value
+                    let _dd = [String: String](content: content)
+                    if let tmp = _dd {
+                        dd!.updateValue(tmp, forKey: kv.key)
+                    }
+                }
+            }
+            self.dd = dd
+        } else {
+            self.dd = nil
+        }
+        if let content = value["da"] {
+            var da: [String: [String]]? = nil
+            if case .dictionary(let value) = content {
+                da = [String: [String]]()
+                value.forEach { (kv) in
+                    let content = kv.value
+                    let _da = [String](content: content)
+                    if let tmp = _da {
+                        da!.updateValue(tmp, forKey: kv.key)
+                    }
+                }
+            }
+            self.da = da
+        } else {
+            self.da = nil
+        }
+        if let content = value["dada"] {
+            var dada: [String: [[String: [String]]]]? = nil
+            if case .dictionary(let value) = content {
+                dada = [String: [[String: [String]]]]()
+                value.forEach { (kv) in
+                    let content = kv.value
+                    var _dada: [[String: [String]]]? = nil
+                    if case .array(let value) = content {
+                        _dada = [[String: [String]]]()
+                        value.forEach { (content) in
+                            var __dada: [String: [String]]? = nil
+                            if case .dictionary(let value) = content {
+                                __dada = [String: [String]]()
+                                value.forEach { (kv) in
+                                    let content = kv.value
+                                    let ___dada = [String](content: content)
+                                    if let tmp = ___dada {
+                                        __dada!.updateValue(tmp, forKey: kv.key)
+                                    }
+                                }
+                            }
+                            if let tmp = __dada {
+                                _dada!.append(tmp)
+                            }
+                        }
+                    }
+                    if let tmp = _dada {
+                        dada!.updateValue(tmp, forKey: kv.key)
+                    }
+                }
+            }
+            self.dada = dada
+        } else {
+            self.dada = nil
+        }
+        if let content = value["ae"] {
+            let a1 = [String](content: content)
+            self.a1 = a1
+        } else {
+            self.a1 = nil
+        }
+        if let content = value["de"] {
+            let d1 = [String: String](content: content)
+            self.d1 = d1
+        } else {
+            self.d1 = nil
+        }
+        if let content = value["aae"] {
+            var aa1: [[String]]? = nil
+            if case .array(let value) = content {
+                aa1 = [[String]]()
+                value.forEach { (content) in
+                    let _aa1 = [String](content: content)
+                    if let tmp = _aa1 {
+                        aa1!.append(tmp)
+                    }
+                }
+            }
+            self.aa1 = aa1
+        } else {
+            self.aa1 = nil
+        }
+        if let content = value["ade"] {
+            var ad1: [[String: String]]? = nil
+            if case .array(let value) = content {
+                ad1 = [[String: String]]()
+                value.forEach { (content) in
+                    let _ad1 = [String: String](content: content)
+                    if let tmp = _ad1 {
+                        ad1!.append(tmp)
+                    }
+                }
+            }
+            self.ad1 = ad1
+        } else {
+            self.ad1 = nil
+        }
+        if let content = value["dde"] {
+            var dd1: [String: [String: String]]? = nil
+            if case .dictionary(let value) = content {
+                dd1 = [String: [String: String]]()
+                value.forEach { (kv) in
+                    let content = kv.value
+                    let _dd1 = [String: String](content: content)
+                    if let tmp = _dd1 {
+                        dd1!.updateValue(tmp, forKey: kv.key)
+                    }
+                }
+            }
+            self.dd1 = dd1
+        } else {
+            self.dd1 = nil
+        }
+        if let content = value["dae"] {
+            var da1: [String: [String]]? = nil
+            if case .dictionary(let value) = content {
+                da1 = [String: [String]]()
+                value.forEach { (kv) in
+                    let content = kv.value
+                    let _da1 = [String](content: content)
+                    if let tmp = _da1 {
+                        da1!.updateValue(tmp, forKey: kv.key)
+                    }
+                }
+            }
+            self.da1 = da1
+        } else {
+            self.da1 = nil
+        }
+    }
+}
+
 class GetTestUrlencodedQueryEncoderRequest: Request {
     
     static let defaultMethod: String = "GET"
@@ -293,7 +498,12 @@ struct GetStickerMediaIdResponse: Response {
             return
         }
         self.code = Int32(content: value["code"])
-        self.templates = [OnlineStickerTemplate](content: value["data"])
+        if let content = value["data"] {
+            let templates = [OnlineStickerTemplate](content: content)
+            self.templates = templates
+        } else {
+            self.templates = nil
+        }
         self.defaultMap = String(content: value["defaultMap"])
     }
 }

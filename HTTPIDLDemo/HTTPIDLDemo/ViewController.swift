@@ -63,7 +63,7 @@ class ViewController: UIViewController {
 //            
 //        })
         
-        let sticker = GetStickerMediaidRequest(mediaId: "123123")
+        let sticker = GetStickerMediaIdRequest(mediaId: "123123")
         sticker.configuration.baseURLString = "http://api.everphoto.cn"
         sticker.send(completion: { (response) in
             print("sticker response: ", response)

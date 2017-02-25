@@ -44,10 +44,10 @@ def serializedATN():
         buf.write(u"\2\2\2ij\3\2\2\2jk\3\2\2\2kl\7!\2\2l\27\3\2\2\2mp\5\32")
         buf.write(u"\16\2np\5 \21\2om\3\2\2\2on\3\2\2\2p\31\3\2\2\2qr\7\37")
         buf.write(u"\2\2rv\5\34\17\2st\7 \2\2tv\5\36\20\2uq\3\2\2\2us\3\2")
-        buf.write(u"\2\2v\33\3\2\2\2wx\7\24\2\2xy\5 \21\2yz\7\25\2\2z\35")
-        buf.write(u"\3\2\2\2{|\7\24\2\2|}\5 \21\2}~\7\26\2\2~\177\5 \21\2")
-        buf.write(u"\177\u0080\7\25\2\2\u0080\37\3\2\2\2\u0081\u008a\7\30")
-        buf.write(u"\2\2\u0082\u008a\7\31\2\2\u0083\u008a\7\32\2\2\u0084")
+        buf.write(u"\2\2v\33\3\2\2\2wx\7\24\2\2xy\5\30\r\2yz\7\25\2\2z\35")
+        buf.write(u"\3\2\2\2{|\7\24\2\2|}\5 \21\2}~\7\26\2\2~\177\5\30\r")
+        buf.write(u"\2\177\u0080\7\25\2\2\u0080\37\3\2\2\2\u0081\u008a\7")
+        buf.write(u"\30\2\2\u0082\u008a\7\31\2\2\u0083\u008a\7\32\2\2\u0084")
         buf.write(u"\u008a\7\33\2\2\u0085\u008a\7\34\2\2\u0086\u008a\7\35")
         buf.write(u"\2\2\u0087\u008a\7\36\2\2\u0088\u008a\5&\24\2\u0089\u0081")
         buf.write(u"\3\2\2\2\u0089\u0082\3\2\2\2\u0089\u0083\3\2\2\2\u0089")
@@ -880,8 +880,8 @@ class EverphotoIDL ( Parser ):
         def LABRACKET(self):
             return self.getToken(EverphotoIDL.LABRACKET, 0)
 
-        def baseType(self):
-            return self.getTypedRuleContext(EverphotoIDL.BaseTypeContext,0)
+        def paramType(self):
+            return self.getTypedRuleContext(EverphotoIDL.ParamTypeContext,0)
 
 
         def RABRACKET(self):
@@ -902,7 +902,7 @@ class EverphotoIDL ( Parser ):
             self.state = 117
             self.match(EverphotoIDL.LABRACKET)
             self.state = 118
-            self.baseType()
+            self.paramType()
             self.state = 119
             self.match(EverphotoIDL.RABRACKET)
         except RecognitionException as re:
@@ -922,15 +922,16 @@ class EverphotoIDL ( Parser ):
         def LABRACKET(self):
             return self.getToken(EverphotoIDL.LABRACKET, 0)
 
-        def baseType(self, i=None):
-            if i is None:
-                return self.getTypedRuleContexts(EverphotoIDL.BaseTypeContext)
-            else:
-                return self.getTypedRuleContext(EverphotoIDL.BaseTypeContext,i)
+        def baseType(self):
+            return self.getTypedRuleContext(EverphotoIDL.BaseTypeContext,0)
 
 
         def COMMA(self):
             return self.getToken(EverphotoIDL.COMMA, 0)
+
+        def paramType(self):
+            return self.getTypedRuleContext(EverphotoIDL.ParamTypeContext,0)
+
 
         def RABRACKET(self):
             return self.getToken(EverphotoIDL.RABRACKET, 0)
@@ -954,7 +955,7 @@ class EverphotoIDL ( Parser ):
             self.state = 123
             self.match(EverphotoIDL.COMMA)
             self.state = 124
-            self.baseType()
+            self.paramType()
             self.state = 125
             self.match(EverphotoIDL.RABRACKET)
         except RecognitionException as re:

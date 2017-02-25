@@ -197,9 +197,27 @@ class Swift3CodeGenerator:
         self.write_line('}')
         for param_map in param_maps:
             param_type = param_map.paramType()
+            generic_type = param_type.genericType()
             param_value_name = param_map.value().getText() if param_map.value() is not None else param_map.key().getText()
-            self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
-                param_type) + '(content: value["' + param_value_name + '"])')
+            if generic_type is not None:
+                array_type = generic_type.arrayGenericParam()
+                dict_type = generic_type.dictGenericParam()
+                self.write_line('if let content = value["' + param_value_name + '"] {')
+                self.push_indent()
+                if array_type is not None:
+                    self.generate_array_assignment(array_type, param_map.key().getText())
+                elif dict_type is not None:
+                    self.generate_dict_assignment(dict_type, param_map.key().getText())
+                self.write_line('self.' + param_map.key().getText() + ' = ' + param_map.key().getText())
+                self.pop_indent()
+                self.write_line('} else {')
+                self.push_indent()
+                self.write_line('self.' + param_map.key().getText() + ' = nil')
+                self.pop_indent()
+                self.write_line('}')
+            else:
+                self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
+                    param_type) + '(content: value["' + param_value_name + '"])')
         self.pop_indent()
         self.write_line('}')
 
@@ -243,21 +261,84 @@ class Swift3CodeGenerator:
             if generic_type is not None:
                 array_type = generic_type.arrayGenericParam()
                 dict_type = generic_type.dictGenericParam()
+                self.write_line('if let content = value["' + param_value_name + '"] {')
+                self.push_indent()
                 if array_type is not None:
-                    array_element_type = array_type.baseType()
-                    self.write_line('self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(array_element_type.getText()) + '](content: value["' + param_value_name + '"])')
+                    self.generate_array_assignment(array_type, param_map.key().getText())
                 elif dict_type is not None:
-                    dict_key_type = dict_type.baseType()[0]
-                    dict_value_type = dict_type.baseType()[1]
-                    self.write_line(
-                        'self.' + param_map.key().getText() + ' = [' + swift_base_type_name_from_idl_base_type(
-                            dict_key_type.getText()) + ': ' + swift_base_type_name_from_idl_base_type(
-                            dict_value_type.getText()) + '](content: value["' + param_value_name + '"])')
+                    self.generate_dict_assignment(dict_type, param_map.key().getText())
+                self.write_line('self.' + param_map.key().getText() + ' = ' + param_map.key().getText())
+                self.pop_indent()
+                self.write_line('} else {')
+                self.push_indent()
+                self.write_line('self.' + param_map.key().getText() + ' = nil')
+                self.pop_indent()
+                self.write_line('}')
             else:
                 self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
                     param_type) + '(content: value["' + param_value_name + '"])')
         self.pop_indent()
         self.write_line('}')
+
+    def generate_array_from_resp_assignment(self, array_context, container_name):
+        array_element_type = array_context.paramType()
+        nested_type = array_element_type.genericType()
+        type_name = '[' + swift_type_name(array_element_type) + ']'
+        if nested_type is not None:
+            self.write_line('var ' + container_name + ': ' + type_name + '? = nil')
+            self.write_line('if case .array(let value) = content {')
+            self.push_indent()
+            self.write_line(container_name + ' = ' + type_name + '()')
+            self.write_line('value.forEach { (content) in')
+            self.push_indent()
+            array_type = nested_type.arrayGenericParam()
+            dict_type = nested_type.dictGenericParam()
+            if array_type is not None:
+                self.generate_array_from_resp_assignment(array_type, '_' + container_name)
+            else:
+                self.generate_dict_from_resp_assignment(dict_type, '_' + container_name)
+            self.write_line('if let tmp = ' + '_' + container_name + ' {')
+            self.push_indent()
+            self.write_line(container_name + '!.append(tmp)')
+            self.pop_indent()
+            self.write_line('}')
+            self.pop_indent()
+            self.write_line('}')
+            self.pop_indent()
+            self.write_line('}')
+        else:
+            self.write_line('let ' + container_name + ' = ' + type_name + '(content: content)')
+
+    def generate_dict_from_resp_assignment(self, dict_context, container_name):
+        value_type = dict_context.paramType()
+        key_type = dict_context.baseType()
+        nested_value_type = value_type.genericType()
+        type_name = '[' + swift_base_type_name_from_idl_base_type(key_type.getText()) + ': ' + swift_type_name(value_type) + ']'
+        if nested_value_type is not None:
+            self.write_line('var ' + container_name + ': ' + type_name + '? = nil')
+            self.write_line('if case .dictionary(let value) = content {')
+            self.push_indent()
+            self.write_line(container_name + ' = ' + type_name + '()')
+            self.write_line('value.forEach { (kv) in')
+            self.push_indent()
+            self.write_line('let content = kv.value')
+            array_type = nested_value_type.arrayGenericParam()
+            dict_type = nested_value_type.dictGenericParam()
+            if array_type is not None:
+                self.generate_array_from_resp_assignment(array_type, '_' + container_name)
+            else:
+                self.generate_dict_from_resp_assignment(dict_type, '_' + container_name)
+            self.write_line('if let tmp = ' + '_' + container_name + ' {')
+            self.push_indent()
+            self.write_line(container_name + '!.updateValue(tmp, forKey: kv.key)')
+            self.pop_indent()
+            self.write_line('}')
+            self.pop_indent()
+            self.write_line('}')
+            self.pop_indent()
+            self.write_line('}')
+        else:
+            self.write_line('let ' + container_name + ' = ' + type_name + '(content: content)')
 
     def generate_struct(self, struct_context):
         self.write_blank_lines(1)
