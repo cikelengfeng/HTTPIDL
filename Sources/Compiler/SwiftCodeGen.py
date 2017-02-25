@@ -76,17 +76,43 @@ class Swift3CodeGenerator:
     def generate_request_send(self, request_context, message_name):
         request_name = self.request_name_from_message(request_context.method().getText(), message_name)
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
-        self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = ' + request_name + '.defaultEncoder, responseDecoder: HTTPResponseDecoder = '
-                         + response_name + '.defaultDecoder, completion: @escaping (' + response_name + ') -> Void, errorHandler: @escaping (HIError) -> Void) {')
+        self.write_blank_lines(1)
+        self.write_line('@discardableResult')
+        self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = ' + request_name + '.defaultEncoder, '
+                                                                                             'responseDecoder: '
+                                                                                             'HTTPResponseDecoder = '
+                        + response_name + '.defaultDecoder, completion: @escaping (' + response_name + ') -> Void, '
+                                                                                                       'errorHandler:'
+                                                                                                       ' @escaping ('
+                                                                                                       'HIError) -> '
+                                                                                                       'Void) -> '
+                                                                                                       'RequestFuture<'
+                        + response_name + '> {')
         self.push_indent()
-        self.write_line('client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)')
+        self.write_line('let future: RequestFuture<' + response_name + '> = client.send(self, requestEncoder: '
+                                                                       'requestEncoder, responseDecoder: '
+                                                                       'responseDecoder)')
+        self.write_line('future.responseHandler = completion')
+        self.write_line('future.errorHandler = errorHandler')
+        self.write_line('return future')
         self.pop_indent()
         self.write_line('}')
 
+        self.write_blank_lines(1)
+        self.write_line('@discardableResult')
         self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = ' + request_name + '.defaultEncoder, '
-                        'rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {')
+                                                                                             'rawResponseHandler: '
+                                                                                             '@escaping ('
+                                                                                             'HTTPResponse) -> Void, '
+                                                                                             'errorHandler: @escaping '
+                                                                                             '(HIError) -> Void)  -> '
+                                                                                             'RequestFuture'
+                                                                                             '<HTTPResponse> {')
         self.push_indent()
-        self.write_line('client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)')
+        self.write_line('let future = client.send(self, requestEncoder: requestEncoder)')
+        self.write_line('future.responseHandler = rawResponseHandler')
+        self.write_line('future.errorHandler = errorHandler')
+        self.write_line('return future')
         self.pop_indent()
         self.write_line('}')
 
@@ -101,11 +127,12 @@ class Swift3CodeGenerator:
         self.push_indent()
         self.write_line('var result = [String:%s]()' % httpidl_content_type)
         for parameter_map in parameter_maps:
-            param_value_name = parameter_map.value().getText() if parameter_map.value() is not None else parameter_map.key().getText()
+            param_value = parameter_map.value()
+            param_value_name = param_value.getText() if param_value is not None else parameter_map.key().getText()
             self.write_line('if let tmp = ' + parameter_map.key().getText() + ' {')
             self.push_indent()
             generic_type = parameter_map.paramType().genericType()
-            if generic_type is not  None:
+            if generic_type is not None:
                 array_type = generic_type.arrayGenericParam()
                 dict_type = generic_type.dictGenericParam()
                 if array_type is not None:
@@ -113,7 +140,7 @@ class Swift3CodeGenerator:
                 else:
                     self.generate_dict_from_req_assignment(dict_type, 'tmp')
                 self.write_line('result["'
-                            + param_value_name + '"] = tmp')
+                                + param_value_name + '"] = tmp')
             else:
                 self.write_line('result["'
                                 + param_value_name + '"] = tmp.as%s()' % httpidl_content_type)
@@ -153,7 +180,8 @@ class Swift3CodeGenerator:
         nested_value_type = value_type.genericType()
         if nested_value_type is not None:
             self.write_line(
-                'let tmp = ' + container_name + '.reduce(.dictionary(value: [:]), { (soFar, soGood) -> RequestContent in')
+                'let tmp = ' + container_name + '.reduce(.dictionary(value: [:]), { (soFar, soGood) -> RequestContent '
+                                                'in')
             self.push_indent()
             self.write_line('guard case .dictionary(var content) = soFar else {')
             self.push_indent()
@@ -237,7 +265,7 @@ class Swift3CodeGenerator:
         response_name = message_method.title() + message_name + 'Response'
         return response_name
 
-    def generate_response_init_and_member_var(self, response_context, message_name):
+    def generate_response_init_and_member_var(self, response_context):
         self.write_blank_lines(1)
         param_maps = response_context.structBody().parameterMap()
         for param_map in param_maps:
@@ -291,7 +319,7 @@ class Swift3CodeGenerator:
         response_name = self.response_name_from_message(response_context.method().getText(), message_name)
         self.write_line('struct ' + response_name + ': Response {')
         self.push_indent()
-        self.generate_response_init_and_member_var(response_context, message_name)
+        self.generate_response_init_and_member_var(response_context)
         self.pop_indent()
         self.write_line('}')
 
@@ -322,7 +350,8 @@ class Swift3CodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()
             generic_type = param_type.genericType()
-            param_value_name = param_map.value().getText() if param_map.value() is not None else param_map.key().getText()
+            param_value = param_map.value()
+            param_value_name = param_value.getText() if param_value is not None else param_map.key().getText()
             if generic_type is not None:
                 array_type = generic_type.arrayGenericParam()
                 dict_type = generic_type.dictGenericParam()
@@ -378,7 +407,8 @@ class Swift3CodeGenerator:
         value_type = dict_context.paramType()
         key_type = dict_context.baseType()
         nested_value_type = value_type.genericType()
-        type_name = '[' + swift_base_type_name_from_idl_base_type(key_type.getText()) + ': ' + swift_type_name(value_type) + ']'
+        type_name = '[' + swift_base_type_name_from_idl_base_type(key_type.getText()) + ': ' + swift_type_name(
+            value_type) + ']'
         if nested_value_type is not None:
             self.write_line('var ' + container_name + ': ' + type_name + '? = nil')
             self.write_line('if case .dictionary(let value) = content {')

@@ -8,31 +8,37 @@
 
 import Foundation
 
-public struct RequestFuture<Response> {
+public class RequestFuture<Response> {
     
     public func cancel() {
-        futureImpl.cancel()
+        futureImpl?.cancel()
     }
     
+    internal var futureImpl: HTTPRequestFuture?
     public let request: Request
-    private var futureImpl: HTTPRequestFuture
-    public var progressHandler: ((_ progress: Progress) -> Void)? {
-        get {
-            return futureImpl.progressHandler
-        }
-        
-        set(v) {
-            futureImpl.progressHandler = v
+    public var progressHandler: ((_ progress: Progress) -> Void)?
+    public var responseHandler: ((_ response: Response) -> Void)? = nil
+    public var errorHandler: ((_ error: HIError) -> Void)?
+    
+    internal func notify(progress: Progress) {
+        request.configuration.callbackQueue.async {
+            self.progressHandler?(progress)
         }
     }
-    public var responseHandler: ((_ response: Response) -> Void)? = nil
-    public var errorHandler: ((_ error: HIError) -> Void)? {
-        get {
-            return futureImpl.errorHandler
+    
+    internal func notify(response: Response) {
+        request.configuration.callbackQueue.async {
+            self.responseHandler?(response)
         }
-        
-        set(v) {
-            futureImpl.errorHandler = v
+    }
+    
+    internal func notify(error: HIError) {
+        request.configuration.callbackQueue.async {
+            self.errorHandler?(error)
         }
+    }
+    
+    init(request: Request) {
+        self.request = request
     }
 }

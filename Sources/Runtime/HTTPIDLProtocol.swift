@@ -36,8 +36,8 @@ public protocol HTTPResponseDecoder {
 }
 
 public protocol Client {
-    func send<ResponseType: Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder ,completion: @escaping (_ repsonse: ResponseType) -> Void, errorHandler: ((_ error: HIError) -> Void)?) -> RequestFuture<Response>?
-    func send(_ request: Request, requestEncoder: HTTPRequestEncoder, completion: @escaping (_ repsonse: HTTPResponse) -> Void, errorHandler: ((_ error: HIError) -> Void)?) -> RequestFuture<HTTPResponse>?
+    func send<ResponseType: Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder) -> RequestFuture<ResponseType>
+    func send(_ request: Request, requestEncoder: HTTPRequestEncoder) -> RequestFuture<HTTPResponse>
     
     mutating func add(requestObserver: HTTPRequestObserver)
     mutating func remove(requestObserver: HTTPRequestObserver)

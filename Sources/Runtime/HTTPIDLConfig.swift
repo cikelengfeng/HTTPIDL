@@ -10,6 +10,7 @@ import Alamofire
 public protocol Configuration {
     var baseURLString: String {get set}
     var headers: [String: String] {get set}
+    var callbackQueue: DispatchQueue {get set}
     
     mutating func append(headers: [String: String])
 }
@@ -19,6 +20,7 @@ public struct BaseConfiguration: Configuration {
     
     public var baseURLString: String = ""
     public var headers: [String: String] = [:]
+    public var callbackQueue: DispatchQueue = DispatchQueue.main
     
     public mutating func append(headers: [String: String]) {
         let newHeader = headers.reduce(self.headers , { (soFar, soGood) in

@@ -208,14 +208,14 @@ public class BaseClient: Client {
         return ret
     }
     
-    private func handle<ResponseType : Response>(request: Request, response: HTTPResponse, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) {
+    private func handle<ResponseType : Response>(response: HTTPResponse, responseDecoder: HTTPResponseDecoder, future: RequestFuture<ResponseType>) {
         var resp = response
         if let responseRewriteResult = self.rewrite(response: response) {
             switch responseRewriteResult {
             case .response(let rewritedResponse):
                 resp = rewritedResponse
             case .error(let error):
-                self.handle(request: request, error: error, errorHandler: errorHandler)
+                self.handle(error: error, future: future)
                 return
             }
         }
@@ -225,42 +225,37 @@ public class BaseClient: Client {
             let content = try responseDecoder.decode(resp)
             let httpIdlResponse = try ResponseType(content: content, rawResponse: resp)
             self.didDecode(rawResponse: resp, decodedResponse: httpIdlResponse)
-            DispatchQueue.main.async {
-                completion(httpIdlResponse)
-            }
+            future.notify(response: httpIdlResponse)
         } catch let error as HIError {
-            self.handle(request: request, error: error, errorHandler: errorHandler)
+            self.handle(error: error, future: future)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(request: request, error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
+            self.handle(error: BaseClientError.unknownError(rawError: error), future: future)
         }
     }
     
-    private func handle(request: Request, response: HTTPResponse, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((HIError) -> Void)?) {
+    private func handle(response: HTTPResponse, future: RequestFuture<HTTPResponse>) {
         var resp = response
         if let responseRewriteResult = self.rewrite(response: response) {
             switch responseRewriteResult {
             case .response(let rewritedResponse):
                 resp = rewritedResponse
             case .error(let error):
-                self.handle(request: request, error: error, errorHandler: errorHandler)
+                self.handle(error: error, future: future)
                 return
             }
         }
-        DispatchQueue.main.async {
-            completion(resp)
-        }
+        future.notify(response: resp)
         self.receive(rawResponse: resp)
     }
     
-    private func handle(request: Request, error: HIError, errorHandler: ((HIError) -> Void)?) {
-        DispatchQueue.main.async {
-            errorHandler?(error)
-        }
-        self.receive(error: error, request: request)
+    private func handle<T>(error: HIError, future: RequestFuture<T>) {
+        future.notify(error: error)
+        self.receive(error: error, request: future.request)
     }
     
-    public func send<ResponseType : Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) -> RequestFuture<Response> {
+    public func send<ResponseType : Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder) -> RequestFuture<ResponseType> {
+        let future = RequestFuture<ResponseType>(request: request)
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -271,30 +266,35 @@ public class BaseClient: Client {
                 case .request(let rewritedRequest):
                     encodedRequest = rewritedRequest
                 case .response(let response):
-                    self.handle(request: request, response: response, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+                    self.handle(response: response, responseDecoder: responseDecoder, future: future)
                     //rewriter已经将request重写成response了，不需要再发请求了
-                    return
+                    return future
                 case .error(let error):
-                    self.handle(request: request, error: error, errorHandler: errorHandler)
+                    self.handle(error: error, future: future)
                     //rewriter已经将request重写成error了，不需要再发请求了
-                    return
+                    return future
                 }
             }
-            clientImpl.send(encodedRequest, completion: { (response) in
-                self.handle(request: request, response: response, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
-            }, errorHandler: { (error) in
-                self.handle(request: request, error: error, errorHandler: errorHandler)
-            })
+            let futureImpl = clientImpl.send(encodedRequest)
+            future.futureImpl = futureImpl
+            futureImpl.responseHandler = { (resp) in
+                self.handle(response: resp, responseDecoder: responseDecoder, future: future)
+            }
+            futureImpl.errorHandler = { (error) in
+                self.handle(error: error, future: future)
+            }
             self.didSend(request: request)
         } catch let error as HIError {
-            self.handle(request: request, error: error, errorHandler: errorHandler)
+            self.handle(error: error, future: future)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(request: request, error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
+            self.handle(error: BaseClientError.unknownError(rawError: error), future: future)
         }
+        return future
     }
     
-    public func send(_ request: Request, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((HIError) -> Void)?) -> RequestFuture<HTTPResponse> {
+    public func send(_ request: Request, requestEncoder: HTTPRequestEncoder) -> RequestFuture<HTTPResponse> {
+        let future = RequestFuture<HTTPResponse>(request: request)
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -306,27 +306,30 @@ public class BaseClient: Client {
                 case .request(let rewritedRequest):
                     encodedRequest = rewritedRequest
                 case .response(let response):
-                    self.handle(request: request, response: response, completion: completion, errorHandler: errorHandler)
+                    self.handle(response: response, future: future)
                     //rewriter已经将request重写成response了，不需要再发请求了
-                    return
+                    return future
                 case .error(let error):
-                    self.handle(request: request, error: error, errorHandler: errorHandler)
+                    self.handle(error: error, future: future)
                     //rewriter已经将request重写成error了，不需要再发请求了
-                    return
+                    return future
                 }
             }
-            let futureImpl = clientImpl.send(encodedRequest, completion: { (response) in
-                self.handle(request: request, response: response, completion: completion, errorHandler: errorHandler)
-            }, errorHandler: { (error) in
-                self.handle(request: request, error: error, errorHandler: errorHandler)
-            })
-            let future = RequestFuture<HTTPResponse>(request: request, futureImpl: futureImpl)
+            let futureImpl = clientImpl.send(encodedRequest)
+            future.futureImpl = futureImpl
+            futureImpl.responseHandler = { (resp) in
+                self.handle(response: resp, future: future)
+            }
+            futureImpl.errorHandler = { (error) in
+                self.handle(error: error, future: future)
+            }
             self.didSend(request: request)
         } catch let error as HIError {
-            self.handle(request: request, error: error, errorHandler: errorHandler)
+            self.handle(error: error, future: future)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(request: request, error: BaseClientError.unknownError(rawError: error), errorHandler: errorHandler)
+            self.handle(error: BaseClientError.unknownError(rawError: error), future: future)
         }
+        return future
     }
 }

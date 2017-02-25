@@ -183,11 +183,21 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
         }
         return .dictionary(value: result)
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetTestUrlencodedQueryEncoderRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetTestUrlencodedQueryEncoderResponse.defaultDecoder, completion: @escaping (GetTestUrlencodedQueryEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = GetTestUrlencodedQueryEncoderRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetTestUrlencodedQueryEncoderResponse.defaultDecoder, completion: @escaping (GetTestUrlencodedQueryEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestUrlencodedQueryEncoderResponse> {
+        let future: RequestFuture<GetTestUrlencodedQueryEncoderResponse> = client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetTestUrlencodedQueryEncoderRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = GetTestUrlencodedQueryEncoderRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void)  -> RequestFuture<HTTPResponse> {
+        let future = client.send(self, requestEncoder: requestEncoder)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
     }
 }
 
@@ -236,11 +246,21 @@ class PostTestUrlencodedFormEncoderRequest: Request {
         }
         return .dictionary(value: result)
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = PostTestUrlencodedFormEncoderRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = PostTestUrlencodedFormEncoderResponse.defaultDecoder, completion: @escaping (PostTestUrlencodedFormEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = PostTestUrlencodedFormEncoderRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = PostTestUrlencodedFormEncoderResponse.defaultDecoder, completion: @escaping (PostTestUrlencodedFormEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestUrlencodedFormEncoderResponse> {
+        let future: RequestFuture<PostTestUrlencodedFormEncoderResponse> = client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = PostTestUrlencodedFormEncoderRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = PostTestUrlencodedFormEncoderRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void)  -> RequestFuture<HTTPResponse> {
+        let future = client.send(self, requestEncoder: requestEncoder)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
     }
 }
 
@@ -293,11 +313,21 @@ class PostTestMultipartEncoderRequest: Request {
         }
         return .dictionary(value: result)
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = PostTestMultipartEncoderRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = PostTestMultipartEncoderResponse.defaultDecoder, completion: @escaping (PostTestMultipartEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = PostTestMultipartEncoderRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = PostTestMultipartEncoderResponse.defaultDecoder, completion: @escaping (PostTestMultipartEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestMultipartEncoderResponse> {
+        let future: RequestFuture<PostTestMultipartEncoderResponse> = client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = PostTestMultipartEncoderRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = PostTestMultipartEncoderRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void)  -> RequestFuture<HTTPResponse> {
+        let future = client.send(self, requestEncoder: requestEncoder)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
     }
 }
 
@@ -351,11 +381,21 @@ class PostTestJsonEncoderRequest: Request {
         }
         return .dictionary(value: result)
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = PostTestJsonEncoderRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = PostTestJsonEncoderResponse.defaultDecoder, completion: @escaping (PostTestJsonEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = PostTestJsonEncoderRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = PostTestJsonEncoderResponse.defaultDecoder, completion: @escaping (PostTestJsonEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestJsonEncoderResponse> {
+        let future: RequestFuture<PostTestJsonEncoderResponse> = client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = PostTestJsonEncoderRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = PostTestJsonEncoderRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void)  -> RequestFuture<HTTPResponse> {
+        let future = client.send(self, requestEncoder: requestEncoder)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
     }
 }
 
@@ -396,11 +436,21 @@ class GetStickerMediaIdRequest: Request {
         }
         return .dictionary(value: result)
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaIdRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetStickerMediaIdResponse.defaultDecoder, completion: @escaping (GetStickerMediaIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaIdRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetStickerMediaIdResponse.defaultDecoder, completion: @escaping (GetStickerMediaIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStickerMediaIdResponse> {
+        let future: RequestFuture<GetStickerMediaIdResponse> = client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaIdRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = GetStickerMediaIdRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void)  -> RequestFuture<HTTPResponse> {
+        let future = client.send(self, requestEncoder: requestEncoder)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
     }
 }
 
@@ -441,11 +491,21 @@ class GetUnderLineRequest: Request {
         }
     }
     var content: RequestContent? = nil
-    func send(_ requestEncoder: HTTPRequestEncoder = GetUnderLineRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetUnderLineResponse.defaultDecoder, completion: @escaping (GetUnderLineResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = GetUnderLineRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetUnderLineResponse.defaultDecoder, completion: @escaping (GetUnderLineResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUnderLineResponse> {
+        let future: RequestFuture<GetUnderLineResponse> = client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetUnderLineRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = GetUnderLineRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void)  -> RequestFuture<HTTPResponse> {
+        let future = client.send(self, requestEncoder: requestEncoder)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
     }
 }
 
@@ -589,11 +649,21 @@ class GetTestNestedMessageRequest: Request {
         }
         return .dictionary(value: result)
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetTestNestedMessageRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetTestNestedMessageResponse.defaultDecoder, completion: @escaping (GetTestNestedMessageResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = GetTestNestedMessageRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetTestNestedMessageResponse.defaultDecoder, completion: @escaping (GetTestNestedMessageResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestNestedMessageResponse> {
+        let future: RequestFuture<GetTestNestedMessageResponse> = client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetTestNestedMessageRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = GetTestNestedMessageRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void)  -> RequestFuture<HTTPResponse> {
+        let future = client.send(self, requestEncoder: requestEncoder)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
     }
 }
 

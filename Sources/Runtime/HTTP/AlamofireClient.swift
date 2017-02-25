@@ -26,40 +26,63 @@ public enum AlamofireClientError: HIError {
     }
 }
 
-struct AlamofireRequestFuture: HTTPRequestFuture {
+class AlamofireRequestFuture: HTTPRequestFuture {
     let request: HTTPRequest
-    let alamofireRequest: DataRequest
+    var alamofireRequest: DataRequest?
     var progressHandler: ((Progress) -> Void)?
     var responseHandler: ((HTTPResponse) -> Void)?
     var errorHandler: ((HIError) -> Void)?
     
     func cancel() {
-        alamofireRequest.cancel()
+        alamofireRequest?.cancel()
+    }
+    
+    func notify(progress: Progress) {
+        progressHandler?(progress)
+    }
+    
+    func notify(response: HTTPResponse) {
+        responseHandler?(response)
+    }
+    
+    func notify(error: HIError) {
+        errorHandler?(error)
+    }
+    
+    init(request: HTTPRequest) {
+        self.request = request
     }
 }
 
-struct AlamofireClient: HTTPClient {
+class AlamofireClient: HTTPClient {
     
-    func send(_ request: HTTPRequest, completion: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> HTTPRequestFuture? {
-        let future: AlamofireRequestFuture?
+    let queue = DispatchQueue(label: "org.httpidl.alamofire.default-callback")
+    
+    func send(_ request: HTTPRequest) -> HTTPRequestFuture {
+        let future = AlamofireRequestFuture(request: request)
         do {
             let dataRequest: DataRequest = try adapt(request)
-            future = AlamofireRequestFuture(request: request, alamofireRequest: dataRequest, progressHandler: nil, responseHandler: completion, errorHandler: errorHandler)
-            dataRequest.responseData(completionHandler: { (response) in
+            future.alamofireRequest = dataRequest
+            dataRequest.responseData(queue: self.queue, completionHandler: { (response) in
                 let callbackTuple = self.adapt(response: response, request: request)
                 if let error = callbackTuple.1 {
-                    errorHandler(error)
+                    future.notify(error: error)
                     return
                 }
                 if let httpResp = callbackTuple.0 {
-                    completion(httpResp)
+                    future.notify(response: httpResp)
                     return
                 }
                 assert(false, "alamofire 请求结束后居然既没有error又没有response，介不可能！！！！")
             })
+            dataRequest.downloadProgress(queue: self.queue, closure: { (progress) in
+                future.notify(progress: progress)
+            })
         }catch let err {
-            future = nil
-            errorHandler(AlamofireClientError.adaptAlamofireRequestFailed(rawError: err))
+            let error = AlamofireClientError.adaptAlamofireRequestFailed(rawError: err)
+            self.queue.async {
+                future.notify(error: error)
+            }
         }
         return future
     }
