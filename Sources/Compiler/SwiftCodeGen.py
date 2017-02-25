@@ -188,6 +188,10 @@ class Swift3CodeGenerator:
         self.write_line('init(content: ResponseContent?, rawResponse: HTTPResponse) throws {')
         self.push_indent()
         self.write_line('self.rawResponse = rawResponse')
+        if len(param_maps) == 0:
+            self.pop_indent()
+            self.write_line('}')
+            return
         self.write_line('guard let content = content, case .dictionary(let value) = content else {')
         self.push_indent()
         for param_map in param_maps:
@@ -205,9 +209,9 @@ class Swift3CodeGenerator:
                 self.write_line('if let content = value["' + param_value_name + '"] {')
                 self.push_indent()
                 if array_type is not None:
-                    self.generate_array_assignment(array_type, param_map.key().getText())
+                    self.generate_array_from_resp_assignment(array_type, param_map.key().getText())
                 elif dict_type is not None:
-                    self.generate_dict_assignment(dict_type, param_map.key().getText())
+                    self.generate_dict_from_resp_assignment(dict_type, param_map.key().getText())
                 self.write_line('self.' + param_map.key().getText() + ' = ' + param_map.key().getText())
                 self.pop_indent()
                 self.write_line('} else {')
@@ -264,9 +268,9 @@ class Swift3CodeGenerator:
                 self.write_line('if let content = value["' + param_value_name + '"] {')
                 self.push_indent()
                 if array_type is not None:
-                    self.generate_array_assignment(array_type, param_map.key().getText())
+                    self.generate_array_from_resp_assignment(array_type, param_map.key().getText())
                 elif dict_type is not None:
-                    self.generate_dict_assignment(dict_type, param_map.key().getText())
+                    self.generate_dict_from_resp_assignment(dict_type, param_map.key().getText())
                 self.write_line('self.' + param_map.key().getText() + ' = ' + param_map.key().getText())
                 self.pop_indent()
                 self.write_line('} else {')
