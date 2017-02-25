@@ -33,7 +33,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        BaseConfiguration.shared.baseURLString = "https://httpbin.org/"
+        BaseConfiguration.shared.baseURLString = "https://httpbin.org/"
 //        BaseClient.shared.add(responseObserver: TestObserver())
         
 //        let request = PostTestMultipartEncoderRequest()
@@ -63,13 +63,26 @@ class ViewController: UIViewController {
 //            
 //        })
         
-        let sticker = GetStickerMediaIdRequest(mediaId: "123123")
-        sticker.configuration.baseURLString = "http://api.everphoto.cn"
-        sticker.send(completion: { (response) in
-            print("sticker response: ", response)
-        }) { (error) in
-            print("sticker error: ", error)
-        }
+//        let sticker = GetStickerMediaIdRequest(mediaId: "123123")
+//        sticker.configuration.baseURLString = "http://api.everphoto.cn"
+//        sticker.send(completion: { (response) in
+//            print("sticker response: ", response)
+//        }) { (error) in
+//            print("sticker error: ", error)
+//        }
+//        let req = GetGetRequest()
+//        req.configuration.callbackQueue = DispatchQueue.global()
+//        req.int64 = 64
+//        req.int32 = 32
+//        req.bool = true
+//        req.double = 3.1415926
+//        req.string = "hey jude"
+//        req.array = ["don't", "make", "it", "bad"]
+//        req.send(completion: { (response) in
+//            print("GetGetRequest resp: ", response)
+//        }) { (error) in
+//            print("GetGetRequest error: ", error)
+//        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -109,5 +109,28 @@ DICT<STRING, ARRAY<STRING>> da;
 DICT<STRING, ARRAY<DICT<STRING, ARRAY<STRING>>>> dada;
 }
 
+MESSAGE /get {
+GET REQUEST {
+INT64 int64;
+INT32 int32;
+BOOL bool;
+DOUBLE double;
+STRING string;
+ARRAY<STRING> array;
+}
+
+GET RESPONSE {
+HTTPBinGetArgs args;
+}
+}
+
+STRUCT HTTPBinGetArgs {
+INT64 int64;
+INT32 int32;
+BOOL bool;
+DOUBLE double;
+STRING string;
+ARRAY<STRING> array;
+}
 
 

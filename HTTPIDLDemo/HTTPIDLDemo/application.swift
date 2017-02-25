@@ -152,6 +152,32 @@ struct TestNestedStruct: ResponseContentConvertible {
     }
 }
 
+struct HTTPBinGetArgs: ResponseContentConvertible {
+    
+    let int64: Int64?
+    let int32: Int32?
+    let bool: Bool?
+    let double: Double?
+    let string: String?
+    let array: [String]?
+    init?(content: ResponseContent?) {
+        guard let content = content, case .dictionary(let value) = content else {
+            return nil
+        }
+        self.int64 = Int64(content: value["int64"])
+        self.int32 = Int32(content: value["int32"])
+        self.bool = Bool(content: value["bool"])
+        self.double = Double(content: value["double"])
+        self.string = String(content: value["string"])
+        if let content = value["array"] {
+            let array = [String](content: content)
+            self.array = array
+        } else {
+            self.array = nil
+        }
+    }
+}
+
 class GetTestUrlencodedQueryEncoderRequest: Request {
     
     static let defaultMethod: String = "GET"
@@ -761,5 +787,77 @@ struct GetTestNestedMessageResponse: Response {
         } else {
             self.da1 = nil
         }
+    }
+}
+
+class GetGetRequest: Request {
+    
+    static let defaultMethod: String = "GET"
+    var method: String = GetGetRequest.defaultMethod
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        get {
+            return "/get"
+        }
+    }
+    var int64: Int64?
+    var int32: Int32?
+    var bool: Bool?
+    var double: Double?
+    var string: String?
+    var array: [String]?
+    var content: RequestContent? {
+        var result = [String:RequestContent]()
+        if let tmp = int64 {
+            result["int64"] = tmp.asRequestContent()
+        }
+        if let tmp = int32 {
+            result["int32"] = tmp.asRequestContent()
+        }
+        if let tmp = bool {
+            result["bool"] = tmp.asRequestContent()
+        }
+        if let tmp = double {
+            result["double"] = tmp.asRequestContent()
+        }
+        if let tmp = string {
+            result["string"] = tmp.asRequestContent()
+        }
+        if let tmp = array {
+            let tmp = tmp.asRequestContent()
+            result["array"] = tmp
+        }
+        return .dictionary(value: result)
+    }
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = GetGetRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetGetResponse.defaultDecoder, completion: @escaping (GetGetResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetGetResponse> {
+        let future: RequestFuture<GetGetResponse> = client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
+    }
+    
+    @discardableResult
+    func send(_ requestEncoder: HTTPRequestEncoder = GetGetRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void)  -> RequestFuture<HTTPResponse> {
+        let future = client.send(self, requestEncoder: requestEncoder)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
+    }
+}
+
+struct GetGetResponse: Response {
+    
+    let args: HTTPBinGetArgs?
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+        guard let content = content, case .dictionary(let value) = content else {
+            self.args = nil
+            return
+        }
+        self.args = HTTPBinGetArgs(content: value["args"])
     }
 }
