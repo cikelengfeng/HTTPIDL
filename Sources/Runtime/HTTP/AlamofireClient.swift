@@ -26,11 +26,25 @@ public enum AlamofireClientError: HIError {
     }
 }
 
+struct AlamofireRequestFuture: HTTPRequestFuture {
+    let request: HTTPRequest
+    let alamofireRequest: DataRequest
+    var progressHandler: ((Progress) -> Void)?
+    var responseHandler: ((HTTPResponse) -> Void)?
+    var errorHandler: ((HIError) -> Void)?
+    
+    func cancel() {
+        alamofireRequest.cancel()
+    }
+}
+
 struct AlamofireClient: HTTPClient {
     
-    func send(_ request: HTTPRequest, completion: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+    func send(_ request: HTTPRequest, completion: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> HTTPRequestFuture? {
+        let future: AlamofireRequestFuture?
         do {
             let dataRequest: DataRequest = try adapt(request)
+            future = AlamofireRequestFuture(request: request, alamofireRequest: dataRequest, progressHandler: nil, responseHandler: completion, errorHandler: errorHandler)
             dataRequest.responseData(completionHandler: { (response) in
                 let callbackTuple = self.adapt(response: response, request: request)
                 if let error = callbackTuple.1 {
@@ -44,8 +58,10 @@ struct AlamofireClient: HTTPClient {
                 assert(false, "alamofire 请求结束后居然既没有error又没有response，介不可能！！！！")
             })
         }catch let err {
+            future = nil
             errorHandler(AlamofireClientError.adaptAlamofireRequestFailed(rawError: err))
         }
+        return future
     }
     
     func adapt(_ request: HTTPRequest) -> HTTPMethod {

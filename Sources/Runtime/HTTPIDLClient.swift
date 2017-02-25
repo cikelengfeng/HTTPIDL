@@ -260,7 +260,7 @@ public class BaseClient: Client {
         self.receive(error: error, request: request)
     }
     
-    public func send<ResponseType : Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) {
+    public func send<ResponseType : Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder, completion: @escaping (ResponseType) -> Void, errorHandler: ((HIError) -> Void)?) -> RequestFuture<Response> {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -294,7 +294,7 @@ public class BaseClient: Client {
         }
     }
     
-    public func send(_ request: Request, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((HIError) -> Void)?) {
+    public func send(_ request: Request, requestEncoder: HTTPRequestEncoder, completion: @escaping (HTTPResponse) -> Void, errorHandler: ((HIError) -> Void)?) -> RequestFuture<HTTPResponse> {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -315,11 +315,12 @@ public class BaseClient: Client {
                     return
                 }
             }
-            clientImpl.send(encodedRequest, completion: { (response) in
+            let futureImpl = clientImpl.send(encodedRequest, completion: { (response) in
                 self.handle(request: request, response: response, completion: completion, errorHandler: errorHandler)
             }, errorHandler: { (error) in
                 self.handle(request: request, error: error, errorHandler: errorHandler)
             })
+            let future = RequestFuture<HTTPResponse>(request: request, futureImpl: futureImpl)
             self.didSend(request: request)
         } catch let error as HIError {
             self.handle(request: request, error: error, errorHandler: errorHandler)

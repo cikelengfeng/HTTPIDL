@@ -26,5 +26,13 @@ public protocol HTTPResponse {
 
 
 public protocol HTTPClient {
-    func send(_ request: HTTPRequest, completion: @escaping (_ response: HTTPResponse) -> Void, errorHandler: @escaping (_ error: HIError) -> Void)
+    func send(_ request: HTTPRequest, completion: @escaping (_ response: HTTPResponse) -> Void, errorHandler: @escaping (_ error: HIError) -> Void) -> HTTPRequestFuture?
+}
+
+public protocol HTTPRequestFuture {
+    func cancel()
+    var request: HTTPRequest {get}
+    var progressHandler: ((_ progress: Progress) -> Void)? {get set}
+    var responseHandler: ((_ response: HTTPResponse) -> Void)? {get set}
+    var errorHandler: ((_ error: HIError) -> Void)? {get set}
 }
