@@ -104,13 +104,74 @@ class Swift3CodeGenerator:
             param_value_name = parameter_map.value().getText() if parameter_map.value() is not None else parameter_map.key().getText()
             self.write_line('if let tmp = ' + parameter_map.key().getText() + ' {')
             self.push_indent()
-            self.write_line('result["'
-                            + param_value_name + '"] = tmp.as%s()' % httpidl_content_type)
+            generic_type = parameter_map.paramType().genericType()
+            if generic_type is not  None:
+                array_type = generic_type.arrayGenericParam()
+                dict_type = generic_type.dictGenericParam()
+                if array_type is not None:
+                    self.generate_array_from_req_assignment(array_type, 'tmp')
+                else:
+                    self.generate_dict_from_req_assignment(dict_type, 'tmp')
+                self.write_line('result["'
+                            + param_value_name + '"] = tmp')
+            else:
+                self.write_line('result["'
+                                + param_value_name + '"] = tmp.as%s()' % httpidl_content_type)
             self.pop_indent()
             self.write_line('}')
         self.write_line('return .dictionary(value: result)')
         self.pop_indent()
         self.write_line('}')
+
+    def generate_array_from_req_assignment(self, array_context, container_name):
+        array_element_type = array_context.paramType()
+        nested_type = array_element_type.genericType()
+        if nested_type is not None:
+            self.write_line(
+                'let tmp = ' + container_name + '.reduce(.array(value: []), { (soFar, soGood) -> RequestContent in')
+            self.push_indent()
+            self.write_line('guard case .array(var content) = soFar else {')
+            self.push_indent()
+            self.write_line('return soFar')
+            self.pop_indent()
+            self.write_line('}')
+            array_type = nested_type.arrayGenericParam()
+            dict_type = nested_type.dictGenericParam()
+            if array_type is not None:
+                self.generate_array_from_req_assignment(array_type, 'soGood')
+            else:
+                self.generate_dict_from_req_assignment(dict_type, 'soGood')
+            self.write_line('content.append(tmp)')
+            self.write_line('return .array(value: content)')
+            self.pop_indent()
+            self.write_line('})')
+        else:
+            self.write_line('let tmp = ' + container_name + '.asRequestContent()')
+
+    def generate_dict_from_req_assignment(self, dict_context, container_name):
+        value_type = dict_context.paramType()
+        nested_value_type = value_type.genericType()
+        if nested_value_type is not None:
+            self.write_line(
+                'let tmp = ' + container_name + '.reduce(.dictionary(value: [:]), { (soFar, soGood) -> RequestContent in')
+            self.push_indent()
+            self.write_line('guard case .dictionary(var content) = soFar else {')
+            self.push_indent()
+            self.write_line('return soFar')
+            self.pop_indent()
+            self.write_line('}')
+            array_type = nested_value_type.arrayGenericParam()
+            dict_type = nested_value_type.dictGenericParam()
+            if array_type is not None:
+                self.generate_array_from_req_assignment(array_type, 'soGood.value')
+            else:
+                self.generate_dict_from_req_assignment(dict_type, 'soGood.value')
+            self.write_line('content[soGood.key.asHTTPParamterKey()] = tmp')
+            self.write_line('return .dictionary(value: content)')
+            self.pop_indent()
+            self.write_line('})')
+        else:
+            self.write_line('let tmp = ' + container_name + '.asRequestContent()')
 
     def generate_request_init_and_member_var(self, request_context, uri_context):
         self.write_blank_lines(1)
