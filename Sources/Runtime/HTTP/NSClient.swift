@@ -60,7 +60,7 @@ class NSClient: HTTPClient {
     let queue = DispatchQueue(label: "org.httpidl.nsclient.default-callback")
     
     func send(_ request: HTTPRequest) -> HTTPRequestFuture {
-        var future = NSRequestFuture(request: request)
+        let future = NSRequestFuture(request: request)
         do {
             let dataRequest: URLRequest = try adapt(request)
             let configuration = URLSessionConfiguration.default
