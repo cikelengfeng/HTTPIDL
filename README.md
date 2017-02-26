@@ -139,7 +139,6 @@ request.send(completion: { (response) in
 在HTTPIDL中，无论自动生成还是手写的请求都要实现Request协议：
 ```
 public protocol Request {
-    static var defaultMethod: String {get} //该类请求的默认method
     var method: String {get} //此请求对象的method
     var configuration: Configuration {get set} //此请求对象的配置，包括baseURLString, headers
     var uri: String {get} //此请求对象的uri
