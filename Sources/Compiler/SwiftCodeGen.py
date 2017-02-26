@@ -78,20 +78,11 @@ class Swift3CodeGenerator:
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
         self.write_blank_lines(1)
         self.write_line('@discardableResult')
-        self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = ' + request_name + '.defaultEncoder, '
-                                                                                             'responseDecoder: '
-                                                                                             'HTTPResponseDecoder = '
-                        + response_name + '.defaultDecoder, completion: @escaping (' + response_name + ') -> Void, '
-                                                                                                       'errorHandler:'
-                                                                                                       ' @escaping ('
-                                                                                                       'HIError) -> '
-                                                                                                       'Void) -> '
-                                                                                                       'RequestFuture<'
+        self.write_line('func send(_ completion: @escaping (' + response_name + ') -> Void, errorHandler: @escaping ('
+                                                                                'HIError) -> Void) -> RequestFuture<'
                         + response_name + '> {')
         self.push_indent()
-        self.write_line('let future: RequestFuture<' + response_name + '> = client.send(self, requestEncoder: '
-                                                                       'requestEncoder, responseDecoder: '
-                                                                       'responseDecoder)')
+        self.write_line('let future: RequestFuture<' + response_name + '> = client.send(self)')
         self.write_line('future.responseHandler = completion')
         self.write_line('future.errorHandler = errorHandler')
         self.write_line('return future')
@@ -100,16 +91,10 @@ class Swift3CodeGenerator:
 
         self.write_blank_lines(1)
         self.write_line('@discardableResult')
-        self.write_line('func send(_ requestEncoder: HTTPRequestEncoder = ' + request_name + '.defaultEncoder, '
-                                                                                             'rawResponseHandler: '
-                                                                                             '@escaping ('
-                                                                                             'HTTPResponse) -> Void, '
-                                                                                             'errorHandler: @escaping '
-                                                                                             '(HIError) -> Void)  -> '
-                                                                                             'RequestFuture'
-                                                                                             '<HTTPResponse> {')
+        self.write_line('func send(_ rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: '
+                        '@escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {')
         self.push_indent()
-        self.write_line('let future = client.send(self, requestEncoder: requestEncoder)')
+        self.write_line('let future = client.send(self)')
         self.write_line('future.responseHandler = rawResponseHandler')
         self.write_line('future.errorHandler = errorHandler')
         self.write_line('return future')
@@ -210,12 +195,7 @@ class Swift3CodeGenerator:
         params_in_uri = filter(filter_param_in_uri, uri_context.uriPathComponent())
         for param_in_uri in params_in_uri:
             self.write_line('let ' + param_in_uri.parameterInUri().identifier().getText() + ': String')
-
-        self.write_line('static let defaultMethod: String = "' + request_context.method().getText() + '"')
-        self.write_line('var method: String = ' +
-                        self.request_name_from_message(request_context.method().getText(),
-                                                       self.message_name_from_uri(uri_context)) + '.defaultMethod'
-                        )
+        self.write_line('var method: String = "' + request_context.method().getText() + '"')
         self.write_line('var configuration: Configuration = BaseConfiguration.shared')
         self.write_line('var client: Client = BaseClient.shared')
         self.write_line('var uri: String {')

@@ -11,6 +11,8 @@ public protocol Configuration {
     var baseURLString: String {get set}
     var headers: [String: String] {get set}
     var callbackQueue: DispatchQueue {get set}
+    var defaultEncoderStrategy: (Request) -> HTTPRequestEncoder {get set}
+    var defaultDecoderStrategy: (Request) -> HTTPResponseDecoder {get set}
     
     mutating func append(headers: [String: String])
 }
@@ -21,6 +23,18 @@ public struct BaseConfiguration: Configuration {
     public var baseURLString: String = ""
     public var headers: [String: String] = [:]
     public var callbackQueue: DispatchQueue = DispatchQueue.main
+    public var defaultEncoderStrategy: (Request) -> HTTPRequestEncoder = { (request) in
+        switch request.method {
+        case "PUT", "POST", "PATCH":
+            return HTTPURLEncodedFormRequestEncoder.shared
+        default:
+            return HTTPURLEncodedQueryRequestEncoder.shared
+        }
+    }
+    
+    public var defaultDecoderStrategy: (Request) -> HTTPResponseDecoder = { (request) in
+        return HTTPResponseJSONDecoder.shared
+    }
     
     public mutating func append(headers: [String: String]) {
         let newHeader = headers.reduce(self.headers , { (soFar, soGood) in
@@ -32,23 +46,3 @@ public struct BaseConfiguration: Configuration {
     }
 }
 
-public extension Request {
-    static var defaultEncoder: HTTPRequestEncoder {
-        get {
-            switch self.defaultMethod {
-            case "POST", "PUT", "PATCH":
-                return HTTPURLEncodedFormRequestEncoder.shared
-            default:
-                return HTTPURLEncodedQueryRequestEncoder.shared
-            }
-        }
-    }
-}
-
-public extension Response {
-    static var defaultDecoder: HTTPResponseDecoder {
-        get {
-            return HTTPResponseJSONDecoder.shared
-        }
-    }
-}

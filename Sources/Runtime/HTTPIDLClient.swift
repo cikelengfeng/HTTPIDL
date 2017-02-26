@@ -254,11 +254,13 @@ public class BaseClient: Client {
         self.receive(error: error, request: future.request)
     }
     
-    public func send<ResponseType : Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder) -> RequestFuture<ResponseType> {
+    public func send<ResponseType : Response>(_ request: Request) -> RequestFuture<ResponseType> {
         let future = RequestFuture<ResponseType>(request: request)
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
+            let requestEncoder = request.configuration.defaultEncoderStrategy(request)
+            let responseDecoder = request.configuration.defaultDecoderStrategy(request)
             var encodedRequest = try requestEncoder.encode(request)
             self.didEncode(request: request, encoded: encodedRequest)
             if let rewriterResult = self.rewrite(request: encodedRequest) {
@@ -293,11 +295,12 @@ public class BaseClient: Client {
         return future
     }
     
-    public func send(_ request: Request, requestEncoder: HTTPRequestEncoder) -> RequestFuture<HTTPResponse> {
+    public func send(_ request: Request) -> RequestFuture<HTTPResponse> {
         let future = RequestFuture<HTTPResponse>(request: request)
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
+            let requestEncoder = request.configuration.defaultEncoderStrategy(request)
             var encodedRequest = try requestEncoder.encode(request)
             self.didEncode(request: request, encoded: encodedRequest)
             

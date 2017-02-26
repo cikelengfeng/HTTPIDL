@@ -15,7 +15,6 @@ public protocol RequestContentConvertible {
 }
 
 public protocol Request {
-    static var defaultMethod: String {get}
     var method: String {get}
     var configuration: Configuration {get set}
     var uri: String {get}
@@ -36,8 +35,8 @@ public protocol HTTPResponseDecoder {
 }
 
 public protocol Client {
-    func send<ResponseType: Response>(_ request: Request, requestEncoder: HTTPRequestEncoder, responseDecoder: HTTPResponseDecoder) -> RequestFuture<ResponseType>
-    func send(_ request: Request, requestEncoder: HTTPRequestEncoder) -> RequestFuture<HTTPResponse>
+    func send<ResponseType: Response>(_ request: Request) -> RequestFuture<ResponseType>
+    func send(_ request: Request) -> RequestFuture<HTTPResponse>
     
     mutating func add(requestObserver: HTTPRequestObserver)
     mutating func remove(requestObserver: HTTPRequestObserver)
