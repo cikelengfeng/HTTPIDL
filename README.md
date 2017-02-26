@@ -63,8 +63,7 @@ import HTTPIDL
 
 class GetMyExampleRequest: Request {
     
-    static let defaultMethod: String = "GET"
-    var method: String = GetMyExampleRequest.defaultMethod
+    var method: String = "GET"
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
@@ -84,11 +83,21 @@ class GetMyExampleRequest: Request {
         }
         return .dictionary(value: result)
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetMyExampleRequest.defaultEncoder, responseDecoder: HTTPResponseDecoder = GetMyExampleResponse.defaultDecoder, completion: @escaping (GetMyExampleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, responseDecoder: responseDecoder, completion: completion, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(completion: @escaping (GetMyExampleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetMyExampleResponse> {
+        let future: RequestFuture<GetMyExampleResponse> = client.send(self)
+	future.responseHandler = completion
+	future.errorHandler = errorHandler
+	return future
     }
-    func send(_ requestEncoder: HTTPRequestEncoder = GetMyExampleRequest.defaultEncoder, rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        client.send(self, requestEncoder: requestEncoder, completion: rawResponseHandler, errorHandler: errorHandler)
+    
+    @discardableResult
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse>{
+        let future = client.send(self)
+	future.responseHandler = rawResponseHandler
+	future.errorHandler = errorHandler
+	return future
     }
 }
 
@@ -141,8 +150,8 @@ public protocol Request {
 实现了Request协议的对象都可以使用以下代码发送：
 ```
 let request = //your hand-writed request
-let requestEncoder = HTTPURLEncodedQueryRequestEncoder.shared
-BaseClient.shared.send(request, requestEncoder: requestEncoder, completion: yourCompletionClosure, errorHandler: yourErrorHandler)
+request.configuration.encoderStrategy = { _ in HTTPURLEncodedQueryRequestEncoder.shared}
+BaseClient.shared.send(request)
 ```
 
 ## 内置编码器
@@ -152,8 +161,7 @@ BaseClient.shared.send(request, requestEncoder: requestEncoder, completion: your
 ```
 class GetMyExampleRequest: Request {
     
-    static let defaultMethod: String = "GET"
-    var method: String = GetMyExampleRequest.defaultMethod
+    var method: String = "GET"
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
@@ -178,8 +186,8 @@ func test() {
 	let request = GetMyExampleRequest()
 	request.t1 = 123
 	request.t2 = "hey"
-	let requestEncoder = HTTPURLEncodedQueryRequestEncoder.shared
-	BaseClient.shared.send(request, requestEncoder: requestEncoder, completion: yourCompletionClosure, errorHandler: yourErrorHandler)
+	request.configuration.encoderStrategy = { _ in HTTPURLEncodedQueryRequestEncoder.shared}
+	BaseClient.shared.send(request)
 }
 ```
 
@@ -196,8 +204,7 @@ Host: here.is.you.host
 ```
 class PostMyExampleRequest: Request {
     
-    static let defaultMethod: String = "POST"
-    var method: String = PostMyExampleRequest.defaultMethod
+    var method: String = "POST"
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
@@ -222,8 +229,8 @@ func test() {
 	let request = PostMyExampleRequest()
 	request.t1 = 123
 	request.t2 = "hey"
-	let requestEncoder = HTTPURLEncodedFormRequestEncoder.shared
-	BaseClient.shared.send(request, requestEncoder: requestEncoder, completion: yourCompletionClosure, errorHandler: yourErrorHandler)
+	request.configuration.encoderStrategy = { _ in HTTPURLEncodedFormRequestEncoder.shared }
+	BaseClient.shared.send(request)
 }
 ```
 
@@ -243,8 +250,7 @@ t1=123&t2=hey
 ```
 class PostTestJsonEncoderRequest: Request {
     
-    static let defaultMethod: String = "POST"
-    var method: String = PostTestJsonEncoderRequest.defaultMethod
+    var method: String = "POST"
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
@@ -305,8 +311,7 @@ Content-Length: 87
 
 class PostTestMultipartEncoderRequest: Request {
     
-    static let defaultMethod: String = "POST"
-    var method: String = PostTestMultipartEncoderRequest.defaultMethod
+    var method: String = "POST"
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
@@ -346,7 +351,8 @@ let request = PostTestMultipartEncoderRequest()
         request.t4 = "jude"
         let data = try! Data(contentsOf: Bundle.main.url(forResource: "test", withExtension: "JPG")!)
         request.t5 = HTTPData(with: data, fileName: "test", mimeType: "image/jpeg")
-        request.send(HTTPMultipartRequestEncoder.shared, responseDecoder: HTTPResponseJSONDecoder.shared, completion: { (response) in
+	request.configuration.encoderStrategy = { _ in HTTPMultipartRequestEncoder.shared }
+        request.send(completion: { (response) in
             
         }) { (error) in
             
