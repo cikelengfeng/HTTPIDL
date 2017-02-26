@@ -78,7 +78,7 @@ class Swift3CodeGenerator:
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
         self.write_blank_lines(1)
         self.write_line('@discardableResult')
-        self.write_line('func send(_ completion: @escaping (' + response_name + ') -> Void, errorHandler: @escaping ('
+        self.write_line('func send(completion: @escaping (' + response_name + ') -> Void, errorHandler: @escaping ('
                                                                                 'HIError) -> Void) -> RequestFuture<'
                         + response_name + '> {')
         self.push_indent()
@@ -91,7 +91,7 @@ class Swift3CodeGenerator:
 
         self.write_blank_lines(1)
         self.write_line('@discardableResult')
-        self.write_line('func send(_ rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: '
+        self.write_line('func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: '
                         '@escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {')
         self.push_indent()
         self.write_line('let future = client.send(self)')
