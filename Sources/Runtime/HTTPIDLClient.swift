@@ -259,8 +259,8 @@ public class BaseClient: Client {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
-            let requestEncoder = request.configuration.defaultEncoderStrategy(request)
-            let responseDecoder = request.configuration.defaultDecoderStrategy(request)
+            let requestEncoder = request.configuration.encoderStrategy(request)
+            let responseDecoder = request.configuration.decoderStrategy(request)
             var encodedRequest = try requestEncoder.encode(request)
             self.didEncode(request: request, encoded: encodedRequest)
             if let rewriterResult = self.rewrite(request: encodedRequest) {
@@ -300,7 +300,7 @@ public class BaseClient: Client {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
-            let requestEncoder = request.configuration.defaultEncoderStrategy(request)
+            let requestEncoder = request.configuration.encoderStrategy(request)
             var encodedRequest = try requestEncoder.encode(request)
             self.didEncode(request: request, encoded: encodedRequest)
             

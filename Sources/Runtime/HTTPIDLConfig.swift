@@ -11,8 +11,8 @@ public protocol Configuration {
     var baseURLString: String {get set}
     var headers: [String: String] {get set}
     var callbackQueue: DispatchQueue {get set}
-    var defaultEncoderStrategy: (Request) -> HTTPRequestEncoder {get set}
-    var defaultDecoderStrategy: (Request) -> HTTPResponseDecoder {get set}
+    var encoderStrategy: (Request) -> HTTPRequestEncoder {get set}
+    var decoderStrategy: (Request) -> HTTPResponseDecoder {get set}
     
     mutating func append(headers: [String: String])
 }
@@ -23,7 +23,7 @@ public struct BaseConfiguration: Configuration {
     public var baseURLString: String = ""
     public var headers: [String: String] = [:]
     public var callbackQueue: DispatchQueue = DispatchQueue.main
-    public var defaultEncoderStrategy: (Request) -> HTTPRequestEncoder = { (request) in
+    public var encoderStrategy: (Request) -> HTTPRequestEncoder = { (request) in
         switch request.method {
         case "PUT", "POST", "PATCH":
             return HTTPURLEncodedFormRequestEncoder.shared
@@ -32,7 +32,7 @@ public struct BaseConfiguration: Configuration {
         }
     }
     
-    public var defaultDecoderStrategy: (Request) -> HTTPResponseDecoder = { (request) in
+    public var decoderStrategy: (Request) -> HTTPResponseDecoder = { (request) in
         return HTTPResponseJSONDecoder.shared
     }
     
