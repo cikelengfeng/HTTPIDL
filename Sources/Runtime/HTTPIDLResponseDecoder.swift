@@ -86,7 +86,7 @@ public struct HTTPResponseJSONDecoder: HTTPResponseDecoder {
         let json: Any
         do {
             json = try JSONSerialization.jsonObject(with: body, options: jsonReadOptions)
-        } catch let error as NSError {
+        } catch let error {
             throw HTTPResponseJSONDecoderError.JSONSerializationError(rawError: error)
         }
             
