@@ -58,6 +58,7 @@ private func decodeRoot(json: Any) throws -> ResponseContent {
 public enum HTTPResponseJSONDecoderError: HIError {
     case illegalJSONObject(errorSource: Any)
     case unsupportedParameterType(value: Any)
+    case JSONSerializationError(rawError: Error)
     
     public var errorDescription: String? {
         get {
@@ -66,6 +67,8 @@ public enum HTTPResponseJSONDecoderError: HIError {
                 return "response json decoder error: response不是字典类型，导致无法给response的属性赋值, error source: \(errorSource)"
             case .unsupportedParameterType(let value):
                 return "response json decoder error: 不支持的参数类型 value: \(value)"
+            case .JSONSerializationError(let rawError):
+                return (rawError as NSError).localizedDescription
             }
         }
     }
@@ -80,8 +83,13 @@ public struct HTTPResponseJSONDecoder: HTTPResponseDecoder {
         guard let body = response.body else {
             return nil
         }
-        let json = try JSONSerialization.jsonObject(with: body, options: jsonReadOptions)
-        
+        let json: Any
+        do {
+            json = try JSONSerialization.jsonObject(with: body, options: jsonReadOptions)
+        } catch let error as NSError {
+            throw HTTPResponseJSONDecoderError.JSONSerializationError(rawError: error)
+        }
+            
         return try decodeRoot(json: json)
     }
 }
