@@ -183,7 +183,9 @@ fileprivate extension RequestContent {
         case .data(let data, let fileName, let mime):
             multipart.append(data, withName: key, fileName: fileName ?? UUID().uuidString, mimeType: mime ?? "application/octet-stream")
         case .array(let value):
-            throw HTTPMultipartRequestEncoderError.arrayIsForbidden(key: key, value: value)
+            try value.forEach({ (content) in
+                try content.insertInto(multipart: multipart, key: key)
+            })
         case .dictionary(let value):
             throw HTTPMultipartRequestEncoderError.dictionaryIsForbidden(key: key, value: value)
         }
