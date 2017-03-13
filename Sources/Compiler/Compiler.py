@@ -5,8 +5,8 @@ from SwiftCodeGen import Swift3CodeGenerator
 from antlr4 import CommonTokenStream
 from antlr4 import InputStream
 from antlr4.error.ErrorListener import ErrorListener
-from Parser.EverphotoIDL import EverphotoIDL
-from Parser.EverphotoIDLLexer import EverphotoIDLLexer
+from Parser.HTTPIDL import HTTPIDL
+from Parser.HTTPIDLLexer import HTTPIDLLexer
 
 
 class HTTPIDLErrorListener(ErrorListener):
@@ -55,9 +55,9 @@ class HTTPIDLCompiler:
     @staticmethod
     def parse_tree_from_idl(input_idl, error_listener):
         input_stream = InputStream(input_idl)
-        lexer = EverphotoIDLLexer(input_stream)
+        lexer = HTTPIDLLexer(input_stream)
         stream = CommonTokenStream(lexer)
-        parser = EverphotoIDL(stream)
+        parser = HTTPIDL(stream)
         parser.addErrorListener(error_listener)
         tree = parser.entry()
         return tree

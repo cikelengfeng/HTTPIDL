@@ -1,4 +1,4 @@
-lexer grammar EverphotoIDLLexer;
+lexer grammar HTTPIDLLexer;
 
 MESSAGE
     : 'MESSAGE'

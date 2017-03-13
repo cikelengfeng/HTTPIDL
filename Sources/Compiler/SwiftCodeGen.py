@@ -5,7 +5,7 @@ import os
 import errno
 
 from SwiftTypeTransfer import swift_type_name, swift_base_type_name_from_idl_base_type
-from Parser.EverphotoIDL import EverphotoIDL
+from Parser.HTTPIDL import HTTPIDL
 from NameMethod import underline_to_upper_camel_case
 
 
@@ -55,7 +55,7 @@ class Swift3CodeGenerator:
     @staticmethod
     def request_url_from_uri(uri_context):
         def reduce_uri_path_component(so_far, so_good):
-            if isinstance(so_good, EverphotoIDL.UriPathComponentContext) and so_good.parameterInUri() is not None:
+            if isinstance(so_good, HTTPIDL.UriPathComponentContext) and so_good.parameterInUri() is not None:
                 return so_far + '\(' + so_good.parameterInUri().identifier().getText() + ')'
             return so_far + so_good.getText()
 
@@ -66,7 +66,7 @@ class Swift3CodeGenerator:
     @staticmethod
     def request_uri_from_uri(uri_context):
         def reduce_uri_path_component(so_far, so_good):
-            if isinstance(so_good, EverphotoIDL.UriPathComponentContext) and so_good.parameterInUri() is not None:
+            if isinstance(so_good, HTTPIDL.UriPathComponentContext) and so_good.parameterInUri() is not None:
                 return so_far + '\(' + so_good.parameterInUri().identifier().getText() + ')'
             return so_far + so_good.getText()
 

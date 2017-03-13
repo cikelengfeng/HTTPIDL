@@ -210,7 +210,7 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
     }
     
     @discardableResult
-    func send(_ completion: @escaping (GetTestUrlencodedQueryEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestUrlencodedQueryEncoderResponse> {
+    func send(completion: @escaping (GetTestUrlencodedQueryEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestUrlencodedQueryEncoderResponse> {
         let future: RequestFuture<GetTestUrlencodedQueryEncoderResponse> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
@@ -218,7 +218,7 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
     }
     
     @discardableResult
-    func send(_ rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
         let future = client.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
@@ -272,7 +272,7 @@ class PostTestUrlencodedFormEncoderRequest: Request {
     }
     
     @discardableResult
-    func send(_ completion: @escaping (PostTestUrlencodedFormEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestUrlencodedFormEncoderResponse> {
+    func send(completion: @escaping (PostTestUrlencodedFormEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestUrlencodedFormEncoderResponse> {
         let future: RequestFuture<PostTestUrlencodedFormEncoderResponse> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
@@ -280,7 +280,7 @@ class PostTestUrlencodedFormEncoderRequest: Request {
     }
     
     @discardableResult
-    func send(_ rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
         let future = client.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
@@ -338,7 +338,7 @@ class PostTestMultipartEncoderRequest: Request {
     }
     
     @discardableResult
-    func send(_ completion: @escaping (PostTestMultipartEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestMultipartEncoderResponse> {
+    func send(completion: @escaping (PostTestMultipartEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestMultipartEncoderResponse> {
         let future: RequestFuture<PostTestMultipartEncoderResponse> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
@@ -346,7 +346,7 @@ class PostTestMultipartEncoderRequest: Request {
     }
     
     @discardableResult
-    func send(_ rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
         let future = client.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
@@ -405,7 +405,7 @@ class PostTestJsonEncoderRequest: Request {
     }
     
     @discardableResult
-    func send(_ completion: @escaping (PostTestJsonEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestJsonEncoderResponse> {
+    func send(completion: @escaping (PostTestJsonEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestJsonEncoderResponse> {
         let future: RequestFuture<PostTestJsonEncoderResponse> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
@@ -413,7 +413,7 @@ class PostTestJsonEncoderRequest: Request {
     }
     
     @discardableResult
-    func send(_ rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
         let future = client.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
@@ -459,7 +459,7 @@ class GetStickerMediaIdRequest: Request {
     }
     
     @discardableResult
-    func send(_ completion: @escaping (GetStickerMediaIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStickerMediaIdResponse> {
+    func send(completion: @escaping (GetStickerMediaIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStickerMediaIdResponse> {
         let future: RequestFuture<GetStickerMediaIdResponse> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
@@ -467,7 +467,7 @@ class GetStickerMediaIdRequest: Request {
     }
     
     @discardableResult
-    func send(_ rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
         let future = client.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
@@ -513,7 +513,7 @@ class GetUnderLineRequest: Request {
     var content: RequestContent? = nil
     
     @discardableResult
-    func send(_ completion: @escaping (GetUnderLineResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUnderLineResponse> {
+    func send(completion: @escaping (GetUnderLineResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUnderLineResponse> {
         let future: RequestFuture<GetUnderLineResponse> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
@@ -521,7 +521,7 @@ class GetUnderLineRequest: Request {
     }
     
     @discardableResult
-    func send(_ rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
         let future = client.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
@@ -670,7 +670,7 @@ class GetTestNestedMessageRequest: Request {
     }
     
     @discardableResult
-    func send(_ completion: @escaping (GetTestNestedMessageResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestNestedMessageResponse> {
+    func send(completion: @escaping (GetTestNestedMessageResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestNestedMessageResponse> {
         let future: RequestFuture<GetTestNestedMessageResponse> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
@@ -678,7 +678,7 @@ class GetTestNestedMessageRequest: Request {
     }
     
     @discardableResult
-    func send(_ rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
         let future = client.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
@@ -824,7 +824,7 @@ class GetGetRequest: Request {
     }
     
     @discardableResult
-    func send(_ completion: @escaping (GetGetResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetGetResponse> {
+    func send(completion: @escaping (GetGetResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetGetResponse> {
         let future: RequestFuture<GetGetResponse> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
@@ -832,7 +832,7 @@ class GetGetRequest: Request {
     }
     
     @discardableResult
-    func send(_ rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
         let future = client.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler

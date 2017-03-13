@@ -1,4 +1,4 @@
-# Generated from /Users/xudong/git/HTTPIDL/Grammar/EverphotoIDLLexer.g4 by ANTLR 4.6
+# Generated from /Users/xudong/git/HTTPIDL/Grammar/HTTPIDLLexer.g4 by ANTLR 4.6
 # encoding: utf-8
 from __future__ import print_function
 from antlr4 import *
@@ -122,7 +122,7 @@ def serializedATN():
         return buf.getvalue()
 
 
-class EverphotoIDLLexer(Lexer):
+class HTTPIDLLexer(Lexer):
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
@@ -191,10 +191,10 @@ class EverphotoIDLLexer(Lexer):
                   u"ARRAY", u"DICT", u"SEMICOLON", u"COMMENT", u"NL", u"WS", 
                   u"IDENT", u"ALPHA", u"DIGIT", u"UNDERSCORE" ]
 
-    grammarFileName = u"EverphotoIDLLexer.g4"
+    grammarFileName = u"HTTPIDLLexer.g4"
 
     def __init__(self, input=None):
-        super(EverphotoIDLLexer, self).__init__(input)
+        super(HTTPIDLLexer, self).__init__(input)
         self.checkVersion("4.6")
         self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())
         self._actions = None

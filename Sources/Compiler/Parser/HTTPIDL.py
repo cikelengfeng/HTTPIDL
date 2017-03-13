@@ -1,4 +1,4 @@
-# Generated from /Users/xudong/git/HTTPIDL/Grammar/EverphotoIDL.g4 by ANTLR 4.6
+# Generated from /Users/xudong/git/HTTPIDL/Grammar/HTTPIDL.g4 by ANTLR 4.6
 # encoding: utf-8
 from __future__ import print_function
 from antlr4 import *
@@ -60,9 +60,9 @@ def serializedATN():
         return buf.getvalue()
 
 
-class EverphotoIDL ( Parser ):
+class HTTPIDL ( Parser ):
 
-    grammarFileName = "EverphotoIDL.g4"
+    grammarFileName = "HTTPIDL.g4"
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
@@ -151,7 +151,7 @@ class EverphotoIDL ( Parser ):
     IDENT=35
 
     def __init__(self, input):
-        super(EverphotoIDL, self).__init__(input)
+        super(HTTPIDL, self).__init__(input)
         self.checkVersion("4.6")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
@@ -161,35 +161,35 @@ class EverphotoIDL ( Parser ):
     class EntryContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.EntryContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.EntryContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def message(self, i=None):
             if i is None:
-                return self.getTypedRuleContexts(EverphotoIDL.MessageContext)
+                return self.getTypedRuleContexts(HTTPIDL.MessageContext)
             else:
-                return self.getTypedRuleContext(EverphotoIDL.MessageContext,i)
+                return self.getTypedRuleContext(HTTPIDL.MessageContext,i)
 
 
         def struct(self, i=None):
             if i is None:
-                return self.getTypedRuleContexts(EverphotoIDL.StructContext)
+                return self.getTypedRuleContexts(HTTPIDL.StructContext)
             else:
-                return self.getTypedRuleContext(EverphotoIDL.StructContext,i)
+                return self.getTypedRuleContext(HTTPIDL.StructContext,i)
 
 
         def EOF(self):
-            return self.getToken(EverphotoIDL.EOF, 0)
+            return self.getToken(HTTPIDL.EOF, 0)
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_entry
+            return HTTPIDL.RULE_entry
 
 
 
 
     def entry(self):
 
-        localctx = EverphotoIDL.EntryContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.EntryContext(self, self._ctx, self.state)
         self.enterRule(localctx, 0, self.RULE_entry)
         self._la = 0 # Token type
         try:
@@ -201,15 +201,15 @@ class EverphotoIDL ( Parser ):
                 self.state = 44
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                while _la==EverphotoIDL.MESSAGE or _la==EverphotoIDL.STRUCT:
+                while _la==HTTPIDL.MESSAGE or _la==HTTPIDL.STRUCT:
                     self.state = 42
                     self._errHandler.sync(self)
                     token = self._input.LA(1)
-                    if token in [EverphotoIDL.MESSAGE]:
+                    if token in [HTTPIDL.MESSAGE]:
                         self.state = 40
                         self.message()
                         pass
-                    elif token in [EverphotoIDL.STRUCT]:
+                    elif token in [HTTPIDL.STRUCT]:
                         self.state = 41
                         self.struct()
                         pass
@@ -225,7 +225,7 @@ class EverphotoIDL ( Parser ):
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 47
-                self.match(EverphotoIDL.EOF)
+                self.match(HTTPIDL.EOF)
                 pass
 
 
@@ -240,59 +240,59 @@ class EverphotoIDL ( Parser ):
     class MessageContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.MessageContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.MessageContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def MESSAGE(self):
-            return self.getToken(EverphotoIDL.MESSAGE, 0)
+            return self.getToken(HTTPIDL.MESSAGE, 0)
 
         def uri(self):
-            return self.getTypedRuleContext(EverphotoIDL.UriContext,0)
+            return self.getTypedRuleContext(HTTPIDL.UriContext,0)
 
 
         def LCURLY(self):
-            return self.getToken(EverphotoIDL.LCURLY, 0)
+            return self.getToken(HTTPIDL.LCURLY, 0)
 
         def RCURLY(self):
-            return self.getToken(EverphotoIDL.RCURLY, 0)
+            return self.getToken(HTTPIDL.RCURLY, 0)
 
         def request(self, i=None):
             if i is None:
-                return self.getTypedRuleContexts(EverphotoIDL.RequestContext)
+                return self.getTypedRuleContexts(HTTPIDL.RequestContext)
             else:
-                return self.getTypedRuleContext(EverphotoIDL.RequestContext,i)
+                return self.getTypedRuleContext(HTTPIDL.RequestContext,i)
 
 
         def response(self, i=None):
             if i is None:
-                return self.getTypedRuleContexts(EverphotoIDL.ResponseContext)
+                return self.getTypedRuleContexts(HTTPIDL.ResponseContext)
             else:
-                return self.getTypedRuleContext(EverphotoIDL.ResponseContext,i)
+                return self.getTypedRuleContext(HTTPIDL.ResponseContext,i)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_message
+            return HTTPIDL.RULE_message
 
 
 
 
     def message(self):
 
-        localctx = EverphotoIDL.MessageContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.MessageContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_message)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 50
-            self.match(EverphotoIDL.MESSAGE)
+            self.match(HTTPIDL.MESSAGE)
             self.state = 51
             self.uri()
             self.state = 52
-            self.match(EverphotoIDL.LCURLY)
+            self.match(HTTPIDL.LCURLY)
             self.state = 57
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << EverphotoIDL.GET) | (1 << EverphotoIDL.HEAD) | (1 << EverphotoIDL.TRACE) | (1 << EverphotoIDL.CONNECT) | (1 << EverphotoIDL.OPTIONS) | (1 << EverphotoIDL.POST) | (1 << EverphotoIDL.PUT) | (1 << EverphotoIDL.PATCH) | (1 << EverphotoIDL.DELETE))) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.GET) | (1 << HTTPIDL.HEAD) | (1 << HTTPIDL.TRACE) | (1 << HTTPIDL.CONNECT) | (1 << HTTPIDL.OPTIONS) | (1 << HTTPIDL.POST) | (1 << HTTPIDL.PUT) | (1 << HTTPIDL.PATCH) | (1 << HTTPIDL.DELETE))) != 0):
                 self.state = 55
                 self._errHandler.sync(self)
                 la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
@@ -312,7 +312,7 @@ class EverphotoIDL ( Parser ):
                 _la = self._input.LA(1)
 
             self.state = 60
-            self.match(EverphotoIDL.RCURLY)
+            self.match(HTTPIDL.RCURLY)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -324,34 +324,34 @@ class EverphotoIDL ( Parser ):
     class StructContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.StructContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.StructContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def STRUCT(self):
-            return self.getToken(EverphotoIDL.STRUCT, 0)
+            return self.getToken(HTTPIDL.STRUCT, 0)
 
         def structName(self):
-            return self.getTypedRuleContext(EverphotoIDL.StructNameContext,0)
+            return self.getTypedRuleContext(HTTPIDL.StructNameContext,0)
 
 
         def structBody(self):
-            return self.getTypedRuleContext(EverphotoIDL.StructBodyContext,0)
+            return self.getTypedRuleContext(HTTPIDL.StructBodyContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_struct
+            return HTTPIDL.RULE_struct
 
 
 
 
     def struct(self):
 
-        localctx = EverphotoIDL.StructContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.StructContext(self, self._ctx, self.state)
         self.enterRule(localctx, 4, self.RULE_struct)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 62
-            self.match(EverphotoIDL.STRUCT)
+            self.match(HTTPIDL.STRUCT)
             self.state = 63
             self.structName()
             self.state = 64
@@ -367,36 +367,36 @@ class EverphotoIDL ( Parser ):
     class RequestContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.RequestContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.RequestContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def method(self):
-            return self.getTypedRuleContext(EverphotoIDL.MethodContext,0)
+            return self.getTypedRuleContext(HTTPIDL.MethodContext,0)
 
 
         def REQUEST(self):
-            return self.getToken(EverphotoIDL.REQUEST, 0)
+            return self.getToken(HTTPIDL.REQUEST, 0)
 
         def structBody(self):
-            return self.getTypedRuleContext(EverphotoIDL.StructBodyContext,0)
+            return self.getTypedRuleContext(HTTPIDL.StructBodyContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_request
+            return HTTPIDL.RULE_request
 
 
 
 
     def request(self):
 
-        localctx = EverphotoIDL.RequestContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.RequestContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_request)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 66
             self.method()
             self.state = 67
-            self.match(EverphotoIDL.REQUEST)
+            self.match(HTTPIDL.REQUEST)
             self.state = 68
             self.structBody()
         except RecognitionException as re:
@@ -410,36 +410,36 @@ class EverphotoIDL ( Parser ):
     class ResponseContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.ResponseContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.ResponseContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def method(self):
-            return self.getTypedRuleContext(EverphotoIDL.MethodContext,0)
+            return self.getTypedRuleContext(HTTPIDL.MethodContext,0)
 
 
         def RESPONSE(self):
-            return self.getToken(EverphotoIDL.RESPONSE, 0)
+            return self.getToken(HTTPIDL.RESPONSE, 0)
 
         def structBody(self):
-            return self.getTypedRuleContext(EverphotoIDL.StructBodyContext,0)
+            return self.getTypedRuleContext(HTTPIDL.StructBodyContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_response
+            return HTTPIDL.RULE_response
 
 
 
 
     def response(self):
 
-        localctx = EverphotoIDL.ResponseContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.ResponseContext(self, self._ctx, self.state)
         self.enterRule(localctx, 8, self.RULE_response)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 70
             self.method()
             self.state = 71
-            self.match(EverphotoIDL.RESPONSE)
+            self.match(HTTPIDL.RESPONSE)
             self.state = 72
             self.structBody()
         except RecognitionException as re:
@@ -453,52 +453,52 @@ class EverphotoIDL ( Parser ):
     class MethodContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.MethodContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.MethodContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def GET(self):
-            return self.getToken(EverphotoIDL.GET, 0)
+            return self.getToken(HTTPIDL.GET, 0)
 
         def POST(self):
-            return self.getToken(EverphotoIDL.POST, 0)
+            return self.getToken(HTTPIDL.POST, 0)
 
         def DELETE(self):
-            return self.getToken(EverphotoIDL.DELETE, 0)
+            return self.getToken(HTTPIDL.DELETE, 0)
 
         def PUT(self):
-            return self.getToken(EverphotoIDL.PUT, 0)
+            return self.getToken(HTTPIDL.PUT, 0)
 
         def PATCH(self):
-            return self.getToken(EverphotoIDL.PATCH, 0)
+            return self.getToken(HTTPIDL.PATCH, 0)
 
         def HEAD(self):
-            return self.getToken(EverphotoIDL.HEAD, 0)
+            return self.getToken(HTTPIDL.HEAD, 0)
 
         def TRACE(self):
-            return self.getToken(EverphotoIDL.TRACE, 0)
+            return self.getToken(HTTPIDL.TRACE, 0)
 
         def CONNECT(self):
-            return self.getToken(EverphotoIDL.CONNECT, 0)
+            return self.getToken(HTTPIDL.CONNECT, 0)
 
         def OPTIONS(self):
-            return self.getToken(EverphotoIDL.OPTIONS, 0)
+            return self.getToken(HTTPIDL.OPTIONS, 0)
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_method
+            return HTTPIDL.RULE_method
 
 
 
 
     def method(self):
 
-        localctx = EverphotoIDL.MethodContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.MethodContext(self, self._ctx, self.state)
         self.enterRule(localctx, 10, self.RULE_method)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 74
             _la = self._input.LA(1)
-            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << EverphotoIDL.GET) | (1 << EverphotoIDL.HEAD) | (1 << EverphotoIDL.TRACE) | (1 << EverphotoIDL.CONNECT) | (1 << EverphotoIDL.OPTIONS) | (1 << EverphotoIDL.POST) | (1 << EverphotoIDL.PUT) | (1 << EverphotoIDL.PATCH) | (1 << EverphotoIDL.DELETE))) != 0)):
+            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.GET) | (1 << HTTPIDL.HEAD) | (1 << HTTPIDL.TRACE) | (1 << HTTPIDL.CONNECT) | (1 << HTTPIDL.OPTIONS) | (1 << HTTPIDL.POST) | (1 << HTTPIDL.PUT) | (1 << HTTPIDL.PATCH) | (1 << HTTPIDL.DELETE))) != 0)):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -514,31 +514,31 @@ class EverphotoIDL ( Parser ):
     class UriContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.UriContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.UriContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def BACKSLASH(self, i=None):
             if i is None:
-                return self.getTokens(EverphotoIDL.BACKSLASH)
+                return self.getTokens(HTTPIDL.BACKSLASH)
             else:
-                return self.getToken(EverphotoIDL.BACKSLASH, i)
+                return self.getToken(HTTPIDL.BACKSLASH, i)
 
         def uriPathComponent(self, i=None):
             if i is None:
-                return self.getTypedRuleContexts(EverphotoIDL.UriPathComponentContext)
+                return self.getTypedRuleContexts(HTTPIDL.UriPathComponentContext)
             else:
-                return self.getTypedRuleContext(EverphotoIDL.UriPathComponentContext,i)
+                return self.getTypedRuleContext(HTTPIDL.UriPathComponentContext,i)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_uri
+            return HTTPIDL.RULE_uri
 
 
 
 
     def uri(self):
 
-        localctx = EverphotoIDL.UriContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.UriContext(self, self._ctx, self.state)
         self.enterRule(localctx, 12, self.RULE_uri)
         self._la = 0 # Token type
         try:
@@ -546,9 +546,9 @@ class EverphotoIDL ( Parser ):
             self.state = 80
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==EverphotoIDL.BACKSLASH:
+            while _la==HTTPIDL.BACKSLASH:
                 self.state = 76
-                self.match(EverphotoIDL.BACKSLASH)
+                self.match(HTTPIDL.BACKSLASH)
                 self.state = 77
                 self.uriPathComponent()
                 self.state = 82
@@ -566,37 +566,37 @@ class EverphotoIDL ( Parser ):
     class UriPathComponentContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.UriPathComponentContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.UriPathComponentContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def identifier(self):
-            return self.getTypedRuleContext(EverphotoIDL.IdentifierContext,0)
+            return self.getTypedRuleContext(HTTPIDL.IdentifierContext,0)
 
 
         def parameterInUri(self):
-            return self.getTypedRuleContext(EverphotoIDL.ParameterInUriContext,0)
+            return self.getTypedRuleContext(HTTPIDL.ParameterInUriContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_uriPathComponent
+            return HTTPIDL.RULE_uriPathComponent
 
 
 
 
     def uriPathComponent(self):
 
-        localctx = EverphotoIDL.UriPathComponentContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.UriPathComponentContext(self, self._ctx, self.state)
         self.enterRule(localctx, 14, self.RULE_uriPathComponent)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 85
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [EverphotoIDL.IDENT]:
+            if token in [HTTPIDL.IDENT]:
                 self.state = 83
                 self.identifier()
                 pass
-            elif token in [EverphotoIDL.DOLLAR]:
+            elif token in [HTTPIDL.DOLLAR]:
                 self.state = 84
                 self.parameterInUri()
                 pass
@@ -614,41 +614,41 @@ class EverphotoIDL ( Parser ):
     class StructBodyContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.StructBodyContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.StructBodyContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def LCURLY(self):
-            return self.getToken(EverphotoIDL.LCURLY, 0)
+            return self.getToken(HTTPIDL.LCURLY, 0)
 
         def RCURLY(self):
-            return self.getToken(EverphotoIDL.RCURLY, 0)
+            return self.getToken(HTTPIDL.RCURLY, 0)
 
         def parameterMap(self, i=None):
             if i is None:
-                return self.getTypedRuleContexts(EverphotoIDL.ParameterMapContext)
+                return self.getTypedRuleContexts(HTTPIDL.ParameterMapContext)
             else:
-                return self.getTypedRuleContext(EverphotoIDL.ParameterMapContext,i)
+                return self.getTypedRuleContext(HTTPIDL.ParameterMapContext,i)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_structBody
+            return HTTPIDL.RULE_structBody
 
 
 
 
     def structBody(self):
 
-        localctx = EverphotoIDL.StructBodyContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.StructBodyContext(self, self._ctx, self.state)
         self.enterRule(localctx, 16, self.RULE_structBody)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 87
-            self.match(EverphotoIDL.LCURLY)
+            self.match(HTTPIDL.LCURLY)
             self.state = 91
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << EverphotoIDL.INT32) | (1 << EverphotoIDL.INT64) | (1 << EverphotoIDL.BOOL) | (1 << EverphotoIDL.DOUBLE) | (1 << EverphotoIDL.STRING) | (1 << EverphotoIDL.FILE) | (1 << EverphotoIDL.BLOB) | (1 << EverphotoIDL.ARRAY) | (1 << EverphotoIDL.DICT) | (1 << EverphotoIDL.IDENT))) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.INT32) | (1 << HTTPIDL.INT64) | (1 << HTTPIDL.BOOL) | (1 << HTTPIDL.DOUBLE) | (1 << HTTPIDL.STRING) | (1 << HTTPIDL.FILE) | (1 << HTTPIDL.BLOB) | (1 << HTTPIDL.ARRAY) | (1 << HTTPIDL.DICT) | (1 << HTTPIDL.IDENT))) != 0):
                 self.state = 88
                 self.parameterMap()
                 self.state = 93
@@ -656,7 +656,7 @@ class EverphotoIDL ( Parser ):
                 _la = self._input.LA(1)
 
             self.state = 94
-            self.match(EverphotoIDL.RCURLY)
+            self.match(HTTPIDL.RCURLY)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -668,30 +668,30 @@ class EverphotoIDL ( Parser ):
     class ParameterInUriContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.ParameterInUriContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.ParameterInUriContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def DOLLAR(self):
-            return self.getToken(EverphotoIDL.DOLLAR, 0)
+            return self.getToken(HTTPIDL.DOLLAR, 0)
 
         def identifier(self):
-            return self.getTypedRuleContext(EverphotoIDL.IdentifierContext,0)
+            return self.getTypedRuleContext(HTTPIDL.IdentifierContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_parameterInUri
+            return HTTPIDL.RULE_parameterInUri
 
 
 
 
     def parameterInUri(self):
 
-        localctx = EverphotoIDL.ParameterInUriContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.ParameterInUriContext(self, self._ctx, self.state)
         self.enterRule(localctx, 18, self.RULE_parameterInUri)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 96
-            self.match(EverphotoIDL.DOLLAR)
+            self.match(HTTPIDL.DOLLAR)
             self.state = 97
             self.identifier()
         except RecognitionException as re:
@@ -705,36 +705,36 @@ class EverphotoIDL ( Parser ):
     class ParameterMapContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.ParameterMapContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.ParameterMapContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def paramType(self):
-            return self.getTypedRuleContext(EverphotoIDL.ParamTypeContext,0)
+            return self.getTypedRuleContext(HTTPIDL.ParamTypeContext,0)
 
 
         def key(self):
-            return self.getTypedRuleContext(EverphotoIDL.KeyContext,0)
+            return self.getTypedRuleContext(HTTPIDL.KeyContext,0)
 
 
         def SEMICOLON(self):
-            return self.getToken(EverphotoIDL.SEMICOLON, 0)
+            return self.getToken(HTTPIDL.SEMICOLON, 0)
 
         def ASSIGN(self):
-            return self.getToken(EverphotoIDL.ASSIGN, 0)
+            return self.getToken(HTTPIDL.ASSIGN, 0)
 
         def value(self):
-            return self.getTypedRuleContext(EverphotoIDL.ValueContext,0)
+            return self.getTypedRuleContext(HTTPIDL.ValueContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_parameterMap
+            return HTTPIDL.RULE_parameterMap
 
 
 
 
     def parameterMap(self):
 
-        localctx = EverphotoIDL.ParameterMapContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.ParameterMapContext(self, self._ctx, self.state)
         self.enterRule(localctx, 20, self.RULE_parameterMap)
         self._la = 0 # Token type
         try:
@@ -746,15 +746,15 @@ class EverphotoIDL ( Parser ):
             self.state = 103
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==EverphotoIDL.ASSIGN:
+            if _la==HTTPIDL.ASSIGN:
                 self.state = 101
-                self.match(EverphotoIDL.ASSIGN)
+                self.match(HTTPIDL.ASSIGN)
                 self.state = 102
                 self.value()
 
 
             self.state = 105
-            self.match(EverphotoIDL.SEMICOLON)
+            self.match(HTTPIDL.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -766,37 +766,37 @@ class EverphotoIDL ( Parser ):
     class ParamTypeContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.ParamTypeContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.ParamTypeContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def genericType(self):
-            return self.getTypedRuleContext(EverphotoIDL.GenericTypeContext,0)
+            return self.getTypedRuleContext(HTTPIDL.GenericTypeContext,0)
 
 
         def baseType(self):
-            return self.getTypedRuleContext(EverphotoIDL.BaseTypeContext,0)
+            return self.getTypedRuleContext(HTTPIDL.BaseTypeContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_paramType
+            return HTTPIDL.RULE_paramType
 
 
 
 
     def paramType(self):
 
-        localctx = EverphotoIDL.ParamTypeContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.ParamTypeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 22, self.RULE_paramType)
         try:
             self.state = 109
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [EverphotoIDL.ARRAY, EverphotoIDL.DICT]:
+            if token in [HTTPIDL.ARRAY, HTTPIDL.DICT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 107
                 self.genericType()
                 pass
-            elif token in [EverphotoIDL.INT32, EverphotoIDL.INT64, EverphotoIDL.BOOL, EverphotoIDL.DOUBLE, EverphotoIDL.STRING, EverphotoIDL.FILE, EverphotoIDL.BLOB, EverphotoIDL.IDENT]:
+            elif token in [HTTPIDL.INT32, HTTPIDL.INT64, HTTPIDL.BOOL, HTTPIDL.DOUBLE, HTTPIDL.STRING, HTTPIDL.FILE, HTTPIDL.BLOB, HTTPIDL.IDENT]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 108
                 self.baseType()
@@ -815,48 +815,48 @@ class EverphotoIDL ( Parser ):
     class GenericTypeContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.GenericTypeContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.GenericTypeContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def ARRAY(self):
-            return self.getToken(EverphotoIDL.ARRAY, 0)
+            return self.getToken(HTTPIDL.ARRAY, 0)
 
         def arrayGenericParam(self):
-            return self.getTypedRuleContext(EverphotoIDL.ArrayGenericParamContext,0)
+            return self.getTypedRuleContext(HTTPIDL.ArrayGenericParamContext,0)
 
 
         def DICT(self):
-            return self.getToken(EverphotoIDL.DICT, 0)
+            return self.getToken(HTTPIDL.DICT, 0)
 
         def dictGenericParam(self):
-            return self.getTypedRuleContext(EverphotoIDL.DictGenericParamContext,0)
+            return self.getTypedRuleContext(HTTPIDL.DictGenericParamContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_genericType
+            return HTTPIDL.RULE_genericType
 
 
 
 
     def genericType(self):
 
-        localctx = EverphotoIDL.GenericTypeContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.GenericTypeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 24, self.RULE_genericType)
         try:
             self.state = 115
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [EverphotoIDL.ARRAY]:
+            if token in [HTTPIDL.ARRAY]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 111
-                self.match(EverphotoIDL.ARRAY)
+                self.match(HTTPIDL.ARRAY)
                 self.state = 112
                 self.arrayGenericParam()
                 pass
-            elif token in [EverphotoIDL.DICT]:
+            elif token in [HTTPIDL.DICT]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 113
-                self.match(EverphotoIDL.DICT)
+                self.match(HTTPIDL.DICT)
                 self.state = 114
                 self.dictGenericParam()
                 pass
@@ -874,37 +874,37 @@ class EverphotoIDL ( Parser ):
     class ArrayGenericParamContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.ArrayGenericParamContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.ArrayGenericParamContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def LABRACKET(self):
-            return self.getToken(EverphotoIDL.LABRACKET, 0)
+            return self.getToken(HTTPIDL.LABRACKET, 0)
 
         def paramType(self):
-            return self.getTypedRuleContext(EverphotoIDL.ParamTypeContext,0)
+            return self.getTypedRuleContext(HTTPIDL.ParamTypeContext,0)
 
 
         def RABRACKET(self):
-            return self.getToken(EverphotoIDL.RABRACKET, 0)
+            return self.getToken(HTTPIDL.RABRACKET, 0)
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_arrayGenericParam
+            return HTTPIDL.RULE_arrayGenericParam
 
 
 
 
     def arrayGenericParam(self):
 
-        localctx = EverphotoIDL.ArrayGenericParamContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.ArrayGenericParamContext(self, self._ctx, self.state)
         self.enterRule(localctx, 26, self.RULE_arrayGenericParam)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 117
-            self.match(EverphotoIDL.LABRACKET)
+            self.match(HTTPIDL.LABRACKET)
             self.state = 118
             self.paramType()
             self.state = 119
-            self.match(EverphotoIDL.RABRACKET)
+            self.match(HTTPIDL.RABRACKET)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -916,48 +916,48 @@ class EverphotoIDL ( Parser ):
     class DictGenericParamContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.DictGenericParamContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.DictGenericParamContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def LABRACKET(self):
-            return self.getToken(EverphotoIDL.LABRACKET, 0)
+            return self.getToken(HTTPIDL.LABRACKET, 0)
 
         def baseType(self):
-            return self.getTypedRuleContext(EverphotoIDL.BaseTypeContext,0)
+            return self.getTypedRuleContext(HTTPIDL.BaseTypeContext,0)
 
 
         def COMMA(self):
-            return self.getToken(EverphotoIDL.COMMA, 0)
+            return self.getToken(HTTPIDL.COMMA, 0)
 
         def paramType(self):
-            return self.getTypedRuleContext(EverphotoIDL.ParamTypeContext,0)
+            return self.getTypedRuleContext(HTTPIDL.ParamTypeContext,0)
 
 
         def RABRACKET(self):
-            return self.getToken(EverphotoIDL.RABRACKET, 0)
+            return self.getToken(HTTPIDL.RABRACKET, 0)
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_dictGenericParam
+            return HTTPIDL.RULE_dictGenericParam
 
 
 
 
     def dictGenericParam(self):
 
-        localctx = EverphotoIDL.DictGenericParamContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.DictGenericParamContext(self, self._ctx, self.state)
         self.enterRule(localctx, 28, self.RULE_dictGenericParam)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 121
-            self.match(EverphotoIDL.LABRACKET)
+            self.match(HTTPIDL.LABRACKET)
             self.state = 122
             self.baseType()
             self.state = 123
-            self.match(EverphotoIDL.COMMA)
+            self.match(HTTPIDL.COMMA)
             self.state = 124
             self.paramType()
             self.state = 125
-            self.match(EverphotoIDL.RABRACKET)
+            self.match(HTTPIDL.RABRACKET)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -969,84 +969,84 @@ class EverphotoIDL ( Parser ):
     class BaseTypeContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.BaseTypeContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.BaseTypeContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def INT32(self):
-            return self.getToken(EverphotoIDL.INT32, 0)
+            return self.getToken(HTTPIDL.INT32, 0)
 
         def INT64(self):
-            return self.getToken(EverphotoIDL.INT64, 0)
+            return self.getToken(HTTPIDL.INT64, 0)
 
         def BOOL(self):
-            return self.getToken(EverphotoIDL.BOOL, 0)
+            return self.getToken(HTTPIDL.BOOL, 0)
 
         def DOUBLE(self):
-            return self.getToken(EverphotoIDL.DOUBLE, 0)
+            return self.getToken(HTTPIDL.DOUBLE, 0)
 
         def STRING(self):
-            return self.getToken(EverphotoIDL.STRING, 0)
+            return self.getToken(HTTPIDL.STRING, 0)
 
         def FILE(self):
-            return self.getToken(EverphotoIDL.FILE, 0)
+            return self.getToken(HTTPIDL.FILE, 0)
 
         def BLOB(self):
-            return self.getToken(EverphotoIDL.BLOB, 0)
+            return self.getToken(HTTPIDL.BLOB, 0)
 
         def structName(self):
-            return self.getTypedRuleContext(EverphotoIDL.StructNameContext,0)
+            return self.getTypedRuleContext(HTTPIDL.StructNameContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_baseType
+            return HTTPIDL.RULE_baseType
 
 
 
 
     def baseType(self):
 
-        localctx = EverphotoIDL.BaseTypeContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.BaseTypeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 30, self.RULE_baseType)
         try:
             self.state = 135
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [EverphotoIDL.INT32]:
+            if token in [HTTPIDL.INT32]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 127
-                self.match(EverphotoIDL.INT32)
+                self.match(HTTPIDL.INT32)
                 pass
-            elif token in [EverphotoIDL.INT64]:
+            elif token in [HTTPIDL.INT64]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 128
-                self.match(EverphotoIDL.INT64)
+                self.match(HTTPIDL.INT64)
                 pass
-            elif token in [EverphotoIDL.BOOL]:
+            elif token in [HTTPIDL.BOOL]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 129
-                self.match(EverphotoIDL.BOOL)
+                self.match(HTTPIDL.BOOL)
                 pass
-            elif token in [EverphotoIDL.DOUBLE]:
+            elif token in [HTTPIDL.DOUBLE]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 130
-                self.match(EverphotoIDL.DOUBLE)
+                self.match(HTTPIDL.DOUBLE)
                 pass
-            elif token in [EverphotoIDL.STRING]:
+            elif token in [HTTPIDL.STRING]:
                 self.enterOuterAlt(localctx, 5)
                 self.state = 131
-                self.match(EverphotoIDL.STRING)
+                self.match(HTTPIDL.STRING)
                 pass
-            elif token in [EverphotoIDL.FILE]:
+            elif token in [HTTPIDL.FILE]:
                 self.enterOuterAlt(localctx, 6)
                 self.state = 132
-                self.match(EverphotoIDL.FILE)
+                self.match(HTTPIDL.FILE)
                 pass
-            elif token in [EverphotoIDL.BLOB]:
+            elif token in [HTTPIDL.BLOB]:
                 self.enterOuterAlt(localctx, 7)
                 self.state = 133
-                self.match(EverphotoIDL.BLOB)
+                self.match(HTTPIDL.BLOB)
                 pass
-            elif token in [EverphotoIDL.IDENT]:
+            elif token in [HTTPIDL.IDENT]:
                 self.enterOuterAlt(localctx, 8)
                 self.state = 134
                 self.structName()
@@ -1065,22 +1065,22 @@ class EverphotoIDL ( Parser ):
     class KeyContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.KeyContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.KeyContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def identifier(self):
-            return self.getTypedRuleContext(EverphotoIDL.IdentifierContext,0)
+            return self.getTypedRuleContext(HTTPIDL.IdentifierContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_key
+            return HTTPIDL.RULE_key
 
 
 
 
     def key(self):
 
-        localctx = EverphotoIDL.KeyContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.KeyContext(self, self._ctx, self.state)
         self.enterRule(localctx, 32, self.RULE_key)
         try:
             self.enterOuterAlt(localctx, 1)
@@ -1097,22 +1097,22 @@ class EverphotoIDL ( Parser ):
     class ValueContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.ValueContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.ValueContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def identifier(self):
-            return self.getTypedRuleContext(EverphotoIDL.IdentifierContext,0)
+            return self.getTypedRuleContext(HTTPIDL.IdentifierContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_value
+            return HTTPIDL.RULE_value
 
 
 
 
     def value(self):
 
-        localctx = EverphotoIDL.ValueContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.ValueContext(self, self._ctx, self.state)
         self.enterRule(localctx, 34, self.RULE_value)
         try:
             self.enterOuterAlt(localctx, 1)
@@ -1129,22 +1129,22 @@ class EverphotoIDL ( Parser ):
     class StructNameContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.StructNameContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.StructNameContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def identifier(self):
-            return self.getTypedRuleContext(EverphotoIDL.IdentifierContext,0)
+            return self.getTypedRuleContext(HTTPIDL.IdentifierContext,0)
 
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_structName
+            return HTTPIDL.RULE_structName
 
 
 
 
     def structName(self):
 
-        localctx = EverphotoIDL.StructNameContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.StructNameContext(self, self._ctx, self.state)
         self.enterRule(localctx, 36, self.RULE_structName)
         try:
             self.enterOuterAlt(localctx, 1)
@@ -1161,26 +1161,26 @@ class EverphotoIDL ( Parser ):
     class IdentifierContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(EverphotoIDL.IdentifierContext, self).__init__(parent, invokingState)
+            super(HTTPIDL.IdentifierContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def IDENT(self):
-            return self.getToken(EverphotoIDL.IDENT, 0)
+            return self.getToken(HTTPIDL.IDENT, 0)
 
         def getRuleIndex(self):
-            return EverphotoIDL.RULE_identifier
+            return HTTPIDL.RULE_identifier
 
 
 
 
     def identifier(self):
 
-        localctx = EverphotoIDL.IdentifierContext(self, self._ctx, self.state)
+        localctx = HTTPIDL.IdentifierContext(self, self._ctx, self.state)
         self.enterRule(localctx, 38, self.RULE_identifier)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 143
-            self.match(EverphotoIDL.IDENT)
+            self.match(HTTPIDL.IDENT)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)

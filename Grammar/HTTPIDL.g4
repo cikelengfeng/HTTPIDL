@@ -1,7 +1,7 @@
-parser grammar EverphotoIDL;
+parser grammar HTTPIDL;
 
 options {
-    tokenVocab = EverphotoIDLLexer;
+    tokenVocab = HTTPIDLLexer;
 }
 
 entry
