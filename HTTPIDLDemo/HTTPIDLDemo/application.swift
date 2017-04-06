@@ -3,7 +3,6 @@
 import Foundation
 import HTTPIDL
 
-
 struct OnlineStickerTemplate: ResponseContentConvertible {
     
     let url: String?
@@ -184,9 +183,7 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
-        get {
-            return "/test/urlencoded/query/encoder"
-        }
+        return "/test/urlencoded/query/encoder"
     }
     var t1: Int64?
     var t2: Int32?
@@ -246,9 +243,7 @@ class PostTestUrlencodedFormEncoderRequest: Request {
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
-        get {
-            return "/test/urlencoded/form/encoder"
-        }
+        return "/test/urlencoded/form/encoder"
     }
     var t1: Int64?
     var t2: Int32?
@@ -308,9 +303,7 @@ class PostTestMultipartEncoderRequest: Request {
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
-        get {
-            return "/test/multipart/encoder"
-        }
+        return "/test/multipart/encoder"
     }
     var number: Int64?
     var bool: Bool?
@@ -374,9 +367,7 @@ class PostTestJsonEncoderRequest: Request {
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
-        get {
-            return "/test/json/encoder"
-        }
+        return "/test/json/encoder"
     }
     var t1: Int64?
     var t2: Int32?
@@ -442,9 +433,7 @@ class GetStickerMediaIdRequest: Request {
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
-        get {
-            return "/sticker/\(mediaId)"
-        }
+        return "/sticker/\(mediaId)"
     }
     var defaultMap: String?
     init(mediaId: String) {
@@ -506,11 +495,9 @@ class GetUnderLineRequest: Request {
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
-        get {
-            return "/under_line"
-        }
+        return "/under_line"
     }
-    var content: RequestContent? = nil
+    var content: RequestContent?
     
     @discardableResult
     func send(completion: @escaping (GetUnderLineResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUnderLineResponse> {
@@ -543,9 +530,7 @@ class GetTestNestedMessageRequest: Request {
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
-        get {
-            return "/test/nested/message"
-        }
+        return "/test/nested/message"
     }
     var a1: [String]?
     var d1: [String: String]?
@@ -789,9 +774,7 @@ class GetGetRequest: Request {
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
-        get {
-            return "/get"
-        }
+        return "/get"
     }
     var int64: Int64?
     var int32: Int32?

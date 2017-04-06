@@ -105,7 +105,7 @@ class Swift3CodeGenerator:
         httpidl_content_type = 'RequestContent'
         parameter_maps = request_context.structBody().parameterMap()
         if len(parameter_maps) == 0:
-            self.write_line('var content: %s? = nil' % httpidl_content_type)
+            self.write_line('var content: %s?' % httpidl_content_type)
             return
 
         self.write_line('var content: %s? {' % httpidl_content_type)
@@ -200,11 +200,7 @@ class Swift3CodeGenerator:
         self.write_line('var client: Client = BaseClient.shared')
         self.write_line('var uri: String {')
         self.push_indent()
-        self.write_line('get {')
-        self.push_indent()
         self.write_line('return ' + self.request_uri_from_uri(uri_context))
-        self.pop_indent()
-        self.write_line('}')
         self.pop_indent()
         self.write_line('}')
 
@@ -428,7 +424,6 @@ class Swift3CodeGenerator:
         self.write_blank_lines(1)
         self.write_line('import Foundation')
         self.write_line('import HTTPIDL')
-        self.write_blank_lines(1)
         structs = entry_context.struct()
         for struct in structs:
             self.generate_struct(struct)
