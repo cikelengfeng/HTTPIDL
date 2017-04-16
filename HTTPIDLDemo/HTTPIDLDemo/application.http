@@ -133,4 +133,15 @@ STRING string;
 ARRAY<STRING> array;
 }
 
+MESSAGE /post {
+
+POST REQUEST {
+FILE data;
+}
+
+POST RESPONSE {
+}
+}
+
+
 

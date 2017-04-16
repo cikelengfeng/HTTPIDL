@@ -33,7 +33,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        BaseConfiguration.shared.baseURLString = "https://httpbin.org/"
+        BaseConfiguration.shared.baseURLString = "http://httpbin.org/"
 //        BaseClient.shared.add(responseObserver: TestObserver())
         
 //        let request = PostTestMultipartEncoderRequest()
@@ -83,6 +83,21 @@ class ViewController: UIViewController {
 //        }) { (error) in
 //            print("GetGetRequest error: ", error)
 //        }
+        
+        let req = PostPostRequest()
+        req.configuration.encoderStrategy = { _ in
+            return HTTPMultipartRequestEncoder.shared
+        }
+        let url = Bundle.main.url(forResource: "China", withExtension: "png")!
+        req.data = HTTPFile(with: url, fileName: "test_file", mimeType: "image/png")
+        let future = req.send(rawResponseHandler: { (response) in
+            print("resp: ", response)
+        }) { (error) in
+            print("fuck: ", error)
+        }
+        future.progressHandler = { p in
+            print("progress: ", p.fractionCompleted)
+        }
     }
 
     override func didReceiveMemoryWarning() {

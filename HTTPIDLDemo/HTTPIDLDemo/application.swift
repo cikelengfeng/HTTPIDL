@@ -836,3 +836,45 @@ struct GetGetResponse: Response {
         self.args = HTTPBinGetArgs(content: value["args"])
     }
 }
+
+class PostPostRequest: Request {
+    
+    var method: String = "POST"
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        return "/post"
+    }
+    var data: HTTPFile?
+    var content: RequestContent? {
+        var result = [String:RequestContent]()
+        if let tmp = data {
+            result["data"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
+    
+    @discardableResult
+    func send(completion: @escaping (PostPostResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostPostResponse> {
+        let future: RequestFuture<PostPostResponse> = client.send(self)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
+    }
+    
+    @discardableResult
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+        let future = client.send(self)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
+    }
+}
+
+struct PostPostResponse: Response {
+    
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+    }
+}

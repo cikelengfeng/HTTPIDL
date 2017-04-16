@@ -27,27 +27,103 @@ public enum NSClientError: HIError {
     }
 }
 
-class NSRequestFuture: HTTPRequestFuture {
+class NSRequestFuture: NSObject, HTTPRequestFuture {
     let request: HTTPRequest
-    var task: URLSessionDataTask?
+    let queue: DispatchQueue
+    var task: URLSessionDataTask? {
+        set {
+            _task = newValue
+        }
+        get { return _task }
+    }
     var progressHandler: ((Progress) -> Void)?
     var responseHandler: ((HTTPResponse) -> Void)?
     var errorHandler: ((HIError) -> Void)?
+    let overallProgress: Progress
+    let sendProgress: Progress
+    let receiveProgress: Progress
+    
+    
+    private var _task: URLSessionDataTask? {
+        willSet {
+            _task?.removeObserver(self, forKeyPath: "countOfBytesReceived")
+            _task?.removeObserver(self, forKeyPath: "countOfBytesSent")
+            _task?.removeObserver(self, forKeyPath: "countOfBytesExpectedToReceive")
+            _task?.removeObserver(self, forKeyPath: "countOfBytesExpectedToSend")
+        }
+        didSet {
+            guard let t = _task else {
+                return
+            }
+            t.addObserver(self, forKeyPath: "countOfBytesReceived", options: .new, context: nil)
+            t.addObserver(self, forKeyPath: "countOfBytesSent", options: .new, context: nil)
+            t.addObserver(self, forKeyPath: "countOfBytesExpectedToReceive", options: .new, context: nil)
+            t.addObserver(self, forKeyPath: "countOfBytesExpectedToSend", options: .new, context: nil)
+        }
+    }
+    
+    deinit {
+        _task?.removeObserver(self, forKeyPath: "countOfBytesReceived")
+        _task?.removeObserver(self, forKeyPath: "countOfBytesSent")
+        _task?.removeObserver(self, forKeyPath: "countOfBytesExpectedToReceive")
+        _task?.removeObserver(self, forKeyPath: "countOfBytesExpectedToSend")
+    }
+    
+    init(request: HTTPRequest, queue: DispatchQueue) {
+        self.request = request
+        self.queue = queue
+        overallProgress = Progress(totalUnitCount: 2)
+        overallProgress.becomeCurrent(withPendingUnitCount: overallProgress.totalUnitCount / 2)
+        sendProgress = Progress(totalUnitCount: Int64.max)
+        overallProgress.resignCurrent()
+        overallProgress.becomeCurrent(withPendingUnitCount: overallProgress.totalUnitCount / 2)
+        receiveProgress = Progress(totalUnitCount: Int64.max)
+        overallProgress.resignCurrent()
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard let task = self.task, let keyPath = keyPath else {
+            return
+        }
+        
+        if keyPath == "countOfBytesExpectedToReceive" {
+            receiveProgress.totalUnitCount = task.countOfBytesExpectedToReceive
+        }
+        if keyPath == "countOfBytesReceived" {
+            receiveProgress.completedUnitCount = task.countOfBytesReceived
+        }
+        if keyPath == "countOfBytesExpectedToSend" {
+            sendProgress.totalUnitCount = task.countOfBytesExpectedToSend
+        }
+        if keyPath == "countOfBytesSent" {
+            sendProgress.completedUnitCount = task.countOfBytesSent
+        }
+        
+        notify(progress: overallProgress)
+    }
+    
+    private func resetProgress() {
+        self.overallProgress.completedUnitCount = 0
+        self.sendProgress.completedUnitCount = 0
+        self.receiveProgress.completedUnitCount = 0
+    }
     
     func notify(progress: Progress) {
-        progressHandler?(progress)
+        queue.async {
+            self.progressHandler?(progress)
+        }
     }
     
     func notify(response: HTTPResponse) {
-        responseHandler?(response)
+        queue.async {
+            self.responseHandler?(response)
+        }
     }
     
     func notify(error: HIError) {
-        errorHandler?(error)
-    }
-    
-    init(request: HTTPRequest) {
-        self.request = request
+        queue.async {
+            self.errorHandler?(error)
+        }
     }
     
     func cancel() {
@@ -60,35 +136,28 @@ class NSClient: HTTPClient {
     let queue = DispatchQueue(label: "org.httpidl.nsclient.default-callback")
     
     func send(_ request: HTTPRequest) -> HTTPRequestFuture {
-        let future = NSRequestFuture(request: request)
+        let future = NSRequestFuture(request: request, queue: queue)
         do {
             let dataRequest: URLRequest = try adapt(request)
             let configuration = URLSessionConfiguration.default
             let session = URLSession(configuration: configuration)
             let task = session.dataTask(with: dataRequest, completionHandler: { (data, response, error) in
                 if let err = error {
-                    self.queue.async {
-                        future.notify(error: NSClientError.adaptURLResponseFailed(rawError: err))
-                    }
+                    future.notify(error: NSClientError.adaptURLResponseFailed(rawError: err))
                     return
                 }
                 guard let resp = response as? HTTPURLResponse else {
-                    self.queue.async {
-                        future.notify(error: NSClientError.missingResponse(request: request))
-                    }
+                    future.notify(error: NSClientError.missingResponse(request: request))
                     return
                 }
                 let result = self.adapt(data: data, response: resp, request: request)
-                self.queue.async {
-                    future.notify(response: result)
-                }
+                future.notify(response: result)
             })
+            
             future.task = task
             task.resume()
         } catch let err {
-            self.queue.async {
-                future.notify(error: NSClientError.adaptURLRequestFailed(rawError: err))
-            }
+            future.notify(error: NSClientError.adaptURLRequestFailed(rawError: err))
         }
         return future
     }
@@ -104,7 +173,7 @@ class NSClient: HTTPClient {
     }
     
     func adapt(data: Data?, response: HTTPURLResponse, request: HTTPRequest) -> HTTPResponse {
-        return HTTPBaseResponse(with: response.statusCode, headers: (response.allHeaderFields as? [String: String]) ?? [:], body: nil, request: request)
+        return HTTPBaseResponse(with: response.statusCode, headers: (response.allHeaderFields as? [String: String]) ?? [:], body: data, request: request)
     }
 }
 

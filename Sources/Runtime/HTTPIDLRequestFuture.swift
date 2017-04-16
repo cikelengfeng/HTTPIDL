@@ -14,7 +14,7 @@ public class RequestFuture<Response> {
         futureImpl?.cancel()
     }
     
-    internal var futureImpl: HTTPRequestFuture?
+    internal weak var futureImpl: HTTPRequestFuture?
     public let request: Request
     public var progressHandler: ((_ progress: Progress) -> Void)?
     public var responseHandler: ((_ response: Response) -> Void)? = nil

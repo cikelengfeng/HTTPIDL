@@ -22,7 +22,7 @@ public enum BaseClientError: HIError {
 public class BaseClient: Client {
     
     public static let shared = BaseClient()
-    private var clientImpl: HTTPClient = AlamofireClient()
+    public var clientImpl: HTTPClient = NSClient()
     private var requestObservers: [HTTPRequestObserver] = []
     private var responseObservers: [HTTPResponseObserver] = []
     private var requestRewriters: [HTTPRequestRewriter] = []
@@ -279,10 +279,22 @@ public class BaseClient: Client {
             }
             let futureImpl = clientImpl.send(encodedRequest)
             future.futureImpl = futureImpl
-            futureImpl.responseHandler = { (resp) in
+            futureImpl.progressHandler = { [weak future] p in
+                guard let handler = future?.progressHandler else {
+                    return
+                }
+                handler(p)
+            }
+            futureImpl.responseHandler = { [weak future] (resp) in
+                guard let future = future else {
+                    return
+                }
                 self.handle(response: resp, responseDecoder: responseDecoder, future: future)
             }
-            futureImpl.errorHandler = { (error) in
+            futureImpl.errorHandler = { [weak future] (error) in
+                guard let future = future else {
+                    return
+                }
                 self.handle(error: error, future: future)
             }
             self.didSend(request: request)
@@ -320,6 +332,12 @@ public class BaseClient: Client {
             }
             let futureImpl = clientImpl.send(encodedRequest)
             future.futureImpl = futureImpl
+            futureImpl.progressHandler = { p in
+                guard let handler = future.progressHandler else {
+                    return
+                }
+                handler(p)
+            }
             futureImpl.responseHandler = { (resp) in
                 self.handle(response: resp, future: future)
             }
