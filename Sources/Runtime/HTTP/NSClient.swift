@@ -86,17 +86,16 @@ class NSRequestFuture: NSObject, HTTPRequestFuture {
             return
         }
         
-        if keyPath == "countOfBytesExpectedToReceive" {
+        switch keyPath {
+        case "countOfBytesExpectedToReceive" :
             receiveProgress.totalUnitCount = task.countOfBytesExpectedToReceive
-        }
-        if keyPath == "countOfBytesReceived" {
+        case "countOfBytesReceived" :
             receiveProgress.completedUnitCount = task.countOfBytesReceived
-        }
-        if keyPath == "countOfBytesExpectedToSend" {
+        case "countOfBytesExpectedToSend" :
             sendProgress.totalUnitCount = task.countOfBytesExpectedToSend
-        }
-        if keyPath == "countOfBytesSent" {
+        case "countOfBytesSent" :
             sendProgress.completedUnitCount = task.countOfBytesSent
+        default: break
         }
         
         notify(progress: overallProgress)
