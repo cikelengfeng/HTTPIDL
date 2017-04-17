@@ -21,20 +21,29 @@ public class RequestFuture<Response> {
     public var errorHandler: ((_ error: HIError) -> Void)?
     
     internal func notify(progress: Progress) {
+        guard let handler = self.progressHandler else {
+            return
+        }
         request.configuration.callbackQueue.async {
-            self.progressHandler?(progress)
+            handler(progress)
         }
     }
     
     internal func notify(response: Response) {
+        guard let handler = self.responseHandler else {
+            return
+        }
         request.configuration.callbackQueue.async {
-            self.responseHandler?(response)
+            handler(response)
         }
     }
     
     internal func notify(error: HIError) {
+        guard let handler = self.errorHandler else {
+            return
+        }
         request.configuration.callbackQueue.async {
-            self.errorHandler?(error)
+            handler(error)
         }
     }
     
