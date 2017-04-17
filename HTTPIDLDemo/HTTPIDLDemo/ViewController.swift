@@ -5,7 +5,6 @@
 //  Created by 徐 东 on 2016/11/29//  Copyright © 2016年 dx lab. All rights reserved//
 
 import UIKit
-import Alamofire
 import HTTPIDL
 
 
@@ -88,7 +87,7 @@ class ViewController: UIViewController {
         req.configuration.encoderStrategy = { _ in
             return HTTPMultipartRequestEncoder.shared
         }
-        let url = Bundle.main.url(forResource: "China", withExtension: "png")!
+        let url = Bundle.main.url(forResource: "test", withExtension: "JPG")!
         req.data = HTTPFile(with: url, fileName: "test_file", mimeType: "image/png")
         let future = req.send(rawResponseHandler: { (response) in
             print("resp: ", response)

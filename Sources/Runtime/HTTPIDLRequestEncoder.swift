@@ -5,7 +5,6 @@
 //  Created by 徐 东 on 2016/12/30//
 
 import Foundation
-import Alamofire
 import Gzip
 
 public enum HTTPBaseRequestEncoderError: HIError {
