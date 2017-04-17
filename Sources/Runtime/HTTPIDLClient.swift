@@ -279,22 +279,16 @@ public class BaseClient: Client {
             }
             let futureImpl = clientImpl.send(encodedRequest)
             future.futureImpl = futureImpl
-            futureImpl.progressHandler = { [weak future] p in
-                guard let handler = future?.progressHandler else {
+            futureImpl.progressHandler = { p in
+                guard let handler = future.progressHandler else {
                     return
                 }
                 handler(p)
             }
-            futureImpl.responseHandler = { [weak future] (resp) in
-                guard let future = future else {
-                    return
-                }
+            futureImpl.responseHandler = { (resp) in
                 self.handle(response: resp, responseDecoder: responseDecoder, future: future)
             }
-            futureImpl.errorHandler = { [weak future] (error) in
-                guard let future = future else {
-                    return
-                }
+            futureImpl.errorHandler = { (error) in
                 self.handle(error: error, future: future)
             }
             self.didSend(request: request)
