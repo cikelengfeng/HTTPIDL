@@ -27,6 +27,18 @@ extension Int64: RequestContentConvertible {
     }
 }
 
+extension UInt64: RequestContentKeyType {
+    public func asHTTPParamterKey() -> String {
+        return String(self)
+    }
+}
+
+extension UInt64: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        return .number(value: NSNumber(value: self))
+    }
+}
+
 extension Int32: RequestContentKeyType {
     public func asHTTPParamterKey() -> String {
         return String(self)
@@ -34,6 +46,18 @@ extension Int32: RequestContentKeyType {
 }
 
 extension Int32: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        return .number(value: NSNumber(value: self))
+    }
+}
+
+extension UInt32: RequestContentKeyType {
+    public func asHTTPParamterKey() -> String {
+        return String(self)
+    }
+}
+
+extension UInt32: RequestContentConvertible {
     public func asRequestContent() -> RequestContent {
         return .number(value: NSNumber(value: self))
     }

@@ -878,3 +878,58 @@ struct PostPostResponse: Response {
         self.rawResponse = rawResponse
     }
 }
+
+class GetUnginedTestRequest: Request {
+    
+    var method: String = "GET"
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        return "/ungined/test"
+    }
+    var uint32: UInt32?
+    var uint64: UInt64?
+    var content: RequestContent? {
+        var result = [String:RequestContent]()
+        if let tmp = uint32 {
+            result["uint32"] = tmp.asRequestContent()
+        }
+        if let tmp = uint64 {
+            result["uint64"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
+    
+    @discardableResult
+    func send(completion: @escaping (GetUnginedTestResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUnginedTestResponse> {
+        let future: RequestFuture<GetUnginedTestResponse> = client.send(self)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
+    }
+    
+    @discardableResult
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+        let future = client.send(self)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
+    }
+}
+
+struct GetUnginedTestResponse: Response {
+    
+    let uint32: UInt32?
+    let uint64: UInt64?
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+        guard let content = content, case .dictionary(let value) = content else {
+            self.uint32 = nil
+            self.uint64 = nil
+            return
+        }
+        self.uint32 = UInt32(content: value["uint32"])
+        self.uint64 = UInt64(content: value["uint64"])
+    }
+}

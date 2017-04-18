@@ -143,5 +143,17 @@ POST RESPONSE {
 }
 }
 
+MESSAGE /ungined/test {
+GET REQUEST {
+UINT32 uint32;
+UINT64 uint64;
+}
+
+GET RESPONSE {
+UINT32 uint32;
+UINT64 uint64;
+}
+}
+
 
 

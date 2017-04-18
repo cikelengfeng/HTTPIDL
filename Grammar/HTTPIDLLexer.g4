@@ -88,8 +88,16 @@ INT32
     : 'INT32'
     ;
 
+UINT32
+    : 'UINT32'
+    ;
+
 INT64
     : 'INT64'
+    ;
+
+UINT64
+    : 'UINT64'
     ;
 
 BOOL

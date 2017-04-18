@@ -94,7 +94,9 @@ dictGenericParam
 
 baseType
     : INT32
+    | UINT32
     | INT64
+    | UINT64
     | BOOL
     | DOUBLE
     | STRING

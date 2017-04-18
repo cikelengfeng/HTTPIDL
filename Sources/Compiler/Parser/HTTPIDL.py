@@ -7,10 +7,10 @@ from io import StringIO
 def serializedATN():
     with StringIO() as buf:
         buf.write(u"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3")
-        buf.write(u"%\u0094\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t")
-        buf.write(u"\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r")
-        buf.write(u"\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4")
-        buf.write(u"\23\t\23\4\24\t\24\4\25\t\25\3\2\3\2\7\2-\n\2\f\2\16")
+        buf.write(u"\'\u0096\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7")
+        buf.write(u"\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t")
+        buf.write(u"\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22")
+        buf.write(u"\4\23\t\23\4\24\t\24\4\25\t\25\3\2\3\2\7\2-\n\2\f\2\16")
         buf.write(u"\2\60\13\2\3\2\5\2\63\n\2\3\3\3\3\3\3\3\3\3\3\7\3:\n")
         buf.write(u"\3\f\3\16\3=\13\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\5")
         buf.write(u"\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\b\3\b\7\bQ\n\b\f\b\16")
@@ -18,45 +18,46 @@ def serializedATN():
         buf.write(u"_\13\n\3\n\3\n\3\13\3\13\3\13\3\f\3\f\3\f\3\f\5\fj\n")
         buf.write(u"\f\3\f\3\f\3\r\3\r\5\rp\n\r\3\16\3\16\3\16\3\16\5\16")
         buf.write(u"v\n\16\3\17\3\17\3\17\3\17\3\20\3\20\3\20\3\20\3\20\3")
-        buf.write(u"\20\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u008a")
-        buf.write(u"\n\21\3\22\3\22\3\23\3\23\3\24\3\24\3\25\3\25\3\25\2")
-        buf.write(u"\2\26\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(\2")
-        buf.write(u"\3\3\2\5\r\u0091\2\62\3\2\2\2\4\64\3\2\2\2\6@\3\2\2\2")
-        buf.write(u"\bD\3\2\2\2\nH\3\2\2\2\fL\3\2\2\2\16R\3\2\2\2\20W\3\2")
-        buf.write(u"\2\2\22Y\3\2\2\2\24b\3\2\2\2\26e\3\2\2\2\30o\3\2\2\2")
-        buf.write(u"\32u\3\2\2\2\34w\3\2\2\2\36{\3\2\2\2 \u0089\3\2\2\2\"")
-        buf.write(u"\u008b\3\2\2\2$\u008d\3\2\2\2&\u008f\3\2\2\2(\u0091\3")
-        buf.write(u"\2\2\2*-\5\4\3\2+-\5\6\4\2,*\3\2\2\2,+\3\2\2\2-\60\3")
-        buf.write(u"\2\2\2.,\3\2\2\2./\3\2\2\2/\63\3\2\2\2\60.\3\2\2\2\61")
-        buf.write(u"\63\7\2\2\3\62.\3\2\2\2\62\61\3\2\2\2\63\3\3\2\2\2\64")
-        buf.write(u"\65\7\3\2\2\65\66\5\16\b\2\66;\7\21\2\2\67:\5\b\5\28")
-        buf.write(u":\5\n\6\29\67\3\2\2\298\3\2\2\2:=\3\2\2\2;9\3\2\2\2;")
-        buf.write(u"<\3\2\2\2<>\3\2\2\2=;\3\2\2\2>?\7\22\2\2?\5\3\2\2\2@")
-        buf.write(u"A\7\4\2\2AB\5&\24\2BC\5\22\n\2C\7\3\2\2\2DE\5\f\7\2E")
-        buf.write(u"F\7\16\2\2FG\5\22\n\2G\t\3\2\2\2HI\5\f\7\2IJ\7\17\2\2")
-        buf.write(u"JK\5\22\n\2K\13\3\2\2\2LM\t\2\2\2M\r\3\2\2\2NO\7\20\2")
-        buf.write(u"\2OQ\5\20\t\2PN\3\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2\2\2")
-        buf.write(u"S\17\3\2\2\2TR\3\2\2\2UX\5(\25\2VX\5\24\13\2WU\3\2\2")
-        buf.write(u"\2WV\3\2\2\2X\21\3\2\2\2Y]\7\21\2\2Z\\\5\26\f\2[Z\3\2")
-        buf.write(u"\2\2\\_\3\2\2\2][\3\2\2\2]^\3\2\2\2^`\3\2\2\2_]\3\2\2")
-        buf.write(u"\2`a\7\22\2\2a\23\3\2\2\2bc\7\23\2\2cd\5(\25\2d\25\3")
-        buf.write(u"\2\2\2ef\5\30\r\2fi\5\"\22\2gh\7\27\2\2hj\5$\23\2ig\3")
-        buf.write(u"\2\2\2ij\3\2\2\2jk\3\2\2\2kl\7!\2\2l\27\3\2\2\2mp\5\32")
-        buf.write(u"\16\2np\5 \21\2om\3\2\2\2on\3\2\2\2p\31\3\2\2\2qr\7\37")
-        buf.write(u"\2\2rv\5\34\17\2st\7 \2\2tv\5\36\20\2uq\3\2\2\2us\3\2")
-        buf.write(u"\2\2v\33\3\2\2\2wx\7\24\2\2xy\5\30\r\2yz\7\25\2\2z\35")
-        buf.write(u"\3\2\2\2{|\7\24\2\2|}\5 \21\2}~\7\26\2\2~\177\5\30\r")
-        buf.write(u"\2\177\u0080\7\25\2\2\u0080\37\3\2\2\2\u0081\u008a\7")
-        buf.write(u"\30\2\2\u0082\u008a\7\31\2\2\u0083\u008a\7\32\2\2\u0084")
-        buf.write(u"\u008a\7\33\2\2\u0085\u008a\7\34\2\2\u0086\u008a\7\35")
-        buf.write(u"\2\2\u0087\u008a\7\36\2\2\u0088\u008a\5&\24\2\u0089\u0081")
-        buf.write(u"\3\2\2\2\u0089\u0082\3\2\2\2\u0089\u0083\3\2\2\2\u0089")
-        buf.write(u"\u0084\3\2\2\2\u0089\u0085\3\2\2\2\u0089\u0086\3\2\2")
-        buf.write(u"\2\u0089\u0087\3\2\2\2\u0089\u0088\3\2\2\2\u008a!\3\2")
-        buf.write(u"\2\2\u008b\u008c\5(\25\2\u008c#\3\2\2\2\u008d\u008e\5")
-        buf.write(u"(\25\2\u008e%\3\2\2\2\u008f\u0090\5(\25\2\u0090\'\3\2")
-        buf.write(u"\2\2\u0091\u0092\7%\2\2\u0092)\3\2\2\2\16,.\629;RW]i")
-        buf.write(u"ou\u0089")
+        buf.write(u"\20\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21")
+        buf.write(u"\5\21\u008c\n\21\3\22\3\22\3\23\3\23\3\24\3\24\3\25\3")
+        buf.write(u"\25\3\25\2\2\26\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36")
+        buf.write(u" \"$&(\2\3\3\2\5\r\u0095\2\62\3\2\2\2\4\64\3\2\2\2\6")
+        buf.write(u"@\3\2\2\2\bD\3\2\2\2\nH\3\2\2\2\fL\3\2\2\2\16R\3\2\2")
+        buf.write(u"\2\20W\3\2\2\2\22Y\3\2\2\2\24b\3\2\2\2\26e\3\2\2\2\30")
+        buf.write(u"o\3\2\2\2\32u\3\2\2\2\34w\3\2\2\2\36{\3\2\2\2 \u008b")
+        buf.write(u"\3\2\2\2\"\u008d\3\2\2\2$\u008f\3\2\2\2&\u0091\3\2\2")
+        buf.write(u"\2(\u0093\3\2\2\2*-\5\4\3\2+-\5\6\4\2,*\3\2\2\2,+\3\2")
+        buf.write(u"\2\2-\60\3\2\2\2.,\3\2\2\2./\3\2\2\2/\63\3\2\2\2\60.")
+        buf.write(u"\3\2\2\2\61\63\7\2\2\3\62.\3\2\2\2\62\61\3\2\2\2\63\3")
+        buf.write(u"\3\2\2\2\64\65\7\3\2\2\65\66\5\16\b\2\66;\7\21\2\2\67")
+        buf.write(u":\5\b\5\28:\5\n\6\29\67\3\2\2\298\3\2\2\2:=\3\2\2\2;")
+        buf.write(u"9\3\2\2\2;<\3\2\2\2<>\3\2\2\2=;\3\2\2\2>?\7\22\2\2?\5")
+        buf.write(u"\3\2\2\2@A\7\4\2\2AB\5&\24\2BC\5\22\n\2C\7\3\2\2\2DE")
+        buf.write(u"\5\f\7\2EF\7\16\2\2FG\5\22\n\2G\t\3\2\2\2HI\5\f\7\2I")
+        buf.write(u"J\7\17\2\2JK\5\22\n\2K\13\3\2\2\2LM\t\2\2\2M\r\3\2\2")
+        buf.write(u"\2NO\7\20\2\2OQ\5\20\t\2PN\3\2\2\2QT\3\2\2\2RP\3\2\2")
+        buf.write(u"\2RS\3\2\2\2S\17\3\2\2\2TR\3\2\2\2UX\5(\25\2VX\5\24\13")
+        buf.write(u"\2WU\3\2\2\2WV\3\2\2\2X\21\3\2\2\2Y]\7\21\2\2Z\\\5\26")
+        buf.write(u"\f\2[Z\3\2\2\2\\_\3\2\2\2][\3\2\2\2]^\3\2\2\2^`\3\2\2")
+        buf.write(u"\2_]\3\2\2\2`a\7\22\2\2a\23\3\2\2\2bc\7\23\2\2cd\5(\25")
+        buf.write(u"\2d\25\3\2\2\2ef\5\30\r\2fi\5\"\22\2gh\7\27\2\2hj\5$")
+        buf.write(u"\23\2ig\3\2\2\2ij\3\2\2\2jk\3\2\2\2kl\7#\2\2l\27\3\2")
+        buf.write(u"\2\2mp\5\32\16\2np\5 \21\2om\3\2\2\2on\3\2\2\2p\31\3")
+        buf.write(u"\2\2\2qr\7!\2\2rv\5\34\17\2st\7\"\2\2tv\5\36\20\2uq\3")
+        buf.write(u"\2\2\2us\3\2\2\2v\33\3\2\2\2wx\7\24\2\2xy\5\30\r\2yz")
+        buf.write(u"\7\25\2\2z\35\3\2\2\2{|\7\24\2\2|}\5 \21\2}~\7\26\2\2")
+        buf.write(u"~\177\5\30\r\2\177\u0080\7\25\2\2\u0080\37\3\2\2\2\u0081")
+        buf.write(u"\u008c\7\30\2\2\u0082\u008c\7\31\2\2\u0083\u008c\7\32")
+        buf.write(u"\2\2\u0084\u008c\7\33\2\2\u0085\u008c\7\34\2\2\u0086")
+        buf.write(u"\u008c\7\35\2\2\u0087\u008c\7\36\2\2\u0088\u008c\7\37")
+        buf.write(u"\2\2\u0089\u008c\7 \2\2\u008a\u008c\5&\24\2\u008b\u0081")
+        buf.write(u"\3\2\2\2\u008b\u0082\3\2\2\2\u008b\u0083\3\2\2\2\u008b")
+        buf.write(u"\u0084\3\2\2\2\u008b\u0085\3\2\2\2\u008b\u0086\3\2\2")
+        buf.write(u"\2\u008b\u0087\3\2\2\2\u008b\u0088\3\2\2\2\u008b\u0089")
+        buf.write(u"\3\2\2\2\u008b\u008a\3\2\2\2\u008c!\3\2\2\2\u008d\u008e")
+        buf.write(u"\5(\25\2\u008e#\3\2\2\2\u008f\u0090\5(\25\2\u0090%\3")
+        buf.write(u"\2\2\2\u0091\u0092\5(\25\2\u0092\'\3\2\2\2\u0093\u0094")
+        buf.write(u"\7\'\2\2\u0094)\3\2\2\2\16,.\629;RW]iou\u008b")
         return buf.getvalue()
 
 
@@ -74,17 +75,18 @@ class HTTPIDL ( Parser ):
                      u"'HEAD'", u"'TRACE'", u"'CONNECT'", u"'OPTIONS'", 
                      u"'POST'", u"'PUT'", u"'PATCH'", u"'DELETE'", u"'REQUEST'", 
                      u"'RESPONSE'", u"'/'", u"'{'", u"'}'", u"'$'", u"'<'", 
-                     u"'>'", u"','", u"'='", u"'INT32'", u"'INT64'", u"'BOOL'", 
-                     u"'DOUBLE'", u"'STRING'", u"'FILE'", u"'BLOB'", u"'ARRAY'", 
-                     u"'DICT'", u"';'" ]
+                     u"'>'", u"','", u"'='", u"'INT32'", u"'UINT32'", u"'INT64'", 
+                     u"'UINT64'", u"'BOOL'", u"'DOUBLE'", u"'STRING'", u"'FILE'", 
+                     u"'BLOB'", u"'ARRAY'", u"'DICT'", u"';'" ]
 
     symbolicNames = [ u"<INVALID>", u"MESSAGE", u"STRUCT", u"GET", u"HEAD", 
                       u"TRACE", u"CONNECT", u"OPTIONS", u"POST", u"PUT", 
                       u"PATCH", u"DELETE", u"REQUEST", u"RESPONSE", u"BACKSLASH", 
                       u"LCURLY", u"RCURLY", u"DOLLAR", u"LABRACKET", u"RABRACKET", 
-                      u"COMMA", u"ASSIGN", u"INT32", u"INT64", u"BOOL", 
-                      u"DOUBLE", u"STRING", u"FILE", u"BLOB", u"ARRAY", 
-                      u"DICT", u"SEMICOLON", u"COMMENT", u"NL", u"WS", u"IDENT" ]
+                      u"COMMA", u"ASSIGN", u"INT32", u"UINT32", u"INT64", 
+                      u"UINT64", u"BOOL", u"DOUBLE", u"STRING", u"FILE", 
+                      u"BLOB", u"ARRAY", u"DICT", u"SEMICOLON", u"COMMENT", 
+                      u"NL", u"WS", u"IDENT" ]
 
     RULE_entry = 0
     RULE_message = 1
@@ -136,19 +138,21 @@ class HTTPIDL ( Parser ):
     COMMA=20
     ASSIGN=21
     INT32=22
-    INT64=23
-    BOOL=24
-    DOUBLE=25
-    STRING=26
-    FILE=27
-    BLOB=28
-    ARRAY=29
-    DICT=30
-    SEMICOLON=31
-    COMMENT=32
-    NL=33
-    WS=34
-    IDENT=35
+    UINT32=23
+    INT64=24
+    UINT64=25
+    BOOL=26
+    DOUBLE=27
+    STRING=28
+    FILE=29
+    BLOB=30
+    ARRAY=31
+    DICT=32
+    SEMICOLON=33
+    COMMENT=34
+    NL=35
+    WS=36
+    IDENT=37
 
     def __init__(self, input):
         super(HTTPIDL, self).__init__(input)
@@ -648,7 +652,7 @@ class HTTPIDL ( Parser ):
             self.state = 91
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.INT32) | (1 << HTTPIDL.INT64) | (1 << HTTPIDL.BOOL) | (1 << HTTPIDL.DOUBLE) | (1 << HTTPIDL.STRING) | (1 << HTTPIDL.FILE) | (1 << HTTPIDL.BLOB) | (1 << HTTPIDL.ARRAY) | (1 << HTTPIDL.DICT) | (1 << HTTPIDL.IDENT))) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.INT32) | (1 << HTTPIDL.UINT32) | (1 << HTTPIDL.INT64) | (1 << HTTPIDL.UINT64) | (1 << HTTPIDL.BOOL) | (1 << HTTPIDL.DOUBLE) | (1 << HTTPIDL.STRING) | (1 << HTTPIDL.FILE) | (1 << HTTPIDL.BLOB) | (1 << HTTPIDL.ARRAY) | (1 << HTTPIDL.DICT) | (1 << HTTPIDL.IDENT))) != 0):
                 self.state = 88
                 self.parameterMap()
                 self.state = 93
@@ -796,7 +800,7 @@ class HTTPIDL ( Parser ):
                 self.state = 107
                 self.genericType()
                 pass
-            elif token in [HTTPIDL.INT32, HTTPIDL.INT64, HTTPIDL.BOOL, HTTPIDL.DOUBLE, HTTPIDL.STRING, HTTPIDL.FILE, HTTPIDL.BLOB, HTTPIDL.IDENT]:
+            elif token in [HTTPIDL.INT32, HTTPIDL.UINT32, HTTPIDL.INT64, HTTPIDL.UINT64, HTTPIDL.BOOL, HTTPIDL.DOUBLE, HTTPIDL.STRING, HTTPIDL.FILE, HTTPIDL.BLOB, HTTPIDL.IDENT]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 108
                 self.baseType()
@@ -975,8 +979,14 @@ class HTTPIDL ( Parser ):
         def INT32(self):
             return self.getToken(HTTPIDL.INT32, 0)
 
+        def UINT32(self):
+            return self.getToken(HTTPIDL.UINT32, 0)
+
         def INT64(self):
             return self.getToken(HTTPIDL.INT64, 0)
+
+        def UINT64(self):
+            return self.getToken(HTTPIDL.UINT64, 0)
 
         def BOOL(self):
             return self.getToken(HTTPIDL.BOOL, 0)
@@ -1008,7 +1018,7 @@ class HTTPIDL ( Parser ):
         localctx = HTTPIDL.BaseTypeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 30, self.RULE_baseType)
         try:
-            self.state = 135
+            self.state = 137
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [HTTPIDL.INT32]:
@@ -1016,39 +1026,49 @@ class HTTPIDL ( Parser ):
                 self.state = 127
                 self.match(HTTPIDL.INT32)
                 pass
-            elif token in [HTTPIDL.INT64]:
+            elif token in [HTTPIDL.UINT32]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 128
-                self.match(HTTPIDL.INT64)
+                self.match(HTTPIDL.UINT32)
                 pass
-            elif token in [HTTPIDL.BOOL]:
+            elif token in [HTTPIDL.INT64]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 129
+                self.match(HTTPIDL.INT64)
+                pass
+            elif token in [HTTPIDL.UINT64]:
+                self.enterOuterAlt(localctx, 4)
+                self.state = 130
+                self.match(HTTPIDL.UINT64)
+                pass
+            elif token in [HTTPIDL.BOOL]:
+                self.enterOuterAlt(localctx, 5)
+                self.state = 131
                 self.match(HTTPIDL.BOOL)
                 pass
             elif token in [HTTPIDL.DOUBLE]:
-                self.enterOuterAlt(localctx, 4)
-                self.state = 130
+                self.enterOuterAlt(localctx, 6)
+                self.state = 132
                 self.match(HTTPIDL.DOUBLE)
                 pass
             elif token in [HTTPIDL.STRING]:
-                self.enterOuterAlt(localctx, 5)
-                self.state = 131
+                self.enterOuterAlt(localctx, 7)
+                self.state = 133
                 self.match(HTTPIDL.STRING)
                 pass
             elif token in [HTTPIDL.FILE]:
-                self.enterOuterAlt(localctx, 6)
-                self.state = 132
+                self.enterOuterAlt(localctx, 8)
+                self.state = 134
                 self.match(HTTPIDL.FILE)
                 pass
             elif token in [HTTPIDL.BLOB]:
-                self.enterOuterAlt(localctx, 7)
-                self.state = 133
+                self.enterOuterAlt(localctx, 9)
+                self.state = 135
                 self.match(HTTPIDL.BLOB)
                 pass
             elif token in [HTTPIDL.IDENT]:
-                self.enterOuterAlt(localctx, 8)
-                self.state = 134
+                self.enterOuterAlt(localctx, 10)
+                self.state = 136
                 self.structName()
                 pass
             else:
@@ -1084,7 +1104,7 @@ class HTTPIDL ( Parser ):
         self.enterRule(localctx, 32, self.RULE_key)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 137
+            self.state = 139
             self.identifier()
         except RecognitionException as re:
             localctx.exception = re
@@ -1116,7 +1136,7 @@ class HTTPIDL ( Parser ):
         self.enterRule(localctx, 34, self.RULE_value)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 139
+            self.state = 141
             self.identifier()
         except RecognitionException as re:
             localctx.exception = re
@@ -1148,7 +1168,7 @@ class HTTPIDL ( Parser ):
         self.enterRule(localctx, 36, self.RULE_structName)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 141
+            self.state = 143
             self.identifier()
         except RecognitionException as re:
             localctx.exception = re
@@ -1179,7 +1199,7 @@ class HTTPIDL ( Parser ):
         self.enterRule(localctx, 38, self.RULE_identifier)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 143
+            self.state = 145
             self.match(HTTPIDL.IDENT)
         except RecognitionException as re:
             localctx.exception = re

@@ -1,4 +1,4 @@
-idl_to_swift_type = {'INT32': 'Int32', 'INT64': 'Int64', 'BOOL': 'Bool', 'DOUBLE': 'Double', 'STRING': 'String', 'FILE': 'HTTPFile', 'BLOB': 'HTTPData'}
+idl_to_swift_type = {'UINT32': 'UInt32', 'UINT64': 'UInt64', 'INT32': 'Int32', 'INT64': 'Int64', 'BOOL': 'Bool', 'DOUBLE': 'Double', 'STRING': 'String', 'FILE': 'HTTPFile', 'BLOB': 'HTTPData'}
 
 
 def swift_base_type_name_from_idl_base_type(type_name):
