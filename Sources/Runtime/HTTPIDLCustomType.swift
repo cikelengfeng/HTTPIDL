@@ -32,7 +32,7 @@ extension HTTPData: ResponseContentConvertible {
         switch content {
         case .data(let value, let fileName, let mimeType):
             self.init(with: value, fileName: fileName ?? "", mimeType: mimeType)
-        case .array, .dictionary, .double, .int32, .int64, .string, .bool:
+        case .array, .dictionary, .string, .number:
             return nil
         }
     }

@@ -8,10 +8,7 @@
 import Foundation
 
 public enum ResponseContent {
-    case int64(value: Int64)
-    case int32(value: Int32)
-    case bool(value: Bool)
-    case double(value: Double)
+    case number(value: NSNumber)
     case string(value: String)
     case data(value: Data, fileName: String?, mimeType: String)
     case array(value: [ResponseContent])
@@ -28,15 +25,11 @@ extension Int64: ResponseContentConvertible {
             return nil
         }
         switch content {
-        case .int64(let value):
+        case .number(let value):
             self.init(value)
-        case .int32(let value):
-            self.init(value)
-        case .bool(let value):
-            self.init(value ? 1 : 0)
         case .string(let value):
             self.init(value)
-        case .array, .dictionary, .data, .double:
+        case .array, .dictionary, .data:
             return nil
         }
     }
@@ -48,15 +41,11 @@ extension Int32: ResponseContentConvertible {
             return nil
         }
         switch content {
-        case .int64(let value):
+        case .number(let value):
             self.init(value)
-        case .int32(let value):
-            self.init(value)
-        case .bool(let value):
-            self.init(value ? 1 : 0)
         case .string(let value):
             self.init(value)
-        case .array, .dictionary, .data, .double:
+        case .array, .dictionary, .data:
             return nil
         }
     }
@@ -68,9 +57,9 @@ extension Bool: ResponseContentConvertible {
             return nil
         }
         switch content {
-        case .bool(let value):
+        case .number(let value):
             self.init(value)
-        case .array, .dictionary, .data, .double, .int64, .int32, .string:
+        case .array, .dictionary, .data, .string:
             return nil
         }
     }
@@ -82,13 +71,7 @@ extension Double: ResponseContentConvertible {
             return nil
         }
         switch content {
-        case .int64(let value):
-            self.init(value)
-        case .int32(let value):
-            self.init(value)
-        case .bool(let value):
-            self.init(value ? 1 : 0)
-        case .double(let value):
+        case .number(let value):
             self.init(value)
         case .string(let value):
             self.init(value)
@@ -104,16 +87,10 @@ extension String: ResponseContentConvertible {
             return nil
         }
         switch content {
-        case .int64(let value):
-            self.init(value)
-        case .int32(let value):
-            self.init(value)
-        case .bool(let value):
-            self.init(value ? "1" : "0")
+        case .number(let value):
+            self.init(value.stringValue)
         case .string(let value):
             self.init(value)
-        case .double(let value):
-            self.init(format: "%f", value)
         case .data(let value, _, _):
             self.init(data: value, encoding: String.Encoding.utf8)
         case .array, .dictionary:
@@ -132,7 +109,7 @@ public extension Array where Element: ResponseContentConvertible {
             self.init(value.flatMap({
                 return Element(content: $0)
             }))
-        case .dictionary, .data, .double, .int32, .int64, .string, .bool:
+        case .dictionary, .data, .string, .number:
             return nil
         }
     }
@@ -163,7 +140,7 @@ public extension Dictionary where Key: ResponseContentKeyType, Value: ResponseCo
                 ret[Key(string: soGood.key)] = v
                 return ret
             })
-            case .array, .data, .double, .int32, .int64, .string, .bool:
+        case .array, .data, .string, .number:
             return nil
         }
     }

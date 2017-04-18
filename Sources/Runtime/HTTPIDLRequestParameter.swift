@@ -7,10 +7,7 @@
 import Foundation
 
 public enum RequestContent {
-    case int64(value: Int64)
-    case int32(value: Int32)
-    case bool(value: Bool)
-    case double(value: Double)
+    case number(value: NSNumber)
     case string(value: String)
     case file(value: URL, fileName: String?, mimeType: String?)
     case data(value: Data, fileName: String?, mimeType: String?)
@@ -26,7 +23,7 @@ extension Int64: RequestContentKeyType {
 
 extension Int64: RequestContentConvertible {
     public func asRequestContent() -> RequestContent {
-        return .int64(value: self)
+        return .number(value: NSNumber(value: self))
     }
 }
 
@@ -38,13 +35,13 @@ extension Int32: RequestContentKeyType {
 
 extension Int32: RequestContentConvertible {
     public func asRequestContent() -> RequestContent {
-        return .int32(value: self)
+        return .number(value: NSNumber(value: self))
     }
 }
 
 extension Bool: RequestContentConvertible {
     public func asRequestContent() -> RequestContent {
-        return .bool(value: self)
+        return .number(value: NSNumber(value: self))
     }
 }
 
@@ -57,7 +54,7 @@ extension Double: RequestContentKeyType {
 
 extension Double: RequestContentConvertible {
     public func asRequestContent() -> RequestContent {
-        return .double(value: self)
+        return .number(value: NSNumber(value: self))
     }
 }
 

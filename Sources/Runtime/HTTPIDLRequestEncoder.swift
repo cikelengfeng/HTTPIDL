@@ -28,14 +28,8 @@ public enum HTTPBaseRequestEncoderError: HIError {
 
 private func queryItems(leafContent: RequestContent, key: String) throws -> [(String, String)] {
     switch leafContent {
-    case .int64(let value):
-        return [(key, String(value))]
-    case .int32(let value):
-        return [(key, String(value))]
-    case .bool(let value):
-        return [(key, value ? "1" : "0")]
-    case .double(let value):
-        return [(key, String(value))]
+    case .number(let value):
+        return [(key, value.stringValue)]
     case .string(let value):
         return [(key, value)]
     case .file(let url, _, _):
@@ -45,7 +39,7 @@ private func queryItems(leafContent: RequestContent, key: String) throws -> [(St
     case .array(let values):
         return try values.flatMap ({ (contentInArray) -> [(String, String)] in
             switch contentInArray {
-            case .int64, .int32, .bool, .double, .string, .file, .data:
+            case .number, .string, .file, .data:
                 return try queryItems(leafContent: contentInArray, key: key)
             case .array, .dictionary:
                 throw HTTPBaseRequestEncoderError.nestedObjectInURLQuery(errorSource: values)
@@ -58,7 +52,7 @@ private func queryItems(leafContent: RequestContent, key: String) throws -> [(St
 
 private func queryItems(rootContent: RequestContent) throws -> [(String, String)] {
     switch rootContent {
-    case .int64, .int32, .bool, .double, .string, .array, .file, .data:
+    case .number, .string, .array, .file, .data:
         throw HTTPBaseRequestEncoderError.missingParameterKey(parameter: rootContent)
     case .dictionary(let dict):
         return try dict.flatMap({ (pair) in
@@ -116,11 +110,8 @@ public struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
 }
 
 public enum HTTPMultipartRequestEncoderError: HIError {
-    case unsupportedInt64(key: String, value: Int64)
-    case unsupportedInt32(key: String, value: Int32)
-    case unsupportedBool(key: String, value: Bool)
-    case unsupportedIntDouble(key: String, value: Double)
-    case unsupportedIntString(key: String, value: String)
+    case unsupportedNumber(key: String, value: NSNumber)
+    case unsupportedString(key: String, value: String)
     case arrayIsForbidden(key: String, value: [RequestContent])
     case dictionaryIsForbidden(key: String, value: [String: RequestContent])
     case missingParameterKey(parameter: RequestContent)
@@ -128,15 +119,9 @@ public enum HTTPMultipartRequestEncoderError: HIError {
     public var errorDescription: String? {
         get {
             switch self {
-            case .unsupportedInt64(let key, let value):
-                return "multipart request encoder error: 不支持的Int64, key : \(key), value: \(value)"
-            case .unsupportedInt32(let key, let value):
-                return "multipart request encoder error: 不支持的Int32, key : \(key), value: \(value)"
-            case .unsupportedBool(let key, let value):
-                return "multipart request encoder error: 不支持的Bool, key : \(key), value: \(value)"
-            case .unsupportedIntDouble(let key, let value):
-                return "multipart request encoder error: 不支持的Double, key : \(key), value: \(value)"
-            case .unsupportedIntString(let key, let value):
+            case .unsupportedNumber(let key, let value):
+                return "multipart request encoder error: 不支持的数字, key : \(key), value: \(value)"
+            case .unsupportedString(let key, let value):
                 return "multipart request encoder error: 不支持的String, key : \(key), value: \(value)"
             case .arrayIsForbidden(let key, let value):
                 return "multipart request encoder error: 不支持数组类型的参数, key : \(key), value: \(value)"
@@ -152,29 +137,14 @@ public enum HTTPMultipartRequestEncoderError: HIError {
 fileprivate extension RequestContent {
     func insertInto(multipart: MultipartFormData, key: String) throws {
         switch self {
-        case .int64(let value):
-            guard let data = String(value).data(using: String.Encoding.utf8) else {
-                throw HTTPMultipartRequestEncoderError.unsupportedInt64(key: key, value: value)
-            }
-            multipart.append(data, withName: key)
-        case .int32(let value):
-            guard let data = String(value).data(using: String.Encoding.utf8) else {
-                throw HTTPMultipartRequestEncoderError.unsupportedInt32(key: key, value: value)
-            }
-            multipart.append(data, withName: key)
-        case .bool(let value):
-            guard let data = String(value).data(using: String.Encoding.utf8) else {
-                throw HTTPMultipartRequestEncoderError.unsupportedBool(key: key, value: value)
-            }
-            multipart.append(data, withName: key)
-        case .double(let value):
-            guard let data = String(value).data(using: String.Encoding.utf8) else {
-                throw HTTPMultipartRequestEncoderError.unsupportedIntDouble(key: key, value: value)
+        case .number(let value):
+            guard let data = value.stringValue.data(using: String.Encoding.utf8) else {
+                throw HTTPMultipartRequestEncoderError.unsupportedNumber(key: key, value: value)
             }
             multipart.append(data, withName: key)
         case .string(let value):
             guard let data = value.data(using: String.Encoding.utf8) else {
-                throw HTTPMultipartRequestEncoderError.unsupportedIntString(key: key, value: value)
+                throw HTTPMultipartRequestEncoderError.unsupportedString(key: key, value: value)
             }
             multipart.append(data, withName: key)
         case .file(let url, let fileName, let mime):
@@ -192,7 +162,7 @@ fileprivate extension RequestContent {
     
     func insertInto(multipart: MultipartFormData) throws {
         switch self {
-        case .int64, .int32, .bool, .double, .string, .array, .file, .data:
+        case .number, .string, .array, .file, .data:
             throw HTTPMultipartRequestEncoderError.missingParameterKey(parameter: self)
         case .dictionary(let value):
             try value.forEach({ (pair) in
@@ -270,11 +240,8 @@ public struct HTTPCombinatedQueryRequestEncoder: HTTPRequestEncoder {
 
 public enum HTTPSingleBodyRequestEncoderError: HIError {
     case noSuchParameter(key: String)
-    case unsupportedInt64(key: String, value: Int64)
-    case unsupportedInt32(key: String, value: Int32)
-    case unsupportedBool(key: String, value: Bool)
-    case unsupportedIntDouble(key: String, value: Double)
-    case unsupportedIntString(key: String, value: String)
+    case unsupportedNumber(key: String, value: NSNumber)
+    case unsupportedString(key: String, value: String)
     case arrayIsForbidden(key: String, value: [RequestContent])
     case dictionaryIsForbidden(key: String, value: [String: RequestContent])
     
@@ -283,15 +250,9 @@ public enum HTTPSingleBodyRequestEncoderError: HIError {
             switch self {
             case .noSuchParameter(let key):
                 return "single body request encoder error: 没有此参数, key : \(key)"
-            case .unsupportedInt64(let key, let value):
-                return "single body request encoder error: 不支持的Int64, key : \(key), value: \(value)"
-            case .unsupportedInt32(let key, let value):
-                return "single body request encoder error: 不支持的Int32, key : \(key), value: \(value)"
-            case .unsupportedBool(let key, let value):
-                return "single body request encoder error: 不支持的Bool, key : \(key), value: \(value)"
-            case .unsupportedIntDouble(let key, let value):
-                return "single body request encoder error: 不支持的Double, key : \(key), value: \(value)"
-            case .unsupportedIntString(let key, let value):
+            case .unsupportedNumber(let key, let value):
+                return "single body request encoder error: 不支持的数字, key : \(key), value: \(value)"
+            case .unsupportedString(let key, let value):
                 return "single body request encoder error: 不支持的String, key : \(key), value: \(value)"
             case .arrayIsForbidden(let key, let value):
                 return "single body request encoder error: 不支持数组类型的参数, key : \(key), value: \(value)"
@@ -306,29 +267,14 @@ private extension RequestContent {
     func valueClosure(key: String) -> () throws -> Data {
         return {
             switch self {
-            case .int64(let value):
-                guard let data = String(value).data(using: String.Encoding.utf8) else {
-                    throw HTTPSingleBodyRequestEncoderError.unsupportedInt64(key: key, value: value)
-                }
-                return data
-            case .int32(let value):
-                guard let data = String(value).data(using: String.Encoding.utf8) else {
-                    throw HTTPSingleBodyRequestEncoderError.unsupportedInt32(key: key, value: value)
-                }
-                return data
-            case .bool(let value):
-                guard let data = String(value).data(using: String.Encoding.utf8) else {
-                    throw HTTPSingleBodyRequestEncoderError.unsupportedBool(key: key, value: value)
-                }
-                return data
-            case .double(let value):
-                guard let data = String(value).data(using: String.Encoding.utf8) else {
-                    throw HTTPSingleBodyRequestEncoderError.unsupportedIntDouble(key: key, value: value)
+            case .number(let value):
+                guard let data = value.stringValue.data(using: String.Encoding.utf8) else {
+                    throw HTTPSingleBodyRequestEncoderError.unsupportedNumber(key: key, value: value)
                 }
                 return data
             case .string(let value):
                 guard let data = value.data(using: String.Encoding.utf8) else {
-                    throw HTTPSingleBodyRequestEncoderError.unsupportedIntString(key: key, value: value)
+                    throw HTTPSingleBodyRequestEncoderError.unsupportedString(key: key, value: value)
                 }
                 return data
             case .file(let url, _, _):
@@ -388,7 +334,7 @@ public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
                 headers["Content-Type"] = mime
             case .data(_, _, let mime):
                 headers["Content-Type"] = mime
-            case .int64, .int32, .bool, .double, .string:
+            case .number, .string:
                 headers["Content-Type"] = "application/octet-stream"
             case .array(let value):
                 throw HTTPSingleBodyRequestEncoderError.arrayIsForbidden(key: singleBodyKey, value: value)

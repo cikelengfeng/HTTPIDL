@@ -44,7 +44,8 @@ class ViewController: UIViewController {
 //        request.data = HTTPData(with: data, fileName: "test_data", mimeType: "text/plain")
 //        let url = Bundle.main.url(forResource: "China", withExtension: "png")!
 //        request.file = HTTPFile(with: url, fileName: "test_file", mimeType: "image/png")
-//        request.send(HTTPMultipartRequestEncoder.shared, rawResponseHandler: { (response) in
+//        request.configuration.encoderStrategy = { _ in HTTPMultipartRequestEncoder.shared }
+//        request.send(completion: { (response) in
 //            
 //        }) { (error) in
 //            
@@ -83,20 +84,20 @@ class ViewController: UIViewController {
 //            print("GetGetRequest error: ", error)
 //        }
         
-        let req = PostPostRequest()
-        req.configuration.encoderStrategy = { _ in
-            return HTTPMultipartRequestEncoder.shared
-        }
-        let url = Bundle.main.url(forResource: "test", withExtension: "JPG")!
-        req.data = HTTPFile(with: url, fileName: "test_file", mimeType: "image/png")
-        let future = req.send(rawResponseHandler: { (response) in
-            print("resp: ", response)
-        }) { (error) in
-            print("fuck: ", error)
-        }
-        future.progressHandler = { p in
-            print("progress: ", p.fractionCompleted)
-        }
+//        let req = PostPostRequest()
+//        req.configuration.encoderStrategy = { _ in
+//            return HTTPMultipartRequestEncoder.shared
+//        }
+//        let url = Bundle.main.url(forResource: "test", withExtension: "JPG")!
+//        req.data = HTTPFile(with: url, fileName: "test_file", mimeType: "image/png")
+//        let future = req.send(rawResponseHandler: { (response) in
+//            print("resp: ", response)
+//        }) { (error) in
+//            print("fuck: ", error)
+//        }
+//        future.progressHandler = { p in
+//            print("progress: ", p.fractionCompleted)
+//        }
     }
 
     override func didReceiveMemoryWarning() {

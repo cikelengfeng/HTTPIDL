@@ -34,7 +34,7 @@ public extension RequestContent {
     
     public func jsonObject() throws -> Any {
         switch self {
-        case .int64, .int32, .bool, .double, .string:
+        case .number, .string:
             throw HTTPJSONEncoderError.illegalRootRequestContent(parameter: self)
         case .file(let url, _, _):
             throw HTTPJSONEncoderError.fileIsForbidden(file: url)
@@ -47,13 +47,7 @@ public extension RequestContent {
     
     private func jsonLeaf() throws -> Any {
         switch self {
-        case .int64(let value):
-            return value
-        case .int32(let value):
-            return value
-        case .bool(let value):
-            return value
-        case .double(let value):
+        case .number(let value):
             return value
         case .string(let value):
             return value
@@ -79,7 +73,7 @@ public extension ResponseContent {
     
     public func jsonObject() throws -> Any {
         switch self {
-        case .int64, .int32, .bool, .double, .string:
+        case .number, .string:
             throw HTTPJSONEncoderError.illegalRootResponseContent(parameter: self)
         case .data(let data, _, _):
             throw HTTPJSONEncoderError.dataIsForbidden(data: data)
@@ -90,13 +84,7 @@ public extension ResponseContent {
 
     private func jsonLeaf() throws -> Any {
         switch self {
-        case .int64(let value):
-            return value
-        case .int32(let value):
-            return value
-        case .bool(let value):
-            return value
-        case .double(let value):
+        case .number(let value):
             return value
         case .string(let value):
             return value

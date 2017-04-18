@@ -9,23 +9,7 @@ import Foundation
 
 private func decode(json: Any) throws -> ResponseContent {
     if let number = json as? NSNumber {
-        let numberType = CFNumberGetType(number)
-        switch numberType {
-        case .charType:
-            return .bool(value: number as Bool)
-        //Bool
-        case .sInt8Type, .sInt16Type, .sInt32Type, .sInt64Type, .shortType, .intType, .longType, .longLongType, .cfIndexType, .nsIntegerType:
-        //Int
-            return .int64(value: number as Int64)
-        case .float32Type, .float64Type, .floatType, .doubleType, .cgFloatType:
-            if number.isKind(of: NSDecimalNumber.self) {
-                if String(number.int64Value) == String(number.uint64Value) {
-                    return .int64(value: number.int64Value)
-                }
-            }
-            //Double
-            return .double(value: number as Double)
-        }
+        return .number(value: number)
     }else if let tmp = json as? String {
         return .string(value: tmp)
     } else if let tmp = json as? [Any] {
