@@ -110,7 +110,7 @@ class Swift3CodeGenerator:
 
         self.write_line('var content: %s? {' % httpidl_content_type)
         self.push_indent()
-        self.write_line('var result = [String:%s]()' % httpidl_content_type)
+        self.write_line('var result = [String: %s]()' % httpidl_content_type)
         for parameter_map in parameter_maps:
             param_value = parameter_map.value()
             param_value_name = param_value.getText() if param_value is not None else parameter_map.key().getText()
