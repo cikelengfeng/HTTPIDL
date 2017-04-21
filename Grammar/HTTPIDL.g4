@@ -54,19 +54,76 @@ uri
     ;
 
 uriPathComponent
-    : ( identifier
-      | parameterInUri
-      )
-    ;
-
-structBody
-    :
-    LCURLY parameterMap* RCURLY
+    : parameterInUri
+    | string
     ;
 
 parameterInUri
     :
     DOLLAR identifier
+    ;
+
+string
+    : any_except_hidden+
+    ;
+
+any_except_hidden
+    : MESSAGE
+    | STRUCT
+    | GET
+    | HEAD
+    | TRACE
+    | CONNECT
+    | OPTIONS
+    | POST
+    | PUT
+    | PATCH
+    | DELETE
+    | REQUEST
+    | RESPONSE
+    | LCURLY
+    | RCURLY
+    | DOLLAR
+    | LABRACKET
+    | RABRACKET
+    | COMMA
+    | ASSIGN
+    | INT32
+    | UINT32
+    | INT64
+    | UINT64
+    | BOOL
+    | DOUBLE
+    | STRING
+    | FILE
+    | BLOB
+    | ARRAY
+    | DICT
+    | COMMENT
+    | IDENT
+    | escaped
+    | ANYCHAR
+    ;
+
+escaped
+    : SLASH
+    (
+     BACKSLASH
+    | LCURLY
+    | RCURLY
+    | DOLLAR
+    | LABRACKET
+    | RABRACKET
+    | COMMA
+    | ASSIGN
+    | SEMICOLON
+    | SLASH
+    )
+    ;
+
+structBody
+    :
+    LCURLY parameterMap* RCURLY
     ;
 
 parameterMap
@@ -110,7 +167,7 @@ key:
     ;
 
 value:
-    identifier
+    string
     ;
 
 structName:

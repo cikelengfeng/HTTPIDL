@@ -84,6 +84,14 @@ ASSIGN
     : '='
     ;
 
+SEMICOLON
+    : ';'
+    ;
+
+SLASH
+    : '\\'
+    ;
+
 INT32
     : 'INT32'
     ;
@@ -128,9 +136,6 @@ DICT
     : 'DICT'
     ;
 
-SEMICOLON
-    : ';'
-    ;
 COMMENT
     : '/*' .*? '*/' -> channel(HIDDEN)
     ;
@@ -143,6 +148,10 @@ WS
 
 IDENT
     :   (ALPHA | UNDERSCORE) (ALPHA | DIGIT | UNDERSCORE)*
+    ;
+
+ANYCHAR
+    : .
     ;
 
 fragment ALPHA
