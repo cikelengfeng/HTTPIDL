@@ -14,11 +14,15 @@ entry
 
 message
     :
-    MESSAGE uri LCURLY
+    MESSAGE messageName? uri LCURLY
         ( request
         | response
         )*
         RCURLY
+    ;
+
+messageName
+    : LABRACKET identifier RABRACKET
     ;
 
 struct

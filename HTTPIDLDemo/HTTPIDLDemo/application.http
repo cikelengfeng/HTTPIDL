@@ -173,4 +173,8 @@ MESSAGE /test/%^&**(/\//$xxxx {
     }
 }
 
+MESSAGE<Testing> /test/message_name {
+    GET REQUEST {}
+    GET RESPONSE {}
+}
 

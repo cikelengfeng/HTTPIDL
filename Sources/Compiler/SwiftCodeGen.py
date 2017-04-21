@@ -42,7 +42,11 @@ class Swift3CodeGenerator:
         self.indent -= 1
 
     @staticmethod
-    def message_name_from_uri(uri_context):
+    def message_name(message_context):
+        if message_context.messageName() is not None:
+            return message_context.messageName().identifier().getText()
+        uri_context = message_context.uri()
+
         def uri_path_component_to_text(uri_path_component):
             if uri_path_component.parameterInUri() is not None:
                 text = uri_path_component.parameterInUri().identifier().getText()
@@ -304,7 +308,7 @@ class Swift3CodeGenerator:
 
     def generate_message(self, message_context):
         uri = message_context.uri()
-        message_name = self.message_name_from_uri(uri)
+        message_name = self.message_name(message_context)
         requests = message_context.request()
         for request in requests:
             self.generate_request(request, message_name, uri)

@@ -1030,3 +1030,38 @@ struct GetTest%^&**(\/XxxxResponse: Response {
         self.e = HTTPFile(content: value["a123&*"])
     }
 }
+
+class GetTestingRequest: Request {
+    
+    var method: String = "GET"
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        return "/test/message_name"
+    }
+    var content: RequestContent?
+    
+    @discardableResult
+    func send(completion: @escaping (GetTestingResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestingResponse> {
+        let future: RequestFuture<GetTestingResponse> = client.send(self)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
+    }
+    
+    @discardableResult
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+        let future = client.send(self)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
+    }
+}
+
+struct GetTestingResponse: Response {
+    
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+    }
+}
