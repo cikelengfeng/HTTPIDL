@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2012-2016 The ANTLR Project. All rights reserved.
+# Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
 # Use of this file is governed by the BSD 3-clause license that
 # can be found in the LICENSE.txt file in the project root.
 #
@@ -164,7 +164,7 @@ class IntervalSet(object):
                 # split existing range
                 elif v<i.stop-1:
                     x = Interval(i.start, v)
-                    self.intervals[k] = range(v + 1, i.stop)
+                    self.intervals[k] = Interval(v + 1, i.stop)
                     self.intervals.insert(k, x)
                     return
                 k += 1
