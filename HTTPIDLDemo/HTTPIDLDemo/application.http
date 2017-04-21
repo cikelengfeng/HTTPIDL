@@ -155,5 +155,22 @@ UINT64 uint64;
 }
 }
 
+MESSAGE /cgi-a/wx {
+    GET REQUEST {}
+    GET RESPONSE {}
+}
+
+MESSAGE /test/%^&**(/\//$xxxx {
+    GET REQUEST {
+        INT64 a;
+        INT32 b = STRING;
+    }
+
+    GET RESPONSE {
+        BOOL c = \;;
+        STRING d = ^&**;
+        FILE e = a123&*;
+    }
+}
 
 

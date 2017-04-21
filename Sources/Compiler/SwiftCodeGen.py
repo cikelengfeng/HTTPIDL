@@ -53,21 +53,24 @@ class Swift3CodeGenerator:
         return ''.join(map(uri_path_component_to_text, uri_context.uriPathComponent()))
 
     @staticmethod
-    def request_url_from_uri(uri_context):
-        def reduce_uri_path_component(so_far, so_good):
-            if isinstance(so_good, HTTPIDL.UriPathComponentContext) and so_good.parameterInUri() is not None:
-                return so_far + '\(' + so_good.parameterInUri().identifier().getText() + ')'
+    def string_from_string_context(string_context):
+        def reduce_string_element_context(so_far, so_good):
+            if so_good.escaped() is not None:
+                return so_far + so_good.escaped().children[1].getText()
             return so_far + so_good.getText()
+        return reduce(reduce_string_element_context, string_context.stringElement(), '')
 
-        uri = reduce(reduce_uri_path_component, uri_context.children, '"') + '"'
-        url = 'configuration.baseURLString + ' + uri
+    def request_url_from_uri(self, uri_context):
+        url = 'configuration.baseURLString + ' + self.request_uri_from_uri(uri_context)
         return url
 
-    @staticmethod
-    def request_uri_from_uri(uri_context):
+    def request_uri_from_uri(self, uri_context):
         def reduce_uri_path_component(so_far, so_good):
-            if isinstance(so_good, HTTPIDL.UriPathComponentContext) and so_good.parameterInUri() is not None:
-                return so_far + '\(' + so_good.parameterInUri().identifier().getText() + ')'
+            if isinstance(so_good, HTTPIDL.UriPathComponentContext):
+                if so_good.parameterInUri() is not None:
+                    return so_far + '\(' + so_good.parameterInUri().identifier().getText() + ')'
+                else:
+                    return so_far + self.string_from_string_context(so_good.string())
             return so_far + so_good.getText()
 
         uri = reduce(reduce_uri_path_component, uri_context.children, '"') + '"'

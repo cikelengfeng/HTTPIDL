@@ -190,7 +190,7 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
     var t3: Double?
     var t4: String?
     var content: RequestContent? {
-        var result = [String:RequestContent]()
+        var result = [String: RequestContent]()
         if let tmp = t1 {
             result["t"] = tmp.asRequestContent()
         }
@@ -250,7 +250,7 @@ class PostTestUrlencodedFormEncoderRequest: Request {
     var t3: Double?
     var t4: String?
     var content: RequestContent? {
-        var result = [String:RequestContent]()
+        var result = [String: RequestContent]()
         if let tmp = t1 {
             result["t"] = tmp.asRequestContent()
         }
@@ -311,7 +311,7 @@ class PostTestMultipartEncoderRequest: Request {
     var data: HTTPData?
     var file: HTTPFile?
     var content: RequestContent? {
-        var result = [String:RequestContent]()
+        var result = [String: RequestContent]()
         if let tmp = number {
             result["number"] = tmp.asRequestContent()
         }
@@ -375,7 +375,7 @@ class PostTestJsonEncoderRequest: Request {
     var t4: String?
     var t5: [String]?
     var content: RequestContent? {
-        var result = [String:RequestContent]()
+        var result = [String: RequestContent]()
         if let tmp = t1 {
             result["t"] = tmp.asRequestContent()
         }
@@ -440,7 +440,7 @@ class GetStickerMediaIdRequest: Request {
         self.mediaId = mediaId
     }
     var content: RequestContent? {
-        var result = [String:RequestContent]()
+        var result = [String: RequestContent]()
         if let tmp = defaultMap {
             result["defaultMap"] = tmp.asRequestContent()
         }
@@ -541,7 +541,7 @@ class GetTestNestedMessageRequest: Request {
     var dada1: [String: [[String: [String]]]]?
     var adad1: [[String: [[String: String]]]]?
     var content: RequestContent? {
-        var result = [String:RequestContent]()
+        var result = [String: RequestContent]()
         if let tmp = a1 {
             let tmp = tmp.asRequestContent()
             result["ae"] = tmp
@@ -783,7 +783,7 @@ class GetGetRequest: Request {
     var string: String?
     var array: [String]?
     var content: RequestContent? {
-        var result = [String:RequestContent]()
+        var result = [String: RequestContent]()
         if let tmp = int64 {
             result["int64"] = tmp.asRequestContent()
         }
@@ -847,7 +847,7 @@ class PostPostRequest: Request {
     }
     var data: HTTPFile?
     var content: RequestContent? {
-        var result = [String:RequestContent]()
+        var result = [String: RequestContent]()
         if let tmp = data {
             result["data"] = tmp.asRequestContent()
         }
@@ -890,7 +890,7 @@ class GetUnginedTestRequest: Request {
     var uint32: UInt32?
     var uint64: UInt64?
     var content: RequestContent? {
-        var result = [String:RequestContent]()
+        var result = [String: RequestContent]()
         if let tmp = uint32 {
             result["uint32"] = tmp.asRequestContent()
         }
@@ -931,5 +931,102 @@ struct GetUnginedTestResponse: Response {
         }
         self.uint32 = UInt32(content: value["uint32"])
         self.uint64 = UInt64(content: value["uint64"])
+    }
+}
+
+class GetCgi-aWxRequest: Request {
+    
+    var method: String = "GET"
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        return "/cgi-a/wx"
+    }
+    var content: RequestContent?
+    
+    @discardableResult
+    func send(completion: @escaping (GetCgi-aWxResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetCgi-aWxResponse> {
+        let future: RequestFuture<GetCgi-aWxResponse> = client.send(self)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
+    }
+    
+    @discardableResult
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+        let future = client.send(self)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
+    }
+}
+
+struct GetCgi-aWxResponse: Response {
+    
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+    }
+}
+
+class GetTest%^&**(\/XxxxRequest: Request {
+    
+    let xxxx: String
+    var method: String = "GET"
+    var configuration: Configuration = BaseConfiguration.shared
+    var client: Client = BaseClient.shared
+    var uri: String {
+        return "/test/%^&**(///\(xxxx)"
+    }
+    var a: Int64?
+    var b: Int32?
+    init(xxxx: String) {
+        self.xxxx = xxxx
+    }
+    var content: RequestContent? {
+        var result = [String: RequestContent]()
+        if let tmp = a {
+            result["a"] = tmp.asRequestContent()
+        }
+        if let tmp = b {
+            result["STRING"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
+    
+    @discardableResult
+    func send(completion: @escaping (GetTest%^&**(\/XxxxResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTest%^&**(\/XxxxResponse> {
+        let future: RequestFuture<GetTest%^&**(\/XxxxResponse> = client.send(self)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
+    }
+    
+    @discardableResult
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+        let future = client.send(self)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
+    }
+}
+
+struct GetTest%^&**(\/XxxxResponse: Response {
+    
+    let c: Bool?
+    let d: String?
+    let e: HTTPFile?
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+        guard let content = content, case .dictionary(let value) = content else {
+            self.c = nil
+            self.d = nil
+            self.e = nil
+            return
+        }
+        self.c = Bool(content: value["\;"])
+        self.d = String(content: value["^&**"])
+        self.e = HTTPFile(content: value["a123&*"])
     }
 }

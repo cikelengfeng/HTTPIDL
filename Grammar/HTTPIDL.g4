@@ -64,10 +64,10 @@ parameterInUri
     ;
 
 string
-    : any_except_hidden+
+    : stringElement+
     ;
 
-any_except_hidden
+stringElement
     : MESSAGE
     | STRUCT
     | GET
@@ -81,13 +81,11 @@ any_except_hidden
     | DELETE
     | REQUEST
     | RESPONSE
-    | LCURLY
     | RCURLY
     | DOLLAR
     | LABRACKET
     | RABRACKET
     | COMMA
-    | ASSIGN
     | INT32
     | UINT32
     | INT64
