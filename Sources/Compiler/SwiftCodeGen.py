@@ -3,11 +3,14 @@
 import os
 
 import errno
+import sys
 
 from SwiftTypeTransfer import swift_type_name, swift_base_type_name_from_idl_base_type
 from Parser.HTTPIDL import HTTPIDL
 from NameMethod import underline_to_upper_camel_case
 
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 class Swift3CodeGenerator:
     def __init__(self, output_file_name, output_directory_path):
@@ -120,7 +123,7 @@ class Swift3CodeGenerator:
         self.write_line('var result = [String: %s]()' % httpidl_content_type)
         for parameter_map in parameter_maps:
             param_value = parameter_map.value()
-            param_value_name = param_value.getText() if param_value is not None else parameter_map.key().getText()
+            param_value_name = self.string_from_string_context(param_value.string()) if param_value is not None else parameter_map.key().getText()
             self.write_line('if let tmp = ' + parameter_map.key().getText() + ' {')
             self.push_indent()
             generic_type = parameter_map.paramType().genericType()
@@ -274,7 +277,7 @@ class Swift3CodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()
             generic_type = param_type.genericType()
-            param_value_name = param_map.value().getText() if param_map.value() is not None else param_map.key().getText()
+            param_value_name = self.string_from_string_context(param_map.value().string()) if param_map.value() is not None else param_map.key().getText()
             if generic_type is not None:
                 array_type = generic_type.arrayGenericParam()
                 dict_type = generic_type.dictGenericParam()
@@ -334,7 +337,7 @@ class Swift3CodeGenerator:
             param_type = param_map.paramType()
             generic_type = param_type.genericType()
             param_value = param_map.value()
-            param_value_name = param_value.getText() if param_value is not None else param_map.key().getText()
+            param_value_name = self.string_from_string_context(param_value.string()) if param_value is not None else param_map.key().getText()
             if generic_type is not None:
                 array_type = generic_type.arrayGenericParam()
                 dict_type = generic_type.dictGenericParam()

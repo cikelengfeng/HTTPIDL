@@ -1025,7 +1025,7 @@ struct GetTest%^&**(\/XxxxResponse: Response {
             self.e = nil
             return
         }
-        self.c = Bool(content: value["\;"])
+        self.c = Bool(content: value[";"])
         self.d = String(content: value["^&**"])
         self.e = HTTPFile(content: value["a123&*"])
     }
@@ -1037,9 +1037,20 @@ class GetTestingRequest: Request {
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
-        return "/test/?/message&_name"
+        return "/test/?/message&_name/哎呦"
     }
-    var content: RequestContent?
+    var x: String?
+    var name: String?
+    var content: RequestContent? {
+        var result = [String: RequestContent]()
+        if let tmp = x {
+            result["x"] = tmp.asRequestContent()
+        }
+        if let tmp = name {
+            result["呵呵哒"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
     
     @discardableResult
     func send(completion: @escaping (GetTestingResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestingResponse> {

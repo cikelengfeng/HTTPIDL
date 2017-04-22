@@ -173,8 +173,11 @@ MESSAGE /test/%^&**(/\//$xxxx {
     }
 }
 
-MESSAGE(Testing) /test/?/message&_name {
-    GET REQUEST {}
+MESSAGE(Testing) /test/?/message&_name/哎呦 {
+    GET REQUEST {
+        STRING x = x;
+        STRING name = 呵呵哒;
+    }
     GET RESPONSE {}
 }
 
