@@ -173,7 +173,7 @@ MESSAGE /test/%^&**(/\//$xxxx {
     }
 }
 
-MESSAGE<Testing> /test/message_name {
+MESSAGE(Testing) /test/?/message&_name {
     GET REQUEST {}
     GET RESPONSE {}
 }

@@ -22,7 +22,7 @@ message
     ;
 
 messageName
-    : LABRACKET identifier RABRACKET
+    : LPAREN identifier RPAREN
     ;
 
 struct
@@ -89,6 +89,8 @@ stringElement
     | DOLLAR
     | LABRACKET
     | RABRACKET
+    | LPAREN
+    | RPAREN
     | COMMA
     | INT32
     | UINT32
@@ -116,6 +118,8 @@ escaped
     | DOLLAR
     | LABRACKET
     | RABRACKET
+    | LPAREN
+    | RPAREN
     | COMMA
     | ASSIGN
     | SEMICOLON

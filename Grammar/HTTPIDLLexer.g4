@@ -64,6 +64,14 @@ RCURLY
     : '}'
     ;
 
+LPAREN
+    : '('
+    ;
+
+RPAREN
+    : ')'
+    ;
+
 DOLLAR
     : '$'
     ;

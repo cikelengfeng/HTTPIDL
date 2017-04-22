@@ -1037,7 +1037,7 @@ class GetTestingRequest: Request {
     var configuration: Configuration = BaseConfiguration.shared
     var client: Client = BaseClient.shared
     var uri: String {
-        return "/test/message_name"
+        return "/test/?/message&_name"
     }
     var content: RequestContent?
     
