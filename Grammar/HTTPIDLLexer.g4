@@ -52,7 +52,7 @@ RESPONSE
     : 'RESPONSE'
     ;
 
-BACKSLASH
+SLASH
     : '/'
     ;
 
@@ -96,7 +96,7 @@ SEMICOLON
     : ';'
     ;
 
-SLASH
+ESCAPE
     : '\\'
     ;
 

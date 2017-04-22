@@ -156,7 +156,7 @@ class HTTPIDLLexer(Lexer):
     DELETE = 11
     REQUEST = 12
     RESPONSE = 13
-    BACKSLASH = 14
+    SLASH = 14
     LCURLY = 15
     RCURLY = 16
     LPAREN = 17
@@ -167,7 +167,7 @@ class HTTPIDLLexer(Lexer):
     COMMA = 22
     ASSIGN = 23
     SEMICOLON = 24
-    SLASH = 25
+    ESCAPE = 25
     INT32 = 26
     UINT32 = 27
     INT64 = 28
@@ -201,17 +201,17 @@ class HTTPIDLLexer(Lexer):
     symbolicNames = [ u"<INVALID>",
             u"MESSAGE", u"STRUCT", u"GET", u"HEAD", u"TRACE", u"CONNECT", 
             u"OPTIONS", u"POST", u"PUT", u"PATCH", u"DELETE", u"REQUEST", 
-            u"RESPONSE", u"BACKSLASH", u"LCURLY", u"RCURLY", u"LPAREN", 
-            u"RPAREN", u"DOLLAR", u"LABRACKET", u"RABRACKET", u"COMMA", 
-            u"ASSIGN", u"SEMICOLON", u"SLASH", u"INT32", u"UINT32", u"INT64", 
-            u"UINT64", u"BOOL", u"DOUBLE", u"STRING", u"FILE", u"BLOB", 
-            u"ARRAY", u"DICT", u"COMMENT", u"NL", u"WS", u"IDENT", u"ANYCHAR" ]
+            u"RESPONSE", u"SLASH", u"LCURLY", u"RCURLY", u"LPAREN", u"RPAREN", 
+            u"DOLLAR", u"LABRACKET", u"RABRACKET", u"COMMA", u"ASSIGN", 
+            u"SEMICOLON", u"ESCAPE", u"INT32", u"UINT32", u"INT64", u"UINT64", 
+            u"BOOL", u"DOUBLE", u"STRING", u"FILE", u"BLOB", u"ARRAY", u"DICT", 
+            u"COMMENT", u"NL", u"WS", u"IDENT", u"ANYCHAR" ]
 
     ruleNames = [ u"MESSAGE", u"STRUCT", u"GET", u"HEAD", u"TRACE", u"CONNECT", 
                   u"OPTIONS", u"POST", u"PUT", u"PATCH", u"DELETE", u"REQUEST", 
-                  u"RESPONSE", u"BACKSLASH", u"LCURLY", u"RCURLY", u"LPAREN", 
+                  u"RESPONSE", u"SLASH", u"LCURLY", u"RCURLY", u"LPAREN", 
                   u"RPAREN", u"DOLLAR", u"LABRACKET", u"RABRACKET", u"COMMA", 
-                  u"ASSIGN", u"SEMICOLON", u"SLASH", u"INT32", u"UINT32", 
+                  u"ASSIGN", u"SEMICOLON", u"ESCAPE", u"INT32", u"UINT32", 
                   u"INT64", u"UINT64", u"BOOL", u"DOUBLE", u"STRING", u"FILE", 
                   u"BLOB", u"ARRAY", u"DICT", u"COMMENT", u"NL", u"WS", 
                   u"IDENT", u"ANYCHAR", u"ALPHA", u"DIGIT", u"UNDERSCORE" ]

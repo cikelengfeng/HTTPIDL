@@ -125,10 +125,10 @@ class HTTPIDL ( Parser ):
 
     symbolicNames = [ u"<INVALID>", u"MESSAGE", u"STRUCT", u"GET", u"HEAD", 
                       u"TRACE", u"CONNECT", u"OPTIONS", u"POST", u"PUT", 
-                      u"PATCH", u"DELETE", u"REQUEST", u"RESPONSE", u"BACKSLASH", 
+                      u"PATCH", u"DELETE", u"REQUEST", u"RESPONSE", u"SLASH", 
                       u"LCURLY", u"RCURLY", u"LPAREN", u"RPAREN", u"DOLLAR", 
                       u"LABRACKET", u"RABRACKET", u"COMMA", u"ASSIGN", u"SEMICOLON", 
-                      u"SLASH", u"INT32", u"UINT32", u"INT64", u"UINT64", 
+                      u"ESCAPE", u"INT32", u"UINT32", u"INT64", u"UINT64", 
                       u"BOOL", u"DOUBLE", u"STRING", u"FILE", u"BLOB", u"ARRAY", 
                       u"DICT", u"COMMENT", u"NL", u"WS", u"IDENT", u"ANYCHAR" ]
 
@@ -178,7 +178,7 @@ class HTTPIDL ( Parser ):
     DELETE=11
     REQUEST=12
     RESPONSE=13
-    BACKSLASH=14
+    SLASH=14
     LCURLY=15
     RCURLY=16
     LPAREN=17
@@ -189,7 +189,7 @@ class HTTPIDL ( Parser ):
     COMMA=22
     ASSIGN=23
     SEMICOLON=24
-    SLASH=25
+    ESCAPE=25
     INT32=26
     UINT32=27
     INT64=28
@@ -628,11 +628,11 @@ class HTTPIDL ( Parser ):
             super(HTTPIDL.UriContext, self).__init__(parent, invokingState)
             self.parser = parser
 
-        def BACKSLASH(self, i=None):
+        def SLASH(self, i=None):
             if i is None:
-                return self.getTokens(HTTPIDL.BACKSLASH)
+                return self.getTokens(HTTPIDL.SLASH)
             else:
-                return self.getToken(HTTPIDL.BACKSLASH, i)
+                return self.getToken(HTTPIDL.SLASH, i)
 
         def uriPathComponent(self, i=None):
             if i is None:
@@ -657,9 +657,9 @@ class HTTPIDL ( Parser ):
             self.state = 95
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==HTTPIDL.BACKSLASH:
+            while _la==HTTPIDL.SLASH:
                 self.state = 91
-                self.match(HTTPIDL.BACKSLASH)
+                self.match(HTTPIDL.SLASH)
                 self.state = 92
                 self.uriPathComponent()
                 self.state = 97
@@ -795,7 +795,7 @@ class HTTPIDL ( Parser ):
                 self.state = 108 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.MESSAGE) | (1 << HTTPIDL.STRUCT) | (1 << HTTPIDL.GET) | (1 << HTTPIDL.HEAD) | (1 << HTTPIDL.TRACE) | (1 << HTTPIDL.CONNECT) | (1 << HTTPIDL.OPTIONS) | (1 << HTTPIDL.POST) | (1 << HTTPIDL.PUT) | (1 << HTTPIDL.PATCH) | (1 << HTTPIDL.DELETE) | (1 << HTTPIDL.REQUEST) | (1 << HTTPIDL.RESPONSE) | (1 << HTTPIDL.RCURLY) | (1 << HTTPIDL.LPAREN) | (1 << HTTPIDL.RPAREN) | (1 << HTTPIDL.DOLLAR) | (1 << HTTPIDL.LABRACKET) | (1 << HTTPIDL.RABRACKET) | (1 << HTTPIDL.COMMA) | (1 << HTTPIDL.SLASH) | (1 << HTTPIDL.INT32) | (1 << HTTPIDL.UINT32) | (1 << HTTPIDL.INT64) | (1 << HTTPIDL.UINT64) | (1 << HTTPIDL.BOOL) | (1 << HTTPIDL.DOUBLE) | (1 << HTTPIDL.STRING) | (1 << HTTPIDL.FILE) | (1 << HTTPIDL.BLOB) | (1 << HTTPIDL.ARRAY) | (1 << HTTPIDL.DICT) | (1 << HTTPIDL.COMMENT) | (1 << HTTPIDL.IDENT) | (1 << HTTPIDL.ANYCHAR))) != 0)):
+                if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.MESSAGE) | (1 << HTTPIDL.STRUCT) | (1 << HTTPIDL.GET) | (1 << HTTPIDL.HEAD) | (1 << HTTPIDL.TRACE) | (1 << HTTPIDL.CONNECT) | (1 << HTTPIDL.OPTIONS) | (1 << HTTPIDL.POST) | (1 << HTTPIDL.PUT) | (1 << HTTPIDL.PATCH) | (1 << HTTPIDL.DELETE) | (1 << HTTPIDL.REQUEST) | (1 << HTTPIDL.RESPONSE) | (1 << HTTPIDL.RCURLY) | (1 << HTTPIDL.LPAREN) | (1 << HTTPIDL.RPAREN) | (1 << HTTPIDL.DOLLAR) | (1 << HTTPIDL.LABRACKET) | (1 << HTTPIDL.RABRACKET) | (1 << HTTPIDL.COMMA) | (1 << HTTPIDL.ESCAPE) | (1 << HTTPIDL.INT32) | (1 << HTTPIDL.UINT32) | (1 << HTTPIDL.INT64) | (1 << HTTPIDL.UINT64) | (1 << HTTPIDL.BOOL) | (1 << HTTPIDL.DOUBLE) | (1 << HTTPIDL.STRING) | (1 << HTTPIDL.FILE) | (1 << HTTPIDL.BLOB) | (1 << HTTPIDL.ARRAY) | (1 << HTTPIDL.DICT) | (1 << HTTPIDL.COMMENT) | (1 << HTTPIDL.IDENT) | (1 << HTTPIDL.ANYCHAR))) != 0)):
                     break
 
         except RecognitionException as re:
@@ -1097,7 +1097,7 @@ class HTTPIDL ( Parser ):
                 self.state = 142
                 self.match(HTTPIDL.IDENT)
                 pass
-            elif token in [HTTPIDL.SLASH]:
+            elif token in [HTTPIDL.ESCAPE]:
                 self.enterOuterAlt(localctx, 34)
                 self.state = 143
                 self.escaped()
@@ -1124,14 +1124,14 @@ class HTTPIDL ( Parser ):
             super(HTTPIDL.EscapedContext, self).__init__(parent, invokingState)
             self.parser = parser
 
-        def SLASH(self, i=None):
+        def ESCAPE(self, i=None):
             if i is None:
-                return self.getTokens(HTTPIDL.SLASH)
+                return self.getTokens(HTTPIDL.ESCAPE)
             else:
-                return self.getToken(HTTPIDL.SLASH, i)
+                return self.getToken(HTTPIDL.ESCAPE, i)
 
-        def BACKSLASH(self):
-            return self.getToken(HTTPIDL.BACKSLASH, 0)
+        def SLASH(self):
+            return self.getToken(HTTPIDL.SLASH, 0)
 
         def LCURLY(self):
             return self.getToken(HTTPIDL.LCURLY, 0)
@@ -1177,10 +1177,10 @@ class HTTPIDL ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 147
-            self.match(HTTPIDL.SLASH)
+            self.match(HTTPIDL.ESCAPE)
             self.state = 148
             _la = self._input.LA(1)
-            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.BACKSLASH) | (1 << HTTPIDL.LCURLY) | (1 << HTTPIDL.RCURLY) | (1 << HTTPIDL.LPAREN) | (1 << HTTPIDL.RPAREN) | (1 << HTTPIDL.DOLLAR) | (1 << HTTPIDL.LABRACKET) | (1 << HTTPIDL.RABRACKET) | (1 << HTTPIDL.COMMA) | (1 << HTTPIDL.ASSIGN) | (1 << HTTPIDL.SEMICOLON) | (1 << HTTPIDL.SLASH))) != 0)):
+            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.SLASH) | (1 << HTTPIDL.LCURLY) | (1 << HTTPIDL.RCURLY) | (1 << HTTPIDL.LPAREN) | (1 << HTTPIDL.RPAREN) | (1 << HTTPIDL.DOLLAR) | (1 << HTTPIDL.LABRACKET) | (1 << HTTPIDL.RABRACKET) | (1 << HTTPIDL.COMMA) | (1 << HTTPIDL.ASSIGN) | (1 << HTTPIDL.SEMICOLON) | (1 << HTTPIDL.ESCAPE))) != 0)):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)

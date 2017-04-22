@@ -53,7 +53,7 @@ method
 
 uri
     :
-    ( BACKSLASH  uriPathComponent
+    ( SLASH  uriPathComponent
     )*
     ;
 
@@ -110,9 +110,9 @@ stringElement
     ;
 
 escaped
-    : SLASH
+    : ESCAPE
     (
-     BACKSLASH
+     SLASH
     | LCURLY
     | RCURLY
     | DOLLAR
@@ -123,7 +123,7 @@ escaped
     | COMMA
     | ASSIGN
     | SEMICOLON
-    | SLASH
+    | ESCAPE
     )
     ;
 
