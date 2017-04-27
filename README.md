@@ -1,7 +1,7 @@
 # HTTPIDL
 HTTPIDL是一套HTTP网络库和代码生成工具的集合，目前支持Swift 3。
 ## 状态
-![UnitTest](https://img.shields.io/badge/test-passing-brightgreen.svg)   ![Cocoapods](https://img.shields.io/badge/pod-0.9.14-blue.svg)
+![UnitTest](https://img.shields.io/badge/test-passing-brightgreen.svg)   ![Cocoapods](https://img.shields.io/badge/pod-0.9.15-blue.svg)
 
 ## 特色
 * 自动生成swift 3代码，同时支持手写

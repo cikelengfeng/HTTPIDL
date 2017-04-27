@@ -344,7 +344,7 @@ class Swift3CodeGenerator:
         param_maps = struct_context.structBody().parameterMap()
         for param_map in param_maps:
             param_type = param_map.paramType()
-            self.write_line('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
+            self.write_line('var ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
         self.write_line('init?(content: ResponseContent?) {')
         self.push_indent()
         self.write_line('guard let content = content, case .dictionary(let value) = content else {')
