@@ -104,3 +104,61 @@ public extension ResponseContent {
     }
     
 }
+
+struct JSONObject: ResponseContentConvertible {
+    
+    let json: Any
+    
+    init?(content: ResponseContent?) {
+        guard let c = content, let jsonobj = try? c.jsonObject() else {
+            return nil
+        }
+        self.json = jsonobj
+    }
+    
+    init(json: Any) {
+        self.json = json
+    }
+}
+
+extension JSONObject: RequestContentConvertible {
+    func asRequestContent() -> RequestContent {
+        if let dict = json as? [String: Any] {
+            return requestContent(fromDict: dict)
+        } else if let array = json as? [Any] {
+            return requestContent(fromArray: array)
+        } else if let simple = json as? RequestContentConvertible {
+            return simple.asRequestContent()
+        }
+        return .dictionary(value: [:])
+    }
+    
+    private func requestContent(fromDict dict: [String: Any]) -> RequestContent {
+        var mapped: [String: RequestContent] = [:]
+        dict.forEach { (kv) in
+            let key = kv.key
+            if let dict = kv.value as? [String: Any] {
+                mapped[key] = requestContent(fromDict: dict)
+            } else if let array = kv.value as? [Any] {
+                mapped[key] = requestContent(fromArray: array)
+            } else if let simple = kv.value as? RequestContentConvertible {
+                mapped[key] = simple.asRequestContent()
+            }
+        }
+        return .dictionary(value: mapped)
+    }
+    
+    private func requestContent(fromArray array: [Any]) -> RequestContent {
+        var mapped: [RequestContent] = []
+        array.forEach { (element) in
+            if let dict = element as? [String: Any] {
+                mapped.append(requestContent(fromDict: dict))
+            } else if let array = element as? [Any] {
+                mapped.append(requestContent(fromArray: array))
+            } else if let simple = element as? RequestContentConvertible {
+                mapped.append(simple.asRequestContent())
+            }
+        }
+        return .array(value: mapped)
+    }
+}
