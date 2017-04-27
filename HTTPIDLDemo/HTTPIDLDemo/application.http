@@ -155,12 +155,12 @@ UINT64 uint64;
 }
 }
 
-MESSAGE /cgi-a/wx {
+MESSAGE(Testing1) /cgi-a/wx {
     GET REQUEST {}
     GET RESPONSE {}
 }
 
-MESSAGE /test/%^&**(/\//$xxxx {
+MESSAGE(Testing2) /test/%^&**(/\//$xxxx {
     GET REQUEST {
         INT64 a;
         INT32 b = STRING;
@@ -173,7 +173,7 @@ MESSAGE /test/%^&**(/\//$xxxx {
     }
 }
 
-MESSAGE(Testing) /test/?/message&_name/哎呦 {
+MESSAGE(Testing3) /test/?/message&_name/哎呦 {
     GET REQUEST {
         STRING x = x;
         STRING name = 呵呵哒;

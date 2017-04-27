@@ -12,6 +12,8 @@ from NameMethod import underline_to_upper_camel_case
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+httpidl_content_type = 'RequestContent'
+
 class Swift3CodeGenerator:
     def __init__(self, output_file_name, output_directory_path):
         if not os.path.exists(output_directory_path):
@@ -84,7 +86,6 @@ class Swift3CodeGenerator:
         return uri
 
     def generate_request_send(self, request_context, message_name):
-        request_name = self.request_name_from_message(request_context.method().getText(), message_name)
         response_name = self.response_name_from_message(request_context.method().getText(), message_name)
         self.write_blank_lines(1)
         self.write_line('@discardableResult')
@@ -112,7 +113,6 @@ class Swift3CodeGenerator:
         self.write_line('}')
 
     def generate_request_parameters(self, request_context):
-        httpidl_content_type = 'RequestContent'
         parameter_maps = request_context.structBody().parameterMap()
         if len(parameter_maps) == 0:
             self.write_line('var content: %s?' % httpidl_content_type)
@@ -421,11 +421,43 @@ class Swift3CodeGenerator:
         else:
             self.write_line('let ' + container_name + ' = ' + type_name + '(content: content)')
 
+    def generate_struct_request_content_impl(self, struct_context):
+        parameter_maps = struct_context.structBody().parameterMap()
+        self.write_line('func asRequestContent() -> %s {' % httpidl_content_type)
+        self.push_indent()
+        self.write_line('var result = [String: %s]()' % httpidl_content_type)
+        for parameter_map in parameter_maps:
+            param_value = parameter_map.value()
+            param_value_name = self.string_from_string_context(
+                param_value.string()) if param_value is not None else parameter_map.key().getText()
+            self.write_line('if let tmp = ' + parameter_map.key().getText() + ' {')
+            self.push_indent()
+            generic_type = parameter_map.paramType().genericType()
+            if generic_type is not None:
+                array_type = generic_type.arrayGenericParam()
+                dict_type = generic_type.dictGenericParam()
+                if array_type is not None:
+                    self.generate_array_from_req_assignment(array_type, 'tmp')
+                else:
+                    self.generate_dict_from_req_assignment(dict_type, 'tmp')
+                self.write_line('result["'
+                                + param_value_name + '"] = tmp')
+            else:
+                self.write_line('result["'
+                                + param_value_name + '"] = tmp.as%s()' % httpidl_content_type)
+            self.pop_indent()
+            self.write_line('}')
+        self.write_line('return .dictionary(value: result)')
+        self.pop_indent()
+        self.write_line('}')
+
     def generate_struct(self, struct_context):
         self.write_blank_lines(1)
-        self.write_line('struct ' + struct_context.structName().getText() + ': ResponseContentConvertible {')
+        self.write_line('struct ' + struct_context.structName().getText() + ': ResponseContentConvertible, RequestContentConvertible {')
         self.push_indent()
         self.generate_struct_init_and_member_var(struct_context)
+        self.write_blank_lines(1)
+        self.generate_struct_request_content_impl(struct_context)
         self.pop_indent()
         self.write_line('}')
 

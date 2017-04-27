@@ -3,7 +3,7 @@
 import Foundation
 import HTTPIDL
 
-struct OnlineStickerTemplate: ResponseContentConvertible {
+struct OnlineStickerTemplate: ResponseContentConvertible, RequestContentConvertible {
     
     let url: String?
     let x: Double?
@@ -24,9 +24,35 @@ struct OnlineStickerTemplate: ResponseContentConvertible {
         self.angle = Double(content: value["angle"])
         self.defaultMap = String(content: value["defaultMap"])
     }
+    
+    func asRequestContent() -> RequestContent {
+        var result = [String: RequestContent]()
+        if let tmp = url {
+            result["url"] = tmp.asRequestContent()
+        }
+        if let tmp = x {
+            result["x"] = tmp.asRequestContent()
+        }
+        if let tmp = y {
+            result["y"] = tmp.asRequestContent()
+        }
+        if let tmp = width {
+            result["w"] = tmp.asRequestContent()
+        }
+        if let tmp = height {
+            result["h"] = tmp.asRequestContent()
+        }
+        if let tmp = angle {
+            result["angle"] = tmp.asRequestContent()
+        }
+        if let tmp = defaultMap {
+            result["defaultMap"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
 }
 
-struct TestNestedStruct: ResponseContentConvertible {
+struct TestNestedStruct: ResponseContentConvertible, RequestContentConvertible {
     
     let a: [String]?
     let d: [String: String]?
@@ -149,9 +175,91 @@ struct TestNestedStruct: ResponseContentConvertible {
             self.dada = nil
         }
     }
+    
+    func asRequestContent() -> RequestContent {
+        var result = [String: RequestContent]()
+        if let tmp = a {
+            let tmp = tmp.asRequestContent()
+            result["a"] = tmp
+        }
+        if let tmp = d {
+            let tmp = tmp.asRequestContent()
+            result["d"] = tmp
+        }
+        if let tmp = aa {
+            let tmp = tmp.reduce(.array(value: []), { (soFar, soGood) -> RequestContent in
+                guard case .array(var content) = soFar else {
+                    return soFar
+                }
+                let tmp = soGood.asRequestContent()
+                content.append(tmp)
+                return .array(value: content)
+            })
+            result["aa"] = tmp
+        }
+        if let tmp = ad {
+            let tmp = tmp.reduce(.array(value: []), { (soFar, soGood) -> RequestContent in
+                guard case .array(var content) = soFar else {
+                    return soFar
+                }
+                let tmp = soGood.asRequestContent()
+                content.append(tmp)
+                return .array(value: content)
+            })
+            result["ad"] = tmp
+        }
+        if let tmp = dd {
+            let tmp = tmp.reduce(.dictionary(value: [:]), { (soFar, soGood) -> RequestContent in
+                guard case .dictionary(var content) = soFar else {
+                    return soFar
+                }
+                let tmp = soGood.value.asRequestContent()
+                content[soGood.key.asHTTPParamterKey()] = tmp
+                return .dictionary(value: content)
+            })
+            result["dd"] = tmp
+        }
+        if let tmp = da {
+            let tmp = tmp.reduce(.dictionary(value: [:]), { (soFar, soGood) -> RequestContent in
+                guard case .dictionary(var content) = soFar else {
+                    return soFar
+                }
+                let tmp = soGood.value.asRequestContent()
+                content[soGood.key.asHTTPParamterKey()] = tmp
+                return .dictionary(value: content)
+            })
+            result["da"] = tmp
+        }
+        if let tmp = dada {
+            let tmp = tmp.reduce(.dictionary(value: [:]), { (soFar, soGood) -> RequestContent in
+                guard case .dictionary(var content) = soFar else {
+                    return soFar
+                }
+                let tmp = soGood.value.reduce(.array(value: []), { (soFar, soGood) -> RequestContent in
+                    guard case .array(var content) = soFar else {
+                        return soFar
+                    }
+                    let tmp = soGood.reduce(.dictionary(value: [:]), { (soFar, soGood) -> RequestContent in
+                        guard case .dictionary(var content) = soFar else {
+                            return soFar
+                        }
+                        let tmp = soGood.value.asRequestContent()
+                        content[soGood.key.asHTTPParamterKey()] = tmp
+                        return .dictionary(value: content)
+                    })
+                    content.append(tmp)
+                    return .array(value: content)
+                })
+                content[soGood.key.asHTTPParamterKey()] = tmp
+                return .dictionary(value: content)
+            })
+            result["dada"] = tmp
+        }
+        return .dictionary(value: result)
+    }
 }
 
-struct HTTPBinGetArgs: ResponseContentConvertible {
+struct HTTPBinGetArgs: ResponseContentConvertible, RequestContentConvertible {
     
     let int64: Int64?
     let int32: Int32?
@@ -174,6 +282,30 @@ struct HTTPBinGetArgs: ResponseContentConvertible {
         } else {
             self.array = nil
         }
+    }
+    
+    func asRequestContent() -> RequestContent {
+        var result = [String: RequestContent]()
+        if let tmp = int64 {
+            result["int64"] = tmp.asRequestContent()
+        }
+        if let tmp = int32 {
+            result["int32"] = tmp.asRequestContent()
+        }
+        if let tmp = bool {
+            result["bool"] = tmp.asRequestContent()
+        }
+        if let tmp = double {
+            result["double"] = tmp.asRequestContent()
+        }
+        if let tmp = string {
+            result["string"] = tmp.asRequestContent()
+        }
+        if let tmp = array {
+            let tmp = tmp.asRequestContent()
+            result["array"] = tmp
+        }
+        return .dictionary(value: result)
     }
 }
 
@@ -934,7 +1066,7 @@ struct GetUnginedTestResponse: Response {
     }
 }
 
-class GetCgi-aWxRequest: Request {
+class GetTesting1Request: Request {
     
     var method: String = "GET"
     var configuration: Configuration = BaseConfiguration.shared
@@ -945,8 +1077,8 @@ class GetCgi-aWxRequest: Request {
     var content: RequestContent?
     
     @discardableResult
-    func send(completion: @escaping (GetCgi-aWxResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetCgi-aWxResponse> {
-        let future: RequestFuture<GetCgi-aWxResponse> = client.send(self)
+    func send(completion: @escaping (GetTesting1Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTesting1Response> {
+        let future: RequestFuture<GetTesting1Response> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -961,7 +1093,7 @@ class GetCgi-aWxRequest: Request {
     }
 }
 
-struct GetCgi-aWxResponse: Response {
+struct GetTesting1Response: Response {
     
     let rawResponse: HTTPResponse
     init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
@@ -969,7 +1101,7 @@ struct GetCgi-aWxResponse: Response {
     }
 }
 
-class GetTest%^&**(\/XxxxRequest: Request {
+class GetTesting2Request: Request {
     
     let xxxx: String
     var method: String = "GET"
@@ -995,8 +1127,8 @@ class GetTest%^&**(\/XxxxRequest: Request {
     }
     
     @discardableResult
-    func send(completion: @escaping (GetTest%^&**(\/XxxxResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTest%^&**(\/XxxxResponse> {
-        let future: RequestFuture<GetTest%^&**(\/XxxxResponse> = client.send(self)
+    func send(completion: @escaping (GetTesting2Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTesting2Response> {
+        let future: RequestFuture<GetTesting2Response> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1011,7 +1143,7 @@ class GetTest%^&**(\/XxxxRequest: Request {
     }
 }
 
-struct GetTest%^&**(\/XxxxResponse: Response {
+struct GetTesting2Response: Response {
     
     let c: Bool?
     let d: String?
@@ -1031,7 +1163,7 @@ struct GetTest%^&**(\/XxxxResponse: Response {
     }
 }
 
-class GetTestingRequest: Request {
+class GetTesting3Request: Request {
     
     var method: String = "GET"
     var configuration: Configuration = BaseConfiguration.shared
@@ -1053,8 +1185,8 @@ class GetTestingRequest: Request {
     }
     
     @discardableResult
-    func send(completion: @escaping (GetTestingResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestingResponse> {
-        let future: RequestFuture<GetTestingResponse> = client.send(self)
+    func send(completion: @escaping (GetTesting3Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTesting3Response> {
+        let future: RequestFuture<GetTesting3Response> = client.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1069,7 +1201,7 @@ class GetTestingRequest: Request {
     }
 }
 
-struct GetTestingResponse: Response {
+struct GetTesting3Response: Response {
     
     let rawResponse: HTTPResponse
     init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
