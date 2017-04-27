@@ -105,24 +105,24 @@ public extension ResponseContent {
     
 }
 
-struct JSONObject: ResponseContentConvertible {
+public struct JSONObject: ResponseContentConvertible {
     
-    let json: Any
+    public let json: Any
     
-    init?(content: ResponseContent?) {
+    public init?(content: ResponseContent?) {
         guard let c = content, let jsonobj = try? c.jsonObject() else {
             return nil
         }
         self.json = jsonobj
     }
     
-    init(json: Any) {
+    public init(json: Any) {
         self.json = json
     }
 }
 
 extension JSONObject: RequestContentConvertible {
-    func asRequestContent() -> RequestContent {
+    public func asRequestContent() -> RequestContent {
         if let dict = json as? [String: Any] {
             return requestContent(fromDict: dict)
         } else if let array = json as? [Any] {
