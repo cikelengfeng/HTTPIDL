@@ -38,6 +38,8 @@ public protocol Client {
     func send<ResponseType: Response>(_ request: Request) -> RequestFuture<ResponseType>
     func send(_ request: Request) -> RequestFuture<HTTPResponse>
     
+    var configuration: Configuration {get set}
+    
     mutating func add(requestObserver: HTTPRequestObserver)
     mutating func remove(requestObserver: HTTPRequestObserver)
     mutating func add(responseObserver: HTTPResponseObserver)

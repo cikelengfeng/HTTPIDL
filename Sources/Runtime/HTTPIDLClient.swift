@@ -23,6 +23,18 @@ public class BaseClient: Client {
     
     public static let shared = BaseClient()
     public var clientImpl: HTTPClient = NSClient()
+    public var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return BaseConfiguration.shared
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
+    private var _configuration: Configuration?
     private var requestObservers: [HTTPRequestObserver] = []
     private var responseObservers: [HTTPResponseObserver] = []
     private var requestRewriters: [HTTPRequestRewriter] = []

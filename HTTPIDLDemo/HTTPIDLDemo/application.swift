@@ -312,7 +312,18 @@ struct HTTPBinGetArgs: ResponseContentConvertible, RequestContentConvertible {
 class GetTestUrlencodedQueryEncoderRequest: Request {
     
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/test/urlencoded/query/encoder"
@@ -372,7 +383,18 @@ struct GetTestUrlencodedQueryEncoderResponse: Response {
 class PostTestUrlencodedFormEncoderRequest: Request {
     
     var method: String = "POST"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/test/urlencoded/form/encoder"
@@ -432,7 +454,18 @@ struct PostTestUrlencodedFormEncoderResponse: Response {
 class PostTestMultipartEncoderRequest: Request {
     
     var method: String = "POST"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/test/multipart/encoder"
@@ -496,7 +529,18 @@ struct PostTestMultipartEncoderResponse: Response {
 class PostTestJsonEncoderRequest: Request {
     
     var method: String = "POST"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/test/json/encoder"
@@ -562,7 +606,18 @@ class GetStickerMediaIdRequest: Request {
     
     let mediaId: String
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/sticker/\(mediaId)"
@@ -624,7 +679,18 @@ struct GetStickerMediaIdResponse: Response {
 class GetUnderLineRequest: Request {
     
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/under_line"
@@ -659,7 +725,18 @@ struct GetUnderLineResponse: Response {
 class GetTestNestedMessageRequest: Request {
     
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/test/nested/message"
@@ -903,7 +980,18 @@ struct GetTestNestedMessageResponse: Response {
 class GetGetRequest: Request {
     
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/get"
@@ -972,7 +1060,18 @@ struct GetGetResponse: Response {
 class PostPostRequest: Request {
     
     var method: String = "POST"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/post"
@@ -1014,7 +1113,18 @@ struct PostPostResponse: Response {
 class GetUnginedTestRequest: Request {
     
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/ungined/test"
@@ -1069,7 +1179,18 @@ struct GetUnginedTestResponse: Response {
 class GetTesting1Request: Request {
     
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/cgi-a/wx"
@@ -1105,7 +1226,18 @@ class GetTesting2Request: Request {
     
     let xxxx: String
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/test/%^&**(///\(xxxx)"
@@ -1166,7 +1298,18 @@ struct GetTesting2Response: Response {
 class GetTesting3Request: Request {
     
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
+    private var _configuration: Configuration?
+    var configuration: Configuration {
+        get {
+            guard let config = _configuration else {
+                return client.configuration
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
     var client: Client = BaseClient.shared
     var uri: String {
         return "/test/?/message&_name/哎呦"
