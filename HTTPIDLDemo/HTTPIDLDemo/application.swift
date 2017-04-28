@@ -5,13 +5,15 @@ import HTTPIDL
 
 struct OnlineStickerTemplate: ResponseContentConvertible, RequestContentConvertible {
     
-    let url: String?
-    let x: Double?
-    let y: Double?
-    let width: Double?
-    let height: Double?
-    let angle: Double?
-    let defaultMap: String?
+    var url: String?
+    var x: Double?
+    var y: Double?
+    var width: Double?
+    var height: Double?
+    var angle: Double?
+    var defaultMap: String?
+    init() {}
+    
     init?(content: ResponseContent?) {
         guard let content = content, case .dictionary(let value) = content else {
             return nil
@@ -54,13 +56,15 @@ struct OnlineStickerTemplate: ResponseContentConvertible, RequestContentConverti
 
 struct TestNestedStruct: ResponseContentConvertible, RequestContentConvertible {
     
-    let a: [String]?
-    let d: [String: String]?
-    let aa: [[String]]?
-    let ad: [[String: String]]?
-    let dd: [String: [String: String]]?
-    let da: [String: [String]]?
-    let dada: [String: [[String: [String]]]]?
+    var a: [String]?
+    var d: [String: String]?
+    var aa: [[String]]?
+    var ad: [[String: String]]?
+    var dd: [String: [String: String]]?
+    var da: [String: [String]]?
+    var dada: [String: [[String: [String]]]]?
+    init() {}
+    
     init?(content: ResponseContent?) {
         guard let content = content, case .dictionary(let value) = content else {
             return nil
@@ -261,12 +265,14 @@ struct TestNestedStruct: ResponseContentConvertible, RequestContentConvertible {
 
 struct HTTPBinGetArgs: ResponseContentConvertible, RequestContentConvertible {
     
-    let int64: Int64?
-    let int32: Int32?
-    let bool: Bool?
-    let double: Double?
-    let string: String?
-    let array: [String]?
+    var int64: Int64?
+    var int32: Int32?
+    var bool: Bool?
+    var double: Double?
+    var string: String?
+    var array: [String]?
+    init() {}
+    
     init?(content: ResponseContent?) {
         guard let content = content, case .dictionary(let value) = content else {
             return nil
