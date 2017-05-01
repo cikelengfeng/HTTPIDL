@@ -3,7 +3,7 @@
 import Foundation
 import HTTPIDL
 
-struct OnlineStickerTemplate: ResponseContentConvertible, RequestContentConvertible {
+struct OnlineStickerTemplate {
     
     var url: String?
     var x: Double?
@@ -12,7 +12,9 @@ struct OnlineStickerTemplate: ResponseContentConvertible, RequestContentConverti
     var height: Double?
     var angle: Double?
     var defaultMap: String?
-    init() {}
+}
+
+extension OnlineStickerTemplate: ResponseContentConvertible {
     
     init?(content: ResponseContent?) {
         guard let content = content, case .dictionary(let value) = content else {
@@ -26,35 +28,9 @@ struct OnlineStickerTemplate: ResponseContentConvertible, RequestContentConverti
         self.angle = Double(content: value["angle"])
         self.defaultMap = String(content: value["defaultMap"])
     }
-    
-    func asRequestContent() -> RequestContent {
-        var result = [String: RequestContent]()
-        if let tmp = url {
-            result["url"] = tmp.asRequestContent()
-        }
-        if let tmp = x {
-            result["x"] = tmp.asRequestContent()
-        }
-        if let tmp = y {
-            result["y"] = tmp.asRequestContent()
-        }
-        if let tmp = width {
-            result["w"] = tmp.asRequestContent()
-        }
-        if let tmp = height {
-            result["h"] = tmp.asRequestContent()
-        }
-        if let tmp = angle {
-            result["angle"] = tmp.asRequestContent()
-        }
-        if let tmp = defaultMap {
-            result["defaultMap"] = tmp.asRequestContent()
-        }
-        return .dictionary(value: result)
-    }
 }
 
-struct TestNestedStruct: ResponseContentConvertible, RequestContentConvertible {
+struct TestNestedStruct {
     
     var a: [String]?
     var d: [String: String]?
@@ -63,7 +39,9 @@ struct TestNestedStruct: ResponseContentConvertible, RequestContentConvertible {
     var dd: [String: [String: String]]?
     var da: [String: [String]]?
     var dada: [String: [[String: [String]]]]?
-    init() {}
+}
+
+extension TestNestedStruct: ResponseContentConvertible {
     
     init?(content: ResponseContent?) {
         guard let content = content, case .dictionary(let value) = content else {
@@ -179,6 +157,9 @@ struct TestNestedStruct: ResponseContentConvertible, RequestContentConvertible {
             self.dada = nil
         }
     }
+}
+
+extension TestNestedStruct: RequestContentConvertible {
     
     func asRequestContent() -> RequestContent {
         var result = [String: RequestContent]()
@@ -263,7 +244,7 @@ struct TestNestedStruct: ResponseContentConvertible, RequestContentConvertible {
     }
 }
 
-struct HTTPBinGetArgs: ResponseContentConvertible, RequestContentConvertible {
+struct HTTPBinGetArgs {
     
     var int64: Int64?
     var int32: Int32?
@@ -271,7 +252,9 @@ struct HTTPBinGetArgs: ResponseContentConvertible, RequestContentConvertible {
     var double: Double?
     var string: String?
     var array: [String]?
-    init() {}
+}
+
+extension HTTPBinGetArgs: ResponseContentConvertible {
     
     init?(content: ResponseContent?) {
         guard let content = content, case .dictionary(let value) = content else {
@@ -288,30 +271,6 @@ struct HTTPBinGetArgs: ResponseContentConvertible, RequestContentConvertible {
         } else {
             self.array = nil
         }
-    }
-    
-    func asRequestContent() -> RequestContent {
-        var result = [String: RequestContent]()
-        if let tmp = int64 {
-            result["int64"] = tmp.asRequestContent()
-        }
-        if let tmp = int32 {
-            result["int32"] = tmp.asRequestContent()
-        }
-        if let tmp = bool {
-            result["bool"] = tmp.asRequestContent()
-        }
-        if let tmp = double {
-            result["double"] = tmp.asRequestContent()
-        }
-        if let tmp = string {
-            result["string"] = tmp.asRequestContent()
-        }
-        if let tmp = array {
-            let tmp = tmp.asRequestContent()
-            result["array"] = tmp
-        }
-        return .dictionary(value: result)
     }
 }
 
@@ -701,7 +660,14 @@ class GetUnderLineRequest: Request {
     var uri: String {
         return "/under_line"
     }
-    var content: RequestContent?
+    var a: TestNestedStruct?
+    var content: RequestContent? {
+        var result = [String: RequestContent]()
+        if let tmp = a {
+            result["a"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
     
     @discardableResult
     func send(completion: @escaping (GetUnderLineResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUnderLineResponse> {
@@ -722,9 +688,20 @@ class GetUnderLineRequest: Request {
 
 struct GetUnderLineResponse: Response {
     
+    let b: [TestNestedStruct]?
     let rawResponse: HTTPResponse
     init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
         self.rawResponse = rawResponse
+        guard let content = content, case .dictionary(let value) = content else {
+            self.b = nil
+            return
+        }
+        if let content = value["b"] {
+            let b = [TestNestedStruct](content: content)
+            self.b = b
+        } else {
+            self.b = nil
+        }
     }
 }
 

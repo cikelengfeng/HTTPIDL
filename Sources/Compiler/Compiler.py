@@ -1,6 +1,7 @@
 import os
 import sys
 
+from DependencyAnalyzer import DependencyAnalyzer
 from antlr4.FileStream import FileStream
 from SwiftCodeGen import Swift3CodeGenerator
 from antlr4 import CommonTokenStream
@@ -25,18 +26,26 @@ class HTTPIDLCompiler:
         pass
 
     def assemble_file(self, input_file_paths, output_directory_path):
+        parse_tree_and_input_file_paths = []
+        parse_trees = []
         for input_file_path in input_file_paths:
+            parse_tree = self.parse_tree_from_file(input_file_path, 'utf-8', HTTPIDLErrorListener())
+            parse_trees.append(parse_tree)
+            parse_tree_and_input_file_paths.append((parse_tree, input_file_path))
+
+        dependency_analyzer = DependencyAnalyzer(parse_trees)
+        dependency_analyzer.prepare()
+        for (parse_tree, input_file_path) in parse_tree_and_input_file_paths:
             print 'start compile ' + input_file_path
-            self.compile(input_file_path, output_directory_path)
+            output_file_name = os.path.splitext(os.path.basename(input_file_path))[0]
+            self.compile(parse_tree, output_file_name, output_directory_path, dependency_analyzer)
 
     def assemble_dir(self, input_directory_path, output_directory_path):
         input_file_paths = self.all_files(input_directory_path)
         self.assemble_file(input_file_paths, output_directory_path)
 
-    def compile(self, input_file_path, output_directory_path):
-        parse_tree = self.parse_tree_from_file(input_file_path, 'utf-8', HTTPIDLErrorListener())
-        input_file_name = os.path.splitext(os.path.basename(input_file_path))[0]
-        generator = Swift3CodeGenerator(input_file_name, output_directory_path)
+    def compile(self, parse_tree, output_name, output_directory_path, dependcy_analyzer):
+        generator = Swift3CodeGenerator(output_name, output_directory_path, dependcy_analyzer)
         generator.generate_entry(parse_tree)
 
     @staticmethod

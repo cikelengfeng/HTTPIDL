@@ -72,9 +72,10 @@ DOUBLE angle = angle;
 
 MESSAGE /under_line {
 GET REQUEST {
+    TestNestedStruct a;
 }
 GET RESPONSE {
-
+    ARRAY<TestNestedStruct> b;
 }
 }
 

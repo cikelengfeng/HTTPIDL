@@ -14,8 +14,9 @@ sys.setdefaultencoding('utf8')
 
 httpidl_content_type = 'RequestContent'
 
+
 class Swift3CodeGenerator:
-    def __init__(self, output_file_name, output_directory_path):
+    def __init__(self, output_file_name, output_directory_path, dependency_analyzer):
         if not os.path.exists(output_directory_path):
             try:
                 os.makedirs(output_directory_path)
@@ -27,6 +28,7 @@ class Swift3CodeGenerator:
 
         self.output_file = open(os.path.join(output_directory_path, output_file_name + '.swift'), 'w')
         self.indent = 0
+        self.dependency_analyzer = dependency_analyzer
 
     def write_line(self, text):
         # 1 indent = 4 blank space
@@ -339,13 +341,17 @@ class Swift3CodeGenerator:
         for response in responses:
             self.generate_response(response, message_name)
 
-    def generate_struct_init_and_member_var(self, struct_context):
+    def generate_struct_member_var(self, struct_context):
         self.write_blank_lines(1)
         param_maps = struct_context.structBody().parameterMap()
         for param_map in param_maps:
             param_type = param_map.paramType()
             self.write_line('var ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        self.write_line('init() {}')
+
+    def generate_struct_response_content_impl(self, struct_context):
+        param_maps = struct_context.structBody().parameterMap()
+        self.write_line('extension %s: ResponseContentConvertible {' % struct_context.structName().getText())
+        self.push_indent()
         self.write_blank_lines(1)
         self.write_line('init?(content: ResponseContent?) {')
         self.push_indent()
@@ -378,6 +384,8 @@ class Swift3CodeGenerator:
             else:
                 self.write_line('self.' + param_map.key().getText() + ' = ' + swift_type_name(
                     param_type) + '(content: value["' + param_value_name + '"])')
+        self.pop_indent()
+        self.write_line('}')
         self.pop_indent()
         self.write_line('}')
 
@@ -444,6 +452,9 @@ class Swift3CodeGenerator:
 
     def generate_struct_request_content_impl(self, struct_context):
         parameter_maps = struct_context.structBody().parameterMap()
+        self.write_line('extension %s: RequestContentConvertible {' % struct_context.structName().getText())
+        self.push_indent()
+        self.write_blank_lines(1)
         self.write_line('func asRequestContent() -> %s {' % httpidl_content_type)
         self.push_indent()
         self.write_line('var result = [String: %s]()' % httpidl_content_type)
@@ -471,16 +482,22 @@ class Swift3CodeGenerator:
         self.write_line('return .dictionary(value: result)')
         self.pop_indent()
         self.write_line('}')
+        self.pop_indent()
+        self.write_line('}')
 
     def generate_struct(self, struct_context):
         self.write_blank_lines(1)
-        self.write_line('struct ' + struct_context.structName().getText() + ': ResponseContentConvertible, RequestContentConvertible {')
+        self.write_line('struct ' + struct_context.structName().getText() + ' {')
         self.push_indent()
-        self.generate_struct_init_and_member_var(struct_context)
-        self.write_blank_lines(1)
-        self.generate_struct_request_content_impl(struct_context)
+        self.generate_struct_member_var(struct_context)
         self.pop_indent()
         self.write_line('}')
+        if self.dependency_analyzer.is_type_refered_by_response(struct_context.structName().getText()):
+            self.write_blank_lines(1)
+            self.generate_struct_response_content_impl(struct_context)
+        if self.dependency_analyzer.is_type_refered_by_request(struct_context.structName().getText()):
+            self.write_blank_lines(1)
+            self.generate_struct_request_content_impl(struct_context)
 
     def generate_entry(self, entry_context):
         self.write_line('//这是自动生成的代码，不要改动，否则你的改动会被覆盖！！！！！！！')
