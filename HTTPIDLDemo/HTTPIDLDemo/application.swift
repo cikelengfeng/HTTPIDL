@@ -39,6 +39,7 @@ struct TestNestedStruct {
     var dd: [String: [String: String]]?
     var da: [String: [String]]?
     var dada: [String: [[String: [String]]]]?
+    var indirect: TestIndirectRefer?
 }
 
 extension TestNestedStruct: ResponseContentConvertible {
@@ -156,6 +157,7 @@ extension TestNestedStruct: ResponseContentConvertible {
         } else {
             self.dada = nil
         }
+        self.indirect = TestIndirectRefer(content: value["indirect"])
     }
 }
 
@@ -239,6 +241,35 @@ extension TestNestedStruct: RequestContentConvertible {
                 return .dictionary(value: content)
             })
             result["dada"] = tmp
+        }
+        if let tmp = indirect {
+            result["indirect"] = tmp.asRequestContent()
+        }
+        return .dictionary(value: result)
+    }
+}
+
+struct TestIndirectRefer {
+    
+    var i: Int64?
+}
+
+extension TestIndirectRefer: ResponseContentConvertible {
+    
+    init?(content: ResponseContent?) {
+        guard let content = content, case .dictionary(let value) = content else {
+            return nil
+        }
+        self.i = Int64(content: value["i"])
+    }
+}
+
+extension TestIndirectRefer: RequestContentConvertible {
+    
+    func asRequestContent() -> RequestContent {
+        var result = [String: RequestContent]()
+        if let tmp = i {
+            result["i"] = tmp.asRequestContent()
         }
         return .dictionary(value: result)
     }

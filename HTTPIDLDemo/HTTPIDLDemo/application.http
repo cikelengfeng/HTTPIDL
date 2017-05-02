@@ -108,6 +108,11 @@ ARRAY<DICT<STRING, STRING>> ad;
 DICT<STRING, DICT<STRING, STRING>> dd;
 DICT<STRING, ARRAY<STRING>> da;
 DICT<STRING, ARRAY<DICT<STRING, ARRAY<STRING>>>> dada;
+TestIndirectRefer indirect;
+}
+
+STRUCT TestIndirectRefer {
+INT64 i;
 }
 
 MESSAGE /get {
