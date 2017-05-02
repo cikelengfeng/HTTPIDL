@@ -22,8 +22,12 @@ class PutPushTokenRequest: Request {
     var uri: String {
         return "/push/token"
     }
+    
     var token: String?
     var channel: String?
+    
+    let keyOfToken = "token"
+    let keyOfChannel = "channel"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = token {
@@ -71,6 +75,8 @@ class DeletePushTokenRequest: Request {
     var uri: String {
         return "/push/token"
     }
+    
+    
     var content: RequestContent?
     
     @discardableResult

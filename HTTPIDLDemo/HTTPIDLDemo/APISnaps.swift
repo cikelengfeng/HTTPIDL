@@ -178,7 +178,10 @@ class GetSnapsRequest: Request {
     var uri: String {
         return "/snaps"
     }
+    
     var userId: Int64?
+    
+    let keyOfUserId = "user_id"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = userId {
@@ -223,8 +226,12 @@ class PostSnapsRequest: Request {
     var uri: String {
         return "/snaps"
     }
+    
     var file: HTTPFile?
     var data: HTTPData?
+    
+    let keyOfFile = "file"
+    let keyOfData = "file"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = file {
@@ -309,8 +316,12 @@ class GetSnapsSelfRequest: Request {
     var uri: String {
         return "/snaps/self"
     }
+    
     var page: String?
     var count: Int32?
+    
+    let keyOfPage = "p"
+    let keyOfCount = "count"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = page {
@@ -379,7 +390,11 @@ class GetSnapsSnapIdRequest: Request {
     var uri: String {
         return "/snaps/\(snapId)"
     }
+    
     var owner: String?
+    
+    let keyOfOwner = "owner"
+    
     init(snapId: String) {
         self.snapId = snapId
     }
@@ -428,6 +443,9 @@ class DeleteSnapsSnapIdRequest: Request {
     var uri: String {
         return "/snaps/\(snapId)"
     }
+    
+    
+    
     init(snapId: String) {
         self.snapId = snapId
     }
@@ -504,9 +522,15 @@ class GetSnapsSnapIdActionsRequest: Request {
     var uri: String {
         return "/snaps/\(snapId)/actions"
     }
+    
     var page: String?
     var count: Int32?
     var owner: Int64?
+    
+    let keyOfPage = "p"
+    let keyOfCount = "count"
+    let keyOfOwner = "owner"
+    
     init(snapId: String) {
         self.snapId = snapId
     }
@@ -561,9 +585,15 @@ class PostSnapsSnapIdActionsRequest: Request {
     var uri: String {
         return "/snaps/\(snapId)/actions"
     }
+    
     var type: String?
     var text: String?
     var owner: Int64?
+    
+    let keyOfType = "type"
+    let keyOfText = "text"
+    let keyOfOwner = "owner"
+    
     init(snapId: String) {
         self.snapId = snapId
     }
@@ -654,7 +684,10 @@ class PostSnapsShareRequest: Request {
     var uri: String {
         return "/snaps/share"
     }
+    
     var snapId: [String]?
+    
+    let keyOfSnapId = "snap_id"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = snapId {
@@ -717,6 +750,8 @@ class GetEMojiConfigRequest: Request {
     var uri: String {
         return "/configs/hippocampus/smilies.json"
     }
+    
+    
     var content: RequestContent?
     
     @discardableResult

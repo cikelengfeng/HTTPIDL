@@ -234,14 +234,21 @@ class Swift3CodeGenerator:
         self.write_line('return ' + self.request_uri_from_uri(uri_context))
         self.pop_indent()
         self.write_line('}')
-
+        self.write_blank_lines(1)
         param_maps = request_context.structBody().parameterMap()
         for param_map in param_maps:
             param_type = param_map.paramType()
             self.write_line('var ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
+        self.write_blank_lines(1)
+        for param_map in param_maps:
+            param_value_name = self.string_from_string_context(
+                param_map.value().string()) if param_map.value() is not None else param_map.key().getText()
+            self.write_line('let keyOf' + underline_to_upper_camel_case(param_map.key().getText()) + ' = "'
+                            + param_value_name + '"')
         init_param_list = ', '.join(
             map(lambda p: p.parameterInUri().identifier().getText() + ': String', params_in_uri))
         if len(init_param_list) != 0:
+            self.write_blank_lines(1)
             self.write_line('init(' + init_param_list + ') {')
             self.push_indent()
             for param_in_uri in params_in_uri:

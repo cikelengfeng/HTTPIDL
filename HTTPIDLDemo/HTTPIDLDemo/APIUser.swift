@@ -87,6 +87,9 @@ class GetUsersUserIdRequest: Request {
     var uri: String {
         return "/users/\(userId)"
     }
+    
+    
+    
     init(userId: String) {
         self.userId = userId
     }
@@ -145,6 +148,8 @@ class GetUsersSelfRequest: Request {
     var uri: String {
         return "/users/self"
     }
+    
+    
     var content: RequestContent?
     
     @discardableResult
@@ -200,8 +205,12 @@ class PostAuthWeixinRequest: Request {
     var uri: String {
         return "/auth/weixin"
     }
+    
     var code: String?
     var appid: String?
+    
+    let keyOfCode = "code"
+    let keyOfAppid = "appid"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = code {
@@ -263,7 +272,10 @@ class PatchUsersPrivacyLevelRequest: Request {
     var uri: String {
         return "/users/privacy_level"
     }
+    
     var level: String?
+    
+    let keyOfLevel = "level"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = level {
@@ -322,7 +334,10 @@ class PostApplicationEventsRequest: Request {
     var uri: String {
         return "/application/events"
     }
+    
     var events: [ApplicationEvent]?
+    
+    let keyOfEvents = "events"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = events {

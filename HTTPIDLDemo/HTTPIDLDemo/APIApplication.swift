@@ -22,10 +22,16 @@ class GetApplicationSettingsRequest: Request {
     var uri: String {
         return "/application/settings"
     }
+    
     var cpu: Int32?
     var totalMemory: Int64?
     var availableMemory: Int64?
     var resolution: String?
+    
+    let keyOfCpu = "cpu"
+    let keyOfTotalMemory = "total_mem"
+    let keyOfAvailableMemory = "avail_mem"
+    let keyOfResolution = "resolution"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = cpu {

@@ -324,10 +324,16 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
     var uri: String {
         return "/test/urlencoded/query/encoder"
     }
+    
     var t1: Int64?
     var t2: Int32?
     var t3: Double?
     var t4: String?
+    
+    let keyOfT1 = "t"
+    let keyOfT2 = "tt"
+    let keyOfT3 = "ttt"
+    let keyOfT4 = "tttt"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = t1 {
@@ -395,10 +401,16 @@ class PostTestUrlencodedFormEncoderRequest: Request {
     var uri: String {
         return "/test/urlencoded/form/encoder"
     }
+    
     var t1: Int64?
     var t2: Int32?
     var t3: Double?
     var t4: String?
+    
+    let keyOfT1 = "t"
+    let keyOfT2 = "tt"
+    let keyOfT3 = "ttt"
+    let keyOfT4 = "tttt"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = t1 {
@@ -466,11 +478,18 @@ class PostTestMultipartEncoderRequest: Request {
     var uri: String {
         return "/test/multipart/encoder"
     }
+    
     var number: Int64?
     var bool: Bool?
     var string: String?
     var data: HTTPData?
     var file: HTTPFile?
+    
+    let keyOfNumber = "number"
+    let keyOfBool = "bool"
+    let keyOfString = "string"
+    let keyOfData = "data"
+    let keyOfFile = "file"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = number {
@@ -541,11 +560,18 @@ class PostTestJsonEncoderRequest: Request {
     var uri: String {
         return "/test/json/encoder"
     }
+    
     var t1: Int64?
     var t2: Int32?
     var t3: Double?
     var t4: String?
     var t5: [String]?
+    
+    let keyOfT1 = "t"
+    let keyOfT2 = "tt"
+    let keyOfT3 = "ttt"
+    let keyOfT4 = "tttt"
+    let keyOfT5 = "ttttt"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = t1 {
@@ -618,7 +644,11 @@ class GetStickerMediaIdRequest: Request {
     var uri: String {
         return "/sticker/\(mediaId)"
     }
+    
     var defaultMap: String?
+    
+    let keyOfDefaultMap = "defaultMap"
+    
     init(mediaId: String) {
         self.mediaId = mediaId
     }
@@ -691,7 +721,10 @@ class GetUnderLineRequest: Request {
     var uri: String {
         return "/under_line"
     }
+    
     var a: TestNestedStruct?
+    
+    let keyOfA = "a"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = a {
@@ -755,6 +788,7 @@ class GetTestNestedMessageRequest: Request {
     var uri: String {
         return "/test/nested/message"
     }
+    
     var a1: [String]?
     var d1: [String: String]?
     var aaa1: [[[String]]]?
@@ -763,6 +797,15 @@ class GetTestNestedMessageRequest: Request {
     var da1: [String: [String]]?
     var dada1: [String: [[String: [String]]]]?
     var adad1: [[String: [[String: String]]]]?
+    
+    let keyOfA1 = "ae"
+    let keyOfD1 = "de"
+    let keyOfAaa1 = "aaae"
+    let keyOfAd1 = "ade"
+    let keyOfDd1 = "dde"
+    let keyOfDa1 = "dae"
+    let keyOfDada1 = "dadae"
+    let keyOfAdad1 = "adade"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = a1 {
@@ -1010,12 +1053,20 @@ class GetGetRequest: Request {
     var uri: String {
         return "/get"
     }
+    
     var int64: Int64?
     var int32: Int32?
     var bool: Bool?
     var double: Double?
     var string: String?
     var array: [String]?
+    
+    let keyOfInt64 = "int64"
+    let keyOfInt32 = "int32"
+    let keyOfBool = "bool"
+    let keyOfDouble = "double"
+    let keyOfString = "string"
+    let keyOfArray = "array"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = int64 {
@@ -1090,7 +1141,10 @@ class PostPostRequest: Request {
     var uri: String {
         return "/post"
     }
+    
     var data: HTTPFile?
+    
+    let keyOfData = "data"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = data {
@@ -1143,8 +1197,12 @@ class GetUnginedTestRequest: Request {
     var uri: String {
         return "/ungined/test"
     }
+    
     var uint32: UInt32?
     var uint64: UInt64?
+    
+    let keyOfUint32 = "uint32"
+    let keyOfUint64 = "uint64"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = uint32 {
@@ -1209,6 +1267,8 @@ class GetTesting1Request: Request {
     var uri: String {
         return "/cgi-a/wx"
     }
+    
+    
     var content: RequestContent?
     
     @discardableResult
@@ -1256,8 +1316,13 @@ class GetTesting2Request: Request {
     var uri: String {
         return "/test/%^&**(///\(xxxx)"
     }
+    
     var a: Int64?
     var b: Int32?
+    
+    let keyOfA = "a"
+    let keyOfB = "STRING"
+    
     init(xxxx: String) {
         self.xxxx = xxxx
     }
@@ -1328,8 +1393,12 @@ class GetTesting3Request: Request {
     var uri: String {
         return "/test/?/message&_name/哎呦"
     }
+    
     var x: String?
     var name: String?
+    
+    let keyOfX = "x"
+    let keyOfName = "呵呵哒"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = x {

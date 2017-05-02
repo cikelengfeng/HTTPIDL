@@ -145,8 +145,12 @@ class GetFeedRequest: Request {
     var uri: String {
         return "/feed"
     }
+    
     var p: String?
     var count: Int32?
+    
+    let keyOfP = "p"
+    let keyOfCount = "count"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = p {

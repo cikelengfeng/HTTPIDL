@@ -85,7 +85,10 @@ class PostConnectionsFollowRequest: Request {
     var uri: String {
         return "/connections/follow"
     }
+    
     var userId: [String]?
+    
+    let keyOfUserId = "user_id"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = userId {
@@ -148,8 +151,12 @@ class GetConnectionsFollowingRequest: Request {
     var uri: String {
         return "/connections/following"
     }
+    
     var page: String?
     var count: Int32?
+    
+    let keyOfPage = "p"
+    let keyOfCount = "count"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = page {
@@ -218,7 +225,11 @@ class DeleteConnectionsUserIdRequest: Request {
     var uri: String {
         return "/connections/\(user_id)"
     }
+    
     var userId: Int64?
+    
+    let keyOfUserId = "user_id"
+    
     init(user_id: String) {
         self.user_id = user_id
     }
@@ -283,6 +294,8 @@ class GetConnectionsNewFollowersRequest: Request {
     var uri: String {
         return "/connections/new_followers"
     }
+    
+    
     var content: RequestContent?
     
     @discardableResult
@@ -321,6 +334,8 @@ class DeleteConnectionsNewFollowersRequest: Request {
     var uri: String {
         return "/connections/new_followers"
     }
+    
+    
     var content: RequestContent?
     
     @discardableResult
@@ -393,6 +408,8 @@ class GetConnectionsSuggestionsRequest: Request {
     var uri: String {
         return "/connections/suggestions"
     }
+    
+    
     var content: RequestContent?
     
     @discardableResult
@@ -448,8 +465,12 @@ class GetConnectionsFollowersRequest: Request {
     var uri: String {
         return "/connections/followers"
     }
+    
     var page: String?
     var count: Int32?
+    
+    let keyOfPage = "p"
+    let keyOfCount = "count"
     var content: RequestContent? {
         var result = [String: RequestContent]()
         if let tmp = page {
