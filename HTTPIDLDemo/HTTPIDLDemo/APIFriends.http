@@ -1,0 +1,106 @@
+MESSAGE /connections/follow {
+    POST REQUEST {
+        ARRAY<STRING> userId = user_id;
+    }
+
+    POST RESPONSE {
+        INT32 code;
+        INT64 userId = user_id;
+    }
+}
+
+MESSAGE /connections/following {
+    GET REQUEST {
+        STRING page = p;
+        INT32 count = count;
+    }
+
+    GET RESPONSE {
+        INT32 code;
+        PaginationStruct pagination;
+        UsersWrapper users = data;
+    }
+}
+
+MESSAGE /connections/$user_id {
+    DELETE REQUEST {
+        INT64 userId = user_id;
+    }
+
+    DELETE RESPONSE {
+        INT32 code;
+        INT64 userId = user_id;
+    }
+}
+
+MESSAGE /connections/new_followers {
+    GET REQUEST {
+
+    }
+
+    GET RESPONSE {
+        INT32 code;
+        INT64 userId = user_id;
+        UsersWrapper users = data;
+    }
+
+    DELETE REQUEST {
+
+    }
+
+    DELETE RESPONSE {
+        INT32 code;
+    }
+    
+}
+
+MESSAGE /connections/suggestions {
+    GET REQUEST {
+    }
+
+    GET RESPONSE {
+        INT32 code;
+        SuggestionsWrapper users = data;
+    }
+}
+
+
+MESSAGE /connections/followers {
+    GET REQUEST {
+        STRING page = p;
+        INT32 count = count;
+    }
+
+    GET RESPONSE {
+        INT32 code;
+        PaginationStruct pagination;
+        UsersWrapper users = data;
+    }
+}
+
+STRUCT SuggestionsWrapper {
+    ARRAY<SuggestionStruct> contents = suggestions;
+}
+
+
+STRUCT SuggestionStruct {
+    INT64 id = user_id;
+    STRING name;
+    STRING avatarUrl = avatar_url;
+    INT32 snapsCount = snaps_count;
+    STRING reason = reason;
+}
+
+
+
+
+STRUCT UsersWrapper {
+    ARRAY<UserStruct> contents = users;
+}
+
+
+
+
+
+
+

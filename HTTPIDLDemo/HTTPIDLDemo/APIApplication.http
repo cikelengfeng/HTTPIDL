@@ -1,0 +1,13 @@
+MESSAGE /application/settings {
+    GET REQUEST {
+        INT32 cpu;
+        INT64 totalMemory = total_mem;
+        INT64 availableMemory = avail_mem;
+        STRING resolution;
+    }
+
+    GET RESPONSE {
+        INT32 code;
+    }
+}
+

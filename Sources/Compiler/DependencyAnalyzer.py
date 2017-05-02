@@ -52,28 +52,34 @@ class DependencyAnalyzer:
 
     def add_refer(self, referees, referer):
         for referee in referees:
-            exist_referers = self.dependency.get(referee, [])
-            exist_referers.append(referer)
+            exist_referers = self.dependency.get(referee, set())
+            exist_referers.add(referer)
             self.dependency[referee] = exist_referers
 
     def is_type_refered_by_request(self, type_name):
-        direct_referers = self.dependency.get(type_name, [])
+        direct_referers = self.dependency.get(type_name, set())
         if len(direct_referers) == 0:
+            # print type_name + ' has no direct request refer'
             return False
-        ret = False
         for refer in direct_referers:
             if refer is request_referer:
+                # print type_name + ' is direct refered by request'
                 return True
-            ret = ret or self.is_type_refered_by_request(refer)
-        return ret
+            indirect = self.is_type_refered_by_request(refer)
+            if indirect:
+                return True
+        return False
 
     def is_type_refered_by_response(self, type_name):
-        direct_referers = self.dependency.get(type_name, [])
+        direct_referers = self.dependency.get(type_name, set())
         if len(direct_referers) == 0:
+            # print type_name + ' has no direct response refer'
             return False
-        ret = False
         for refer in direct_referers:
             if refer is response_referer:
+                # print type_name + ' is direct refered by ' + response_referer
                 return True
-            ret = ret or self.is_type_refered_by_request(refer)
-        return ret
+            indirect = self.is_type_refered_by_response(refer)
+            if indirect:
+                return True
+        return False

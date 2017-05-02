@@ -1,0 +1,67 @@
+MESSAGE /users/$userId {
+    GET REQUEST {
+    }
+    GET RESPONSE {
+        INT32 code;
+        UserStructWrapper user = data;
+    }
+}
+
+
+MESSAGE /users/self {
+    GET REQUEST {
+    }
+    GET RESPONSE {
+        INT32 code;
+        UserStructWrapper user = data;
+    }
+}
+
+
+
+MESSAGE /auth/weixin {
+    POST REQUEST {
+        STRING code;
+        STRING appid;
+    }
+    POST RESPONSE {
+        UserAuthWrappter authInfo = data;
+    }
+}
+
+MESSAGE /users/privacy_level {
+    PATCH REQUEST {
+        STRING level;
+    }
+    PATCH RESPONSE {
+        INT32 code;
+    }
+}
+
+MESSAGE /application/events {
+    POST REQUEST {
+        ARRAY<ApplicationEvent> events;
+    }
+    POST RESPONSE {
+        INT32 code;
+    }
+}
+
+STRUCT ApplicationEvent {
+    STRING sessionId = session_id;
+    STRING eventName = event;
+    STRING timestamp;
+    STRING eventId = event_id;
+    JSONObject properties;
+}
+
+STRUCT UserStructWrapper {
+    UserStruct content = user;
+}
+
+STRUCT UserAuthWrappter {
+    UserStruct user = user_profile;
+    STRING token;
+}
+
+

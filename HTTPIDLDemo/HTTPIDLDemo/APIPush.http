@@ -1,0 +1,18 @@
+MESSAGE /push/token {
+    PUT REQUEST {
+        STRING token;
+        STRING channel;
+    }
+
+    PUT RESPONSE {
+        INT32 code;
+    }
+
+    DELETE REQUEST {
+    }
+
+    DELETE RESPONSE {
+        INT32 code;
+    }
+}
+

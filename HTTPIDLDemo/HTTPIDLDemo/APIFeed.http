@@ -1,0 +1,50 @@
+MESSAGE /feed {
+    GET REQUEST {
+        STRING p;
+        INT32 count;
+    }
+    GET RESPONSE {
+        INT32 code;
+        FeedResponse data;
+        PaginationStruct pagination;
+    }
+}
+
+STRUCT FeedResponse {
+    ARRAY<FeedStruct>  feed;
+}
+
+STRUCT FeedStruct {
+    UserStruct user;
+    Date createAt = created_at;
+    Date updatedAt = updated_at;
+    ARRAY<SnapStruct> snaps;
+}
+
+STRUCT UserStruct {
+    INT64 id;
+    STRING name;
+    STRING avatarUrl = avatar_url;
+    INT32 snapsCount = snaps_count;
+    BOOL isFriend = is_followed;
+    STRING privacyLevel = privacy_level;
+}
+
+STRUCT SnapStruct {
+    INT64 id;
+    INT64 userId = user_id;
+    STRING type;
+    INT32 width;
+    INT32 height;
+    Date createAt = created_at;
+    Date taken;
+    INT32 duration;
+    STRING url;
+    STRING thumbnailUrl = thumbnail_url;
+}
+
+STRUCT PaginationStruct {
+    STRING next;
+    STRING prev;
+    INT32 hasMore = has_more;
+}

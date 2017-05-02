@@ -1,0 +1,136 @@
+
+MESSAGE /snaps {
+    GET REQUEST {
+        INT64 userId = user_id;
+    }
+
+    GET RESPONSE {
+        INT32 code;
+        SnapsWrapper snaps = data;
+    }
+
+    POST REQUEST {
+        FILE file;
+        BLOB data = file;
+    }
+
+    POST RESPONSE {
+        INT32 code;
+        SnapWrapper snap = data;
+        STRING message;
+    }
+}
+
+MESSAGE /snaps/self {
+    GET REQUEST {
+        STRING page = p;
+        INT32 count = count;
+    }
+
+    GET RESPONSE {
+        INT32 code;
+        SnapsWrapper snaps = data;
+        PaginationStruct pagination;
+    }
+}
+
+MESSAGE /snaps/$snapId {
+    GET REQUEST {
+        STRING owner;
+    }
+
+    GET RESPONSE {
+        INT32 code;
+        SnapPackageStruct snapPackage = data;
+    }
+
+    DELETE REQUEST {
+    }
+
+    DELETE RESPONSE {
+        INT32 code;
+        SnapWrapper snap = data;
+    }
+}
+
+MESSAGE /snaps/$snapId/actions {
+    GET REQUEST {
+        STRING page = p;
+        INT32 count = count;
+        INT64 owner;
+    }
+
+    GET RESPONSE {
+        INT32 code;
+        PaginationStruct pagination;
+        SnapActionsCollectionStruct snapActions = data;
+    }
+
+    POST REQUEST {
+        STRING type;
+        STRING text;
+        INT64 owner;
+    }
+
+    POST RESPONSE {
+        INT32 code;
+        SnapActionWrapper snapAction = data;
+    }
+}
+
+MESSAGE /snaps/share {
+    POST REQUEST {
+        ARRAY<STRING> snapId = snap_id;
+    }
+
+    POST RESPONSE {
+        INT32 code;
+        TokensWrapper tokens = data;
+    }
+}
+
+STRUCT SnapPackageStruct {
+    SnapStruct snap;
+    UserStruct user;
+    SnapActionsCollectionStruct actions = snap_actions;
+}
+
+STRUCT SnapActionsCollectionStruct {
+    ARRAY<UserStruct> users;
+    ARRAY<SnapActionStruct> actions;
+}
+
+STRUCT TokensWrapper {
+    ARRAY<TokenStruct> tokens;
+}
+
+STRUCT TokenStruct {
+    INT64 id;
+    STRING token;
+}
+
+STRUCT SnapWrapper {
+    SnapStruct content = snap;
+}
+
+STRUCT SnapsWrapper {
+    ARRAY<SnapStruct> contents = snaps;
+}
+
+STRUCT SnapActionStruct {
+    INT64 id;
+    STRING creationDate = created_at;
+    INT64 userId = user_id;
+    STRING type;
+    STRING text;
+}
+
+STRUCT SnapActionWrapper {
+    SnapActionStruct content = action;
+}
+
+MESSAGE(EMojiConfig) /configs/hippocampus/smilies.json {
+GET REQUEST {}
+GET RESPONSE {}
+}
+
