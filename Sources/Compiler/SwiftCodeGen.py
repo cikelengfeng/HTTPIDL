@@ -114,12 +114,47 @@ class Swift3CodeGenerator:
         self.pop_indent()
         self.write_line('}')
 
-    def generate_request_parameters(self, request_context):
-        parameter_maps = request_context.structBody().parameterMap()
-        if len(parameter_maps) == 0:
-            self.write_line('var content: %s?' % httpidl_content_type)
-            return
+    def generate_request_user_defined_member_var(self, request_context):
+        single_param = request_context.structBody().singleParameter()
+        param_maps = request_context.structBody().parameterMap()
+        if single_param is not None:
+            self.generate_request_single_param_member_var(request_context)
+        elif len(param_maps) != 0:
+            self.generate_request_param_map_member_var(request_context)
+        else:
+            self.generate_request_no_param_member_var()
 
+    def generate_request_no_param_member_var(self):
+        self.write_line('var content: %s?' % httpidl_content_type)
+
+    def generate_request_single_param_member_var(self, request_context):
+        single_param = request_context.structBody().singleParameter()
+        self.write_line('var content: %s? {' % httpidl_content_type)
+        self.push_indent()
+        self.write_line('if let body = body {')
+        self.push_indent()
+        generic_type = single_param.paramType().genericType()
+        if generic_type is not None:
+            array_type = generic_type.arrayGenericParam()
+            dict_type = generic_type.dictGenericParam()
+            if array_type is not None:
+                self.generate_array_from_req_assignment(array_type, 'body')
+            else:
+                self.generate_dict_from_req_assignment(dict_type, 'body')
+            self.write_line('return tmp')
+        else:
+            self.write_line('return body.as%s()' % httpidl_content_type)
+        self.pop_indent()
+        self.write_line('} else {')
+        self.push_indent()
+        self.write_line(' return .dictionary(value: [:])')
+        self.pop_indent()
+        self.write_line('}')
+        self.pop_indent()
+        self.write_line('}')
+
+    def generate_request_param_map_member_var(self, request_context):
+        parameter_maps = request_context.structBody().parameterMap()
         self.write_line('var content: %s? {' % httpidl_content_type)
         self.push_indent()
         self.write_line('var result = [String: %s]()' % httpidl_content_type)
@@ -198,7 +233,7 @@ class Swift3CodeGenerator:
         else:
             self.write_line('let tmp = ' + container_name + '.asRequestContent()')
 
-    def generate_request_init_and_member_var(self, request_context, uri_context):
+    def generate_request_init_and_default_member_var(self, request_context, uri_context):
         self.write_blank_lines(1)
 
         def filter_param_in_uri(uri_path_component):
@@ -235,15 +270,19 @@ class Swift3CodeGenerator:
         self.pop_indent()
         self.write_line('}')
         self.write_blank_lines(1)
-        param_maps = request_context.structBody().parameterMap()
-        for param_map in param_maps:
-            param_type = param_map.paramType()
-            self.write_line('var ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
-        self.write_blank_lines(1)
-        for param_map in param_maps:
-            param_value_name = self.string_from_string_context(
-                param_map.value().string()) if param_map.value() is not None else param_map.key().getText()
-            self.write_line('let keyOf' + underline_to_upper_camel_case(param_map.key().getText()) + ' = "'
+        single_param = request_context.structBody().singleParameter()
+        if single_param is not None:
+            self.write_line('var body: ' + swift_type_name(single_param.paramType()) + '?')
+        else:
+            param_maps = request_context.structBody().parameterMap()
+            for param_map in param_maps:
+                param_type = param_map.paramType()
+                self.write_line('var ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
+            self.write_blank_lines(1)
+            for param_map in param_maps:
+                param_value_name = self.string_from_string_context(
+                    param_map.value().string()) if param_map.value() is not None else param_map.key().getText()
+                self.write_line('let keyOf' + underline_to_upper_camel_case(param_map.key().getText()) + ' = "'
                             + param_value_name + '"')
         init_param_list = ', '.join(
             map(lambda p: p.parameterInUri().identifier().getText() + ': String', params_in_uri))
@@ -268,8 +307,8 @@ class Swift3CodeGenerator:
         request_name = self.request_name_from_message(request_context.method().getText(), message_name)
         self.write_line('class ' + request_name + ': Request {')
         self.push_indent()
-        self.generate_request_init_and_member_var(request_context, uri_context)
-        self.generate_request_parameters(request_context)
+        self.generate_request_init_and_default_member_var(request_context, uri_context)
+        self.generate_request_user_defined_member_var(request_context)
         self.generate_request_send(request_context, message_name)
         self.pop_indent()
         self.write_line('}')
@@ -279,22 +318,44 @@ class Swift3CodeGenerator:
         response_name = message_method.title() + message_name + 'Response'
         return response_name
 
-    def generate_response_init_and_member_var(self, response_context):
-        self.write_blank_lines(1)
+    def generate_response_single_param_init_and_member_var(self, response_context):
+        single_param = response_context.structBody().singleParameter()
+        self.write_line('let body: ' + swift_type_name(single_param.paramType()) + '?')
+        self.write_line('let rawResponse: HTTPResponse')
+        self.write_line('init(content: ResponseContent?, rawResponse: HTTPResponse) throws {')
+        self.push_indent()
+        self.write_line('self.rawResponse = rawResponse')
+        self.write_line('guard let content = content else {')
+        self.push_indent()
+        self.write_line('self.body = nil')
+        self.write_line('return')
+        self.pop_indent()
+        self.write_line('}')
+        param_type = single_param.paramType()
+        generic_type = param_type.genericType()
+        if generic_type is not None:
+            array_type = generic_type.arrayGenericParam()
+            dict_type = generic_type.dictGenericParam()
+            if array_type is not None:
+                self.generate_array_from_resp_assignment(array_type, 'body')
+            elif dict_type is not None:
+                self.generate_dict_from_resp_assignment(dict_type, 'body')
+            self.write_line('self.body = body')
+        else:
+            self.write_line('self.body = ' + swift_type_name(
+                param_type) + '(content: content)')
+        self.pop_indent()
+        self.write_line('}')
+
+    def generate_response_param_map_init_and_member_var(self, response_context):
         param_maps = response_context.structBody().parameterMap()
         for param_map in param_maps:
             param_type = param_map.paramType()
             self.write_line('let ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
         self.write_line('let rawResponse: HTTPResponse')
-
-        # 从 raw parameter 初始化
         self.write_line('init(content: ResponseContent?, rawResponse: HTTPResponse) throws {')
         self.push_indent()
         self.write_line('self.rawResponse = rawResponse')
-        if len(param_maps) == 0:
-            self.pop_indent()
-            self.write_line('}')
-            return
         self.write_line('guard let content = content, case .dictionary(let value) = content else {')
         self.push_indent()
         for param_map in param_maps:
@@ -305,7 +366,8 @@ class Swift3CodeGenerator:
         for param_map in param_maps:
             param_type = param_map.paramType()
             generic_type = param_type.genericType()
-            param_value_name = self.string_from_string_context(param_map.value().string()) if param_map.value() is not None else param_map.key().getText()
+            param_value_name = self.string_from_string_context(
+                param_map.value().string()) if param_map.value() is not None else param_map.key().getText()
             if generic_type is not None:
                 array_type = generic_type.arrayGenericParam()
                 dict_type = generic_type.dictGenericParam()
@@ -327,6 +389,25 @@ class Swift3CodeGenerator:
                     param_type) + '(content: value["' + param_value_name + '"])')
         self.pop_indent()
         self.write_line('}')
+
+    def generate_response_no_param_init_and_member_var(self):
+        self.write_line('let rawResponse: HTTPResponse')
+        self.write_line('init(content: ResponseContent?, rawResponse: HTTPResponse) throws {')
+        self.push_indent()
+        self.write_line('self.rawResponse = rawResponse')
+        self.pop_indent()
+        self.write_line('}')
+
+    def generate_response_init_and_member_var(self, response_context):
+        self.write_blank_lines(1)
+        single_param = response_context.structBody().singleParameter()
+        param_maps = response_context.structBody().parameterMap()
+        if single_param is not None:
+            self.generate_response_single_param_init_and_member_var(response_context)
+        elif len(param_maps) != 0:
+            self.generate_response_param_map_init_and_member_var(response_context)
+        else:
+            self.generate_response_no_param_init_and_member_var()
 
     def generate_response(self, response_context, message_name):
         self.write_blank_lines(1)
@@ -350,12 +431,70 @@ class Swift3CodeGenerator:
 
     def generate_struct_member_var(self, struct_context):
         self.write_blank_lines(1)
+        single_param = struct_context.structBody().singleParameter()
         param_maps = struct_context.structBody().parameterMap()
-        for param_map in param_maps:
-            param_type = param_map.paramType()
-            self.write_line('var ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
+        if single_param is not None:
+            self.write_line('var body: ' + swift_type_name(single_param.paramType()) + '?')
+        else:
+            for param_map in param_maps:
+                param_type = param_map.paramType()
+                self.write_line('var ' + param_map.key().getText() + ': ' + swift_type_name(param_type) + '?')
 
     def generate_struct_response_content_impl(self, struct_context):
+        single_param = struct_context.structBody().singleParameter()
+        param_maps = struct_context.structBody().parameterMap()
+        if single_param is not None:
+            self.generate_struct_single_param_response_content_impl(struct_context)
+        elif len(param_maps) != 0:
+            self.generate_struct_param_map_response_content_impl(struct_context)
+        else:
+            self.generate_struct_no_param_response_content_impl(struct_context)
+
+    def generate_struct_no_param_response_content_impl(self, struct_context):
+        self.write_line('extension %s: ResponseContentConvertible {' % struct_context.structName().getText())
+        self.push_indent()
+        self.write_blank_lines(1)
+        self.write_line('init?(content: ResponseContent?) {')
+        self.push_indent()
+        self.write_line('guard let content = content else {')
+        self.push_indent()
+        self.write_line('return nil')
+        self.pop_indent()
+        self.write_line('}')
+        self.pop_indent()
+        self.write_line('}')
+
+    def generate_struct_single_param_response_content_impl(self, struct_context):
+        single_param = struct_context.structBody().singleParameter()
+        self.write_line('extension %s: ResponseContentConvertible {' % struct_context.structName().getText())
+        self.push_indent()
+        self.write_blank_lines(1)
+        self.write_line('init?(content: ResponseContent?) {')
+        self.push_indent()
+        self.write_line('guard let content = content else {')
+        self.push_indent()
+        self.write_line('return nil')
+        self.pop_indent()
+        self.write_line('}')
+        param_type = single_param.paramType()
+        generic_type = param_type.genericType()
+        if generic_type is not None:
+            array_type = generic_type.arrayGenericParam()
+            dict_type = generic_type.dictGenericParam()
+            if array_type is not None:
+                self.generate_array_from_resp_assignment(array_type, 'body')
+            elif dict_type is not None:
+                self.generate_dict_from_resp_assignment(dict_type, 'body')
+            self.write_line('self.body = body')
+        else:
+            self.write_line('self.body = ' + swift_type_name(
+                param_type) + '(content: content)')
+        self.pop_indent()
+        self.write_line('}')
+        self.pop_indent()
+        self.write_line('}')
+
+    def generate_struct_param_map_response_content_impl(self, struct_context):
         param_maps = struct_context.structBody().parameterMap()
         self.write_line('extension %s: ResponseContentConvertible {' % struct_context.structName().getText())
         self.push_indent()
@@ -458,6 +597,59 @@ class Swift3CodeGenerator:
             self.write_line('let ' + container_name + ' = ' + type_name + '(content: content)')
 
     def generate_struct_request_content_impl(self, struct_context):
+        single_param = struct_context.structBody().singleParameter()
+        param_maps = struct_context.structBody().parameterMap()
+        if single_param is not None:
+            self.generate_struct_single_param_request_content_impl(struct_context)
+        elif len(param_maps) != 0:
+            self.generate_struct_param_map_request_content_impl(struct_context)
+        else:
+            self.generate_struct_no_param_request_content_impl(struct_context)
+
+    def generate_struct_no_param_request_content_impl(self, struct_context):
+        self.write_line('extension %s: RequestContentConvertible {' % struct_context.structName().getText())
+        self.push_indent()
+        self.write_blank_lines(1)
+        self.write_line('func asRequestContent() -> %s {' % httpidl_content_type)
+        self.push_indent()
+        self.write_line('return .dictionary(value: [:])')
+        self.pop_indent()
+        self.write_line('}')
+        self.pop_indent()
+        self.write_line('}')
+
+    def generate_struct_single_param_request_content_impl(self, struct_context):
+        single_param = struct_context.structBody().singleParameter()
+        self.write_line('extension %s: RequestContentConvertible {' % struct_context.structName().getText())
+        self.push_indent()
+        self.write_blank_lines(1)
+        self.write_line('func asRequestContent() -> %s {' % httpidl_content_type)
+        self.push_indent()
+        self.write_line('if let body = body {')
+        self.push_indent()
+        generic_type = single_param.paramType().genericType()
+        if generic_type is not None:
+            array_type = generic_type.arrayGenericParam()
+            dict_type = generic_type.dictGenericParam()
+            if array_type is not None:
+                self.generate_array_from_req_assignment(array_type, 'body')
+            else:
+                self.generate_dict_from_req_assignment(dict_type, 'body')
+            self.write_line('return tmp')
+        else:
+            self.write_line('return body.as%s()' % httpidl_content_type)
+        self.pop_indent()
+        self.write_line('} else {')
+        self.push_indent()
+        self.write_line('return .dictionary(value: [:])')
+        self.pop_indent()
+        self.write_line('}')
+        self.pop_indent()
+        self.write_line('}')
+        self.pop_indent()
+        self.write_line('}')
+
+    def generate_struct_param_map_request_content_impl(self, struct_context):
         parameter_maps = struct_context.structBody().parameterMap()
         self.write_line('extension %s: RequestContentConvertible {' % struct_context.structName().getText())
         self.push_indent()

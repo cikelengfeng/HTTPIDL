@@ -1,0 +1,136 @@
+MESSAGE /array {
+GET REQUEST {
+ARRAY<DICT<STRING, INT64>>;
+}
+GET RESPONSE {
+ARRAY<DICT<STRING, STRING>>;
+}
+
+}
+
+MESSAGE /dict {
+GET REQUEST {
+DICT<STRING, ARRAY<INT64>>;
+}
+GET RESPONSE {
+DICT<STRING, ARRAY<STRING>>;
+}
+}
+
+MESSAGE /simple {
+GET REQUEST {
+INT64;
+}
+GET RESPONSE {
+STRING;
+}
+
+}
+
+STRUCT TSPStruct1 {
+INT32 a;
+STRING b = bc;
+ARRAY<DICT<STRING, INT64>> c;
+DICT<STRING, ARRAY<INT64>> d = df;
+}
+
+STRUCT TSPStruct2 {
+INT32;
+}
+
+STRUCT TSPStruct3 {
+ARRAY<DICT<STRING, INT64>>;
+}
+
+STRUCT TSPStruct4 {
+DICT<STRING, ARRAY<INT64>>;
+}
+
+STRUCT TSPStruct5 {
+TSPStruct1;
+}
+
+STRUCT TSPStruct6 {
+TSPStruct2;
+}
+
+STRUCT TSPStruct7 {
+TSPStruct3;
+}
+
+STRUCT TSPStruct8 {
+TSPStruct4;
+}
+
+MESSAGE /struct1 {
+GET REQUEST {
+TSPStruct1;
+}
+GET RESPONSE {
+TSPStruct1;
+}
+
+}
+
+MESSAGE /struct2 {
+GET REQUEST {
+TSPStruct2;
+}
+GET RESPONSE {
+TSPStruct2;
+}
+}
+
+MESSAGE /struct3 {
+GET REQUEST {
+TSPStruct3;
+}
+GET RESPONSE {
+TSPStruct3;
+}
+}
+
+MESSAGE /struct4 {
+GET REQUEST {
+TSPStruct4;
+}
+GET RESPONSE {
+TSPStruct4;
+}
+}
+
+MESSAGE /struct5 {
+GET REQUEST {
+TSPStruct5;
+}
+GET RESPONSE {
+TSPStruct5;
+}
+}
+
+MESSAGE /struct6 {
+GET REQUEST {
+TSPStruct6;
+}
+GET RESPONSE {
+TSPStruct6;
+}
+}
+
+MESSAGE /struct7 {
+GET REQUEST {
+TSPStruct7;
+}
+GET RESPONSE {
+TSPStruct7;
+}
+}
+
+MESSAGE /struct8 {
+GET REQUEST {
+TSPStruct8;
+}
+GET RESPONSE {
+TSPStruct8;
+}
+}

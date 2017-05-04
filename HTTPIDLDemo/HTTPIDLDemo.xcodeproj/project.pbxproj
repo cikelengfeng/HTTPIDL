@@ -33,6 +33,8 @@
 		428846891DEDAD3900D952A2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 428846871DEDAD3900D952A2 /* LaunchScreen.storyboard */; };
 		42C475C01E29F65E0044415F /* China.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C475BF1E29F65E0044415F /* China.png */; };
 		42C475C21E2A06AC0044415F /* China.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C475C11E2A06AC0044415F /* China.png */; };
+		42C587471EBB3FE50025BB06 /* TestSingleParam.http in Resources */ = {isa = PBXBuildFile; fileRef = 42C587461EBB3FE50025BB06 /* TestSingleParam.http */; };
+		42C587491EBB42130025BB06 /* TestSingleParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C587481EBB42130025BB06 /* TestSingleParam.swift */; };
 		AD64C5C6E070C5E4E5ACEDD0 /* Pods_HTTPIDLDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9899E738CC72F3BAF233F097 /* Pods_HTTPIDLDemoTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +79,8 @@
 		4288468A1DEDAD3900D952A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42C475BF1E29F65E0044415F /* China.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = China.png; sourceTree = "<group>"; };
 		42C475C11E2A06AC0044415F /* China.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = China.png; sourceTree = "<group>"; };
+		42C587461EBB3FE50025BB06 /* TestSingleParam.http */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TestSingleParam.http; sourceTree = "<group>"; };
+		42C587481EBB42130025BB06 /* TestSingleParam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSingleParam.swift; sourceTree = "<group>"; };
 		5ACEC624605DF3FE6D115633 /* Pods-HTTPIDLDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemo/Pods-HTTPIDLDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		6AD5664E73DED524B38DA9FA /* Pods_HTTPIDLDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HTTPIDLDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E013AD07FE7ADA2CC23F1D5 /* Pods-HTTPIDLDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTTPIDLDemoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HTTPIDLDemoTests/Pods-HTTPIDLDemoTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -164,6 +168,8 @@
 				4221E4331EB82F3800A5EAA6 /* APISnaps.swift */,
 				4221E4341EB82F3800A5EAA6 /* APIUser.http */,
 				4221E4351EB82F3800A5EAA6 /* APIUser.swift */,
+				42C587461EBB3FE50025BB06 /* TestSingleParam.http */,
+				42C587481EBB42130025BB06 /* TestSingleParam.swift */,
 				4221E4421EB8570700A5EAA6 /* CustomType.swift */,
 				423C32001E21F08000D74B2E /* application.swift */,
 				428846821DEDAD3900D952A2 /* Main.storyboard */,
@@ -287,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				428846891DEDAD3900D952A2 /* LaunchScreen.storyboard in Resources */,
+				42C587471EBB3FE50025BB06 /* TestSingleParam.http in Resources */,
 				4221E4361EB82F3800A5EAA6 /* APIApplication.http in Resources */,
 				4221E43E1EB82F3800A5EAA6 /* APISnaps.http in Resources */,
 				4221E43A1EB82F3800A5EAA6 /* APIFriends.http in Resources */,
@@ -417,6 +424,7 @@
 				4221E4391EB82F3800A5EAA6 /* APIFeed.swift in Sources */,
 				428846811DEDAD3900D952A2 /* ViewController.swift in Sources */,
 				4221E4411EB82F3800A5EAA6 /* APIUser.swift in Sources */,
+				42C587491EBB42130025BB06 /* TestSingleParam.swift in Sources */,
 				4221E4431EB8570700A5EAA6 /* CustomType.swift in Sources */,
 				4288467F1DEDAD3900D952A2 /* AppDelegate.swift in Sources */,
 			);

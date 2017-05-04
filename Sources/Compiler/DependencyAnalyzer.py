@@ -26,16 +26,28 @@ class DependencyAnalyzer:
             for parameter in parameters:
                 referees = self.referees_from_parameter_context(parameter.paramType())
                 self.add_refer(referees, request_referer)
+            single_param = req.structBody().singleParameter()
+            if single_param is not None:
+                referees = self.referees_from_parameter_context(single_param.paramType())
+                self.add_refer(referees, request_referer)
         for resp in responses:
             parameters = resp.structBody().parameterMap()
             for parameter in parameters:
                 referees = self.referees_from_parameter_context(parameter.paramType())
                 self.add_refer(referees, response_referer)
+            single_param = resp.structBody().singleParameter()
+            if single_param is not None:
+                referees = self.referees_from_parameter_context(single_param.paramType())
+                self.add_refer(referees, response_referer)
         for stct in structs:
             parameters = stct.structBody().parameterMap()
+            referer = stct.structName().getText()
             for parameter in parameters:
                 referees = self.referees_from_parameter_context(parameter.paramType())
-                referer = stct.structName().getText()
+                self.add_refer(referees, referer)
+            single_param = stct.structBody().singleParameter()
+            if single_param is not None:
+                referees = self.referees_from_parameter_context(single_param.paramType())
                 self.add_refer(referees, referer)
 
     def referees_from_parameter_context(self, paramType_context):
