@@ -1,4 +1,4 @@
-# Generated from C:/Users/xudong/PycharmProjects/HTTPIDLParser/Grammar\HTTPIDL.g4 by ANTLR 4.7
+# Generated from /Users/xudong/git/HTTPIDL/Grammar/HTTPIDL.g4 by ANTLR 4.7
 # encoding: utf-8
 from __future__ import print_function
 from antlr4 import *
@@ -8,99 +8,105 @@ import sys
 def serializedATN():
     with StringIO() as buf:
         buf.write(u"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3")
-        buf.write(u"+\u00d2\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t")
+        buf.write(u"+\u00dc\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t")
         buf.write(u"\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r")
         buf.write(u"\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4")
         buf.write(u"\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30")
-        buf.write(u"\t\30\4\31\t\31\3\2\3\2\7\2\65\n\2\f\2\16\28\13\2\3\2")
-        buf.write(u"\5\2;\n\2\3\3\3\3\5\3?\n\3\3\3\3\3\3\3\3\3\7\3E\n\3\f")
-        buf.write(u"\3\16\3H\13\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5")
-        buf.write(u"\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\b\3\b\3\t\3\t\7\t")
-        buf.write(u"`\n\t\f\t\16\tc\13\t\3\n\3\n\5\ng\n\n\3\13\3\13\3\13")
-        buf.write(u"\3\f\6\fm\n\f\r\f\16\fn\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3")
-        buf.write(u"\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3")
-        buf.write(u"\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3")
-        buf.write(u"\r\3\r\5\r\u0094\n\r\3\16\3\16\3\16\3\17\3\17\7\17\u009b")
-        buf.write(u"\n\17\f\17\16\17\u009e\13\17\3\17\3\17\3\20\3\20\3\20")
-        buf.write(u"\3\20\5\20\u00a6\n\20\3\20\3\20\3\21\3\21\5\21\u00ac")
-        buf.write(u"\n\21\3\22\3\22\3\22\3\22\5\22\u00b2\n\22\3\23\3\23\3")
-        buf.write(u"\23\3\23\3\24\3\24\3\24\3\24\3\24\3\24\3\25\3\25\3\25")
-        buf.write(u"\3\25\3\25\3\25\3\25\3\25\3\25\3\25\5\25\u00c8\n\25\3")
-        buf.write(u"\26\3\26\3\27\3\27\3\30\3\30\3\31\3\31\3\31\2\2\32\2")
-        buf.write(u"\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\2\4")
-        buf.write(u"\3\2\5\r\3\2\20\33\2\u00f1\2:\3\2\2\2\4<\3\2\2\2\6K\3")
-        buf.write(u"\2\2\2\bO\3\2\2\2\nS\3\2\2\2\fW\3\2\2\2\16[\3\2\2\2\20")
-        buf.write(u"a\3\2\2\2\22f\3\2\2\2\24h\3\2\2\2\26l\3\2\2\2\30\u0093")
-        buf.write(u"\3\2\2\2\32\u0095\3\2\2\2\34\u0098\3\2\2\2\36\u00a1\3")
-        buf.write(u"\2\2\2 \u00ab\3\2\2\2\"\u00b1\3\2\2\2$\u00b3\3\2\2\2")
-        buf.write(u"&\u00b7\3\2\2\2(\u00c7\3\2\2\2*\u00c9\3\2\2\2,\u00cb")
-        buf.write(u"\3\2\2\2.\u00cd\3\2\2\2\60\u00cf\3\2\2\2\62\65\5\4\3")
-        buf.write(u"\2\63\65\5\b\5\2\64\62\3\2\2\2\64\63\3\2\2\2\658\3\2")
-        buf.write(u"\2\2\66\64\3\2\2\2\66\67\3\2\2\2\67;\3\2\2\28\66\3\2")
-        buf.write(u"\2\29;\7\2\2\3:\66\3\2\2\2:9\3\2\2\2;\3\3\2\2\2<>\7\3")
-        buf.write(u"\2\2=?\5\6\4\2>=\3\2\2\2>?\3\2\2\2?@\3\2\2\2@A\5\20\t")
-        buf.write(u"\2AF\7\21\2\2BE\5\n\6\2CE\5\f\7\2DB\3\2\2\2DC\3\2\2\2")
-        buf.write(u"EH\3\2\2\2FD\3\2\2\2FG\3\2\2\2GI\3\2\2\2HF\3\2\2\2IJ")
-        buf.write(u"\7\22\2\2J\5\3\2\2\2KL\7\23\2\2LM\5\60\31\2MN\7\24\2")
-        buf.write(u"\2N\7\3\2\2\2OP\7\4\2\2PQ\5.\30\2QR\5\34\17\2R\t\3\2")
-        buf.write(u"\2\2ST\5\16\b\2TU\7\16\2\2UV\5\34\17\2V\13\3\2\2\2WX")
-        buf.write(u"\5\16\b\2XY\7\17\2\2YZ\5\34\17\2Z\r\3\2\2\2[\\\t\2\2")
-        buf.write(u"\2\\\17\3\2\2\2]^\7\20\2\2^`\5\22\n\2_]\3\2\2\2`c\3\2")
-        buf.write(u"\2\2a_\3\2\2\2ab\3\2\2\2b\21\3\2\2\2ca\3\2\2\2dg\5\24")
-        buf.write(u"\13\2eg\5\26\f\2fd\3\2\2\2fe\3\2\2\2g\23\3\2\2\2hi\7")
-        buf.write(u"\25\2\2ij\5\60\31\2j\25\3\2\2\2km\5\30\r\2lk\3\2\2\2")
-        buf.write(u"mn\3\2\2\2nl\3\2\2\2no\3\2\2\2o\27\3\2\2\2p\u0094\7\3")
-        buf.write(u"\2\2q\u0094\7\4\2\2r\u0094\7\5\2\2s\u0094\7\6\2\2t\u0094")
-        buf.write(u"\7\7\2\2u\u0094\7\b\2\2v\u0094\7\t\2\2w\u0094\7\n\2\2")
-        buf.write(u"x\u0094\7\13\2\2y\u0094\7\f\2\2z\u0094\7\r\2\2{\u0094")
-        buf.write(u"\7\16\2\2|\u0094\7\17\2\2}\u0094\7\22\2\2~\u0094\7\25")
-        buf.write(u"\2\2\177\u0094\7\26\2\2\u0080\u0094\7\27\2\2\u0081\u0094")
-        buf.write(u"\7\23\2\2\u0082\u0094\7\24\2\2\u0083\u0094\7\30\2\2\u0084")
-        buf.write(u"\u0094\7\34\2\2\u0085\u0094\7\35\2\2\u0086\u0094\7\36")
-        buf.write(u"\2\2\u0087\u0094\7\37\2\2\u0088\u0094\7 \2\2\u0089\u0094")
-        buf.write(u"\7!\2\2\u008a\u0094\7\"\2\2\u008b\u0094\7#\2\2\u008c")
-        buf.write(u"\u0094\7$\2\2\u008d\u0094\7%\2\2\u008e\u0094\7&\2\2\u008f")
-        buf.write(u"\u0094\7\'\2\2\u0090\u0094\7*\2\2\u0091\u0094\5\32\16")
-        buf.write(u"\2\u0092\u0094\7+\2\2\u0093p\3\2\2\2\u0093q\3\2\2\2\u0093")
-        buf.write(u"r\3\2\2\2\u0093s\3\2\2\2\u0093t\3\2\2\2\u0093u\3\2\2")
-        buf.write(u"\2\u0093v\3\2\2\2\u0093w\3\2\2\2\u0093x\3\2\2\2\u0093")
-        buf.write(u"y\3\2\2\2\u0093z\3\2\2\2\u0093{\3\2\2\2\u0093|\3\2\2")
-        buf.write(u"\2\u0093}\3\2\2\2\u0093~\3\2\2\2\u0093\177\3\2\2\2\u0093")
-        buf.write(u"\u0080\3\2\2\2\u0093\u0081\3\2\2\2\u0093\u0082\3\2\2")
-        buf.write(u"\2\u0093\u0083\3\2\2\2\u0093\u0084\3\2\2\2\u0093\u0085")
-        buf.write(u"\3\2\2\2\u0093\u0086\3\2\2\2\u0093\u0087\3\2\2\2\u0093")
-        buf.write(u"\u0088\3\2\2\2\u0093\u0089\3\2\2\2\u0093\u008a\3\2\2")
-        buf.write(u"\2\u0093\u008b\3\2\2\2\u0093\u008c\3\2\2\2\u0093\u008d")
-        buf.write(u"\3\2\2\2\u0093\u008e\3\2\2\2\u0093\u008f\3\2\2\2\u0093")
-        buf.write(u"\u0090\3\2\2\2\u0093\u0091\3\2\2\2\u0093\u0092\3\2\2")
-        buf.write(u"\2\u0094\31\3\2\2\2\u0095\u0096\7\33\2\2\u0096\u0097")
-        buf.write(u"\t\3\2\2\u0097\33\3\2\2\2\u0098\u009c\7\21\2\2\u0099")
-        buf.write(u"\u009b\5\36\20\2\u009a\u0099\3\2\2\2\u009b\u009e\3\2")
-        buf.write(u"\2\2\u009c\u009a\3\2\2\2\u009c\u009d\3\2\2\2\u009d\u009f")
-        buf.write(u"\3\2\2\2\u009e\u009c\3\2\2\2\u009f\u00a0\7\22\2\2\u00a0")
-        buf.write(u"\35\3\2\2\2\u00a1\u00a2\5 \21\2\u00a2\u00a5\5*\26\2\u00a3")
-        buf.write(u"\u00a4\7\31\2\2\u00a4\u00a6\5,\27\2\u00a5\u00a3\3\2\2")
-        buf.write(u"\2\u00a5\u00a6\3\2\2\2\u00a6\u00a7\3\2\2\2\u00a7\u00a8")
-        buf.write(u"\7\32\2\2\u00a8\37\3\2\2\2\u00a9\u00ac\5\"\22\2\u00aa")
-        buf.write(u"\u00ac\5(\25\2\u00ab\u00a9\3\2\2\2\u00ab\u00aa\3\2\2")
-        buf.write(u"\2\u00ac!\3\2\2\2\u00ad\u00ae\7%\2\2\u00ae\u00b2\5$\23")
-        buf.write(u"\2\u00af\u00b0\7&\2\2\u00b0\u00b2\5&\24\2\u00b1\u00ad")
-        buf.write(u"\3\2\2\2\u00b1\u00af\3\2\2\2\u00b2#\3\2\2\2\u00b3\u00b4")
-        buf.write(u"\7\26\2\2\u00b4\u00b5\5 \21\2\u00b5\u00b6\7\27\2\2\u00b6")
-        buf.write(u"%\3\2\2\2\u00b7\u00b8\7\26\2\2\u00b8\u00b9\5(\25\2\u00b9")
-        buf.write(u"\u00ba\7\30\2\2\u00ba\u00bb\5 \21\2\u00bb\u00bc\7\27")
-        buf.write(u"\2\2\u00bc\'\3\2\2\2\u00bd\u00c8\7\34\2\2\u00be\u00c8")
-        buf.write(u"\7\35\2\2\u00bf\u00c8\7\36\2\2\u00c0\u00c8\7\37\2\2\u00c1")
-        buf.write(u"\u00c8\7 \2\2\u00c2\u00c8\7!\2\2\u00c3\u00c8\7\"\2\2")
-        buf.write(u"\u00c4\u00c8\7#\2\2\u00c5\u00c8\7$\2\2\u00c6\u00c8\5")
-        buf.write(u".\30\2\u00c7\u00bd\3\2\2\2\u00c7\u00be\3\2\2\2\u00c7")
-        buf.write(u"\u00bf\3\2\2\2\u00c7\u00c0\3\2\2\2\u00c7\u00c1\3\2\2")
-        buf.write(u"\2\u00c7\u00c2\3\2\2\2\u00c7\u00c3\3\2\2\2\u00c7\u00c4")
-        buf.write(u"\3\2\2\2\u00c7\u00c5\3\2\2\2\u00c7\u00c6\3\2\2\2\u00c8")
-        buf.write(u")\3\2\2\2\u00c9\u00ca\5\60\31\2\u00ca+\3\2\2\2\u00cb")
-        buf.write(u"\u00cc\5\26\f\2\u00cc-\3\2\2\2\u00cd\u00ce\5\60\31\2")
-        buf.write(u"\u00ce/\3\2\2\2\u00cf\u00d0\7*\2\2\u00d0\61\3\2\2\2\21")
-        buf.write(u"\64\66:>DFafn\u0093\u009c\u00a5\u00ab\u00b1\u00c7")
+        buf.write(u"\t\30\4\31\t\31\4\32\t\32\3\2\3\2\7\2\67\n\2\f\2\16\2")
+        buf.write(u":\13\2\3\2\5\2=\n\2\3\3\3\3\5\3A\n\3\3\3\3\3\3\3\3\3")
+        buf.write(u"\7\3G\n\3\f\3\16\3J\13\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5")
+        buf.write(u"\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\b\3\b")
+        buf.write(u"\3\t\3\t\7\tb\n\t\f\t\16\te\13\t\3\n\3\n\5\ni\n\n\3\13")
+        buf.write(u"\3\13\3\13\3\f\6\fo\n\f\r\f\16\fp\3\r\3\r\3\r\3\r\3\r")
+        buf.write(u"\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r")
+        buf.write(u"\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r")
+        buf.write(u"\3\r\3\r\3\r\3\r\5\r\u0096\n\r\3\16\3\16\3\16\3\17\3")
+        buf.write(u"\17\5\17\u009d\n\17\3\17\7\17\u00a0\n\17\f\17\16\17\u00a3")
+        buf.write(u"\13\17\5\17\u00a5\n\17\3\17\3\17\3\20\3\20\3\20\3\21")
+        buf.write(u"\3\21\3\21\3\21\5\21\u00b0\n\21\3\21\3\21\3\22\3\22\5")
+        buf.write(u"\22\u00b6\n\22\3\23\3\23\3\23\3\23\5\23\u00bc\n\23\3")
+        buf.write(u"\24\3\24\3\24\3\24\3\25\3\25\3\25\3\25\3\25\3\25\3\26")
+        buf.write(u"\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\5\26\u00d2")
+        buf.write(u"\n\26\3\27\3\27\3\30\3\30\3\31\3\31\3\32\3\32\3\32\2")
+        buf.write(u"\2\33\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,")
+        buf.write(u".\60\62\2\4\3\2\5\r\3\2\20\33\2\u00fc\2<\3\2\2\2\4>\3")
+        buf.write(u"\2\2\2\6M\3\2\2\2\bQ\3\2\2\2\nU\3\2\2\2\fY\3\2\2\2\16")
+        buf.write(u"]\3\2\2\2\20c\3\2\2\2\22h\3\2\2\2\24j\3\2\2\2\26n\3\2")
+        buf.write(u"\2\2\30\u0095\3\2\2\2\32\u0097\3\2\2\2\34\u009a\3\2\2")
+        buf.write(u"\2\36\u00a8\3\2\2\2 \u00ab\3\2\2\2\"\u00b5\3\2\2\2$\u00bb")
+        buf.write(u"\3\2\2\2&\u00bd\3\2\2\2(\u00c1\3\2\2\2*\u00d1\3\2\2\2")
+        buf.write(u",\u00d3\3\2\2\2.\u00d5\3\2\2\2\60\u00d7\3\2\2\2\62\u00d9")
+        buf.write(u"\3\2\2\2\64\67\5\4\3\2\65\67\5\b\5\2\66\64\3\2\2\2\66")
+        buf.write(u"\65\3\2\2\2\67:\3\2\2\28\66\3\2\2\289\3\2\2\29=\3\2\2")
+        buf.write(u"\2:8\3\2\2\2;=\7\2\2\3<8\3\2\2\2<;\3\2\2\2=\3\3\2\2\2")
+        buf.write(u">@\7\3\2\2?A\5\6\4\2@?\3\2\2\2@A\3\2\2\2AB\3\2\2\2BC")
+        buf.write(u"\5\20\t\2CH\7\21\2\2DG\5\n\6\2EG\5\f\7\2FD\3\2\2\2FE")
+        buf.write(u"\3\2\2\2GJ\3\2\2\2HF\3\2\2\2HI\3\2\2\2IK\3\2\2\2JH\3")
+        buf.write(u"\2\2\2KL\7\22\2\2L\5\3\2\2\2MN\7\23\2\2NO\5\62\32\2O")
+        buf.write(u"P\7\24\2\2P\7\3\2\2\2QR\7\4\2\2RS\5\60\31\2ST\5\34\17")
+        buf.write(u"\2T\t\3\2\2\2UV\5\16\b\2VW\7\16\2\2WX\5\34\17\2X\13\3")
+        buf.write(u"\2\2\2YZ\5\16\b\2Z[\7\17\2\2[\\\5\34\17\2\\\r\3\2\2\2")
+        buf.write(u"]^\t\2\2\2^\17\3\2\2\2_`\7\20\2\2`b\5\22\n\2a_\3\2\2")
+        buf.write(u"\2be\3\2\2\2ca\3\2\2\2cd\3\2\2\2d\21\3\2\2\2ec\3\2\2")
+        buf.write(u"\2fi\5\24\13\2gi\5\26\f\2hf\3\2\2\2hg\3\2\2\2i\23\3\2")
+        buf.write(u"\2\2jk\7\25\2\2kl\5\62\32\2l\25\3\2\2\2mo\5\30\r\2nm")
+        buf.write(u"\3\2\2\2op\3\2\2\2pn\3\2\2\2pq\3\2\2\2q\27\3\2\2\2r\u0096")
+        buf.write(u"\7\3\2\2s\u0096\7\4\2\2t\u0096\7\5\2\2u\u0096\7\6\2\2")
+        buf.write(u"v\u0096\7\7\2\2w\u0096\7\b\2\2x\u0096\7\t\2\2y\u0096")
+        buf.write(u"\7\n\2\2z\u0096\7\13\2\2{\u0096\7\f\2\2|\u0096\7\r\2")
+        buf.write(u"\2}\u0096\7\16\2\2~\u0096\7\17\2\2\177\u0096\7\22\2\2")
+        buf.write(u"\u0080\u0096\7\25\2\2\u0081\u0096\7\26\2\2\u0082\u0096")
+        buf.write(u"\7\27\2\2\u0083\u0096\7\23\2\2\u0084\u0096\7\24\2\2\u0085")
+        buf.write(u"\u0096\7\30\2\2\u0086\u0096\7\34\2\2\u0087\u0096\7\35")
+        buf.write(u"\2\2\u0088\u0096\7\36\2\2\u0089\u0096\7\37\2\2\u008a")
+        buf.write(u"\u0096\7 \2\2\u008b\u0096\7!\2\2\u008c\u0096\7\"\2\2")
+        buf.write(u"\u008d\u0096\7#\2\2\u008e\u0096\7$\2\2\u008f\u0096\7")
+        buf.write(u"%\2\2\u0090\u0096\7&\2\2\u0091\u0096\7\'\2\2\u0092\u0096")
+        buf.write(u"\7*\2\2\u0093\u0096\5\32\16\2\u0094\u0096\7+\2\2\u0095")
+        buf.write(u"r\3\2\2\2\u0095s\3\2\2\2\u0095t\3\2\2\2\u0095u\3\2\2")
+        buf.write(u"\2\u0095v\3\2\2\2\u0095w\3\2\2\2\u0095x\3\2\2\2\u0095")
+        buf.write(u"y\3\2\2\2\u0095z\3\2\2\2\u0095{\3\2\2\2\u0095|\3\2\2")
+        buf.write(u"\2\u0095}\3\2\2\2\u0095~\3\2\2\2\u0095\177\3\2\2\2\u0095")
+        buf.write(u"\u0080\3\2\2\2\u0095\u0081\3\2\2\2\u0095\u0082\3\2\2")
+        buf.write(u"\2\u0095\u0083\3\2\2\2\u0095\u0084\3\2\2\2\u0095\u0085")
+        buf.write(u"\3\2\2\2\u0095\u0086\3\2\2\2\u0095\u0087\3\2\2\2\u0095")
+        buf.write(u"\u0088\3\2\2\2\u0095\u0089\3\2\2\2\u0095\u008a\3\2\2")
+        buf.write(u"\2\u0095\u008b\3\2\2\2\u0095\u008c\3\2\2\2\u0095\u008d")
+        buf.write(u"\3\2\2\2\u0095\u008e\3\2\2\2\u0095\u008f\3\2\2\2\u0095")
+        buf.write(u"\u0090\3\2\2\2\u0095\u0091\3\2\2\2\u0095\u0092\3\2\2")
+        buf.write(u"\2\u0095\u0093\3\2\2\2\u0095\u0094\3\2\2\2\u0096\31\3")
+        buf.write(u"\2\2\2\u0097\u0098\7\33\2\2\u0098\u0099\t\3\2\2\u0099")
+        buf.write(u"\33\3\2\2\2\u009a\u00a4\7\21\2\2\u009b\u009d\5\36\20")
+        buf.write(u"\2\u009c\u009b\3\2\2\2\u009c\u009d\3\2\2\2\u009d\u00a5")
+        buf.write(u"\3\2\2\2\u009e\u00a0\5 \21\2\u009f\u009e\3\2\2\2\u00a0")
+        buf.write(u"\u00a3\3\2\2\2\u00a1\u009f\3\2\2\2\u00a1\u00a2\3\2\2")
+        buf.write(u"\2\u00a2\u00a5\3\2\2\2\u00a3\u00a1\3\2\2\2\u00a4\u009c")
+        buf.write(u"\3\2\2\2\u00a4\u00a1\3\2\2\2\u00a5\u00a6\3\2\2\2\u00a6")
+        buf.write(u"\u00a7\7\22\2\2\u00a7\35\3\2\2\2\u00a8\u00a9\5\"\22\2")
+        buf.write(u"\u00a9\u00aa\7\32\2\2\u00aa\37\3\2\2\2\u00ab\u00ac\5")
+        buf.write(u"\"\22\2\u00ac\u00af\5,\27\2\u00ad\u00ae\7\31\2\2\u00ae")
+        buf.write(u"\u00b0\5.\30\2\u00af\u00ad\3\2\2\2\u00af\u00b0\3\2\2")
+        buf.write(u"\2\u00b0\u00b1\3\2\2\2\u00b1\u00b2\7\32\2\2\u00b2!\3")
+        buf.write(u"\2\2\2\u00b3\u00b6\5$\23\2\u00b4\u00b6\5*\26\2\u00b5")
+        buf.write(u"\u00b3\3\2\2\2\u00b5\u00b4\3\2\2\2\u00b6#\3\2\2\2\u00b7")
+        buf.write(u"\u00b8\7%\2\2\u00b8\u00bc\5&\24\2\u00b9\u00ba\7&\2\2")
+        buf.write(u"\u00ba\u00bc\5(\25\2\u00bb\u00b7\3\2\2\2\u00bb\u00b9")
+        buf.write(u"\3\2\2\2\u00bc%\3\2\2\2\u00bd\u00be\7\26\2\2\u00be\u00bf")
+        buf.write(u"\5\"\22\2\u00bf\u00c0\7\27\2\2\u00c0\'\3\2\2\2\u00c1")
+        buf.write(u"\u00c2\7\26\2\2\u00c2\u00c3\5*\26\2\u00c3\u00c4\7\30")
+        buf.write(u"\2\2\u00c4\u00c5\5\"\22\2\u00c5\u00c6\7\27\2\2\u00c6")
+        buf.write(u")\3\2\2\2\u00c7\u00d2\7\34\2\2\u00c8\u00d2\7\35\2\2\u00c9")
+        buf.write(u"\u00d2\7\36\2\2\u00ca\u00d2\7\37\2\2\u00cb\u00d2\7 \2")
+        buf.write(u"\2\u00cc\u00d2\7!\2\2\u00cd\u00d2\7\"\2\2\u00ce\u00d2")
+        buf.write(u"\7#\2\2\u00cf\u00d2\7$\2\2\u00d0\u00d2\5\60\31\2\u00d1")
+        buf.write(u"\u00c7\3\2\2\2\u00d1\u00c8\3\2\2\2\u00d1\u00c9\3\2\2")
+        buf.write(u"\2\u00d1\u00ca\3\2\2\2\u00d1\u00cb\3\2\2\2\u00d1\u00cc")
+        buf.write(u"\3\2\2\2\u00d1\u00cd\3\2\2\2\u00d1\u00ce\3\2\2\2\u00d1")
+        buf.write(u"\u00cf\3\2\2\2\u00d1\u00d0\3\2\2\2\u00d2+\3\2\2\2\u00d3")
+        buf.write(u"\u00d4\5\62\32\2\u00d4-\3\2\2\2\u00d5\u00d6\5\26\f\2")
+        buf.write(u"\u00d6/\3\2\2\2\u00d7\u00d8\5\62\32\2\u00d8\61\3\2\2")
+        buf.write(u"\2\u00d9\u00da\7*\2\2\u00da\63\3\2\2\2\23\668<@FHchp")
+        buf.write(u"\u0095\u009c\u00a1\u00a4\u00af\u00b5\u00bb\u00d1")
         return buf.getvalue()
 
 
@@ -146,23 +152,24 @@ class HTTPIDL ( Parser ):
     RULE_stringElement = 11
     RULE_escaped = 12
     RULE_structBody = 13
-    RULE_parameterMap = 14
-    RULE_paramType = 15
-    RULE_genericType = 16
-    RULE_arrayGenericParam = 17
-    RULE_dictGenericParam = 18
-    RULE_baseType = 19
-    RULE_key = 20
-    RULE_value = 21
-    RULE_structName = 22
-    RULE_identifier = 23
+    RULE_singleParameter = 14
+    RULE_parameterMap = 15
+    RULE_paramType = 16
+    RULE_genericType = 17
+    RULE_arrayGenericParam = 18
+    RULE_dictGenericParam = 19
+    RULE_baseType = 20
+    RULE_key = 21
+    RULE_value = 22
+    RULE_structName = 23
+    RULE_identifier = 24
 
     ruleNames =  [ u"entry", u"message", u"messageName", u"struct", u"request", 
                    u"response", u"method", u"uri", u"uriPathComponent", 
                    u"parameterInUri", u"string", u"stringElement", u"escaped", 
-                   u"structBody", u"parameterMap", u"paramType", u"genericType", 
-                   u"arrayGenericParam", u"dictGenericParam", u"baseType", 
-                   u"key", u"value", u"structName", u"identifier" ]
+                   u"structBody", u"singleParameter", u"parameterMap", u"paramType", 
+                   u"genericType", u"arrayGenericParam", u"dictGenericParam", 
+                   u"baseType", u"key", u"value", u"structName", u"identifier" ]
 
     EOF = Token.EOF
     MESSAGE=1
@@ -250,30 +257,30 @@ class HTTPIDL ( Parser ):
         self.enterRule(localctx, 0, self.RULE_entry)
         self._la = 0 # Token type
         try:
-            self.state = 56
+            self.state = 58
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 52
+                self.state = 54
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==HTTPIDL.MESSAGE or _la==HTTPIDL.STRUCT:
-                    self.state = 50
+                    self.state = 52
                     self._errHandler.sync(self)
                     token = self._input.LA(1)
                     if token in [HTTPIDL.MESSAGE]:
-                        self.state = 48
+                        self.state = 50
                         self.message()
                         pass
                     elif token in [HTTPIDL.STRUCT]:
-                        self.state = 49
+                        self.state = 51
                         self.struct()
                         pass
                     else:
                         raise NoViableAltException(self)
 
-                    self.state = 54
+                    self.state = 56
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
@@ -281,7 +288,7 @@ class HTTPIDL ( Parser ):
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 55
+                self.state = 57
                 self.match(HTTPIDL.EOF)
                 pass
 
@@ -344,43 +351,43 @@ class HTTPIDL ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 58
-            self.match(HTTPIDL.MESSAGE)
             self.state = 60
+            self.match(HTTPIDL.MESSAGE)
+            self.state = 62
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==HTTPIDL.LPAREN:
-                self.state = 59
+                self.state = 61
                 self.messageName()
 
 
-            self.state = 62
+            self.state = 64
             self.uri()
-            self.state = 63
+            self.state = 65
             self.match(HTTPIDL.LCURLY)
-            self.state = 68
+            self.state = 70
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.GET) | (1 << HTTPIDL.HEAD) | (1 << HTTPIDL.TRACE) | (1 << HTTPIDL.CONNECT) | (1 << HTTPIDL.OPTIONS) | (1 << HTTPIDL.POST) | (1 << HTTPIDL.PUT) | (1 << HTTPIDL.PATCH) | (1 << HTTPIDL.DELETE))) != 0):
-                self.state = 66
+                self.state = 68
                 self._errHandler.sync(self)
                 la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
                 if la_ == 1:
-                    self.state = 64
+                    self.state = 66
                     self.request()
                     pass
 
                 elif la_ == 2:
-                    self.state = 65
+                    self.state = 67
                     self.response()
                     pass
 
 
-                self.state = 70
+                self.state = 72
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 71
+            self.state = 73
             self.match(HTTPIDL.RCURLY)
         except RecognitionException as re:
             localctx.exception = re
@@ -418,11 +425,11 @@ class HTTPIDL ( Parser ):
         self.enterRule(localctx, 4, self.RULE_messageName)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 73
-            self.match(HTTPIDL.LPAREN)
-            self.state = 74
-            self.identifier()
             self.state = 75
+            self.match(HTTPIDL.LPAREN)
+            self.state = 76
+            self.identifier()
+            self.state = 77
             self.match(HTTPIDL.RPAREN)
         except RecognitionException as re:
             localctx.exception = re
@@ -461,11 +468,11 @@ class HTTPIDL ( Parser ):
         self.enterRule(localctx, 6, self.RULE_struct)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 77
-            self.match(HTTPIDL.STRUCT)
-            self.state = 78
-            self.structName()
             self.state = 79
+            self.match(HTTPIDL.STRUCT)
+            self.state = 80
+            self.structName()
+            self.state = 81
             self.structBody()
         except RecognitionException as re:
             localctx.exception = re
@@ -504,11 +511,11 @@ class HTTPIDL ( Parser ):
         self.enterRule(localctx, 8, self.RULE_request)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 81
-            self.method()
-            self.state = 82
-            self.match(HTTPIDL.REQUEST)
             self.state = 83
+            self.method()
+            self.state = 84
+            self.match(HTTPIDL.REQUEST)
+            self.state = 85
             self.structBody()
         except RecognitionException as re:
             localctx.exception = re
@@ -547,11 +554,11 @@ class HTTPIDL ( Parser ):
         self.enterRule(localctx, 10, self.RULE_response)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 85
-            self.method()
-            self.state = 86
-            self.match(HTTPIDL.RESPONSE)
             self.state = 87
+            self.method()
+            self.state = 88
+            self.match(HTTPIDL.RESPONSE)
+            self.state = 89
             self.structBody()
         except RecognitionException as re:
             localctx.exception = re
@@ -607,7 +614,7 @@ class HTTPIDL ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 89
+            self.state = 91
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.GET) | (1 << HTTPIDL.HEAD) | (1 << HTTPIDL.TRACE) | (1 << HTTPIDL.CONNECT) | (1 << HTTPIDL.OPTIONS) | (1 << HTTPIDL.POST) | (1 << HTTPIDL.PUT) | (1 << HTTPIDL.PATCH) | (1 << HTTPIDL.DELETE))) != 0)):
                 self._errHandler.recoverInline(self)
@@ -654,15 +661,15 @@ class HTTPIDL ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 95
+            self.state = 97
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==HTTPIDL.SLASH:
-                self.state = 91
+                self.state = 93
                 self.match(HTTPIDL.SLASH)
-                self.state = 92
+                self.state = 94
                 self.uriPathComponent()
-                self.state = 97
+                self.state = 99
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -699,18 +706,18 @@ class HTTPIDL ( Parser ):
         localctx = HTTPIDL.UriPathComponentContext(self, self._ctx, self.state)
         self.enterRule(localctx, 16, self.RULE_uriPathComponent)
         try:
-            self.state = 100
+            self.state = 102
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,7,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 98
+                self.state = 100
                 self.parameterInUri()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 99
+                self.state = 101
                 self.string()
                 pass
 
@@ -748,9 +755,9 @@ class HTTPIDL ( Parser ):
         self.enterRule(localctx, 18, self.RULE_parameterInUri)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 102
+            self.state = 104
             self.match(HTTPIDL.DOLLAR)
-            self.state = 103
+            self.state = 105
             self.identifier()
         except RecognitionException as re:
             localctx.exception = re
@@ -786,13 +793,13 @@ class HTTPIDL ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 106 
+            self.state = 108 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 105
+                self.state = 107
                 self.stringElement()
-                self.state = 108 
+                self.state = 110 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.MESSAGE) | (1 << HTTPIDL.STRUCT) | (1 << HTTPIDL.GET) | (1 << HTTPIDL.HEAD) | (1 << HTTPIDL.TRACE) | (1 << HTTPIDL.CONNECT) | (1 << HTTPIDL.OPTIONS) | (1 << HTTPIDL.POST) | (1 << HTTPIDL.PUT) | (1 << HTTPIDL.PATCH) | (1 << HTTPIDL.DELETE) | (1 << HTTPIDL.REQUEST) | (1 << HTTPIDL.RESPONSE) | (1 << HTTPIDL.RCURLY) | (1 << HTTPIDL.LPAREN) | (1 << HTTPIDL.RPAREN) | (1 << HTTPIDL.DOLLAR) | (1 << HTTPIDL.LABRACKET) | (1 << HTTPIDL.RABRACKET) | (1 << HTTPIDL.COMMA) | (1 << HTTPIDL.ESCAPE) | (1 << HTTPIDL.INT32) | (1 << HTTPIDL.UINT32) | (1 << HTTPIDL.INT64) | (1 << HTTPIDL.UINT64) | (1 << HTTPIDL.BOOL) | (1 << HTTPIDL.DOUBLE) | (1 << HTTPIDL.STRING) | (1 << HTTPIDL.FILE) | (1 << HTTPIDL.BLOB) | (1 << HTTPIDL.ARRAY) | (1 << HTTPIDL.DICT) | (1 << HTTPIDL.COMMENT) | (1 << HTTPIDL.IDENT) | (1 << HTTPIDL.ANYCHAR))) != 0)):
@@ -929,182 +936,182 @@ class HTTPIDL ( Parser ):
         localctx = HTTPIDL.StringElementContext(self, self._ctx, self.state)
         self.enterRule(localctx, 22, self.RULE_stringElement)
         try:
-            self.state = 145
+            self.state = 147
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [HTTPIDL.MESSAGE]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 110
+                self.state = 112
                 self.match(HTTPIDL.MESSAGE)
                 pass
             elif token in [HTTPIDL.STRUCT]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 111
+                self.state = 113
                 self.match(HTTPIDL.STRUCT)
                 pass
             elif token in [HTTPIDL.GET]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 112
+                self.state = 114
                 self.match(HTTPIDL.GET)
                 pass
             elif token in [HTTPIDL.HEAD]:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 113
+                self.state = 115
                 self.match(HTTPIDL.HEAD)
                 pass
             elif token in [HTTPIDL.TRACE]:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 114
+                self.state = 116
                 self.match(HTTPIDL.TRACE)
                 pass
             elif token in [HTTPIDL.CONNECT]:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 115
+                self.state = 117
                 self.match(HTTPIDL.CONNECT)
                 pass
             elif token in [HTTPIDL.OPTIONS]:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 116
+                self.state = 118
                 self.match(HTTPIDL.OPTIONS)
                 pass
             elif token in [HTTPIDL.POST]:
                 self.enterOuterAlt(localctx, 8)
-                self.state = 117
+                self.state = 119
                 self.match(HTTPIDL.POST)
                 pass
             elif token in [HTTPIDL.PUT]:
                 self.enterOuterAlt(localctx, 9)
-                self.state = 118
+                self.state = 120
                 self.match(HTTPIDL.PUT)
                 pass
             elif token in [HTTPIDL.PATCH]:
                 self.enterOuterAlt(localctx, 10)
-                self.state = 119
+                self.state = 121
                 self.match(HTTPIDL.PATCH)
                 pass
             elif token in [HTTPIDL.DELETE]:
                 self.enterOuterAlt(localctx, 11)
-                self.state = 120
+                self.state = 122
                 self.match(HTTPIDL.DELETE)
                 pass
             elif token in [HTTPIDL.REQUEST]:
                 self.enterOuterAlt(localctx, 12)
-                self.state = 121
+                self.state = 123
                 self.match(HTTPIDL.REQUEST)
                 pass
             elif token in [HTTPIDL.RESPONSE]:
                 self.enterOuterAlt(localctx, 13)
-                self.state = 122
+                self.state = 124
                 self.match(HTTPIDL.RESPONSE)
                 pass
             elif token in [HTTPIDL.RCURLY]:
                 self.enterOuterAlt(localctx, 14)
-                self.state = 123
+                self.state = 125
                 self.match(HTTPIDL.RCURLY)
                 pass
             elif token in [HTTPIDL.DOLLAR]:
                 self.enterOuterAlt(localctx, 15)
-                self.state = 124
+                self.state = 126
                 self.match(HTTPIDL.DOLLAR)
                 pass
             elif token in [HTTPIDL.LABRACKET]:
                 self.enterOuterAlt(localctx, 16)
-                self.state = 125
+                self.state = 127
                 self.match(HTTPIDL.LABRACKET)
                 pass
             elif token in [HTTPIDL.RABRACKET]:
                 self.enterOuterAlt(localctx, 17)
-                self.state = 126
+                self.state = 128
                 self.match(HTTPIDL.RABRACKET)
                 pass
             elif token in [HTTPIDL.LPAREN]:
                 self.enterOuterAlt(localctx, 18)
-                self.state = 127
+                self.state = 129
                 self.match(HTTPIDL.LPAREN)
                 pass
             elif token in [HTTPIDL.RPAREN]:
                 self.enterOuterAlt(localctx, 19)
-                self.state = 128
+                self.state = 130
                 self.match(HTTPIDL.RPAREN)
                 pass
             elif token in [HTTPIDL.COMMA]:
                 self.enterOuterAlt(localctx, 20)
-                self.state = 129
+                self.state = 131
                 self.match(HTTPIDL.COMMA)
                 pass
             elif token in [HTTPIDL.INT32]:
                 self.enterOuterAlt(localctx, 21)
-                self.state = 130
+                self.state = 132
                 self.match(HTTPIDL.INT32)
                 pass
             elif token in [HTTPIDL.UINT32]:
                 self.enterOuterAlt(localctx, 22)
-                self.state = 131
+                self.state = 133
                 self.match(HTTPIDL.UINT32)
                 pass
             elif token in [HTTPIDL.INT64]:
                 self.enterOuterAlt(localctx, 23)
-                self.state = 132
+                self.state = 134
                 self.match(HTTPIDL.INT64)
                 pass
             elif token in [HTTPIDL.UINT64]:
                 self.enterOuterAlt(localctx, 24)
-                self.state = 133
+                self.state = 135
                 self.match(HTTPIDL.UINT64)
                 pass
             elif token in [HTTPIDL.BOOL]:
                 self.enterOuterAlt(localctx, 25)
-                self.state = 134
+                self.state = 136
                 self.match(HTTPIDL.BOOL)
                 pass
             elif token in [HTTPIDL.DOUBLE]:
                 self.enterOuterAlt(localctx, 26)
-                self.state = 135
+                self.state = 137
                 self.match(HTTPIDL.DOUBLE)
                 pass
             elif token in [HTTPIDL.STRING]:
                 self.enterOuterAlt(localctx, 27)
-                self.state = 136
+                self.state = 138
                 self.match(HTTPIDL.STRING)
                 pass
             elif token in [HTTPIDL.FILE]:
                 self.enterOuterAlt(localctx, 28)
-                self.state = 137
+                self.state = 139
                 self.match(HTTPIDL.FILE)
                 pass
             elif token in [HTTPIDL.BLOB]:
                 self.enterOuterAlt(localctx, 29)
-                self.state = 138
+                self.state = 140
                 self.match(HTTPIDL.BLOB)
                 pass
             elif token in [HTTPIDL.ARRAY]:
                 self.enterOuterAlt(localctx, 30)
-                self.state = 139
+                self.state = 141
                 self.match(HTTPIDL.ARRAY)
                 pass
             elif token in [HTTPIDL.DICT]:
                 self.enterOuterAlt(localctx, 31)
-                self.state = 140
+                self.state = 142
                 self.match(HTTPIDL.DICT)
                 pass
             elif token in [HTTPIDL.COMMENT]:
                 self.enterOuterAlt(localctx, 32)
-                self.state = 141
+                self.state = 143
                 self.match(HTTPIDL.COMMENT)
                 pass
             elif token in [HTTPIDL.IDENT]:
                 self.enterOuterAlt(localctx, 33)
-                self.state = 142
+                self.state = 144
                 self.match(HTTPIDL.IDENT)
                 pass
             elif token in [HTTPIDL.ESCAPE]:
                 self.enterOuterAlt(localctx, 34)
-                self.state = 143
+                self.state = 145
                 self.escaped()
                 pass
             elif token in [HTTPIDL.ANYCHAR]:
                 self.enterOuterAlt(localctx, 35)
-                self.state = 144
+                self.state = 146
                 self.match(HTTPIDL.ANYCHAR)
                 pass
             else:
@@ -1176,9 +1183,9 @@ class HTTPIDL ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 147
+            self.state = 149
             self.match(HTTPIDL.ESCAPE)
-            self.state = 148
+            self.state = 150
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.SLASH) | (1 << HTTPIDL.LCURLY) | (1 << HTTPIDL.RCURLY) | (1 << HTTPIDL.LPAREN) | (1 << HTTPIDL.RPAREN) | (1 << HTTPIDL.DOLLAR) | (1 << HTTPIDL.LABRACKET) | (1 << HTTPIDL.RABRACKET) | (1 << HTTPIDL.COMMA) | (1 << HTTPIDL.ASSIGN) | (1 << HTTPIDL.SEMICOLON) | (1 << HTTPIDL.ESCAPE))) != 0)):
                 self._errHandler.recoverInline(self)
@@ -1205,6 +1212,10 @@ class HTTPIDL ( Parser ):
         def RCURLY(self):
             return self.getToken(HTTPIDL.RCURLY, 0)
 
+        def singleParameter(self):
+            return self.getTypedRuleContext(HTTPIDL.SingleParameterContext,0)
+
+
         def parameterMap(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(HTTPIDL.ParameterMapContext)
@@ -1225,20 +1236,75 @@ class HTTPIDL ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 150
+            self.state = 152
             self.match(HTTPIDL.LCURLY)
-            self.state = 154
+            self.state = 162
             self._errHandler.sync(self)
-            _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.INT32) | (1 << HTTPIDL.UINT32) | (1 << HTTPIDL.INT64) | (1 << HTTPIDL.UINT64) | (1 << HTTPIDL.BOOL) | (1 << HTTPIDL.DOUBLE) | (1 << HTTPIDL.STRING) | (1 << HTTPIDL.FILE) | (1 << HTTPIDL.BLOB) | (1 << HTTPIDL.ARRAY) | (1 << HTTPIDL.DICT) | (1 << HTTPIDL.IDENT))) != 0):
-                self.state = 151
-                self.parameterMap()
-                self.state = 156
+            la_ = self._interp.adaptivePredict(self._input,12,self._ctx)
+            if la_ == 1:
+                self.state = 154
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
+                if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.INT32) | (1 << HTTPIDL.UINT32) | (1 << HTTPIDL.INT64) | (1 << HTTPIDL.UINT64) | (1 << HTTPIDL.BOOL) | (1 << HTTPIDL.DOUBLE) | (1 << HTTPIDL.STRING) | (1 << HTTPIDL.FILE) | (1 << HTTPIDL.BLOB) | (1 << HTTPIDL.ARRAY) | (1 << HTTPIDL.DICT) | (1 << HTTPIDL.IDENT))) != 0):
+                    self.state = 153
+                    self.singleParameter()
 
-            self.state = 157
+
+                pass
+
+            elif la_ == 2:
+                self.state = 159
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << HTTPIDL.INT32) | (1 << HTTPIDL.UINT32) | (1 << HTTPIDL.INT64) | (1 << HTTPIDL.UINT64) | (1 << HTTPIDL.BOOL) | (1 << HTTPIDL.DOUBLE) | (1 << HTTPIDL.STRING) | (1 << HTTPIDL.FILE) | (1 << HTTPIDL.BLOB) | (1 << HTTPIDL.ARRAY) | (1 << HTTPIDL.DICT) | (1 << HTTPIDL.IDENT))) != 0):
+                    self.state = 156
+                    self.parameterMap()
+                    self.state = 161
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+
+                pass
+
+
+            self.state = 164
             self.match(HTTPIDL.RCURLY)
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+    class SingleParameterContext(ParserRuleContext):
+
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(HTTPIDL.SingleParameterContext, self).__init__(parent, invokingState)
+            self.parser = parser
+
+        def paramType(self):
+            return self.getTypedRuleContext(HTTPIDL.ParamTypeContext,0)
+
+
+        def SEMICOLON(self):
+            return self.getToken(HTTPIDL.SEMICOLON, 0)
+
+        def getRuleIndex(self):
+            return HTTPIDL.RULE_singleParameter
+
+
+
+
+    def singleParameter(self):
+
+        localctx = HTTPIDL.SingleParameterContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 28, self.RULE_singleParameter)
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 166
+            self.paramType()
+            self.state = 167
+            self.match(HTTPIDL.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1280,25 +1346,25 @@ class HTTPIDL ( Parser ):
     def parameterMap(self):
 
         localctx = HTTPIDL.ParameterMapContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 28, self.RULE_parameterMap)
+        self.enterRule(localctx, 30, self.RULE_parameterMap)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 159
+            self.state = 169
             self.paramType()
-            self.state = 160
+            self.state = 170
             self.key()
-            self.state = 163
+            self.state = 173
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==HTTPIDL.ASSIGN:
-                self.state = 161
+                self.state = 171
                 self.match(HTTPIDL.ASSIGN)
-                self.state = 162
+                self.state = 172
                 self.value()
 
 
-            self.state = 165
+            self.state = 175
             self.match(HTTPIDL.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -1331,19 +1397,19 @@ class HTTPIDL ( Parser ):
     def paramType(self):
 
         localctx = HTTPIDL.ParamTypeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 30, self.RULE_paramType)
+        self.enterRule(localctx, 32, self.RULE_paramType)
         try:
-            self.state = 169
+            self.state = 179
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [HTTPIDL.ARRAY, HTTPIDL.DICT]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 167
+                self.state = 177
                 self.genericType()
                 pass
             elif token in [HTTPIDL.INT32, HTTPIDL.UINT32, HTTPIDL.INT64, HTTPIDL.UINT64, HTTPIDL.BOOL, HTTPIDL.DOUBLE, HTTPIDL.STRING, HTTPIDL.FILE, HTTPIDL.BLOB, HTTPIDL.IDENT]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 168
+                self.state = 178
                 self.baseType()
                 pass
             else:
@@ -1386,23 +1452,23 @@ class HTTPIDL ( Parser ):
     def genericType(self):
 
         localctx = HTTPIDL.GenericTypeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 32, self.RULE_genericType)
+        self.enterRule(localctx, 34, self.RULE_genericType)
         try:
-            self.state = 175
+            self.state = 185
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [HTTPIDL.ARRAY]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 171
+                self.state = 181
                 self.match(HTTPIDL.ARRAY)
-                self.state = 172
+                self.state = 182
                 self.arrayGenericParam()
                 pass
             elif token in [HTTPIDL.DICT]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 173
+                self.state = 183
                 self.match(HTTPIDL.DICT)
-                self.state = 174
+                self.state = 184
                 self.dictGenericParam()
                 pass
             else:
@@ -1441,14 +1507,14 @@ class HTTPIDL ( Parser ):
     def arrayGenericParam(self):
 
         localctx = HTTPIDL.ArrayGenericParamContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 34, self.RULE_arrayGenericParam)
+        self.enterRule(localctx, 36, self.RULE_arrayGenericParam)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 177
+            self.state = 187
             self.match(HTTPIDL.LABRACKET)
-            self.state = 178
+            self.state = 188
             self.paramType()
-            self.state = 179
+            self.state = 189
             self.match(HTTPIDL.RABRACKET)
         except RecognitionException as re:
             localctx.exception = re
@@ -1490,18 +1556,18 @@ class HTTPIDL ( Parser ):
     def dictGenericParam(self):
 
         localctx = HTTPIDL.DictGenericParamContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 36, self.RULE_dictGenericParam)
+        self.enterRule(localctx, 38, self.RULE_dictGenericParam)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 181
+            self.state = 191
             self.match(HTTPIDL.LABRACKET)
-            self.state = 182
+            self.state = 192
             self.baseType()
-            self.state = 183
+            self.state = 193
             self.match(HTTPIDL.COMMA)
-            self.state = 184
+            self.state = 194
             self.paramType()
-            self.state = 185
+            self.state = 195
             self.match(HTTPIDL.RABRACKET)
         except RecognitionException as re:
             localctx.exception = re
@@ -1557,59 +1623,59 @@ class HTTPIDL ( Parser ):
     def baseType(self):
 
         localctx = HTTPIDL.BaseTypeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 38, self.RULE_baseType)
+        self.enterRule(localctx, 40, self.RULE_baseType)
         try:
-            self.state = 197
+            self.state = 207
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [HTTPIDL.INT32]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 187
+                self.state = 197
                 self.match(HTTPIDL.INT32)
                 pass
             elif token in [HTTPIDL.UINT32]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 188
+                self.state = 198
                 self.match(HTTPIDL.UINT32)
                 pass
             elif token in [HTTPIDL.INT64]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 189
+                self.state = 199
                 self.match(HTTPIDL.INT64)
                 pass
             elif token in [HTTPIDL.UINT64]:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 190
+                self.state = 200
                 self.match(HTTPIDL.UINT64)
                 pass
             elif token in [HTTPIDL.BOOL]:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 191
+                self.state = 201
                 self.match(HTTPIDL.BOOL)
                 pass
             elif token in [HTTPIDL.DOUBLE]:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 192
+                self.state = 202
                 self.match(HTTPIDL.DOUBLE)
                 pass
             elif token in [HTTPIDL.STRING]:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 193
+                self.state = 203
                 self.match(HTTPIDL.STRING)
                 pass
             elif token in [HTTPIDL.FILE]:
                 self.enterOuterAlt(localctx, 8)
-                self.state = 194
+                self.state = 204
                 self.match(HTTPIDL.FILE)
                 pass
             elif token in [HTTPIDL.BLOB]:
                 self.enterOuterAlt(localctx, 9)
-                self.state = 195
+                self.state = 205
                 self.match(HTTPIDL.BLOB)
                 pass
             elif token in [HTTPIDL.IDENT]:
                 self.enterOuterAlt(localctx, 10)
-                self.state = 196
+                self.state = 206
                 self.structName()
                 pass
             else:
@@ -1642,10 +1708,10 @@ class HTTPIDL ( Parser ):
     def key(self):
 
         localctx = HTTPIDL.KeyContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 40, self.RULE_key)
+        self.enterRule(localctx, 42, self.RULE_key)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 199
+            self.state = 209
             self.identifier()
         except RecognitionException as re:
             localctx.exception = re
@@ -1674,10 +1740,10 @@ class HTTPIDL ( Parser ):
     def value(self):
 
         localctx = HTTPIDL.ValueContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 42, self.RULE_value)
+        self.enterRule(localctx, 44, self.RULE_value)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 201
+            self.state = 211
             self.string()
         except RecognitionException as re:
             localctx.exception = re
@@ -1706,10 +1772,10 @@ class HTTPIDL ( Parser ):
     def structName(self):
 
         localctx = HTTPIDL.StructNameContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 44, self.RULE_structName)
+        self.enterRule(localctx, 46, self.RULE_structName)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 203
+            self.state = 213
             self.identifier()
         except RecognitionException as re:
             localctx.exception = re
@@ -1737,10 +1803,10 @@ class HTTPIDL ( Parser ):
     def identifier(self):
 
         localctx = HTTPIDL.IdentifierContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 46, self.RULE_identifier)
+        self.enterRule(localctx, 48, self.RULE_identifier)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 205
+            self.state = 215
             self.match(HTTPIDL.IDENT)
         except RecognitionException as re:
             localctx.exception = re

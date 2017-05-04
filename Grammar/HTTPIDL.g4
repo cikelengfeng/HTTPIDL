@@ -129,7 +129,12 @@ escaped
 
 structBody
     :
-    LCURLY parameterMap* RCURLY
+    LCURLY (singleParameter? | parameterMap*) RCURLY
+    ;
+
+singleParameter
+    :
+    paramType SEMICOLON
     ;
 
 parameterMap
