@@ -341,7 +341,7 @@ class GetArrayRequest: Request {
             })
             return tmp
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     
@@ -419,7 +419,7 @@ class GetDictRequest: Request {
             })
             return tmp
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     
@@ -490,7 +490,7 @@ class GetSimpleRequest: Request {
         if let body = body {
             return body.asRequestContent()
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     
@@ -550,7 +550,7 @@ class GetStruct1Request: Request {
         if let body = body {
             return body.asRequestContent()
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     
@@ -610,7 +610,7 @@ class GetStruct2Request: Request {
         if let body = body {
             return body.asRequestContent()
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     
@@ -670,7 +670,7 @@ class GetStruct3Request: Request {
         if let body = body {
             return body.asRequestContent()
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     
@@ -730,7 +730,7 @@ class GetStruct4Request: Request {
         if let body = body {
             return body.asRequestContent()
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     
@@ -790,7 +790,7 @@ class GetStruct5Request: Request {
         if let body = body {
             return body.asRequestContent()
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     
@@ -850,7 +850,7 @@ class GetStruct6Request: Request {
         if let body = body {
             return body.asRequestContent()
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     
@@ -910,7 +910,7 @@ class GetStruct7Request: Request {
         if let body = body {
             return body.asRequestContent()
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     
@@ -970,7 +970,7 @@ class GetStruct8Request: Request {
         if let body = body {
             return body.asRequestContent()
         } else {
-             return .dictionary(value: [:])
+            return nil
         }
     }
     

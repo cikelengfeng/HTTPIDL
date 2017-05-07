@@ -83,6 +83,38 @@ extension UInt32: ResponseContentConvertible {
     }
 }
 
+extension Int: ResponseContentConvertible {
+    public init?(content: ResponseContent?) {
+        guard let content = content else {
+            return nil
+        }
+        switch content {
+        case .number(let value):
+            self.init(value)
+        case .string(let value):
+            self.init(value)
+        case .array, .dictionary, .data:
+            return nil
+        }
+    }
+}
+
+extension UInt: ResponseContentConvertible {
+    public init?(content: ResponseContent?) {
+        guard let content = content else {
+            return nil
+        }
+        switch content {
+        case .number(let value):
+            self.init(value)
+        case .string(let value):
+            self.init(value)
+        case .array, .dictionary, .data:
+            return nil
+        }
+    }
+}
+
 extension Bool: ResponseContentConvertible {
     public init?(content: ResponseContent?) {
         guard let content = content else {
