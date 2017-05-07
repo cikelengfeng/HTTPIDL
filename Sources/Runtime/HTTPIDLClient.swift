@@ -22,7 +22,7 @@ public enum BaseClientError: HIError {
 public class BaseClient: Client {
     
     public static let shared = BaseClient()
-    public var clientImpl: HTTPClient = NSClient()
+    public var clientImpl: HTTPClient = NSClient.shared
     public var configuration: Configuration {
         get {
             guard let config = _configuration else {

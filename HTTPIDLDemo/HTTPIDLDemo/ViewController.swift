@@ -33,6 +33,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         BaseConfiguration.shared.baseURLString = "http://httpbin.org/"
+        let configuration = URLSessionConfiguration.default
+        let session = URLSession(configuration: configuration)
+        BaseClient.shared.clientImpl = NSClient(session: session)
 //        BaseClient.shared.add(responseObserver: TestObserver())
         
 //        let request = PostTestMultipartEncoderRequest()

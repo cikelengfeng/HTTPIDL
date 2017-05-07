@@ -29,7 +29,6 @@ public enum NSClientError: HIError {
 
 class NSRequestFuture: NSObject, HTTPRequestFuture {
     let request: HTTPRequest
-    let queue: DispatchQueue
     var task: URLSessionDataTask? {
         set {
             _task = newValue
@@ -69,9 +68,8 @@ class NSRequestFuture: NSObject, HTTPRequestFuture {
         _task?.removeObserver(self, forKeyPath: "countOfBytesExpectedToSend")
     }
     
-    init(request: HTTPRequest, queue: DispatchQueue) {
+    init(request: HTTPRequest) {
         self.request = request
-        self.queue = queue
         overallProgress = Progress(totalUnitCount: 2)
         overallProgress.becomeCurrent(withPendingUnitCount: overallProgress.totalUnitCount / 2)
         sendProgress = Progress(totalUnitCount: Int64.max)
@@ -108,21 +106,15 @@ class NSRequestFuture: NSObject, HTTPRequestFuture {
     }
     
     func notify(progress: Progress) {
-        queue.async {
-            self.progressHandler?(progress)
-        }
+        self.progressHandler?(progress)
     }
     
     func notify(response: HTTPResponse) {
-        queue.async {
-            self.responseHandler?(response)
-        }
+        self.responseHandler?(response)
     }
     
     func notify(error: HIError) {
-        queue.async {
-            self.errorHandler?(error)
-        }
+        self.errorHandler?(error)
     }
     
     func cancel() {
@@ -130,16 +122,27 @@ class NSRequestFuture: NSObject, HTTPRequestFuture {
     }
 }
 
-class NSClient: HTTPClient {
+public class NSClient: HTTPClient {
     
-    let queue = DispatchQueue(label: "org.httpidl.nsclient.default-callback")
+    public static let shared = { _ -> NSClient in
+        let configuration = URLSessionConfiguration.default
+        let queue = OperationQueue()
+        queue.name = "org.httpidl.nsclient.default-callback"
+        let session = URLSession(configuration: configuration, delegate: nil, delegateQueue: queue)
+        return NSClient(session: session)
+    }()
     
-    func send(_ request: HTTPRequest) -> HTTPRequestFuture {
-        let future = NSRequestFuture(request: request, queue: queue)
+    public let session: URLSession
+    
+    public init(session: URLSession) {
+        self.session = session
+    }
+    
+    public func send(_ request: HTTPRequest) -> HTTPRequestFuture {
+        let future = NSRequestFuture(request: request)
         do {
             let dataRequest: URLRequest = try adapt(request)
-            let configuration = URLSessionConfiguration.default
-            let session = URLSession(configuration: configuration)
+            
             let task = session.dataTask(with: dataRequest, completionHandler: { (data, response, error) in
                 if let err = error {
                     future.notify(error: NSClientError.adaptURLResponseFailed(rawError: err))
@@ -156,7 +159,9 @@ class NSClient: HTTPClient {
             future.task = task
             task.resume()
         } catch let err {
-            future.notify(error: NSClientError.adaptURLRequestFailed(rawError: err))
+            session.delegateQueue.addOperation {
+                future.notify(error: NSClientError.adaptURLRequestFailed(rawError: err))
+            }
         }
         return future
     }
