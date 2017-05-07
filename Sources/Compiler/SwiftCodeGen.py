@@ -147,7 +147,7 @@ class Swift3CodeGenerator:
         self.pop_indent()
         self.write_line('} else {')
         self.push_indent()
-        self.write_line(' return .dictionary(value: [:])')
+        self.write_line('return nil')
         self.pop_indent()
         self.write_line('}')
         self.pop_indent()
