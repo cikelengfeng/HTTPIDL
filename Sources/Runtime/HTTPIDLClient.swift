@@ -23,10 +23,10 @@ public class BaseClient: Client {
     
     public static let shared = BaseClient()
     public var clientImpl: HTTPClient = NSClient.shared
-    public var configuration: Configuration {
+    public var configuration: ClientConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseConfiguration.shared
+                return BaseClientConfiguration.shared
             }
             return config
         }
@@ -34,7 +34,7 @@ public class BaseClient: Client {
             _configuration = newValue
         }
     }
-    private var _configuration: Configuration?
+    private var _configuration: ClientConfiguration?
     private var requestObservers: [HTTPRequestObserver] = []
     private var responseObservers: [HTTPResponseObserver] = []
     private var requestRewriters: [HTTPRequestRewriter] = []
@@ -271,8 +271,8 @@ public class BaseClient: Client {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
-            let requestEncoder = request.configuration.encoderStrategy(request)
-            let responseDecoder = request.configuration.decoderStrategy(request)
+            let requestEncoder = request.configuration.encoder
+            let responseDecoder = request.configuration.decoder
             var encodedRequest = try requestEncoder.encode(request)
             self.didEncode(request: request, encoded: encodedRequest)
             if let rewriterResult = self.rewrite(request: encodedRequest) {
@@ -318,7 +318,7 @@ public class BaseClient: Client {
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
-            let requestEncoder = request.configuration.encoderStrategy(request)
+            let requestEncoder = request.configuration.encoder
             var encodedRequest = try requestEncoder.encode(request)
             self.didEncode(request: request, encoded: encodedRequest)
             

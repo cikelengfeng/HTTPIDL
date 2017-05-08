@@ -15,6 +15,13 @@ public protocol HTTPRequest {
     //有些情况下request body可以为空，如GET请求。所以这里要同时支持抛错和空值
     var body: () throws -> Data? {get set}
     
+    var cachePolicy: URLRequest.CachePolicy? {get set}
+    var networkServiceType: URLRequest.NetworkServiceType? {get set}
+    var timeoutInterval: TimeInterval? {get set}
+    var shouldUsePipelining: Bool? {get set}
+    var shouldHandleCookies: Bool? {get set}
+    var allowsCellularAccess: Bool? {get set}
+    
 }
 
 public protocol HTTPResponse {

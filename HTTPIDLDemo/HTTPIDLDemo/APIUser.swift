@@ -71,11 +71,11 @@ class GetUsersUserIdRequest: Request {
     
     let userId: String
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -132,11 +132,11 @@ struct GetUsersUserIdResponse: Response {
 class GetUsersSelfRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -189,11 +189,11 @@ struct GetUsersSelfResponse: Response {
 class PostAuthWeixinRequest: Request {
     
     var method: String = "POST"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -256,11 +256,11 @@ struct PostAuthWeixinResponse: Response {
 class PatchUsersPrivacyLevelRequest: Request {
     
     var method: String = "PATCH"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -318,11 +318,11 @@ struct PatchUsersPrivacyLevelResponse: Response {
 class PostApplicationEventsRequest: Request {
     
     var method: String = "POST"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }

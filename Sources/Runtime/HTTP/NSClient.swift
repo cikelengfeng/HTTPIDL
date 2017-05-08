@@ -173,6 +173,24 @@ public class NSClient: HTTPClient {
         }
         urlRequest.httpMethod = request.method
         urlRequest.httpBody = try request.body()
+        if let cachePolicy = request.cachePolicy {
+            urlRequest.cachePolicy = cachePolicy
+        }
+        if let timeout = request.timeoutInterval {
+            urlRequest.timeoutInterval = timeout
+        }
+        if let shouldPipeline = request.shouldUsePipelining {
+            urlRequest.httpShouldUsePipelining = shouldPipeline
+        }
+        if let shoudHandleCookie = request.shouldHandleCookies {
+            urlRequest.httpShouldHandleCookies = shoudHandleCookie
+        }
+        if let networkService = request.networkServiceType {
+            urlRequest.networkServiceType = networkService
+        }
+        if let allowCellar = request.allowsCellularAccess {
+            urlRequest.allowsCellularAccess = allowCellar
+        }
         return urlRequest
     }
     

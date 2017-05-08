@@ -16,7 +16,7 @@ public protocol RequestContentConvertible {
 
 public protocol Request {
     var method: String {get}
-    var configuration: Configuration {get set}
+    var configuration: RequestConfiguration {get set}
     var uri: String {get}
     var content: RequestContent? {get}
 }
@@ -38,7 +38,7 @@ public protocol Client {
     func send<ResponseType: Response>(_ request: Request) -> RequestFuture<ResponseType>
     func send(_ request: Request) -> RequestFuture<HTTPResponse>
     
-    var configuration: Configuration {get set}
+    var configuration: ClientConfiguration {get set}
     
     mutating func add(requestObserver: HTTPRequestObserver)
     mutating func remove(requestObserver: HTTPRequestObserver)

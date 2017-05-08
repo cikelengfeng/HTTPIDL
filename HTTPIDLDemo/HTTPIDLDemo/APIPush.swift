@@ -6,11 +6,11 @@ import HTTPIDL
 class PutPushTokenRequest: Request {
     
     var method: String = "PUT"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -59,11 +59,11 @@ class PutPushTokenRequest: Request {
 class DeletePushTokenRequest: Request {
     
     var method: String = "DELETE"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }

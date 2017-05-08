@@ -308,11 +308,11 @@ extension HTTPBinGetArgs: ResponseContentConvertible {
 class GetTestUrlencodedQueryEncoderRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -385,11 +385,11 @@ struct GetTestUrlencodedQueryEncoderResponse: Response {
 class PostTestUrlencodedFormEncoderRequest: Request {
     
     var method: String = "POST"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -462,11 +462,11 @@ struct PostTestUrlencodedFormEncoderResponse: Response {
 class PostTestMultipartEncoderRequest: Request {
     
     var method: String = "POST"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -544,11 +544,11 @@ struct PostTestMultipartEncoderResponse: Response {
 class PostTestJsonEncoderRequest: Request {
     
     var method: String = "POST"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -628,11 +628,11 @@ class GetStickerMediaIdRequest: Request {
     
     let mediaId: String
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -705,11 +705,11 @@ struct GetStickerMediaIdResponse: Response {
 class GetUnderLineRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -772,11 +772,11 @@ struct GetUnderLineResponse: Response {
 class GetTestNestedMessageRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -1037,11 +1037,11 @@ struct GetTestNestedMessageResponse: Response {
 class GetGetRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -1125,11 +1125,11 @@ struct GetGetResponse: Response {
 class PostPostRequest: Request {
     
     var method: String = "POST"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -1181,11 +1181,11 @@ struct PostPostResponse: Response {
 class GetUnginedTestRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -1251,11 +1251,11 @@ struct GetUnginedTestResponse: Response {
 class GetTesting1Request: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -1300,11 +1300,11 @@ class GetTesting2Request: Request {
     
     let xxxx: String
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -1377,11 +1377,11 @@ struct GetTesting2Response: Response {
 class GetTesting3Request: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }

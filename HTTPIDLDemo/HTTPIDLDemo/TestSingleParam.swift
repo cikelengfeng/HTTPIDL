@@ -311,11 +311,11 @@ extension TSPStruct8: RequestContentConvertible {
 class GetArrayRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -389,11 +389,11 @@ struct GetArrayResponse: Response {
 class GetDictRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -468,11 +468,11 @@ struct GetDictResponse: Response {
 class GetSimpleRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -528,11 +528,11 @@ struct GetSimpleResponse: Response {
 class GetStruct1Request: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -588,11 +588,11 @@ struct GetStruct1Response: Response {
 class GetStruct2Request: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -648,11 +648,11 @@ struct GetStruct2Response: Response {
 class GetStruct3Request: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -708,11 +708,11 @@ struct GetStruct3Response: Response {
 class GetStruct4Request: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -768,11 +768,11 @@ struct GetStruct4Response: Response {
 class GetStruct5Request: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -828,11 +828,11 @@ struct GetStruct5Response: Response {
 class GetStruct6Request: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -888,11 +888,11 @@ struct GetStruct6Response: Response {
 class GetStruct7Request: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -948,11 +948,11 @@ struct GetStruct7Response: Response {
 class GetStruct8Request: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }

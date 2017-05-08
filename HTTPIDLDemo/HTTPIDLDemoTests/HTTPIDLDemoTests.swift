@@ -10,7 +10,18 @@ import HTTPIDL
 struct TestRequest: Request {
     public static var defaultMethod: String = "GET"
     var method: String = TestRequest.defaultMethod
-    var configuration: Configuration = BaseConfiguration.shared
+    var _config: RequestConfiguration?
+    var configuration: RequestConfiguration {
+        get {
+            guard let config = _config else {
+                return BaseRequestConfiguration.create(from: BaseClientConfiguration.shared, request: self)
+            }
+            return config
+        }
+        set {
+            _config = newValue
+        }
+    }
     var uri: String = "/my/test"
 
     var content: RequestContent?
@@ -30,6 +41,12 @@ struct TestHTTPRequest: HTTPRequest {
     var headers: [String: String]
     var url: URL
     var body: () throws -> Data?
+    var cachePolicy: URLRequest.CachePolicy?
+    var networkServiceType: URLRequest.NetworkServiceType?
+    var timeoutInterval: TimeInterval?
+    var shouldUsePipelining: Bool?
+    var shouldHandleCookies: Bool?
+    var allowsCellularAccess: Bool?
     
     init(method: String, url: URL, headers: [String: String], body: @escaping () throws -> Data?) {
         self.method = method
@@ -61,7 +78,7 @@ class HTTPIDLDemoTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        BaseConfiguration.shared.baseURLString = "http://api.everphoto.cn"
+        BaseClientConfiguration.shared.baseURLString = "http://api.everphoto.cn"
     }
     
     override func tearDown() {

@@ -7,13 +7,12 @@
 import Foundation
 
 struct PlainRequest: Request {
-    static var defaultMethod: String = "GET"
     var method: String
-    var configuration: Configuration
+    var configuration: RequestConfiguration
     var uri: String
     var content: RequestContent?
     
-    init(method: String, uri: String, configuration: Configuration, content: RequestContent?) {
+    init(method: String, uri: String, configuration: RequestConfiguration, content: RequestContent?) {
         self.method = method
         self.configuration = configuration
         self.uri = uri

@@ -69,11 +69,11 @@ extension UsersWrapper: ResponseContentConvertible {
 class PostConnectionsFollowRequest: Request {
     
     var method: String = "POST"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -135,11 +135,11 @@ struct PostConnectionsFollowResponse: Response {
 class GetConnectionsFollowingRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -209,11 +209,11 @@ class DeleteConnectionsUserIdRequest: Request {
     
     let user_id: String
     var method: String = "DELETE"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -278,11 +278,11 @@ struct DeleteConnectionsUserIdResponse: Response {
 class GetConnectionsNewFollowersRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -318,11 +318,11 @@ class GetConnectionsNewFollowersRequest: Request {
 class DeleteConnectionsNewFollowersRequest: Request {
     
     var method: String = "DELETE"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -392,11 +392,11 @@ struct DeleteConnectionsNewFollowersResponse: Response {
 class GetConnectionsSuggestionsRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }
@@ -449,11 +449,11 @@ struct GetConnectionsSuggestionsResponse: Response {
 class GetConnectionsFollowersRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }

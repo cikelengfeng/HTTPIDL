@@ -6,11 +6,11 @@ import HTTPIDL
 class GetApplicationSettingsRequest: Request {
     
     var method: String = "GET"
-    private var _configuration: Configuration?
-    var configuration: Configuration {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return client.configuration
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
             }
             return config
         }

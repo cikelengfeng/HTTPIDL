@@ -11,6 +11,12 @@ public struct HTTPBaseRequest: HTTPRequest {
     public var headers: [String: String]
     public var url: URL
     public var body: () throws -> Data?
+    public var cachePolicy: URLRequest.CachePolicy?
+    public var networkServiceType: URLRequest.NetworkServiceType?
+    public var timeoutInterval: TimeInterval?
+    public var shouldUsePipelining: Bool?
+    public var shouldHandleCookies: Bool?
+    public var allowsCellularAccess: Bool? 
     
     public init(method: String, url: URL, headers: [String: String], body: @escaping () throws -> Data?) {
         self.method = method
