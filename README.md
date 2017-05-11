@@ -1,5 +1,7 @@
 # HTTPIDL
 HTTPIDL是一套HTTP网络库和代码生成工具的集合，目前支持Swift 3。
+HTTPIDL致力于帮助开发者将精力专注于业务逻辑，尽可能少的关心HTTP的相关细节（当然HTTPIDL也为一些特殊的需求预留了扩展的接口，实现这些需求可能需要开发者了解HTTP的细节）
+
 ## 状态
 ![UnitTest](https://img.shields.io/badge/test-passing-brightgreen.svg)   ![Cocoapods](https://img.shields.io/badge/pod-0.10.0-blue.svg)
 
