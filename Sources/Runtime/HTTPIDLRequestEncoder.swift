@@ -7,8 +7,6 @@
 import Foundation
 import Gzip
 
-
-
 fileprivate extension HTTPBaseRequest {
     mutating func update(configuration: RequestConfiguration) {
         if let cp = configuration.cachePolicy {
