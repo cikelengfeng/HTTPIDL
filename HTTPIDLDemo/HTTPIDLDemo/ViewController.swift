@@ -88,9 +88,8 @@ class ViewController: UIViewController {
 //        }
         
 //        let req = PostPostRequest()
-//        req.configuration.encoderStrategy = { _ in
-//            return HTTPMultipartRequestEncoder.shared
-//        }
+//        req.configuration.encoder = HTTPMultipartRequestEncoder.shared
+//        req.configuration.cachePolicy = CachePolicy.returnCacheDataDontLoad
 //        let url = Bundle.main.url(forResource: "test", withExtension: "JPG")!
 //        req.data = HTTPFile(with: url, fileName: "test_file", mimeType: "image/png")
 //        let future = req.send(rawResponseHandler: { (response) in

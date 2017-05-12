@@ -7,21 +7,6 @@
 import Foundation
 import Gzip
 
-fileprivate extension HTTPBaseRequest {
-    mutating func update(configuration: RequestConfiguration) {
-        if let cp = configuration.cachePolicy {
-            cachePolicy = convert(cachePolicy: cp)
-        }
-        timeoutInterval = configuration.timeoutInterval
-        if let nst = configuration.networkServiceType {
-            networkServiceType = convert(networkServiceType: nst)
-        }
-        shouldUsePipelining = configuration.shouldUsePipelining
-        shouldHandleCookies = configuration.shouldHandleCookies
-        allowsCellularAccess = configuration.allowsCellularAccess
-    }
-}
-
 public enum HTTPBaseRequestEncoderError: HIError {
     case constructURLFailed(urlString: String)
     case nestedObjectInURLQuery(errorSource: Any)
@@ -85,21 +70,17 @@ public struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
             throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         guard let content = request.content else {
-            var encodedRequest = HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers , body: { () -> Data? in
+            return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers , body: { () -> Data? in
                 return nil
             })
-            encodedRequest.update(configuration: request.configuration)
-            return encodedRequest
         }
         let query = try queryItems(rootContent: content)
         
         let encodedURL = url.appendQuery(pairs: query)
         
-        var encodedRequest = HTTPBaseRequest(method: request.method, url: encodedURL, headers: request.configuration.headers , body: { () -> Data? in
+        return HTTPBaseRequest(method: request.method, url: encodedURL, headers: request.configuration.headers , body: { () -> Data? in
             return nil
         })
-        encodedRequest.update(configuration: request.configuration)
-        return encodedRequest
     }
 }
 
@@ -124,9 +105,7 @@ public struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
             let data = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
             return data
         }
-        var encodedRequest = HTTPBaseRequest(method: request.method, url: url, headers: headers, body: getJsonData)
-        encodedRequest.update(configuration: request.configuration)
-        return encodedRequest
+        return HTTPBaseRequest(method: request.method, url: url, headers: headers, body: getJsonData)
     }
 }
 
@@ -213,9 +192,7 @@ public struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
             let data = try formData.encode()
             return data
         }
-        var encodedRequest = HTTPBaseRequest(method: request.method, url: url, headers: headers, body: getData)
-        encodedRequest.update(configuration: request.configuration)
-        return encodedRequest
+        return HTTPBaseRequest(method: request.method, url: url, headers: headers, body: getData)
     }
 }
 
@@ -339,9 +316,7 @@ public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
         }
         
         guard let content = request.content else {
-            var encodedRequest = HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers, body: { nil } )
-            encodedRequest.update(configuration: request.configuration)
-            return encodedRequest
+            return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers, body: { nil } )
         }
         
         let encodedURL = try url.appendQuery(pairs: queryItems(rootContent: content).filter({ (param) -> Bool in
@@ -367,9 +342,7 @@ public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
                 throw HTTPSingleBodyRequestEncoderError.dictionaryIsForbidden(key: singleBodyKey, value: value)
             }
         }
-        var encodedRequest = HTTPBaseRequest(method: request.method, url: encodedURL, headers: headers, body: singleBody.valueClosure(key: singleBodyKey))
-        encodedRequest.update(configuration: request.configuration)
-        return encodedRequest
+        return HTTPBaseRequest(method: request.method, url: encodedURL, headers: headers, body: singleBody.valueClosure(key: singleBodyKey))
     }
 }
 
@@ -387,11 +360,9 @@ public struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
         }
 
         guard let content = request.content else {
-            var encodedRequest = HTTPBaseRequest(method: request.method, url: url, headers: headers , body: { () -> Data? in
+            return HTTPBaseRequest(method: request.method, url: url, headers: headers , body: { () -> Data? in
                 return nil
             })
-            encodedRequest.update(configuration: request.configuration)
-            return encodedRequest
         }
         
         let bodyClosure = { () -> Data? in 
@@ -399,9 +370,7 @@ public struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
             return query.map({ return "\($0)=\($1)" }).joined(separator: "&").data(using: String.Encoding.utf8)
         }
         
-        var encodedRequest = HTTPBaseRequest(method: request.method, url: url, headers: headers , body: bodyClosure)
-        encodedRequest.update(configuration: request.configuration)
-        return encodedRequest
+        return HTTPBaseRequest(method: request.method, url: url, headers: headers , body: bodyClosure)
     }
 }
 

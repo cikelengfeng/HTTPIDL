@@ -19,6 +19,29 @@ public enum BaseClientError: HIError {
     }
 }
 
+fileprivate extension HTTPRequest {
+    mutating func update(configuration: RequestConfiguration) {
+        if let cp = configuration.cachePolicy {
+            cachePolicy = convert(cachePolicy: cp)
+        }
+        if let tmp = configuration.timeoutInterval {
+            timeoutInterval = tmp
+        }
+        if let nst = configuration.networkServiceType {
+            networkServiceType = convert(networkServiceType: nst)
+        }
+        if let tmp = configuration.shouldUsePipelining {
+            shouldUsePipelining = tmp
+        }
+        if let tmp = configuration.shouldHandleCookies {
+            shouldHandleCookies = tmp
+        }
+        if let tmp = configuration.allowsCellularAccess {
+            allowsCellularAccess = tmp
+        }
+    }
+}
+
 public class BaseClient: Client {
     
     public static let shared = BaseClient()
@@ -289,6 +312,7 @@ public class BaseClient: Client {
                     return future
                 }
             }
+            encodedRequest.update(configuration: request.configuration)
             let futureImpl = clientImpl.send(encodedRequest)
             future.futureImpl = futureImpl
             futureImpl.progressHandler = { p in
@@ -336,6 +360,7 @@ public class BaseClient: Client {
                     return future
                 }
             }
+            encodedRequest.update(configuration: request.configuration)
             let futureImpl = clientImpl.send(encodedRequest)
             future.futureImpl = futureImpl
             futureImpl.progressHandler = { p in
