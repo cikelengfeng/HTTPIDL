@@ -87,9 +87,11 @@ public struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
             throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         guard let content = request.content else {
-            return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers , body: { () -> Data? in
+            var encodedRequest = HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers , body: { () -> Data? in
                 return nil
             })
+            encodedRequest.update(configuration: request.configuration)
+            return encodedRequest
         }
         let query = try queryItems(rootContent: content)
         
@@ -339,7 +341,9 @@ public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
         }
         
         guard let content = request.content else {
-            return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers, body: { nil } )
+            var encodedRequest = HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers, body: { nil } )
+            encodedRequest.update(configuration: request.configuration)
+            return encodedRequest
         }
         
         let encodedURL = try url.appendQuery(pairs: queryItems(rootContent: content).filter({ (param) -> Bool in
@@ -385,9 +389,11 @@ public struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
         }
 
         guard let content = request.content else {
-            return HTTPBaseRequest(method: request.method, url: url, headers: headers , body: { () -> Data? in
+            var encodedRequest = HTTPBaseRequest(method: request.method, url: url, headers: headers , body: { () -> Data? in
                 return nil
             })
+            encodedRequest.update(configuration: request.configuration)
+            return encodedRequest
         }
         
         let bodyClosure = { () -> Data? in 
