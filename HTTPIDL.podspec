@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "HTTPIDL"
-  s.version      = "0.10.4"
+  s.version      = "0.10.50"
   s.summary      = "http idl"
 
   # This description is used to generate tags and improve search results.
