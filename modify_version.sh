@@ -5,6 +5,7 @@ then
     sed -i.bak "s/pod-.*-blue\.svg/pod-$1-blue\.svg/g" README.md
     git commit -am '[MOD] version'
     git tag $1
+    git push origin
     git push origin --tags
     pod trunk push
 else
