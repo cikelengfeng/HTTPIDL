@@ -32,15 +32,14 @@ struct TestRequest: Request {
 }
 
 struct TestHTTPRequest: HTTPRequest {
+
     
-    static let stub = TestHTTPRequest(method: "GET", url: URL(fileURLWithPath: "xxxx"), headers: [:]) { () -> Data? in
-        return nil
-    }
+    static let stub = TestHTTPRequest(method: "GET", url: URL(fileURLWithPath: "xxxx"), headers: [:], bodyStream: nil)
     
     var method: String
     var headers: [String: String]
     var url: URL
-    var body: () throws -> Data?
+    var bodyStream: InputStream?
     var cachePolicy: URLRequest.CachePolicy?
     var networkServiceType: URLRequest.NetworkServiceType?
     var timeoutInterval: TimeInterval?
@@ -48,11 +47,11 @@ struct TestHTTPRequest: HTTPRequest {
     var shouldHandleCookies: Bool?
     var allowsCellularAccess: Bool?
     
-    init(method: String, url: URL, headers: [String: String], body: @escaping () throws -> Data?) {
+    init(method: String, url: URL, headers: [String: String], bodyStream: InputStream?) {
         self.method = method
         self.url = url
         self.headers = headers
-        self.body = body
+        self.bodyStream = bodyStream
     }
 }
 
@@ -228,57 +227,49 @@ class HTTPIDLDemoTests: XCTestCase {
         
         var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
         do {
-            //由于json encoder并不会立即做序列化工作，要等到body被调用，所以这里我们掉一下body
-            let request = try encoder.encode(testRequest)
-            _ = try request.body()
+            let _ = try encoder.encode(testRequest)
             XCTFail("json encode 不支持int64型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.number(value: 12312313)
         do {
-            let request = try encoder.encode(testRequest)
-            _ = try request.body()
+            let _ = try encoder.encode(testRequest)
             XCTFail("json encode 不支持int32型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.number(value: false)
         do {
-            let request = try encoder.encode(testRequest)
-            _ = try request.body()
+            let _ = try encoder.encode(testRequest)
             XCTFail("json encode 不支持bool型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.number(value: 0.22)
         do {
-            let request = try encoder.encode(testRequest)
-            _ = try request.body()
+            let _ = try encoder.encode(testRequest)
             XCTFail("json encode 不支持double型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.string(value: "yyyy")
         do {
-            let request = try encoder.encode(testRequest)
-            _ = try request.body()
+            let _ = try encoder.encode(testRequest)
             XCTFail("json encode 不支持string型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.file(value: URL(fileURLWithPath: "xxx"), fileName: nil, mimeType: "image/*")
         do {
-            let request = try encoder.encode(testRequest)
-            _ = try request.body()
+            let _ = try encoder.encode(testRequest)
             XCTFail("json encode 不支持file型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.data(value: Data(), fileName: "xxx", mimeType: "image/jpeg")
         do {
-            let request = try encoder.encode(testRequest)
-            _ = try request.body()
+            let _ = try encoder.encode(testRequest)
             XCTFail("json encode 不支持data型的根参数")
         } catch _ {
         }
@@ -294,7 +285,7 @@ class HTTPIDLDemoTests: XCTestCase {
         
         do {
             let encoded = try encoder.encode(testRequest)
-            let jsonObject = try JSONSerialization.jsonObject(with: try encoded.body()!, options: .allowFragments)
+            let jsonObject = try JSONSerialization.jsonObject(with: encoded.bodyStream!.data(), options: .allowFragments)
             
             guard let array = jsonObject as? [Any] else {
                 XCTFail()
@@ -332,56 +323,56 @@ class HTTPIDLDemoTests: XCTestCase {
         let encoder = HTTPURLEncodedFormRequestEncoder.shared
         var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("url encode 不支持int64型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.number(value: 12312313)
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("url encode 不支持int32型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.number(value: false)
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("url encode 不支持bool型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.number(value: 0.22)
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("url encode 不支持double型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.string(value: "yyyy")
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("url encode 不支持string型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.file(value: URL(fileURLWithPath: "xxx"), fileName: nil, mimeType: "image/*")
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("url encode 不支持file型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.data(value: Data(), fileName: "xxx", mimeType: "image/jpeg")
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("url encode 不支持data型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.array(value: [RequestContent.number(value: 12312312312321313)])
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("url encode 不支持array型的根参数")
         } catch _ {
         }
@@ -409,7 +400,7 @@ class HTTPIDLDemoTests: XCTestCase {
             ])
         do {
             let encoded = try encoder.encode(testRequest)
-            let formData = try encoded.body()!
+            let formData = encoded.bodyStream!.data()
             let formString = String(data: formData, encoding: String.Encoding.utf8)!
             let formPairs = formString.components(separatedBy: "&").map({ (kvString) -> (String, String) in
                 let components = kvString.components(separatedBy: "=")
@@ -549,56 +540,56 @@ class HTTPIDLDemoTests: XCTestCase {
         let encoder = HTTPMultipartRequestEncoder.shared
         var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持int64型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.number(value: 12312313)
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持int32型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.number(value: false)
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持bool型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.number(value: 0.22)
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持double型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.string(value: "yyyy")
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持string型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.file(value: URL(fileURLWithPath: "xxx"), fileName: nil, mimeType: "image/*")
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持file型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.data(value: Data(), fileName: "xxx", mimeType: "image/jpeg")
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持data型的根参数")
         } catch _ {
         }
         
         testRequest.content = RequestContent.array(value: [RequestContent.number(value: 12312312312321313)])
         do {
-            let _ = try encoder.encode(testRequest).body()
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持array型的根参数")
         } catch _ {
         }
@@ -614,7 +605,7 @@ class HTTPIDLDemoTests: XCTestCase {
                         ])
         do {
             let encoded = try encoder.encode(testRequest)
-            let body = try! encoded.body()!
+            let body = encoded.bodyStream!.data()
             XCTAssert(body.count == 46929)
         } catch _ {
             XCTFail()

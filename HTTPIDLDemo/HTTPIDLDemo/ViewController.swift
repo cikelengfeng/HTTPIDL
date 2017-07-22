@@ -47,7 +47,7 @@ class ViewController: UIViewController {
 //        request.data = HTTPData(with: data, fileName: "test_data", mimeType: "text/plain")
 //        let url = Bundle.main.url(forResource: "China", withExtension: "png")!
 //        request.file = HTTPFile(with: url, fileName: "test_file", mimeType: "image/png")
-//        request.configuration.encoderStrategy = { _ in HTTPMultipartRequestEncoder.shared }
+//        request.configuration.encoder = HTTPMultipartRequestEncoder.shared
 //        request.send(completion: { (response) in
 //            
 //        }) { (error) in

@@ -172,7 +172,7 @@ public class NSClient: HTTPClient {
             urlRequest.setValue(kv.value, forHTTPHeaderField: kv.key)
         }
         urlRequest.httpMethod = request.method
-        urlRequest.httpBody = try request.body()
+        urlRequest.httpBodyStream = request.bodyStream
         if let cachePolicy = request.cachePolicy {
             urlRequest.cachePolicy = cachePolicy
         }

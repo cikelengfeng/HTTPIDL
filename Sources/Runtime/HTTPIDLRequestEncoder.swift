@@ -70,17 +70,13 @@ public struct HTTPURLEncodedQueryRequestEncoder: HTTPRequestEncoder {
             throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         guard let content = request.content else {
-            return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers , body: { () -> Data? in
-                return nil
-            })
+            return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers , bodyStream: nil)
         }
         let query = try queryItems(rootContent: content)
         
         let encodedURL = url.appendQuery(pairs: query)
         
-        return HTTPBaseRequest(method: request.method, url: encodedURL, headers: request.configuration.headers , body: { () -> Data? in
-            return nil
-        })
+        return HTTPBaseRequest(method: request.method, url: encodedURL, headers: request.configuration.headers , bodyStream: nil)
     }
 }
 
@@ -97,15 +93,13 @@ public struct HTTPJSONRequestEncoder: HTTPRequestEncoder {
         if headers["Content-Type"] == nil {
             headers["Content-Type"] = "application/json"
         }
-        let getJsonData = { () throws -> Data? in
-            guard let rootParameter = request.content else {
-                return nil
-            }
-            let jsonDict = try rootParameter.jsonObject()
-            let data = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
-            return data
+        guard let rootParameter = request.content else {
+            return HTTPBaseRequest(method: request.method, url: url, headers: headers, bodyStream: nil)
         }
-        return HTTPBaseRequest(method: request.method, url: url, headers: headers, body: getJsonData)
+        let jsonDict = try rootParameter.jsonObject()
+        let data = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
+        let stream = InputStream(data: data)
+        return HTTPBaseRequest(method: request.method, url: url, headers: headers, bodyStream: stream)
     }
 }
 
@@ -184,15 +178,13 @@ public struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
         if headers["Content-Type"] == nil {
             headers["Content-Type"] = formData.contentType
         }
-        let getData = { () throws -> Data? in
-            guard let parameter = request.content else {
-                return nil
-            }
-            try parameter.insertInto(multipart: formData)
-            let data = try formData.encode()
-            return data
+        guard let parameter = request.content else {
+            return HTTPBaseRequest(method: request.method, url: url, headers: headers, bodyStream: nil)
         }
-        return HTTPBaseRequest(method: request.method, url: url, headers: headers, body: getData)
+        try parameter.insertInto(multipart: formData)
+        let data = try formData.encode()
+        let stream = InputStream(data: data)
+        return HTTPBaseRequest(method: request.method, url: url, headers: headers, bodyStream: stream)
     }
 }
 
@@ -316,7 +308,7 @@ public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
         }
         
         guard let content = request.content else {
-            return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers, body: { nil } )
+            return HTTPBaseRequest(method: request.method, url: url, headers: request.configuration.headers, bodyStream: nil)
         }
         
         let encodedURL = try url.appendQuery(pairs: queryItems(rootContent: content).filter({ (param) -> Bool in
@@ -342,7 +334,9 @@ public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
                 throw HTTPSingleBodyRequestEncoderError.dictionaryIsForbidden(key: singleBodyKey, value: value)
             }
         }
-        return HTTPBaseRequest(method: request.method, url: encodedURL, headers: headers, body: singleBody.valueClosure(key: singleBodyKey))
+        let data = try singleBody.valueClosure(key: singleBodyKey)()
+        let stream = InputStream(data: data)
+        return HTTPBaseRequest(method: request.method, url: encodedURL, headers: headers, bodyStream: stream)
     }
 }
 
@@ -360,17 +354,16 @@ public struct HTTPURLEncodedFormRequestEncoder: HTTPRequestEncoder {
         }
 
         guard let content = request.content else {
-            return HTTPBaseRequest(method: request.method, url: url, headers: headers , body: { () -> Data? in
-                return nil
-            })
+            return HTTPBaseRequest(method: request.method, url: url, headers: headers , bodyStream: nil)
         }
         
-        let bodyClosure = { () -> Data? in 
-            let query = try queryItems(rootContent: content)
-            return query.map({ return "\($0)=\($1)" }).joined(separator: "&").data(using: String.Encoding.utf8)
+        let query = try queryItems(rootContent: content)
+        guard let data = query.map({ return "\($0)=\($1)" }).joined(separator: "&").data(using: String.Encoding.utf8) else {
+            return HTTPBaseRequest(method: request.method, url: url, headers: headers, bodyStream: nil)
         }
+        let stream = InputStream(data: data)
         
-        return HTTPBaseRequest(method: request.method, url: url, headers: headers , body: bodyClosure)
+        return HTTPBaseRequest(method: request.method, url: url, headers: headers , bodyStream: stream)
     }
 }
 
@@ -389,13 +382,11 @@ public struct HTTPGzipRequestEncoder: HTTPRequestEncoder {
             headers["Content-Encoding"] = "gzip"
         }
         httpRequest.headers = headers
-        let rawBodyClosure = httpRequest.body
-        let bodyClosure = { [rawBodyClosure] () -> Data? in
-            let body = try rawBodyClosure()
-            let gzipData = try body?.gzipped()
-            return gzipData
+        let rawBody = httpRequest.bodyStream?.data()
+        let gzipData = try rawBody?.gzipped()
+        if let gzData = gzipData {
+            httpRequest.bodyStream = InputStream(data: gzData)
         }
-        httpRequest.body = bodyClosure
         return httpRequest
     }
 }
