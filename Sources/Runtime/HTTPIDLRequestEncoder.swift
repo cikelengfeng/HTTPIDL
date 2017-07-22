@@ -256,28 +256,26 @@ public enum HTTPSingleBodyRequestEncoderError: HIError {
 }
 
 private extension RequestContent {
-    func valueClosure(key: String) -> () throws -> Data {
-        return {
-            switch self {
-            case .number(let value):
-                guard let data = value.stringValue.data(using: String.Encoding.utf8) else {
-                    throw HTTPSingleBodyRequestEncoderError.unsupportedNumber(key: key, value: value)
-                }
-                return data
-            case .string(let value):
-                guard let data = value.data(using: String.Encoding.utf8) else {
-                    throw HTTPSingleBodyRequestEncoderError.unsupportedString(key: key, value: value)
-                }
-                return data
-            case .file(let url, _, _):
-                return try Data(contentsOf: url, options: Data.ReadingOptions.mappedIfSafe)
-            case .data(let data, _, _):
-                return data
-            case .array(let value):
-                throw HTTPSingleBodyRequestEncoderError.arrayIsForbidden(key: key, value: value)
-            case .dictionary(let value):
-                throw HTTPSingleBodyRequestEncoderError.dictionaryIsForbidden(key: key, value: value)
+    func dataStream(key: String) throws -> InputStream? {
+        switch self {
+        case .number(let value):
+            guard let data = value.stringValue.data(using: String.Encoding.utf8) else {
+                throw HTTPSingleBodyRequestEncoderError.unsupportedNumber(key: key, value: value)
             }
+            return InputStream(data: data)
+        case .string(let value):
+            guard let data = value.data(using: String.Encoding.utf8) else {
+                throw HTTPSingleBodyRequestEncoderError.unsupportedString(key: key, value: value)
+            }
+            return InputStream(data: data)
+        case .file(let url, _, _):
+            return InputStream(fileAtPath: url.absoluteString)
+        case .data(let data, _, _):
+            return InputStream(data: data)
+        case .array(let value):
+            throw HTTPSingleBodyRequestEncoderError.arrayIsForbidden(key: key, value: value)
+        case .dictionary(let value):
+            throw HTTPSingleBodyRequestEncoderError.dictionaryIsForbidden(key: key, value: value)
         }
     }
 }
@@ -334,8 +332,7 @@ public struct HTTPSingleBodyRequestEncoder: HTTPRequestEncoder {
                 throw HTTPSingleBodyRequestEncoderError.dictionaryIsForbidden(key: singleBodyKey, value: value)
             }
         }
-        let data = try singleBody.valueClosure(key: singleBodyKey)()
-        let stream = InputStream(data: data)
+        let stream = try singleBody.dataStream(key: singleBodyKey)
         return HTTPBaseRequest(method: request.method, url: encodedURL, headers: headers, bodyStream: stream)
     }
 }
