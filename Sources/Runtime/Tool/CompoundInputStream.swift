@@ -40,4 +40,16 @@ class CompoundInputStream: InputStream {
             return current.hasBytesAvailable
         }
     }
+    
+    override func open() {
+        self.subStream.forEach { (s) in
+            s.open()
+        }
+    }
+    
+    override func close() {
+        self.subStream.forEach { (s) in
+            s.close()
+        }
+    }
 }

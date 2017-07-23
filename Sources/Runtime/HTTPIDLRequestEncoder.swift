@@ -182,8 +182,7 @@ public struct HTTPMultipartRequestEncoder: HTTPRequestEncoder {
             return HTTPBaseRequest(method: request.method, url: url, headers: headers, bodyStream: nil)
         }
         try parameter.insertInto(multipart: formData)
-        let data = try formData.encode()
-        let stream = InputStream(data: data)
+        let stream = formData.stream()
         return HTTPBaseRequest(method: request.method, url: url, headers: headers, bodyStream: stream)
     }
 }

@@ -596,4 +596,25 @@ open class MultipartFormData {
         guard bodyPartError == nil else { return }
         bodyPartError = error
     }
+    
+    func stream() -> InputStream {
+        self.bodyParts.first?.hasInitialBoundary = true
+        self.bodyParts.last?.hasFinalBoundary = true
+        let partStream = self.bodyParts.flatMap { (part) -> [InputStream] in
+            var ss = [InputStream]()
+            let initialData = part.hasInitialBoundary ? initialBoundaryData() : encapsulatedBoundaryData()
+            let headerData = encodeHeaders(for: part)
+            ss.append(InputStream(data: initialData))
+            ss.append(InputStream(data: headerData))
+            ss.append(part.bodyStream)
+            if part.hasFinalBoundary {
+                let finalData = finalBoundaryData()
+                ss.append(InputStream(data: finalData))
+            }
+            return ss
+        }
+        let compoundStream = CompoundInputStream(subStream: partStream)
+        return compoundStream
+    }
 }
+
