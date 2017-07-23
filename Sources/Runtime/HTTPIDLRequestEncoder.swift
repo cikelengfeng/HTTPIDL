@@ -386,3 +386,45 @@ public struct HTTPGzipRequestEncoder: HTTPRequestEncoder {
         return httpRequest
     }
 }
+
+public enum HTTPBinaryRequestEncoderError: HIError {
+    case invalidType
+    
+    public var errorDescription: String? {
+        switch self {
+        case .invalidType:
+            return "binary encoder only support file & data"
+        }
+    }
+}
+
+public struct HTTPBinaryRequestEncoder: HTTPRequestEncoder {
+    public func encode(_ request: Request) throws -> HTTPRequest {
+        guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
+            throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
+        }
+        
+        guard let content = request.content else {
+            return HTTPBaseRequest(method: request.method, url: url, headers: headers , bodyStream: nil)
+        }
+        
+        var headers = request.configuration.headers
+        var stream: InputStream?
+        switch content {
+        case .file(let path, _, let mimeType):
+            if headers["Content-Type"] == nil {
+                headers["Content-Type"] = mimeType
+            }
+            stream = InputStream(fileAtPath: path)
+        case .data(let value, _, let mimeType):
+            if headers["Content-Type"] == nil {
+                headers["Content-Type"] = mimeType
+            }
+            stream = InputStream(data: value)
+        case .number, .string, .array, .dictionary:
+            throw HTTPBinaryRequestEncoderError.invalidType
+        }
+        
+        return HTTPBaseRequest(method: request.method, url: url, headers: headers , bodyStream: stream)
+    }
+}
