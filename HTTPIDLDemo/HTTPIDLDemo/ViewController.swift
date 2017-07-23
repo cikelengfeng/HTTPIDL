@@ -100,6 +100,27 @@ class ViewController: UIViewController {
 //        future.progressHandler = { p in
 //            print("progress: ", p.fractionCompleted)
 //        }
+        
+//        let req = PostFileRequest()
+//        req.configuration.encoder = HTTPBinaryRequestEncoder.shared
+//        let url = Bundle.main.url(forResource: "China", withExtension: "png")!
+//        req.body = HTTPFile(with: url, fileName: "test_file", mimeType: "image/jpg")
+//        let future = req.send(completion: { (response) in
+//            
+//        }) { (error) in
+//            
+//        }
+        
+        let dataString = "xxxxx"
+        let data = dataString.data(using: String.Encoding.utf8)!
+        let req = PostDataRequest()
+        req.configuration.encoder = HTTPBinaryRequestEncoder.shared
+        req.body = HTTPData(with: data, fileName: "test_data", mimeType: "application/octet-stream")
+        let future = req.send(completion: { (response) in
+            
+        }) { (error) in
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {

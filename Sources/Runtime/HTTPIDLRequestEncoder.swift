@@ -399,23 +399,26 @@ public enum HTTPBinaryRequestEncoderError: HIError {
 }
 
 public struct HTTPBinaryRequestEncoder: HTTPRequestEncoder {
+    
+    public static let shared = HTTPBinaryRequestEncoder()
+    
     public func encode(_ request: Request) throws -> HTTPRequest {
         guard let url = URL(string: request.uri, relativeTo: URL(string: request.configuration.baseURLString)) else {
             throw HTTPBaseRequestEncoderError.constructURLFailed(urlString: request.configuration.baseURLString + request.uri)
         }
         
+        var headers = request.configuration.headers
         guard let content = request.content else {
             return HTTPBaseRequest(method: request.method, url: url, headers: headers , bodyStream: nil)
         }
         
-        var headers = request.configuration.headers
         var stream: InputStream?
         switch content {
-        case .file(let path, _, let mimeType):
+        case .file(let url, _, let mimeType):
             if headers["Content-Type"] == nil {
                 headers["Content-Type"] = mimeType
             }
-            stream = InputStream(fileAtPath: path)
+            stream = InputStream(url: url)
         case .data(let value, _, let mimeType):
             if headers["Content-Type"] == nil {
                 headers["Content-Type"] = mimeType

@@ -612,5 +612,76 @@ class HTTPIDLDemoTests: XCTestCase {
         }
     }
         
-    
+    func testBinaryEncoder() {
+        let encoder = HTTPBinaryRequestEncoder.shared
+        var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
+        do {
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
+            XCTFail("binary encode 不支持int64型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.number(value: 12312313)
+        do {
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
+            XCTFail("binary encode 不支持int32型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.number(value: false)
+        do {
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
+            XCTFail("binary encode 不支持bool型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.number(value: 0.22)
+        do {
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
+            XCTFail("binary encode 不支持double型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.string(value: "yyyy")
+        do {
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
+            XCTFail("binary encode 不支持string型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.array(value: [RequestContent.number(value: 12312312312321313)])
+        do {
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
+            XCTFail("multipart encode 不支持array型的根参数")
+        } catch _ {
+        }
+        
+        testRequest.content = RequestContent.dictionary(value: ["xxx": RequestContent.number(value: 12312312312321313)])
+        do {
+            let _ = try encoder.encode(testRequest).bodyStream!.data()
+            XCTFail("multipart encode 不支持dictionary型的根参数")
+        } catch _ {
+        }
+        
+        let url = Bundle.main.url(forResource: "China", withExtension: "png")!
+        testRequest.content = RequestContent.file(value: url, fileName: "test_file", mimeType: "image/png")
+        do {
+            let encoded = try encoder.encode(testRequest)
+            let body = encoded.bodyStream!.data()
+            let data = try! Data(contentsOf: url)
+            XCTAssert(body.count == data.count)
+        } catch _ {
+            XCTFail()
+        }
+        let dataString = "xxxxx"
+        let data = dataString.data(using: String.Encoding.utf8)!
+        testRequest.content = RequestContent.data(value: data, fileName: "test_data", mimeType: "text/plain")
+        do {
+            let encoded = try encoder.encode(testRequest)
+            let body = encoded.bodyStream!.data()
+            XCTAssert(body.count == 5)
+        } catch _ {
+            XCTFail()
+        }
+    }
 }

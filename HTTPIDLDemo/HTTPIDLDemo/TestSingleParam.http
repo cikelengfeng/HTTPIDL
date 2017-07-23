@@ -27,6 +27,22 @@ STRING;
 
 }
 
+MESSAGE /file {
+POST REQUEST {
+FILE;
+}
+POST RESPONSE {
+}
+}
+
+MESSAGE /data {
+POST REQUEST {
+BLOB;
+}
+POST RESPONSE {
+}
+}
+
 STRUCT TSPStruct1 {
 INT32 a;
 STRING b = bc;

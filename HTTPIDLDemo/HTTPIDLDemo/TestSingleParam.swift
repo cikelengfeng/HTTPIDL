@@ -525,6 +525,114 @@ struct GetSimpleResponse: Response {
     }
 }
 
+class PostFileRequest: Request {
+    
+    var method: String = "POST"
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
+        get {
+            guard let config = _configuration else {
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
+    var client: Client = BaseClient.shared
+    var uri: String {
+        return "/file"
+    }
+    
+    var body: HTTPFile?
+    var content: RequestContent? {
+        if let body = body {
+            return body.asRequestContent()
+        } else {
+            return nil
+        }
+    }
+    
+    @discardableResult
+    func send(completion: @escaping (PostFileResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostFileResponse> {
+        let future: RequestFuture<PostFileResponse> = client.send(self)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
+    }
+    
+    @discardableResult
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+        let future = client.send(self)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
+    }
+}
+
+struct PostFileResponse: Response {
+    
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+    }
+}
+
+class PostDataRequest: Request {
+    
+    var method: String = "POST"
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
+        get {
+            guard let config = _configuration else {
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
+    var client: Client = BaseClient.shared
+    var uri: String {
+        return "/data"
+    }
+    
+    var body: HTTPData?
+    var content: RequestContent? {
+        if let body = body {
+            return body.asRequestContent()
+        } else {
+            return nil
+        }
+    }
+    
+    @discardableResult
+    func send(completion: @escaping (PostDataResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostDataResponse> {
+        let future: RequestFuture<PostDataResponse> = client.send(self)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
+    }
+    
+    @discardableResult
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+        let future = client.send(self)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
+    }
+}
+
+struct PostDataResponse: Response {
+    
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+    }
+}
+
 class GetStruct1Request: Request {
     
     var method: String = "GET"
