@@ -10,13 +10,13 @@ public struct HTTPBaseResponse: HTTPResponse {
     
     public var statusCode: Int
     public var headers: [String: String]
-    public var body: Data?
+    public var bodyStream: OutputStream?
     public var request: HTTPRequest
     
-    public init(with statusCode: Int, headers: [String: String], body: Data?, request: HTTPRequest) {
+    public init(with statusCode: Int, headers: [String: String], bodyStream: OutputStream?, request: HTTPRequest) {
         self.statusCode = statusCode
         self.headers = headers
-        self.body = body
+        self.bodyStream = bodyStream
         self.request = request
     }
 }

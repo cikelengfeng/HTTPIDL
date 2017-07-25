@@ -31,6 +31,7 @@ public protocol Response {
 }
 
 public protocol HTTPResponseDecoder {
+    var outputStream: OutputStream? {get}
     func decode(_ response: HTTPResponse) throws -> ResponseContent?
 }
 

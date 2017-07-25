@@ -26,13 +26,13 @@ public protocol HTTPRequest {
 public protocol HTTPResponse {
     var statusCode: Int {get}
     var headers: [String: String] {get}
-    var body: Data? {get}
+    var bodyStream: OutputStream? {get}
     var request: HTTPRequest {get}
 }
 
 
 public protocol HTTPClient {
-    func send(_ request: HTTPRequest) -> HTTPRequestFuture
+    func send(_ request: HTTPRequest, usingOutput outputStream: OutputStream?) -> HTTPRequestFuture
 }
 
 public protocol HTTPRequestFuture: class {

@@ -8,26 +8,6 @@ import UIKit
 import HTTPIDL
 
 
-class TestObserver: HTTPResponseObserver {
-    func receive(error: HIError, request: HTTPIDL.Request) {
-        
-    }
-    func receive(rawResponse: HTTPResponse) {
-        
-    }
-    func willDecode(rawResponse: HTTPResponse) {
-        guard let body = rawResponse.body else {
-            return
-        }
-        
-        let jsonString = String(data: body, encoding: String.Encoding.utf8)
-        debugPrint("response is", jsonString ?? "fuck")
-    }
-    func didDecode(rawResponse: HTTPResponse, decodedResponse: Response) {
-        
-    }
-}
-
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -36,7 +16,6 @@ class ViewController: UIViewController {
         let configuration = URLSessionConfiguration.default
         let session = URLSession(configuration: configuration)
         BaseClient.shared.clientImpl = NSClient(session: session)
-//        BaseClient.shared.add(responseObserver: TestObserver())
         
 //        let request = PostTestMultipartEncoderRequest()
 //        request.number = 123123123123

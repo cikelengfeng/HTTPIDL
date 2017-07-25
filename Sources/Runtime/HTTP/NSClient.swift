@@ -12,6 +12,7 @@ public enum NSClientError: HIError {
     case missingResponse(request: HTTPRequest)
     case adaptURLRequestFailed(rawError: Error)
     case adaptURLResponseFailed(rawError: Error)
+    case writeToStreamFailed(rawError: Error)
     
     public var errorDescription: String? {
         get {
@@ -22,6 +23,8 @@ public enum NSClientError: HIError {
                 return "生成URLRequest出错, 原始错误: \(error)"
             case .adaptURLResponseFailed(let error):
                 return "请求出错, 原始错误: \(error)"
+            case .writeToStreamFailed(let error):
+                return "写response数据出错, 原始错误: \(error)"
             }
         }
     }
@@ -41,7 +44,6 @@ class NSRequestFuture: NSObject, HTTPRequestFuture {
     let overallProgress: Progress
     let sendProgress: Progress
     let receiveProgress: Progress
-    
     
     private var _task: URLSessionDataTask? {
         willSet {
@@ -122,7 +124,7 @@ class NSRequestFuture: NSObject, HTTPRequestFuture {
     }
 }
 
-public class NSClient: HTTPClient {
+public class NSClient: NSObject, HTTPClient, URLSessionDataDelegate {
     
     public static let shared = { _ -> NSClient in
         let configuration = URLSessionConfiguration.default
@@ -133,30 +135,70 @@ public class NSClient: HTTPClient {
     }()
     
     public let session: URLSession
+    private var taskMap: [Int: (future: HTTPRequestFuture, resp: HTTPResponse)]
     
     public init(session: URLSession) {
         self.session = session
+        self.taskMap = [Int: (future: HTTPRequestFuture, resp: HTTPResponse)]()
     }
     
-    public func send(_ request: HTTPRequest) -> HTTPRequestFuture {
+    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        guard let fr = self.taskMap[dataTask.taskIdentifier] else {
+            assert(false, "request future is nil, it's impossible!!!")
+            return
+        }
+        let future = fr.future
+        guard let httpResp = response as? HTTPURLResponse else {
+            future.notify(error: NSClientError.missingResponse(request: future.request))
+            dataTask.cancel()
+            return
+        }
+        let resp = fr.resp
+        let newResp = HTTPBaseResponse(with: httpResp.statusCode, headers: httpResp.allHeaderFields as? [String: String] ?? [:], bodyStream: resp.bodyStream, request: resp.request)
+        self.taskMap[dataTask.taskIdentifier] = (future, newResp)
+        newResp.bodyStream?.open()
+    }
+    
+    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        guard let fr = self.taskMap[dataTask.taskIdentifier] else {
+            return
+        }
+        guard let output = fr.resp.bodyStream else {
+            return
+        }
+        do {
+            try data.writeTo(stream: output)
+        } catch let error {
+            let future = fr.future
+            future.notify(error: NSClientError.writeToStreamFailed(rawError: error))
+        }
+    }
+    
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard let fr = self.taskMap[task.taskIdentifier] else {
+            return
+        }
+        let future = fr.future
+        let resp = fr.resp
+        if let err = error {
+            future.notify(error: NSClientError.adaptURLResponseFailed(rawError: err))
+            resp.bodyStream?.close()
+            return
+        }
+        resp.bodyStream?.close()
+        future.notify(response: resp)
+        self.taskMap.removeValue(forKey: task.taskIdentifier)
+    }
+    
+    public func send(_ request: HTTPRequest, usingOutput outputStream: OutputStream?) -> HTTPRequestFuture {
         let future = NSRequestFuture(request: request)
         do {
             let dataRequest: URLRequest = try adapt(request)
             
-            let task = session.dataTask(with: dataRequest, completionHandler: { (data, response, error) in
-                if let err = error {
-                    future.notify(error: NSClientError.adaptURLResponseFailed(rawError: err))
-                    return
-                }
-                guard let resp = response as? HTTPURLResponse else {
-                    future.notify(error: NSClientError.missingResponse(request: request))
-                    return
-                }
-                let result = self.adapt(data: data, response: resp, request: request)
-                future.notify(response: result)
-            })
+            let task = session.dataTask(with: dataRequest)
             
             future.task = task
+            self.taskMap[task.taskIdentifier] = (future, HTTPBaseResponse(with: 0, headers: [:], bodyStream: outputStream, request: request))
             task.resume()
         } catch let err {
             session.delegateQueue.addOperation {
@@ -194,8 +236,5 @@ public class NSClient: HTTPClient {
         return urlRequest
     }
     
-    func adapt(data: Data?, response: HTTPURLResponse, request: HTTPRequest) -> HTTPResponse {
-        return HTTPBaseResponse(with: response.statusCode, headers: (response.allHeaderFields as? [String: String]) ?? [:], body: data, request: request)
-    }
 }
 

@@ -313,7 +313,8 @@ public class BaseClient: Client {
                 }
             }
             encodedRequest.update(configuration: request.configuration)
-            let futureImpl = clientImpl.send(encodedRequest)
+            let outputSteam = request.configuration.decoder.outputStream
+            let futureImpl = clientImpl.send(encodedRequest, usingOutput: outputSteam)
             future.futureImpl = futureImpl
             futureImpl.progressHandler = { p in
                 guard let handler = future.progressHandler else {
@@ -361,7 +362,8 @@ public class BaseClient: Client {
                 }
             }
             encodedRequest.update(configuration: request.configuration)
-            let futureImpl = clientImpl.send(encodedRequest)
+            let outputSteam = request.configuration.decoder.outputStream
+            let futureImpl = clientImpl.send(encodedRequest, usingOutput: outputSteam)
             future.futureImpl = futureImpl
             futureImpl.progressHandler = { p in
                 guard let handler = future.progressHandler else {

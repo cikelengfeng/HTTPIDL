@@ -56,12 +56,16 @@ public enum HTTPResponseJSONDecoderError: HIError {
 }
 
 public struct HTTPResponseJSONDecoder: HTTPResponseDecoder {
-    
-    public static let shared = HTTPResponseJSONDecoder()
+    public var outputStream: OutputStream? {
+        get {
+            return OutputStream(toMemory: ())
+        }
+    }
+
     public var jsonReadOptions: JSONSerialization.ReadingOptions = .allowFragments
     
     public func decode(_ response: HTTPResponse) throws -> ResponseContent? {
-        guard let body = response.body else {
+        guard let stream = response.bodyStream, let body = stream.property(forKey: Stream.PropertyKey.dataWrittenToMemoryStreamKey) as? Data else {
             return nil
         }
         let json: Any
