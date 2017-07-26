@@ -77,6 +77,8 @@ public extension ResponseContent {
             throw HTTPJSONEncoderError.illegalRootResponseContent(parameter: self)
         case .data(let data, _, _):
             throw HTTPJSONEncoderError.dataIsForbidden(data: data)
+        case .file(let url, _, _):
+            throw HTTPJSONEncoderError.fileIsForbidden(file: url)
         case .array, .dictionary:
             return try self.jsonLeaf()
         }
@@ -90,6 +92,8 @@ public extension ResponseContent {
             return value
         case .data(let data, _, _):
             throw HTTPJSONEncoderError.dataIsForbidden(data: data)
+        case .file(let url, _, _):
+            throw HTTPJSONEncoderError.fileIsForbidden(file: url)
         case .array(let array):
             return try array.map({ (paramInArray) in
                 return try paramInArray.jsonLeaf()

@@ -13,6 +13,7 @@ public enum ResponseContent {
     case data(value: Data, fileName: String?, mimeType: String)
     case array(value: [ResponseContent])
     case dictionary(value: [String: ResponseContent])
+    case file(value: URL, fileName: String?, mimeType: String)
 }
 
 public protocol ResponseContentConvertible {
@@ -29,7 +30,7 @@ extension Int64: ResponseContentConvertible {
             self.init(value)
         case .string(let value):
             self.init(value)
-        case .array, .dictionary, .data:
+        case .array, .dictionary, .data, .file:
             return nil
         }
     }
@@ -45,7 +46,7 @@ extension UInt64: ResponseContentConvertible {
             self.init(value)
         case .string(let value):
             self.init(value)
-        case .array, .dictionary, .data:
+        case .array, .dictionary, .data, .file:
             return nil
         }
     }
@@ -61,7 +62,7 @@ extension Int32: ResponseContentConvertible {
             self.init(value)
         case .string(let value):
             self.init(value)
-        case .array, .dictionary, .data:
+        case .array, .dictionary, .data, .file:
             return nil
         }
     }
@@ -77,7 +78,7 @@ extension UInt32: ResponseContentConvertible {
             self.init(value)
         case .string(let value):
             self.init(value)
-        case .array, .dictionary, .data:
+        case .array, .dictionary, .data, .file:
             return nil
         }
     }
@@ -93,7 +94,7 @@ extension Int: ResponseContentConvertible {
             self.init(value)
         case .string(let value):
             self.init(value)
-        case .array, .dictionary, .data:
+        case .array, .dictionary, .data, .file:
             return nil
         }
     }
@@ -109,7 +110,7 @@ extension UInt: ResponseContentConvertible {
             self.init(value)
         case .string(let value):
             self.init(value)
-        case .array, .dictionary, .data:
+        case .array, .dictionary, .data, .file:
             return nil
         }
     }
@@ -123,7 +124,7 @@ extension Bool: ResponseContentConvertible {
         switch content {
         case .number(let value):
             self.init(value)
-        case .array, .dictionary, .data, .string:
+        case .array, .dictionary, .data, .string, .file:
             return nil
         }
     }
@@ -139,7 +140,7 @@ extension Double: ResponseContentConvertible {
             self.init(value)
         case .string(let value):
             self.init(value)
-        case .array, .dictionary, .data:
+        case .array, .dictionary, .data, .file:
             return nil
         }
     }
@@ -157,7 +158,7 @@ extension String: ResponseContentConvertible {
             self.init(value)
         case .data(let value, _, _):
             self.init(data: value, encoding: String.Encoding.utf8)
-        case .array, .dictionary:
+        case .array, .dictionary, .file:
             return nil
         }
     }
@@ -173,7 +174,7 @@ public extension Array where Element: ResponseContentConvertible {
             self.init(value.flatMap({
                 return Element(content: $0)
             }))
-        case .dictionary, .data, .string, .number:
+        case .dictionary, .data, .string, .number, .file:
             return nil
         }
     }
@@ -204,7 +205,7 @@ public extension Dictionary where Key: ResponseContentKeyType, Value: ResponseCo
                 ret[Key(string: soGood.key)] = v
                 return ret
             })
-        case .array, .data, .string, .number:
+        case .array, .data, .string, .number, .file:
             return nil
         }
     }

@@ -32,6 +32,11 @@ extension HTTPData: ResponseContentConvertible {
         switch content {
         case .data(let value, let fileName, let mimeType):
             self.init(with: value, fileName: fileName ?? "", mimeType: mimeType)
+        case .file(let url, let fileName, let mimeType):
+            guard let data = try? Data(contentsOf: url, options: .mappedIfSafe) else {
+                return nil
+            }
+            self.init(with: data, fileName: fileName ?? "", mimeType: mimeType)
         case .array, .dictionary, .string, .number:
             return nil
         }
@@ -62,6 +67,14 @@ extension HTTPFile: RequestContentConvertible {
 extension HTTPFile: ResponseContentConvertible {
     public init?(content: ResponseContent?) {
         //暂不支持，后续打算把参数内容写进临时文件，然后用临时文件地址初始化
-        return nil
+        guard let content = content else {
+            return nil
+        }
+        switch content {
+        case .file(let url, let fileName, let mimeType):
+            self.init(with: url, fileName: fileName ?? "", mimeType: mimeType)
+        case .array, .dictionary, .string, .number, .data:
+            return nil
+        }
     }
 }

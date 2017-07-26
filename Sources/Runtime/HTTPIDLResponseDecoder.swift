@@ -82,3 +82,19 @@ public struct HTTPResponseJSONDecoder: HTTPResponseDecoder {
         return try decodeRoot(json: json)
     }
 }
+
+public struct HTTPResponseFileDecoder: HTTPResponseDecoder {
+    public private(set) var outputStream: OutputStream?
+    public private(set) var filePath: String;
+    
+    init(filePath: String) {
+        self.filePath = filePath
+        self.outputStream = OutputStream(toFileAtPath: filePath, append: false)
+    }
+    
+    public func decode(_ response: HTTPResponse) throws -> ResponseContent? {
+        let fileURL = URL(fileURLWithPath: self.filePath)
+        let contentType = response.headers["Content-Type"] ?? "application/octet-stream"
+        return ResponseContent.file(value: fileURL, fileName: nil, mimeType: contentType)
+    }
+}
