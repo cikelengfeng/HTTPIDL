@@ -124,39 +124,32 @@ class NSRequestFuture: NSObject, HTTPRequestFuture {
     }
 }
 
-public class NSClient: NSObject, HTTPClient, URLSessionDataDelegate {
+fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
+    let fallthroughDelegate: URLSessionDataDelegate?
+    var taskMap: [Int: (future: HTTPRequestFuture, resp: HTTPResponse)]
     
-    public static let shared = { _ -> NSClient in
-        let configuration = URLSessionConfiguration.default
-        let queue = OperationQueue()
-        queue.name = "org.httpidl.nsclient.default-callback"
-        let session = URLSession(configuration: configuration, delegate: nil, delegateQueue: queue)
-        return NSClient(session: session)
-    }()
-    
-    public let session: URLSession
-    private var taskMap: [Int: (future: HTTPRequestFuture, resp: HTTPResponse)]
-    
-    public init(session: URLSession) {
-        self.session = session
+    init(fallthroughDelegate: URLSessionDataDelegate?) {
+        self.fallthroughDelegate = fallthroughDelegate
         self.taskMap = [Int: (future: HTTPRequestFuture, resp: HTTPResponse)]()
     }
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         guard let fr = self.taskMap[dataTask.taskIdentifier] else {
             assert(false, "request future is nil, it's impossible!!!")
+            completionHandler(.cancel)
             return
         }
         let future = fr.future
         guard let httpResp = response as? HTTPURLResponse else {
             future.notify(error: NSClientError.missingResponse(request: future.request))
-            dataTask.cancel()
+            completionHandler(.cancel)
             return
         }
         let resp = fr.resp
         let newResp = HTTPBaseResponse(with: httpResp.statusCode, headers: httpResp.allHeaderFields as? [String: String] ?? [:], bodyStream: resp.bodyStream, request: resp.request)
         self.taskMap[dataTask.taskIdentifier] = (future, newResp)
         newResp.bodyStream?.open()
+        completionHandler(.allow)
     }
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
@@ -189,6 +182,25 @@ public class NSClient: NSObject, HTTPClient, URLSessionDataDelegate {
         future.notify(response: resp)
         self.taskMap.removeValue(forKey: task.taskIdentifier)
     }
+}
+
+public class NSClient: NSObject, HTTPClient, URLSessionDataDelegate {
+    
+    public static let shared = { _ -> NSClient in
+        let configuration = URLSessionConfiguration.default
+        let queue = OperationQueue()
+        queue.name = "org.httpidl.nsclient.default-callback"
+        let client = NSClient(configuration: configuration, delegate: nil, delegateQueue: queue)
+        return client
+    }()
+    
+    public let session: URLSession
+    private let taskManager: TaskManager
+    
+    public init(configuration: URLSessionConfiguration, delegate: URLSessionDataDelegate?, delegateQueue: OperationQueue?) {
+        self.taskManager = TaskManager(fallthroughDelegate: delegate)
+        self.session = URLSession(configuration: configuration, delegate: self.taskManager, delegateQueue: delegateQueue)
+    }
     
     public func send(_ request: HTTPRequest, usingOutput outputStream: OutputStream?) -> HTTPRequestFuture {
         let future = NSRequestFuture(request: request)
@@ -198,7 +210,7 @@ public class NSClient: NSObject, HTTPClient, URLSessionDataDelegate {
             let task = session.dataTask(with: dataRequest)
             
             future.task = task
-            self.taskMap[task.taskIdentifier] = (future, HTTPBaseResponse(with: 0, headers: [:], bodyStream: outputStream, request: request))
+            self.taskManager.taskMap[task.taskIdentifier] = (future, HTTPBaseResponse(with: 0, headers: [:], bodyStream: outputStream, request: request))
             task.resume()
         } catch let err {
             session.delegateQueue.addOperation {

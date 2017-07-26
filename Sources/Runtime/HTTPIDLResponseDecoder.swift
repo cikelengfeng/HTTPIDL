@@ -64,6 +64,10 @@ public struct HTTPResponseJSONDecoder: HTTPResponseDecoder {
 
     public var jsonReadOptions: JSONSerialization.ReadingOptions = .allowFragments
     
+    public init() {
+        
+    }
+    
     public func decode(_ response: HTTPResponse) throws -> ResponseContent? {
         guard let stream = response.bodyStream, let body = stream.property(forKey: Stream.PropertyKey.dataWrittenToMemoryStreamKey) as? Data else {
             return nil

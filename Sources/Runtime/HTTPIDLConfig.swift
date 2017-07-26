@@ -99,7 +99,7 @@ public struct BaseClientConfiguration: ClientConfiguration {
     }
     
     public var decoderStrategy: (Request) -> HTTPResponseDecoder = { (request) in
-        return HTTPResponseJSONDecoder.shared
+        return HTTPResponseJSONDecoder()
     }
     
     public mutating func append(headers: [String: String]) {

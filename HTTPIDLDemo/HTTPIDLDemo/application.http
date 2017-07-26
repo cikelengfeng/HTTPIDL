@@ -117,16 +117,10 @@ INT64 i;
 
 MESSAGE /get {
 GET REQUEST {
-INT64 int64;
-INT32 int32;
-BOOL bool;
-DOUBLE double;
-STRING string;
-ARRAY<STRING> array;
 }
 
 GET RESPONSE {
-HTTPBinGetArgs args;
+DICT<STRING, DICT<STRING, STRING>>;
 }
 }
 

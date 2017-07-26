@@ -285,26 +285,6 @@ struct HTTPBinGetArgs {
     var array: [String]?
 }
 
-extension HTTPBinGetArgs: ResponseContentConvertible {
-    
-    init?(content: ResponseContent?) {
-        guard let content = content, case .dictionary(let value) = content else {
-            return nil
-        }
-        self.int64 = Int64(content: value["int64"])
-        self.int32 = Int32(content: value["int32"])
-        self.bool = Bool(content: value["bool"])
-        self.double = Double(content: value["double"])
-        self.string = String(content: value["string"])
-        if let content = value["array"] {
-            let array = [String](content: content)
-            self.array = array
-        } else {
-            self.array = nil
-        }
-    }
-}
-
 class GetTestUrlencodedQueryEncoderRequest: Request {
     
     var method: String = "GET"
@@ -1054,42 +1034,8 @@ class GetGetRequest: Request {
         return "/get"
     }
     
-    var int64: Int64?
-    var int32: Int32?
-    var bool: Bool?
-    var double: Double?
-    var string: String?
-    var array: [String]?
     
-    let keyOfInt64 = "int64"
-    let keyOfInt32 = "int32"
-    let keyOfBool = "bool"
-    let keyOfDouble = "double"
-    let keyOfString = "string"
-    let keyOfArray = "array"
-    var content: RequestContent? {
-        var result = [String: RequestContent]()
-        if let tmp = int64 {
-            result["int64"] = tmp.asRequestContent()
-        }
-        if let tmp = int32 {
-            result["int32"] = tmp.asRequestContent()
-        }
-        if let tmp = bool {
-            result["bool"] = tmp.asRequestContent()
-        }
-        if let tmp = double {
-            result["double"] = tmp.asRequestContent()
-        }
-        if let tmp = string {
-            result["string"] = tmp.asRequestContent()
-        }
-        if let tmp = array {
-            let tmp = tmp.asRequestContent()
-            result["array"] = tmp
-        }
-        return .dictionary(value: result)
-    }
+    var content: RequestContent?
     
     @discardableResult
     func send(completion: @escaping (GetGetResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetGetResponse> {
@@ -1110,15 +1056,26 @@ class GetGetRequest: Request {
 
 struct GetGetResponse: Response {
     
-    let args: HTTPBinGetArgs?
+    let body: [String: [String: String]]?
     let rawResponse: HTTPResponse
     init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
         self.rawResponse = rawResponse
-        guard let content = content, case .dictionary(let value) = content else {
-            self.args = nil
+        guard let content = content else {
+            self.body = nil
             return
         }
-        self.args = HTTPBinGetArgs(content: value["args"])
+        var body: [String: [String: String]]? = nil
+        if case .dictionary(let value) = content {
+            body = [String: [String: String]]()
+            value.forEach { (kv) in
+                let content = kv.value
+                let _body = [String: String](content: content)
+                if let tmp = _body {
+                    body!.updateValue(tmp, forKey: kv.key)
+                }
+            }
+        }
+        self.body = body
     }
 }
 

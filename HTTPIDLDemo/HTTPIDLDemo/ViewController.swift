@@ -14,8 +14,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         BaseClientConfiguration.shared.baseURLString = "http://httpbin.org/"
         let configuration = URLSessionConfiguration.default
-        let session = URLSession(configuration: configuration)
-        BaseClient.shared.clientImpl = NSClient(session: session)
+        BaseClient.shared.clientImpl = NSClient(configuration: configuration, delegate: nil, delegateQueue: nil)
         
 //        let request = PostTestMultipartEncoderRequest()
 //        request.number = 123123123123
@@ -90,15 +89,23 @@ class ViewController: UIViewController {
 //            
 //        }
         
-        let dataString = "xxxxx"
-        let data = dataString.data(using: String.Encoding.utf8)!
-        let req = PostDataRequest()
-        req.configuration.encoder = HTTPBinaryRequestEncoder.shared
-        req.body = HTTPData(with: data, fileName: "test_data", mimeType: "application/octet-stream")
-        let future = req.send(completion: { (response) in
-            
+//        let dataString = "xxxxx"
+//        let data = dataString.data(using: String.Encoding.utf8)!
+//        let req = PostDataRequest()
+//        req.configuration.encoder = HTTPBinaryRequestEncoder.shared
+//        req.body = HTTPData(with: data, fileName: "test_data", mimeType: "application/octet-stream")
+//        let future = req.send(completion: { (response) in
+//            
+//        }) { (error) in
+//            
+//        }
+        
+        let req = GetGetRequest()
+        req.configuration.decoder = HTTPResponseJSONDecoder()
+        req.send(completion: { (resp) in
+            debugPrint("resp", resp)
         }) { (error) in
-            
+            debugPrint("error", error)
         }
     }
 
