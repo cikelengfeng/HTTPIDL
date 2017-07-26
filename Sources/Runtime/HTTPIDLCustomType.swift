@@ -58,7 +58,7 @@ public struct HTTPFile {
 
 extension HTTPFile: RequestContentConvertible {
     public func asRequestContent() -> RequestContent {
-            return .file(value: payload, fileName: fileName, mimeType: mimeType)
+        return .file(value: payload, fileName: fileName, mimeType: mimeType)
     }
 }
 
@@ -66,7 +66,6 @@ extension HTTPFile: RequestContentConvertible {
 
 extension HTTPFile: ResponseContentConvertible {
     public init?(content: ResponseContent?) {
-        //暂不支持，后续打算把参数内容写进临时文件，然后用临时文件地址初始化
         guard let content = content else {
             return nil
         }
