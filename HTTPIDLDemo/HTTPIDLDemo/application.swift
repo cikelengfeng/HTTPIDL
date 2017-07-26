@@ -1391,3 +1391,57 @@ struct GetTesting3Response: Response {
         self.rawResponse = rawResponse
     }
 }
+
+class GetTestDownloadRequest: Request {
+    
+    var method: String = "GET"
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
+        get {
+            guard let config = _configuration else {
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
+    var client: Client = BaseClient.shared
+    var uri: String {
+        return "/image/1411/1809515237271.jpg"
+    }
+    
+    
+    var content: RequestContent?
+    
+    @discardableResult
+    func send(completion: @escaping (GetTestDownloadResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestDownloadResponse> {
+        let future: RequestFuture<GetTestDownloadResponse> = client.send(self)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
+    }
+    
+    @discardableResult
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+        let future = client.send(self)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
+    }
+}
+
+struct GetTestDownloadResponse: Response {
+    
+    let body: HTTPFile?
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+        guard let content = content else {
+            self.body = nil
+            return
+        }
+        self.body = HTTPFile(content: content)
+    }
+}

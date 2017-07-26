@@ -87,7 +87,7 @@ public struct HTTPResponseFileDecoder: HTTPResponseDecoder {
     public private(set) var outputStream: OutputStream?
     public private(set) var filePath: String;
     
-    init(filePath: String) {
+    public init(filePath: String) {
         self.filePath = filePath
         self.outputStream = OutputStream(toFileAtPath: filePath, append: false)
     }

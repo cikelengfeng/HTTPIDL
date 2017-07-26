@@ -181,3 +181,11 @@ MESSAGE(Testing3) /test/?/message&_name/哎呦 {
     GET RESPONSE {}
 }
 
+MESSAGE(TestDownload) /image/1411/1809515237271.jpg {
+GET REQUEST {
+}
+GET RESPONSE {
+FILE;
+}
+}
+

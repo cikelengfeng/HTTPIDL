@@ -12,7 +12,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        BaseClientConfiguration.shared.baseURLString = "http://httpbin.org/"
+//        BaseClientConfiguration.shared.baseURLString = "http://httpbin.org/"
+        BaseClientConfiguration.shared.baseURLString = "http://img.171u.com/"
         let configuration = URLSessionConfiguration.default
         BaseClient.shared.clientImpl = NSClient(configuration: configuration, delegate: nil, delegateQueue: nil)
         
@@ -100,13 +101,23 @@ class ViewController: UIViewController {
 //            
 //        }
         
-        let req = GetGetRequest()
-        req.configuration.decoder = HTTPResponseJSONDecoder()
-        req.send(completion: { (resp) in
-            debugPrint("resp", resp)
-        }) { (error) in
-            debugPrint("error", error)
-        }
+//        let req = GetGetRequest()
+//        req.configuration.decoder = HTTPResponseJSONDecoder()
+//        req.send(completion: { (resp) in
+//            debugPrint("resp", resp)
+//        }) { (error) in
+//            debugPrint("error", error)
+//        }
+        
+//        let req = GetTestDownloadRequest()
+//        let filePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0].appending("/test.jpg")
+//        debugPrint("filepath ", filePath)
+//        req.configuration.decoder = HTTPResponseFileDecoder(filePath: filePath)
+//        req.send(completion: { (resp) in
+//            debugPrint("resp", resp)
+//        }) { (error) in
+//            debugPrint("error", error)
+//        }
     }
 
     override func didReceiveMemoryWarning() {
