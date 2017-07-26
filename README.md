@@ -440,5 +440,11 @@ public protocol HTTPResponseRewriter: class {
 ```
 
 request rewriter可以将request重写成另一个request、 response 或 error
+
 response rewriter可以将response重写成另一个response 或 error
 
+## Roadmap
+1. Required & Optional (version 1.1.0)
+2. Optimize Error Handling (version 1.2.0) [Swift runtime]
+3. More Support For HTTPS
+4. Documentation
