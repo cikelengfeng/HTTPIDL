@@ -98,3 +98,19 @@ public struct HTTPResponseFileDecoder: HTTPResponseDecoder {
         return ResponseContent.file(value: fileURL, fileName: nil, mimeType: contentType)
     }
 }
+
+public struct HTTPResponseBinaryDecoder: HTTPResponseDecoder {
+    public private(set) var outputStream: OutputStream?
+    
+    public init() {
+        self.outputStream = OutputStream(toMemory: ())
+    }
+    
+    public func decode(_ response: HTTPResponse) throws -> ResponseContent? {
+        guard let stream = response.bodyStream, let body = stream.property(forKey: Stream.PropertyKey.dataWrittenToMemoryStreamKey) as? Data else {
+            return nil
+        }
+        let contentType = response.headers["Content-Type"] ?? "application/octet-stream"
+        return ResponseContent.data(value: body, fileName: nil, mimeType: contentType)
+    }
+}
