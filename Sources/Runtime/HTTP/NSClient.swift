@@ -149,10 +149,17 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
         let newResp = HTTPBaseResponse(with: httpResp.statusCode, headers: httpResp.allHeaderFields as? [String: String] ?? [:], bodyStream: resp.bodyStream, request: resp.request)
         self.taskMap[dataTask.taskIdentifier] = (future, newResp)
         newResp.bodyStream?.open()
-        completionHandler(.allow)
+        guard let method = fallthroughDelegate?.urlSession(_:dataTask:didReceive:completionHandler:) else {
+            completionHandler(.allow)
+            return
+        }
+        method(session, dataTask, response, completionHandler)
     }
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        defer {
+            fallthroughDelegate?.urlSession?(session, dataTask: dataTask, didReceive: data)
+        }
         guard let fr = self.taskMap[dataTask.taskIdentifier] else {
             return
         }
@@ -168,6 +175,9 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
     }
     
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        defer {
+            fallthroughDelegate?.urlSession?(session, task: task, didCompleteWithError: error)
+        }
         guard let fr = self.taskMap[task.taskIdentifier] else {
             return
         }
@@ -182,9 +192,76 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
         future.notify(response: resp)
         self.taskMap.removeValue(forKey: task.taskIdentifier)
     }
+    
+    // MARK: fallthrough
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        fallthroughDelegate?.urlSession?(session, didBecomeInvalidWithError: error)
+    }
+    
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        guard let method = fallthroughDelegate?.urlSession(_:didReceive:completionHandler:) else {
+            completionHandler(.performDefaultHandling, nil)
+            return
+        }
+        method(session, challenge, completionHandler)
+    }
+    
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        fallthroughDelegate?.urlSessionDidFinishEvents?(forBackgroundURLSession: session)
+    }
+    
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome downloadTask: URLSessionDownloadTask) {
+        fallthroughDelegate?.urlSession?(session, dataTask: dataTask, didBecome: downloadTask)
+    }
+    
+    @available(iOS 9.0, *)
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome streamTask: URLSessionStreamTask) {
+        fallthroughDelegate?.urlSession?(session, dataTask: dataTask, didBecome: streamTask)
+    }
+    
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, willCacheResponse proposedResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Void) {
+        guard let method = fallthroughDelegate?.urlSession(_:dataTask:willCacheResponse:completionHandler:) else {
+            completionHandler(proposedResponse)
+            return
+        }
+        method(session, dataTask, proposedResponse, completionHandler)
+    }
+    
+    @available(iOS 10.0, *)
+    func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
+        fallthroughDelegate?.urlSession?(session, task: task, didFinishCollecting: metrics)
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, needNewBodyStream completionHandler: @escaping (InputStream?) -> Void) {
+        guard let method = fallthroughDelegate?.urlSession(_:task:needNewBodyStream:) else {
+            completionHandler(nil)
+            return
+        }
+        method(session, task, completionHandler)
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+        fallthroughDelegate?.urlSession?(session, task: task, didSendBodyData: bytesSent, totalBytesSent: totalBytesSent, totalBytesExpectedToSend: totalBytesExpectedToSend)
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        guard let method = fallthroughDelegate?.urlSession(_:task:didReceive:completionHandler:) else {
+            completionHandler(.performDefaultHandling, nil)
+            return
+        }
+        method(session, task, challenge, completionHandler)
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
+        guard let method = fallthroughDelegate?.urlSession(_:task:willPerformHTTPRedirection:newRequest:completionHandler:) else {
+            completionHandler(request)
+            return
+        }
+        method(session, task, response, request, completionHandler)
+    }
 }
 
-public class NSClient: NSObject, HTTPClient, URLSessionDataDelegate {
+public class NSClient: NSObject, HTTPClient {
     
     public static let shared = { _ -> NSClient in
         let configuration = URLSessionConfiguration.default
