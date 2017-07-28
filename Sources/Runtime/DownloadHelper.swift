@@ -67,15 +67,21 @@ public struct DownloadResponse: Response {
 
 extension String {
     public func download(toPath savePath: String, responseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        let url = URL(string: self)!
-        let req = DownloadRequest(url: url, savePath: savePath)
+        let req = downloadRequest(toPath: savePath)
         req.send(rawResponseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    public func downloadRequest(toPath savePath: String) -> DownloadRequest {
+        let url = URL(string: self)!
+        return DownloadRequest(url: url, savePath: savePath)
     }
 }
 
 extension URL {
     public func download(toPath savePath: String, responseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
-        let req = DownloadRequest(url: self, savePath: savePath)
+        let req = downloadRequest(toPath: savePath)
         req.send(rawResponseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    public func downloadRequest(toPath savePath: String) -> DownloadRequest {
+        return DownloadRequest(url: self, savePath: savePath)
     }
 }
