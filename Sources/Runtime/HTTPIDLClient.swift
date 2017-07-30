@@ -362,7 +362,7 @@ public class BaseClient: Client {
                 }
             }
             encodedRequest.update(configuration: request.configuration)
-            let outputSteam = request.configuration.decoder.outputStream
+            let outputSteam = OutputStream(toMemory: ())
             let futureImpl = clientImpl.send(encodedRequest, usingOutput: outputSteam)
             future.futureImpl = futureImpl
             futureImpl.progressHandler = { p in
