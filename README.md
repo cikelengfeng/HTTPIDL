@@ -6,6 +6,7 @@ HTTPIDL致力于帮助开发者将精力专注于业务逻辑，尽可能少的�
 ![UnitTest](https://img.shields.io/badge/test-passing-brightgreen.svg)   ![Cocoapods](https://img.shields.io/badge/pod-1.0.1-blue.svg)
 
 ## 特色
+* 类型安全
 * 自动生成swift 3代码，同时支持手写
 * URL / JSON / URLEncodedForm 请求内容编码方式（甚至支持组合编码方式）
 * 上传 File / Data / MultipartFormData
