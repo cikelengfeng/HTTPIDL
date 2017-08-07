@@ -151,7 +151,27 @@ extension Array where Element: RequestContentConvertible {
     }
 }
 
+extension Array where Element == RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        let value = self.map ({ (convertible) in
+            return convertible.asRequestContent()
+        })
+        return .array(value: value)
+    }
+}
+
 extension Dictionary where Key: RequestContentKeyType, Value: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        let value = self.reduce([String: RequestContent]()) { (soFar, soGood) -> [String: RequestContent] in
+            var result = soFar
+            result[soGood.key.asHTTPParamterKey()] = soGood.value.asRequestContent()
+            return result
+        }
+        return .dictionary(value: value)
+    }
+}
+
+extension Dictionary where Key: RequestContentKeyType, Value == RequestContentConvertible {
     public func asRequestContent() -> RequestContent {
         let value = self.reduce([String: RequestContent]()) { (soFar, soGood) -> [String: RequestContent] in
             var result = soFar
