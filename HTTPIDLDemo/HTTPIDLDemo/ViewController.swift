@@ -122,7 +122,7 @@ class ViewController: UIViewController {
         let filePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0].appending("/test1.jpg")
         let urlString = "http://img.171u.com/image/1411/1809515237271.jpg"
         debugPrint("filepath ", filePath)
-        urlString.download(toPath: filePath, responseHandler: { (resp) in
+        urlString.download(toPath: filePath, completion: { (resp) in
             debugPrint("resp", resp)
         }) { (error) in
             debugPrint("error", error)

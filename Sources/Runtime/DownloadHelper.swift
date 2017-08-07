@@ -42,13 +42,6 @@ public class DownloadRequest: Request {
         return future
     }
     
-    @discardableResult
-    public func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
-        return future
-    }
 }
 
 public struct DownloadResponse: Response {
@@ -66,9 +59,9 @@ public struct DownloadResponse: Response {
 }
 
 extension String {
-    public func download(toPath savePath: String, responseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+    public func download(toPath savePath: String, completion: @escaping (DownloadResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
         let req = downloadRequest(toPath: savePath)
-        req.send(rawResponseHandler: responseHandler, errorHandler: errorHandler)
+        req.send(completion: completion, errorHandler: errorHandler)
     }
     public func downloadRequest(toPath savePath: String) -> DownloadRequest {
         let url = URL(string: self)!
@@ -77,9 +70,9 @@ extension String {
 }
 
 extension URL {
-    public func download(toPath savePath: String, responseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
+    public func download(toPath savePath: String, completion: @escaping (DownloadResponse) -> Void, errorHandler: @escaping (HIError) -> Void) {
         let req = downloadRequest(toPath: savePath)
-        req.send(rawResponseHandler: responseHandler, errorHandler: errorHandler)
+        req.send(completion: completion, errorHandler: errorHandler)
     }
     public func downloadRequest(toPath savePath: String) -> DownloadRequest {
         return DownloadRequest(url: self, savePath: savePath)
