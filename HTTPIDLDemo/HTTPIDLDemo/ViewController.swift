@@ -127,6 +127,9 @@ class ViewController: UIViewController {
         }) { (error) in
             debugPrint("error", error)
         }
+        
+        let req = GetTestRequestContentConvertibleRequest()
+        req.body = ["1": "1", "2": 2, "3": 3.0]
     }
 
     override func didReceiveMemoryWarning() {

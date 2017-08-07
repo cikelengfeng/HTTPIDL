@@ -189,3 +189,13 @@ FILE;
 }
 }
 
+MESSAGE /test/RequestContentConvertible{
+GET REQUEST {
+DICT<STRING, RequestContentConvertible>;
+}
+
+GET RESPONSE {
+
+}
+}
+

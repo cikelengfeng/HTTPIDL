@@ -1445,3 +1445,58 @@ struct GetTestDownloadResponse: Response {
         self.body = HTTPFile(content: content)
     }
 }
+
+class GetTestRequestContentConvertibleRequest: Request {
+    
+    var method: String = "GET"
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
+        get {
+            guard let config = _configuration else {
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
+    var client: Client = BaseClient.shared
+    var uri: String {
+        return "/test/RequestContentConvertible"
+    }
+    
+    var body: [String: RequestContentConvertible]?
+    var content: RequestContent? {
+        if let body = body {
+            let tmp = body.asRequestContent()
+            return tmp
+        } else {
+            return nil
+        }
+    }
+    
+    @discardableResult
+    func send(completion: @escaping (GetTestRequestContentConvertibleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestRequestContentConvertibleResponse> {
+        let future: RequestFuture<GetTestRequestContentConvertibleResponse> = client.send(self)
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
+    }
+    
+    @discardableResult
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
+        let future = client.send(self)
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
+    }
+}
+
+struct GetTestRequestContentConvertibleResponse: Response {
+    
+    let rawResponse: HTTPResponse
+    init(content: ResponseContent?, rawResponse: HTTPResponse) throws {
+        self.rawResponse = rawResponse
+    }
+}
