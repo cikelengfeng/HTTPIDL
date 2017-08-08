@@ -67,17 +67,30 @@ import HTTPIDL
 class GetMyExampleRequest: Request {
     
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
-    var client: Client = BaseClient.shared
-    var uri: String {
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
         get {
-            return "/my/example"
+            guard let config = _configuration else {
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
         }
     }
+    var client: Client = BaseClient.shared
+    var uri: String {
+        return "/my/example"
+    }
+    
     var t1: Int32?
     var t2: String?
+    
+    let keyOfT1 = "t"
+    let keyOfT2 = "tt"
     var content: RequestContent? {
-        var result = [String:RequestContent]()
+        var result = [String: RequestContent]()
         if let tmp = t1 {
             result["t"] = tmp.asRequestContent()
         }
@@ -90,17 +103,17 @@ class GetMyExampleRequest: Request {
     @discardableResult
     func send(completion: @escaping (GetMyExampleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetMyExampleResponse> {
         let future: RequestFuture<GetMyExampleResponse> = client.send(self)
-	future.responseHandler = completion
-	future.errorHandler = errorHandler
-	return future
+        future.responseHandler = completion
+        future.errorHandler = errorHandler
+        return future
     }
     
     @discardableResult
-    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse>{
+    func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
         let future = client.send(self)
-	future.responseHandler = rawResponseHandler
-	future.errorHandler = errorHandler
-	return future
+        future.responseHandler = rawResponseHandler
+        future.errorHandler = errorHandler
+        return future
     }
 }
 
@@ -152,7 +165,7 @@ public protocol Request {
 实现了Request协议的对象都可以使用以下代码发送：
 ```
 let request = //your hand-writed request
-request.configuration.encoderStrategy = { _ in HTTPURLEncodedQueryRequestEncoder.shared}
+request.configuration.encoder = HTTPURLEncodedQueryRequestEncoder.shared
 BaseClient.shared.send(request)
 ```
 
@@ -188,7 +201,7 @@ func test() {
 	let request = GetMyExampleRequest()
 	request.t1 = 123
 	request.t2 = "hey"
-	request.configuration.encoderStrategy = { _ in HTTPURLEncodedQueryRequestEncoder.shared}
+	request.configuration.encoder = HTTPURLEncodedQueryRequestEncoder.shared
 	BaseClient.shared.send(request)
 }
 ```
@@ -231,7 +244,7 @@ func test() {
 	let request = PostMyExampleRequest()
 	request.t1 = 123
 	request.t2 = "hey"
-	request.configuration.encoderStrategy = { _ in HTTPURLEncodedFormRequestEncoder.shared }
+	request.configuration.encoder = HTTPURLEncodedFormRequestEncoder.shared
 	BaseClient.shared.send(request)
 }
 ```
@@ -287,12 +300,12 @@ class PostTestJsonEncoderRequest: Request {
 }
 
 func test() {
-		let request = PostTestJsonEncoderRequest()
-        request.t1 = 123123123123
-        request.t2 = 123
-        request.t3 = 1.1
-        request.t4 = "jude"
-		 request.t5 = ["don't", "make", "it", "bad"]
+	let request = PostTestJsonEncoderRequest()
+    request.t1 = 123123123123
+    request.t2 = 123
+    request.t3 = 1.1
+    request.t4 = "jude"
+	request.t5 = ["don't", "make", "it", "bad"]
 }
 ```
 
@@ -353,7 +366,7 @@ let request = PostTestMultipartEncoderRequest()
         request.t4 = "jude"
         let data = try! Data(contentsOf: Bundle.main.url(forResource: "test", withExtension: "JPG")!)
         request.t5 = HTTPData(with: data, fileName: "test", mimeType: "image/jpeg")
-	request.configuration.encoderStrategy = { _ in HTTPMultipartRequestEncoder.shared }
+	request.configuration.encoder = HTTPMultipartRequestEncoder.shared
         request.send(completion: { (response) in
             
         }) { (error) in
@@ -445,7 +458,6 @@ request rewriter可以将request重写成另一个request、 response 或 error
 response rewriter可以将response重写成另一个response 或 error
 
 ## Roadmap
-1. Required & Optional (version 1.1.0)
-2. Optimize Error Handling (version 1.2.0) [Swift runtime]
-3. More Support For HTTPS
-4. Documentation
+1. Optimize Error Handling (version 1.2.0) [Swift runtime]
+2. More Support For HTTPS
+3. Documentation
