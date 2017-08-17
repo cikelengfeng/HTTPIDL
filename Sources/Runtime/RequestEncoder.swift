@@ -7,6 +7,10 @@
 import Foundation
 import Gzip
 
+public protocol HTTPRequestEncoder {
+    func encode(_ request: Request) throws -> HTTPRequest
+}
+
 public enum HTTPBaseRequestEncoderError: HIError {
     case constructURLFailed(urlString: String)
     case nestedObjectInURLQuery(errorSource: Any)

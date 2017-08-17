@@ -7,6 +7,14 @@
 
 import Foundation
 
+public protocol ResponseContentConvertible {
+    init?(content: ResponseContent?)
+}
+
+public protocol ResponseContentKeyType: Hashable {
+    init(string: String)
+}
+
 public enum ResponseContent {
     case number(value: NSNumber)
     case string(value: String)
@@ -14,10 +22,6 @@ public enum ResponseContent {
     case array(value: [ResponseContent])
     case dictionary(value: [String: ResponseContent])
     case file(value: URL, fileName: String?, mimeType: String)
-}
-
-public protocol ResponseContentConvertible {
-    init?(content: ResponseContent?)
 }
 
 extension Int64: ResponseContentConvertible {
@@ -178,10 +182,6 @@ public extension Array where Element: ResponseContentConvertible {
             return nil
         }
     }
-}
-
-public protocol ResponseContentKeyType: Hashable {
-    init(string: String)
 }
 
 extension String: ResponseContentKeyType {

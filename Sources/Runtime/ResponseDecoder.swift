@@ -7,6 +7,11 @@
 
 import Foundation
 
+public protocol HTTPResponseDecoder {
+    var outputStream: OutputStream? {get}
+    func decode(_ response: HTTPResponse) throws -> ResponseContent?
+}
+
 private func decode(json: Any) throws -> ResponseContent? {
     if let number = json as? NSNumber {
         return .number(value: number)

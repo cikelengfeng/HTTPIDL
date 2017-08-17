@@ -6,6 +6,14 @@
 
 import Foundation
 
+public protocol RequestContentKeyType {
+    func asHTTPParamterKey() -> String
+}
+
+public protocol RequestContentConvertible {
+    func asRequestContent() -> RequestContent
+}
+
 public enum RequestContent {
     case number(value: NSNumber)
     case string(value: String)

@@ -6,6 +6,13 @@
 
 import Foundation
 
+public protocol Request {
+    var method: String {get}
+    var configuration: RequestConfiguration {get set}
+    var uri: String {get}
+    var content: RequestContent? {get}
+}
+
 struct PlainRequest: Request {
     var method: String
     var configuration: RequestConfiguration
