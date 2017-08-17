@@ -11,7 +11,7 @@ public protocol RequestManagerConfiguration {
     var headers: [String: String] {get set}
     var callbackQueue: DispatchQueue {get set}
     var encoderStrategy: (Request) -> Encoder {get set}
-    var decoderStrategy: (Request) -> HTTPResponseDecoder {get set}
+    var decoderStrategy: (Request) -> Decoder {get set}
     
     mutating func append(headers: [String: String])
 }
@@ -21,7 +21,7 @@ public protocol RequestConfiguration {
     var headers: [String: String] {get set}
     var callbackQueue: DispatchQueue {get set}
     var encoder: Encoder {get set}
-    var decoder: HTTPResponseDecoder {get set}
+    var decoder: Decoder {get set}
     var cachePolicy: CachePolicy? {get set}
     var networkServiceType: NetworkServiceType? {get set}
     var timeoutInterval: TimeInterval? {get set}
@@ -98,8 +98,8 @@ public struct BaseRequestManagerConfiguration: RequestManagerConfiguration {
         }
     }
     
-    public var decoderStrategy: (Request) -> HTTPResponseDecoder = { (request) in
-        return HTTPResponseJSONDecoder()
+    public var decoderStrategy: (Request) -> Decoder = { (request) in
+        return JSONDecoder()
     }
     
     public mutating func append(headers: [String: String]) {
@@ -118,7 +118,7 @@ public struct BaseRequestConfiguration: RequestConfiguration {
     public var headers: [String: String] = [:]
     public var callbackQueue: DispatchQueue
     public var encoder: Encoder
-    public var decoder: HTTPResponseDecoder
+    public var decoder: Decoder
     public var allowsCellularAccess: Bool?
     public var shouldHandleCookies: Bool?
     public var shouldUsePipelining: Bool?

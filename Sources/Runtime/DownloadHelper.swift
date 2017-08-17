@@ -29,7 +29,7 @@ public class DownloadRequest: Request {
     public init(url: URL, savePath: String) {
         self.uri = url.relativeString
         self.configuration.baseURLString = url.baseURL?.absoluteString ?? ""
-        self.configuration.decoder = HTTPResponseFileDecoder(filePath: savePath)
+        self.configuration.decoder = FileDecoder(filePath: savePath)
     }
     
     public private(set) var content: RequestContent?

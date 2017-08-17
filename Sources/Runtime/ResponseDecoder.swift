@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol HTTPResponseDecoder {
+public protocol Decoder {
     var outputStream: OutputStream? {get}
     func decode(_ response: HTTPResponse) throws -> ResponseContent?
 }
@@ -47,7 +47,7 @@ private func decodeRoot(json: Any) throws -> ResponseContent? {
     }
 }
 
-public enum HTTPResponseJSONDecoderError: HIError {
+public enum JSONDecoderError: HIError {
     case JSONSerializationError(rawError: Error)
     
     public var errorDescription: String? {
@@ -60,7 +60,7 @@ public enum HTTPResponseJSONDecoderError: HIError {
     }
 }
 
-public struct HTTPResponseJSONDecoder: HTTPResponseDecoder {
+public struct JSONDecoder: Decoder {
     public var outputStream: OutputStream? {
         get {
             return OutputStream(toMemory: ())
@@ -81,14 +81,14 @@ public struct HTTPResponseJSONDecoder: HTTPResponseDecoder {
         do {
             json = try JSONSerialization.jsonObject(with: body, options: jsonReadOptions)
         } catch let error {
-            throw HTTPResponseJSONDecoderError.JSONSerializationError(rawError: error)
+            throw JSONDecoderError.JSONSerializationError(rawError: error)
         }
             
         return try decodeRoot(json: json)
     }
 }
 
-public struct HTTPResponseFileDecoder: HTTPResponseDecoder {
+public struct FileDecoder: Decoder {
     public private(set) var outputStream: OutputStream?
     public private(set) var filePath: String;
     
@@ -104,7 +104,7 @@ public struct HTTPResponseFileDecoder: HTTPResponseDecoder {
     }
 }
 
-public struct HTTPResponseBinaryDecoder: HTTPResponseDecoder {
+public struct BinaryDecoder: Decoder {
     public private(set) var outputStream: OutputStream?
     
     public init() {

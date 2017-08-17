@@ -259,7 +259,7 @@ public class BaseRequestManager: RequestManager {
         return ret
     }
     
-    private func handle<ResponseType : Response>(response: HTTPResponse, responseDecoder: HTTPResponseDecoder, future: RequestFuture<ResponseType>) {
+    private func handle<ResponseType : Response>(response: HTTPResponse, responseDecoder: Decoder, future: RequestFuture<ResponseType>) {
         var resp = response
         if let responseRewriteResult = self.rewrite(response: response) {
             switch responseRewriteResult {
