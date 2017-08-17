@@ -12,14 +12,14 @@ public protocol RequestManager {
     
     var configuration: RequestManagerConfiguration {get set}
     
-    mutating func add(requestObserver: HTTPRequestObserver)
-    mutating func remove(requestObserver: HTTPRequestObserver)
-    mutating func add(responseObserver: HTTPResponseObserver)
-    mutating func remove(responseObserver: HTTPResponseObserver)
-    mutating func add(requestRewriter: HTTPRequestRewriter)
-    mutating func remove(requestRewriter: HTTPRequestRewriter)
-    mutating func add(responseRewriter: HTTPResponseRewriter)
-    mutating func remove(responseRewriter: HTTPResponseRewriter)
+    mutating func add(requestObserver: RequestObserver)
+    mutating func remove(requestObserver: RequestObserver)
+    mutating func add(responseObserver: ResponseObserver)
+    mutating func remove(responseObserver: ResponseObserver)
+    mutating func add(requestRewriter: RequestRewriter)
+    mutating func remove(requestRewriter: RequestRewriter)
+    mutating func add(responseRewriter: ResponseRewriter)
+    mutating func remove(responseRewriter: ResponseRewriter)
 }
 
 public enum BaseRequestManagerError: HIError {
@@ -74,23 +74,23 @@ public class BaseRequestManager: RequestManager {
         }
     }
     private var _configuration: RequestManagerConfiguration?
-    private var requestObservers: [HTTPRequestObserver] = []
-    private var responseObservers: [HTTPResponseObserver] = []
-    private var requestRewriters: [HTTPRequestRewriter] = []
-    private var responseRewriters: [HTTPResponseRewriter] = []
+    private var requestObservers: [RequestObserver] = []
+    private var responseObservers: [ResponseObserver] = []
+    private var requestRewriters: [RequestRewriter] = []
+    private var responseRewriters: [ResponseRewriter] = []
     
     private let requestObserverQueue: DispatchQueue = DispatchQueue(label: "httpidl.requestObserver")
     private let responseObserverQueue: DispatchQueue = DispatchQueue(label: "httpidl.responseObserver")
     private let requestRewriterQueue: DispatchQueue = DispatchQueue(label: "httpidl.requestRewriter")
     private let responseRewriterQueue: DispatchQueue = DispatchQueue(label: "httpidl.responseRewriter")
     
-    public func add(requestObserver: HTTPRequestObserver) {
+    public func add(requestObserver: RequestObserver) {
         requestObserverQueue.sync {
             requestObservers.append(requestObserver)
         }
     }
     
-    public func remove(requestObserver: HTTPRequestObserver) {
+    public func remove(requestObserver: RequestObserver) {
         requestObserverQueue.sync {
             if let index = requestObservers.index(where: { (observer) -> Bool in
                 return observer === requestObserver
@@ -100,13 +100,13 @@ public class BaseRequestManager: RequestManager {
         }
     }
     
-    public func add(responseObserver: HTTPResponseObserver) {
+    public func add(responseObserver: ResponseObserver) {
         responseObserverQueue.sync {
             responseObservers.append(responseObserver)
         }
     }
     
-    public func remove(responseObserver: HTTPResponseObserver) {
+    public func remove(responseObserver: ResponseObserver) {
         responseObserverQueue.sync {
             if let index = responseObservers.index(where: { (observer) -> Bool in
                 return observer === responseObserver
@@ -116,13 +116,13 @@ public class BaseRequestManager: RequestManager {
         }
     }
     
-    public func add(requestRewriter: HTTPRequestRewriter) {
+    public func add(requestRewriter: RequestRewriter) {
         requestRewriterQueue.sync {
             self.requestRewriters.append(requestRewriter)
         }
     }
     
-    public func remove(requestRewriter: HTTPRequestRewriter) {
+    public func remove(requestRewriter: RequestRewriter) {
         requestRewriterQueue.sync {
             if let index = requestRewriters.index(where: { (rewriter) -> Bool in
                 return rewriter === requestRewriter
@@ -132,13 +132,13 @@ public class BaseRequestManager: RequestManager {
         }
     }
     
-    public func add(responseRewriter: HTTPResponseRewriter) {
+    public func add(responseRewriter: ResponseRewriter) {
         responseRewriterQueue.sync {
             self.responseRewriters.append(responseRewriter)
         }
     }
     
-    public func remove(responseRewriter: HTTPResponseRewriter) {
+    public func remove(responseRewriter: ResponseRewriter) {
         responseRewriterQueue.sync {
             if let index = responseRewriters.index(where: { (rewriter) -> Bool in
                 return rewriter === responseRewriter
@@ -209,13 +209,13 @@ public class BaseRequestManager: RequestManager {
         }
     }
     
-    private func rewrite(request: HTTPRequest) -> HTTPRequestRewriterResult? {
+    private func rewrite(request: HTTPRequest) -> RequestRewriterResult? {
         
         guard requestRewriters.count != 0 else {
             return nil
         }
         
-        var ret: HTTPRequestRewriterResult = HTTPRequestRewriterResult.request(request: request)
+        var ret: RequestRewriterResult = RequestRewriterResult.request(request: request)
         requestRewriterQueue.sync {
             var req = request
             for rewriter in requestRewriters {
@@ -234,13 +234,13 @@ public class BaseRequestManager: RequestManager {
         return ret
     }
     
-    private func rewrite(response: HTTPResponse) -> HTTPResponseRewriterResult? {
+    private func rewrite(response: HTTPResponse) -> ResponseRewriterResult? {
         
         guard responseRewriters.count != 0 else {
             return nil
         }
         
-        var ret: HTTPResponseRewriterResult = HTTPResponseRewriterResult.response(response: response)
+        var ret: ResponseRewriterResult = ResponseRewriterResult.response(response: response)
         requestRewriterQueue.sync {
             var resp = response
             for rewriter in responseRewriters {
