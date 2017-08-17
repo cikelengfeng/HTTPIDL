@@ -8,7 +8,24 @@
 
 import Foundation
 
-public enum NSClientError: HIError {
+public protocol HTTPSession {
+    func send(_ request: HTTPRequest, usingOutput outputStream: OutputStream?) -> HTTPRequestFuture
+}
+
+public protocol HTTPRequestFuture: class {
+    
+    var request: HTTPRequest {get}
+    var progressHandler: ((_ progress: Progress) -> Void)? {get set}
+    var responseHandler: ((_ response: HTTPResponse) -> Void)? {get set}
+    var errorHandler: ((_ error: HIError) -> Void)? {get set}
+    
+    func cancel()
+    func notify(progress: Progress)
+    func notify(response: HTTPResponse)
+    func notify(error: HIError)
+}
+
+public enum NSHTTPSessionError: HIError {
     case missingResponse(request: HTTPRequest)
     case adaptURLRequestFailed(rawError: Error)
     case adaptURLResponseFailed(rawError: Error)
@@ -30,7 +47,7 @@ public enum NSClientError: HIError {
     }
 }
 
-class NSRequestFuture: NSObject, HTTPRequestFuture {
+class NSHTTPRequestFuture: NSObject, HTTPRequestFuture {
     let request: HTTPRequest
     var task: URLSessionDataTask? {
         set {
@@ -141,7 +158,7 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
         }
         let future = fr.future
         guard let httpResp = response as? HTTPURLResponse else {
-            future.notify(error: NSClientError.missingResponse(request: future.request))
+            future.notify(error: NSHTTPSessionError.missingResponse(request: future.request))
             completionHandler(.cancel)
             return
         }
@@ -170,7 +187,7 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
             try data.writeTo(stream: output)
         } catch let error {
             let future = fr.future
-            future.notify(error: NSClientError.writeToStreamFailed(rawError: error))
+            future.notify(error: NSHTTPSessionError.writeToStreamFailed(rawError: error))
         }
     }
     
@@ -184,7 +201,7 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
         let future = fr.future
         let resp = fr.resp
         if let err = error {
-            future.notify(error: NSClientError.adaptURLResponseFailed(rawError: err))
+            future.notify(error: NSHTTPSessionError.adaptURLResponseFailed(rawError: err))
             resp.bodyStream?.close()
             return
         }
@@ -261,13 +278,13 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
     }
 }
 
-public class NSClient: NSObject, HTTPClient {
+public class NSHTTPSession: NSObject, HTTPSession {
     
-    public static let shared = { _ -> NSClient in
+    public static let shared = { _ -> NSHTTPSession in
         let configuration = URLSessionConfiguration.default
         let queue = OperationQueue()
         queue.name = "org.httpidl.nsclient.default-callback"
-        let client = NSClient(configuration: configuration, delegate: nil, delegateQueue: queue)
+        let client = NSHTTPSession(configuration: configuration, delegate: nil, delegateQueue: queue)
         return client
     }()
     
@@ -280,7 +297,7 @@ public class NSClient: NSObject, HTTPClient {
     }
     
     public func send(_ request: HTTPRequest, usingOutput outputStream: OutputStream?) -> HTTPRequestFuture {
-        let future = NSRequestFuture(request: request)
+        let future = NSHTTPRequestFuture(request: request)
         do {
             let dataRequest: URLRequest = try adapt(request)
             
@@ -291,7 +308,7 @@ public class NSClient: NSObject, HTTPClient {
             task.resume()
         } catch let err {
             session.delegateQueue.addOperation {
-                future.notify(error: NSClientError.adaptURLRequestFailed(rawError: err))
+                future.notify(error: NSHTTPSessionError.adaptURLRequestFailed(rawError: err))
             }
         }
         return future

@@ -6,6 +6,13 @@
 
 import Foundation
 
+public protocol HTTPResponse {
+    var statusCode: Int {get}
+    var headers: [String: String] {get}
+    var bodyStream: OutputStream? {get}
+    var request: HTTPRequest {get}
+}
+
 public struct HTTPBaseResponse: HTTPResponse {
     
     public var statusCode: Int

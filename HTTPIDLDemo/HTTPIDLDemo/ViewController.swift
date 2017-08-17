@@ -15,7 +15,7 @@ class ViewController: UIViewController {
 //        BaseClientConfiguration.shared.baseURLString = "http://httpbin.org/"
         BaseRequestManagerConfiguration.shared.baseURLString = "http://img.171u.com/"
         let configuration = URLSessionConfiguration.default
-        BaseRequestManager.shared.clientImpl = NSClient(configuration: configuration, delegate: nil, delegateQueue: nil)
+        BaseRequestManager.shared.session = NSHTTPSession(configuration: configuration, delegate: nil, delegateQueue: nil)
         
 //        let request = PostTestMultipartEncoderRequest()
 //        request.number = 123123123123

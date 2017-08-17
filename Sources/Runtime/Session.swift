@@ -61,7 +61,7 @@ fileprivate extension HTTPRequest {
 public class BaseRequestManager: RequestManager {
     
     public static let shared = BaseRequestManager()
-    public var clientImpl: HTTPClient = NSClient.shared
+    public var session: HTTPSession = NSHTTPSession.shared
     public var configuration: RequestManagerConfiguration {
         get {
             guard let config = _configuration else {
@@ -330,7 +330,7 @@ public class BaseRequestManager: RequestManager {
             }
             encodedRequest.update(configuration: request.configuration)
             let outputSteam = request.configuration.decoder.outputStream
-            let futureImpl = clientImpl.send(encodedRequest, usingOutput: outputSteam)
+            let futureImpl = session.send(encodedRequest, usingOutput: outputSteam)
             future.futureImpl = futureImpl
             futureImpl.progressHandler = { p in
                 guard let handler = future.progressHandler else {
@@ -379,7 +379,7 @@ public class BaseRequestManager: RequestManager {
             }
             encodedRequest.update(configuration: request.configuration)
             let outputSteam = OutputStream(toMemory: ())
-            let futureImpl = clientImpl.send(encodedRequest, usingOutput: outputSteam)
+            let futureImpl = session.send(encodedRequest, usingOutput: outputSteam)
             future.futureImpl = futureImpl
             futureImpl.progressHandler = { p in
                 guard let handler = future.progressHandler else {

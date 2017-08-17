@@ -6,6 +6,23 @@
 
 import Foundation
 
+public protocol HTTPRequest {
+    
+    var method: String {get set}
+    var headers: [String: String] {get set}
+    var url: URL {get set}
+    //有些情况下request body可以为空，如GET请求。所以这里要同时支持抛错和空值
+    var bodyStream: InputStream? {get set}
+    
+    var cachePolicy: URLRequest.CachePolicy? {get set}
+    var networkServiceType: URLRequest.NetworkServiceType? {get set}
+    var timeoutInterval: TimeInterval? {get set}
+    var shouldUsePipelining: Bool? {get set}
+    var shouldHandleCookies: Bool? {get set}
+    var allowsCellularAccess: Bool? {get set}
+    
+}
+
 public struct HTTPBaseRequest: HTTPRequest {
     public var method: String
     public var headers: [String: String]
