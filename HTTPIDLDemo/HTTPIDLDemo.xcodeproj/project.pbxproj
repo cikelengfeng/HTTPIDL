@@ -26,6 +26,7 @@
 		423A3F361E26331100806D65 /* URLHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423A3F351E26331100806D65 /* URLHelper.swift */; };
 		423C32011E21F08000D74B2E /* application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423C32001E21F08000D74B2E /* application.swift */; };
 		424CB4CA1E290FF6001F8729 /* test.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 424CB4C91E290FF6001F8729 /* test.JPG */; };
+		424F4C9D1F45DD76003276BD /* Data+OutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424F4C9C1F45DD76003276BD /* Data+OutputStream.swift */; };
 		4274CD731F23A12000644BBE /* InputStream+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4274CD721F23A12000644BBE /* InputStream+Data.swift */; };
 		4288467F1DEDAD3900D952A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4288467E1DEDAD3900D952A2 /* AppDelegate.swift */; };
 		428846811DEDAD3900D952A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428846801DEDAD3900D952A2 /* ViewController.swift */; };
@@ -71,6 +72,7 @@
 		423C31EA1E21E82800D74B2E /* application.http */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = application.http; sourceTree = "<group>"; };
 		423C32001E21F08000D74B2E /* application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = application.swift; sourceTree = "<group>"; };
 		424CB4C91E290FF6001F8729 /* test.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test.JPG; sourceTree = "<group>"; };
+		424F4C9C1F45DD76003276BD /* Data+OutputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+OutputStream.swift"; sourceTree = "<group>"; };
 		4274CD721F23A12000644BBE /* InputStream+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InputStream+Data.swift"; sourceTree = "<group>"; };
 		4288467B1DEDAD3900D952A2 /* HTTPIDLDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPIDLDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4288467E1DEDAD3900D952A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			children = (
 				42C475BF1E29F65E0044415F /* China.png */,
 				423A3F311E26209D00806D65 /* HTTPIDLDemoTests.swift */,
+				424F4C9C1F45DD76003276BD /* Data+OutputStream.swift */,
 				4274CD721F23A12000644BBE /* InputStream+Data.swift */,
 				423A3F321E26209D00806D65 /* Info.plist */,
 				423A3F351E26331100806D65 /* URLHelper.swift */,
@@ -410,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				424F4C9D1F45DD76003276BD /* Data+OutputStream.swift in Sources */,
 				423A3F331E26209D00806D65 /* HTTPIDLDemoTests.swift in Sources */,
 				4274CD731F23A12000644BBE /* InputStream+Data.swift in Sources */,
 				423A3F361E26331100806D65 /* URLHelper.swift in Sources */,

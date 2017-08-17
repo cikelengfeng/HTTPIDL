@@ -14,7 +14,7 @@ struct TestRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _config else {
-                return BaseRequestConfiguration.create(from: BaseClientConfiguration.shared, request: self)
+                return BaseRequestConfiguration.create(from: BaseRequestManagerConfiguration.shared, request: self)
             }
             return config
         }
@@ -56,18 +56,19 @@ struct TestHTTPRequest: HTTPRequest {
 }
 
 struct TestResponse: HTTPResponse {
+    var bodyStream: OutputStream?
+
     
-    static let empty = TestResponse(statusCode: 200, headers: [:], body: nil, request: TestHTTPRequest.stub)
+    static let empty = TestResponse(statusCode: 200, headers: [:], bodyStream: nil, request: TestHTTPRequest.stub)
     
     var statusCode: Int
     var headers: [String: String]
-    var body: Data?
     var request: HTTPRequest
     
-    init(statusCode: Int, headers: [String: String], body: Data?, request: HTTPRequest) {
+    init(statusCode: Int, headers: [String: String], bodyStream: OutputStream?, request: HTTPRequest) {
         self.statusCode = statusCode
         self.headers = headers
-        self.body = body
+        self.bodyStream = bodyStream
         self.request = request
     }
 }
@@ -77,7 +78,7 @@ class HTTPIDLDemoTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        BaseClientConfiguration.shared.baseURLString = "http://api.everphoto.cn"
+        BaseRequestManagerConfiguration.shared.baseURLString = "http://api.everphoto.cn"
     }
     
     override func tearDown() {
@@ -86,7 +87,7 @@ class HTTPIDLDemoTests: XCTestCase {
     }
     
     func testURLEncodedQueryRequest() {
-        let encoder = HTTPURLEncodedQueryRequestEncoder.shared
+        let encoder = URLEncodedQueryEncoder.shared
         var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
         do {
             let _ = try encoder.encode(testRequest)
@@ -223,7 +224,7 @@ class HTTPIDLDemoTests: XCTestCase {
     }
     
     func testJSONEncoder() {
-        let encoder = HTTPJSONRequestEncoder.shared
+        let encoder = JSONEncoder.shared
         
         var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
         do {
@@ -320,7 +321,7 @@ class HTTPIDLDemoTests: XCTestCase {
     }
     
     func testURLEncodedFormEncoder() {
-        let encoder = HTTPURLEncodedFormRequestEncoder.shared
+        let encoder = URLEncodedFormEncoder.shared
         var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
         do {
             let _ = try encoder.encode(testRequest).bodyStream!.data()
@@ -476,11 +477,15 @@ class HTTPIDLDemoTests: XCTestCase {
     }
     
     func testJSONDecoder() {
-        let jsonDict: [String : Any] = ["number": 123, "bool": true, "string": "hey jude", "array": [1, 2], "dict": ["foo": "bar"]]
-        let jsonData = try? JSONSerialization.data(withJSONObject: jsonDict, options: [])
-        let testResponse = TestResponse(statusCode: 200, headers: [:], body: jsonData, request: TestHTTPRequest.stub)
         
-        let decoder = HTTPResponseJSONDecoder.shared
+        let decoder = JSONDecoder()
+        let jsonDict: [String : Any] = ["number": 123, "bool": true, "string": "hey jude", "array": [1, 2], "dict": ["foo": "bar"]]
+        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
+        let outputStream = decoder.outputStream!
+        outputStream.open()
+        try! jsonData.writeTo(stream: outputStream)
+        outputStream.close()
+        let testResponse = TestResponse(statusCode: 200, headers: [:], bodyStream: outputStream, request: TestHTTPRequest.stub)
         do {
             guard let responseContent = try decoder.decode(testResponse) else {
                 XCTFail()
@@ -531,13 +536,13 @@ class HTTPIDLDemoTests: XCTestCase {
                 return
             }
             
-        } catch _ {
+        } catch let error {
             XCTFail()
         }
     }
     
     func testMultipartFormEncoder() {
-        let encoder = HTTPMultipartRequestEncoder.shared
+        let encoder = MultipartEncoder.shared
         var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
         do {
             let _ = try encoder.encode(testRequest).bodyStream!.data()
@@ -613,7 +618,7 @@ class HTTPIDLDemoTests: XCTestCase {
     }
         
     func testBinaryEncoder() {
-        let encoder = HTTPBinaryRequestEncoder.shared
+        let encoder = BinaryEncoder.shared
         var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
         do {
             let _ = try encoder.encode(testRequest).bodyStream!.data()
