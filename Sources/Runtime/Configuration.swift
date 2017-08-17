@@ -10,7 +10,7 @@ public protocol RequestManagerConfiguration {
     var baseURLString: String {get set}
     var headers: [String: String] {get set}
     var callbackQueue: DispatchQueue {get set}
-    var encoderStrategy: (Request) -> HTTPRequestEncoder {get set}
+    var encoderStrategy: (Request) -> Encoder {get set}
     var decoderStrategy: (Request) -> HTTPResponseDecoder {get set}
     
     mutating func append(headers: [String: String])
@@ -20,7 +20,7 @@ public protocol RequestConfiguration {
     var baseURLString: String {get set}
     var headers: [String: String] {get set}
     var callbackQueue: DispatchQueue {get set}
-    var encoder: HTTPRequestEncoder {get set}
+    var encoder: Encoder {get set}
     var decoder: HTTPResponseDecoder {get set}
     var cachePolicy: CachePolicy? {get set}
     var networkServiceType: NetworkServiceType? {get set}
@@ -89,12 +89,12 @@ public struct BaseRequestManagerConfiguration: RequestManagerConfiguration {
     public var baseURLString: String = ""
     public var headers: [String: String] = [:]
     public var callbackQueue: DispatchQueue = DispatchQueue.main
-    public var encoderStrategy: (Request) -> HTTPRequestEncoder = { (request) in
+    public var encoderStrategy: (Request) -> Encoder = { (request) in
         switch request.method {
         case "PUT", "POST", "PATCH":
-            return HTTPURLEncodedFormRequestEncoder.shared
+            return URLEncodedFormEncoder.shared
         default:
-            return HTTPURLEncodedQueryRequestEncoder.shared
+            return URLEncodedQueryEncoder.shared
         }
     }
     
@@ -117,7 +117,7 @@ public struct BaseRequestConfiguration: RequestConfiguration {
     public var baseURLString: String = ""
     public var headers: [String: String] = [:]
     public var callbackQueue: DispatchQueue
-    public var encoder: HTTPRequestEncoder
+    public var encoder: Encoder
     public var decoder: HTTPResponseDecoder
     public var allowsCellularAccess: Bool?
     public var shouldHandleCookies: Bool?
