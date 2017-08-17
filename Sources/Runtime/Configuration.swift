@@ -6,7 +6,7 @@
 
 import Foundation
 
-public protocol ClientConfiguration {
+public protocol RequestManagerConfiguration {
     var baseURLString: String {get set}
     var headers: [String: String] {get set}
     var callbackQueue: DispatchQueue {get set}
@@ -83,8 +83,8 @@ public enum NetworkServiceType : UInt {
     case networkServiceTypeCallSignaling // Call Signaling
 }
 
-public struct BaseClientConfiguration: ClientConfiguration {
-    public static var shared = BaseClientConfiguration()
+public struct BaseRequestManagerConfiguration: RequestManagerConfiguration {
+    public static var shared = BaseRequestManagerConfiguration()
     
     public var baseURLString: String = ""
     public var headers: [String: String] = [:]
@@ -135,7 +135,7 @@ public struct BaseRequestConfiguration: RequestConfiguration {
         self.headers = newHeader
     }
     
-    public static func create(from clientConfiguration: ClientConfiguration, request: Request) -> RequestConfiguration {
+    public static func create(from clientConfiguration: RequestManagerConfiguration, request: Request) -> RequestConfiguration {
         return BaseRequestConfiguration(baseURLString: clientConfiguration.baseURLString, headers: clientConfiguration.headers, callbackQueue: clientConfiguration.callbackQueue, encoder: clientConfiguration.encoderStrategy(request), decoder: clientConfiguration.decoderStrategy(request), allowsCellularAccess: nil, shouldHandleCookies: nil, shouldUsePipelining: nil, timeoutInterval: nil, networkServiceType: nil, cachePolicy: nil)
     }
 }

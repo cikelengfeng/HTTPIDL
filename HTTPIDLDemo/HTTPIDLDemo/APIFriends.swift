@@ -73,7 +73,7 @@ class PostConnectionsFollowRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -81,7 +81,7 @@ class PostConnectionsFollowRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/connections/follow"
     }
@@ -100,7 +100,7 @@ class PostConnectionsFollowRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostConnectionsFollowResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostConnectionsFollowResponse> {
-        let future: RequestFuture<PostConnectionsFollowResponse> = client.send(self)
+        let future: RequestFuture<PostConnectionsFollowResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -108,7 +108,7 @@ class PostConnectionsFollowRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -139,7 +139,7 @@ class GetConnectionsFollowingRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -147,7 +147,7 @@ class GetConnectionsFollowingRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/connections/following"
     }
@@ -170,7 +170,7 @@ class GetConnectionsFollowingRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetConnectionsFollowingResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetConnectionsFollowingResponse> {
-        let future: RequestFuture<GetConnectionsFollowingResponse> = client.send(self)
+        let future: RequestFuture<GetConnectionsFollowingResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -178,7 +178,7 @@ class GetConnectionsFollowingRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -213,7 +213,7 @@ class DeleteConnectionsUserIdRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -221,7 +221,7 @@ class DeleteConnectionsUserIdRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/connections/\(user_id)"
     }
@@ -243,7 +243,7 @@ class DeleteConnectionsUserIdRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (DeleteConnectionsUserIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<DeleteConnectionsUserIdResponse> {
-        let future: RequestFuture<DeleteConnectionsUserIdResponse> = client.send(self)
+        let future: RequestFuture<DeleteConnectionsUserIdResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -251,7 +251,7 @@ class DeleteConnectionsUserIdRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -282,7 +282,7 @@ class GetConnectionsNewFollowersRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -290,7 +290,7 @@ class GetConnectionsNewFollowersRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/connections/new_followers"
     }
@@ -300,7 +300,7 @@ class GetConnectionsNewFollowersRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetConnectionsNewFollowersResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetConnectionsNewFollowersResponse> {
-        let future: RequestFuture<GetConnectionsNewFollowersResponse> = client.send(self)
+        let future: RequestFuture<GetConnectionsNewFollowersResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -308,7 +308,7 @@ class GetConnectionsNewFollowersRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -322,7 +322,7 @@ class DeleteConnectionsNewFollowersRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -330,7 +330,7 @@ class DeleteConnectionsNewFollowersRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/connections/new_followers"
     }
@@ -340,7 +340,7 @@ class DeleteConnectionsNewFollowersRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (DeleteConnectionsNewFollowersResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<DeleteConnectionsNewFollowersResponse> {
-        let future: RequestFuture<DeleteConnectionsNewFollowersResponse> = client.send(self)
+        let future: RequestFuture<DeleteConnectionsNewFollowersResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -348,7 +348,7 @@ class DeleteConnectionsNewFollowersRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -396,7 +396,7 @@ class GetConnectionsSuggestionsRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -404,7 +404,7 @@ class GetConnectionsSuggestionsRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/connections/suggestions"
     }
@@ -414,7 +414,7 @@ class GetConnectionsSuggestionsRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetConnectionsSuggestionsResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetConnectionsSuggestionsResponse> {
-        let future: RequestFuture<GetConnectionsSuggestionsResponse> = client.send(self)
+        let future: RequestFuture<GetConnectionsSuggestionsResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -422,7 +422,7 @@ class GetConnectionsSuggestionsRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -453,7 +453,7 @@ class GetConnectionsFollowersRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -461,7 +461,7 @@ class GetConnectionsFollowersRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/connections/followers"
     }
@@ -484,7 +484,7 @@ class GetConnectionsFollowersRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetConnectionsFollowersResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetConnectionsFollowersResponse> {
-        let future: RequestFuture<GetConnectionsFollowersResponse> = client.send(self)
+        let future: RequestFuture<GetConnectionsFollowersResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -492,7 +492,7 @@ class GetConnectionsFollowersRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future

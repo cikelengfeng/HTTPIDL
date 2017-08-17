@@ -35,18 +35,3 @@ public protocol HTTPResponseDecoder {
     func decode(_ response: HTTPResponse) throws -> ResponseContent?
 }
 
-public protocol Client {
-    func send<ResponseType: Response>(_ request: Request) -> RequestFuture<ResponseType>
-    func send(_ request: Request) -> RequestFuture<HTTPResponse>
-    
-    var configuration: ClientConfiguration {get set}
-    
-    mutating func add(requestObserver: HTTPRequestObserver)
-    mutating func remove(requestObserver: HTTPRequestObserver)
-    mutating func add(responseObserver: HTTPResponseObserver)
-    mutating func remove(responseObserver: HTTPResponseObserver)
-    mutating func add(requestRewriter: HTTPRequestRewriter)
-    mutating func remove(requestRewriter: HTTPRequestRewriter)
-    mutating func add(responseRewriter: HTTPResponseRewriter)
-    mutating func remove(responseRewriter: HTTPResponseRewriter)
-}

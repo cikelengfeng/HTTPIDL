@@ -75,7 +75,7 @@ class GetUsersUserIdRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -83,7 +83,7 @@ class GetUsersUserIdRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/users/\(userId)"
     }
@@ -97,7 +97,7 @@ class GetUsersUserIdRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetUsersUserIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUsersUserIdResponse> {
-        let future: RequestFuture<GetUsersUserIdResponse> = client.send(self)
+        let future: RequestFuture<GetUsersUserIdResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -105,7 +105,7 @@ class GetUsersUserIdRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -136,7 +136,7 @@ class GetUsersSelfRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -144,7 +144,7 @@ class GetUsersSelfRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/users/self"
     }
@@ -154,7 +154,7 @@ class GetUsersSelfRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetUsersSelfResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUsersSelfResponse> {
-        let future: RequestFuture<GetUsersSelfResponse> = client.send(self)
+        let future: RequestFuture<GetUsersSelfResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -162,7 +162,7 @@ class GetUsersSelfRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -193,7 +193,7 @@ class PostAuthWeixinRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -201,7 +201,7 @@ class PostAuthWeixinRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/auth/weixin"
     }
@@ -224,7 +224,7 @@ class PostAuthWeixinRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostAuthWeixinResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostAuthWeixinResponse> {
-        let future: RequestFuture<PostAuthWeixinResponse> = client.send(self)
+        let future: RequestFuture<PostAuthWeixinResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -232,7 +232,7 @@ class PostAuthWeixinRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -260,7 +260,7 @@ class PatchUsersPrivacyLevelRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -268,7 +268,7 @@ class PatchUsersPrivacyLevelRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/users/privacy_level"
     }
@@ -286,7 +286,7 @@ class PatchUsersPrivacyLevelRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PatchUsersPrivacyLevelResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PatchUsersPrivacyLevelResponse> {
-        let future: RequestFuture<PatchUsersPrivacyLevelResponse> = client.send(self)
+        let future: RequestFuture<PatchUsersPrivacyLevelResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -294,7 +294,7 @@ class PatchUsersPrivacyLevelRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -322,7 +322,7 @@ class PostApplicationEventsRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -330,7 +330,7 @@ class PostApplicationEventsRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/application/events"
     }
@@ -349,7 +349,7 @@ class PostApplicationEventsRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostApplicationEventsResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostApplicationEventsResponse> {
-        let future: RequestFuture<PostApplicationEventsResponse> = client.send(self)
+        let future: RequestFuture<PostApplicationEventsResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -357,7 +357,7 @@ class PostApplicationEventsRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future

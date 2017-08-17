@@ -315,7 +315,7 @@ class GetArrayRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -323,7 +323,7 @@ class GetArrayRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/array"
     }
@@ -347,7 +347,7 @@ class GetArrayRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetArrayResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetArrayResponse> {
-        let future: RequestFuture<GetArrayResponse> = client.send(self)
+        let future: RequestFuture<GetArrayResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -355,7 +355,7 @@ class GetArrayRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -393,7 +393,7 @@ class GetDictRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -401,7 +401,7 @@ class GetDictRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/dict"
     }
@@ -425,7 +425,7 @@ class GetDictRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetDictResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetDictResponse> {
-        let future: RequestFuture<GetDictResponse> = client.send(self)
+        let future: RequestFuture<GetDictResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -433,7 +433,7 @@ class GetDictRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -472,7 +472,7 @@ class GetSimpleRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -480,7 +480,7 @@ class GetSimpleRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/simple"
     }
@@ -496,7 +496,7 @@ class GetSimpleRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetSimpleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetSimpleResponse> {
-        let future: RequestFuture<GetSimpleResponse> = client.send(self)
+        let future: RequestFuture<GetSimpleResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -504,7 +504,7 @@ class GetSimpleRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -532,7 +532,7 @@ class PostFileRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -540,7 +540,7 @@ class PostFileRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/file"
     }
@@ -556,7 +556,7 @@ class PostFileRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostFileResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostFileResponse> {
-        let future: RequestFuture<PostFileResponse> = client.send(self)
+        let future: RequestFuture<PostFileResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -564,7 +564,7 @@ class PostFileRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -586,7 +586,7 @@ class PostDataRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -594,7 +594,7 @@ class PostDataRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/data"
     }
@@ -610,7 +610,7 @@ class PostDataRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostDataResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostDataResponse> {
-        let future: RequestFuture<PostDataResponse> = client.send(self)
+        let future: RequestFuture<PostDataResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -618,7 +618,7 @@ class PostDataRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -640,7 +640,7 @@ class GetStruct1Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -648,7 +648,7 @@ class GetStruct1Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/struct1"
     }
@@ -664,7 +664,7 @@ class GetStruct1Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetStruct1Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStruct1Response> {
-        let future: RequestFuture<GetStruct1Response> = client.send(self)
+        let future: RequestFuture<GetStruct1Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -672,7 +672,7 @@ class GetStruct1Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -700,7 +700,7 @@ class GetStruct2Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -708,7 +708,7 @@ class GetStruct2Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/struct2"
     }
@@ -724,7 +724,7 @@ class GetStruct2Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetStruct2Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStruct2Response> {
-        let future: RequestFuture<GetStruct2Response> = client.send(self)
+        let future: RequestFuture<GetStruct2Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -732,7 +732,7 @@ class GetStruct2Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -760,7 +760,7 @@ class GetStruct3Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -768,7 +768,7 @@ class GetStruct3Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/struct3"
     }
@@ -784,7 +784,7 @@ class GetStruct3Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetStruct3Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStruct3Response> {
-        let future: RequestFuture<GetStruct3Response> = client.send(self)
+        let future: RequestFuture<GetStruct3Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -792,7 +792,7 @@ class GetStruct3Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -820,7 +820,7 @@ class GetStruct4Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -828,7 +828,7 @@ class GetStruct4Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/struct4"
     }
@@ -844,7 +844,7 @@ class GetStruct4Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetStruct4Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStruct4Response> {
-        let future: RequestFuture<GetStruct4Response> = client.send(self)
+        let future: RequestFuture<GetStruct4Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -852,7 +852,7 @@ class GetStruct4Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -880,7 +880,7 @@ class GetStruct5Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -888,7 +888,7 @@ class GetStruct5Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/struct5"
     }
@@ -904,7 +904,7 @@ class GetStruct5Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetStruct5Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStruct5Response> {
-        let future: RequestFuture<GetStruct5Response> = client.send(self)
+        let future: RequestFuture<GetStruct5Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -912,7 +912,7 @@ class GetStruct5Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -940,7 +940,7 @@ class GetStruct6Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -948,7 +948,7 @@ class GetStruct6Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/struct6"
     }
@@ -964,7 +964,7 @@ class GetStruct6Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetStruct6Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStruct6Response> {
-        let future: RequestFuture<GetStruct6Response> = client.send(self)
+        let future: RequestFuture<GetStruct6Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -972,7 +972,7 @@ class GetStruct6Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -1000,7 +1000,7 @@ class GetStruct7Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -1008,7 +1008,7 @@ class GetStruct7Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/struct7"
     }
@@ -1024,7 +1024,7 @@ class GetStruct7Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetStruct7Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStruct7Response> {
-        let future: RequestFuture<GetStruct7Response> = client.send(self)
+        let future: RequestFuture<GetStruct7Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1032,7 +1032,7 @@ class GetStruct7Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -1060,7 +1060,7 @@ class GetStruct8Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -1068,7 +1068,7 @@ class GetStruct8Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/struct8"
     }
@@ -1084,7 +1084,7 @@ class GetStruct8Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetStruct8Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStruct8Response> {
-        let future: RequestFuture<GetStruct8Response> = client.send(self)
+        let future: RequestFuture<GetStruct8Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1092,7 +1092,7 @@ class GetStruct8Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future

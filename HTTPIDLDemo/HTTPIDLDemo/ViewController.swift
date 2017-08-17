@@ -13,9 +13,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        BaseClientConfiguration.shared.baseURLString = "http://httpbin.org/"
-        BaseClientConfiguration.shared.baseURLString = "http://img.171u.com/"
+        BaseRequestManagerConfiguration.shared.baseURLString = "http://img.171u.com/"
         let configuration = URLSessionConfiguration.default
-        BaseClient.shared.clientImpl = NSClient(configuration: configuration, delegate: nil, delegateQueue: nil)
+        BaseRequestManager.shared.clientImpl = NSClient(configuration: configuration, delegate: nil, delegateQueue: nil)
         
 //        let request = PostTestMultipartEncoderRequest()
 //        request.number = 123123123123

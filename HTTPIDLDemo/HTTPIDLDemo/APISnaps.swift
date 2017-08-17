@@ -166,7 +166,7 @@ class GetSnapsRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -174,7 +174,7 @@ class GetSnapsRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/snaps"
     }
@@ -192,7 +192,7 @@ class GetSnapsRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetSnapsResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetSnapsResponse> {
-        let future: RequestFuture<GetSnapsResponse> = client.send(self)
+        let future: RequestFuture<GetSnapsResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -200,7 +200,7 @@ class GetSnapsRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -214,7 +214,7 @@ class PostSnapsRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -222,7 +222,7 @@ class PostSnapsRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/snaps"
     }
@@ -245,7 +245,7 @@ class PostSnapsRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostSnapsResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostSnapsResponse> {
-        let future: RequestFuture<PostSnapsResponse> = client.send(self)
+        let future: RequestFuture<PostSnapsResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -253,7 +253,7 @@ class PostSnapsRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -304,7 +304,7 @@ class GetSnapsSelfRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -312,7 +312,7 @@ class GetSnapsSelfRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/snaps/self"
     }
@@ -335,7 +335,7 @@ class GetSnapsSelfRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetSnapsSelfResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetSnapsSelfResponse> {
-        let future: RequestFuture<GetSnapsSelfResponse> = client.send(self)
+        let future: RequestFuture<GetSnapsSelfResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -343,7 +343,7 @@ class GetSnapsSelfRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -378,7 +378,7 @@ class GetSnapsSnapIdRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -386,7 +386,7 @@ class GetSnapsSnapIdRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/snaps/\(snapId)"
     }
@@ -408,7 +408,7 @@ class GetSnapsSnapIdRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetSnapsSnapIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetSnapsSnapIdResponse> {
-        let future: RequestFuture<GetSnapsSnapIdResponse> = client.send(self)
+        let future: RequestFuture<GetSnapsSnapIdResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -416,7 +416,7 @@ class GetSnapsSnapIdRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -431,7 +431,7 @@ class DeleteSnapsSnapIdRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -439,7 +439,7 @@ class DeleteSnapsSnapIdRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/snaps/\(snapId)"
     }
@@ -453,7 +453,7 @@ class DeleteSnapsSnapIdRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (DeleteSnapsSnapIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<DeleteSnapsSnapIdResponse> {
-        let future: RequestFuture<DeleteSnapsSnapIdResponse> = client.send(self)
+        let future: RequestFuture<DeleteSnapsSnapIdResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -461,7 +461,7 @@ class DeleteSnapsSnapIdRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -510,7 +510,7 @@ class GetSnapsSnapIdActionsRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -518,7 +518,7 @@ class GetSnapsSnapIdActionsRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/snaps/\(snapId)/actions"
     }
@@ -550,7 +550,7 @@ class GetSnapsSnapIdActionsRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetSnapsSnapIdActionsResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetSnapsSnapIdActionsResponse> {
-        let future: RequestFuture<GetSnapsSnapIdActionsResponse> = client.send(self)
+        let future: RequestFuture<GetSnapsSnapIdActionsResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -558,7 +558,7 @@ class GetSnapsSnapIdActionsRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -573,7 +573,7 @@ class PostSnapsSnapIdActionsRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -581,7 +581,7 @@ class PostSnapsSnapIdActionsRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/snaps/\(snapId)/actions"
     }
@@ -613,7 +613,7 @@ class PostSnapsSnapIdActionsRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostSnapsSnapIdActionsResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostSnapsSnapIdActionsResponse> {
-        let future: RequestFuture<PostSnapsSnapIdActionsResponse> = client.send(self)
+        let future: RequestFuture<PostSnapsSnapIdActionsResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -621,7 +621,7 @@ class PostSnapsSnapIdActionsRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -672,7 +672,7 @@ class PostSnapsShareRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -680,7 +680,7 @@ class PostSnapsShareRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/snaps/share"
     }
@@ -699,7 +699,7 @@ class PostSnapsShareRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostSnapsShareResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostSnapsShareResponse> {
-        let future: RequestFuture<PostSnapsShareResponse> = client.send(self)
+        let future: RequestFuture<PostSnapsShareResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -707,7 +707,7 @@ class PostSnapsShareRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -738,7 +738,7 @@ class GetEMojiConfigRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -746,7 +746,7 @@ class GetEMojiConfigRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/configs/hippocampus/smilies.json"
     }
@@ -756,7 +756,7 @@ class GetEMojiConfigRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetEMojiConfigResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetEMojiConfigResponse> {
-        let future: RequestFuture<GetEMojiConfigResponse> = client.send(self)
+        let future: RequestFuture<GetEMojiConfigResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -764,7 +764,7 @@ class GetEMojiConfigRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future

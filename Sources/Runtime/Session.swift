@@ -6,7 +6,23 @@
 
 import Foundation
 
-public enum BaseClientError: HIError {
+public protocol RequestManager {
+    func send<ResponseType: Response>(_ request: Request) -> RequestFuture<ResponseType>
+    func send(_ request: Request) -> RequestFuture<HTTPResponse>
+    
+    var configuration: RequestManagerConfiguration {get set}
+    
+    mutating func add(requestObserver: HTTPRequestObserver)
+    mutating func remove(requestObserver: HTTPRequestObserver)
+    mutating func add(responseObserver: HTTPResponseObserver)
+    mutating func remove(responseObserver: HTTPResponseObserver)
+    mutating func add(requestRewriter: HTTPRequestRewriter)
+    mutating func remove(requestRewriter: HTTPRequestRewriter)
+    mutating func add(responseRewriter: HTTPResponseRewriter)
+    mutating func remove(responseRewriter: HTTPResponseRewriter)
+}
+
+public enum BaseRequestManagerError: HIError {
     case unknownError(rawError: Error)
     
     public var errorDescription: String? {
@@ -42,14 +58,14 @@ fileprivate extension HTTPRequest {
     }
 }
 
-public class BaseClient: Client {
+public class BaseRequestManager: RequestManager {
     
-    public static let shared = BaseClient()
+    public static let shared = BaseRequestManager()
     public var clientImpl: HTTPClient = NSClient.shared
-    public var configuration: ClientConfiguration {
+    public var configuration: RequestManagerConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseClientConfiguration.shared
+                return BaseRequestManagerConfiguration.shared
             }
             return config
         }
@@ -57,7 +73,7 @@ public class BaseClient: Client {
             _configuration = newValue
         }
     }
-    private var _configuration: ClientConfiguration?
+    private var _configuration: RequestManagerConfiguration?
     private var requestObservers: [HTTPRequestObserver] = []
     private var responseObservers: [HTTPResponseObserver] = []
     private var requestRewriters: [HTTPRequestRewriter] = []
@@ -265,7 +281,7 @@ public class BaseClient: Client {
             self.handle(error: error, future: future)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(error: BaseClientError.unknownError(rawError: error), future: future)
+            self.handle(error: BaseRequestManagerError.unknownError(rawError: error), future: future)
         }
     }
     
@@ -333,7 +349,7 @@ public class BaseClient: Client {
             self.handle(error: error, future: future)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(error: BaseClientError.unknownError(rawError: error), future: future)
+            self.handle(error: BaseRequestManagerError.unknownError(rawError: error), future: future)
         }
         return future
     }
@@ -382,7 +398,7 @@ public class BaseClient: Client {
             self.handle(error: error, future: future)
         } catch let error {
             assert(false, "抓到非 HIError 类型的错误！！！")
-            self.handle(error: BaseClientError.unknownError(rawError: error), future: future)
+            self.handle(error: BaseRequestManagerError.unknownError(rawError: error), future: future)
         }
         return future
     }

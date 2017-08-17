@@ -133,7 +133,7 @@ class GetFeedRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -141,7 +141,7 @@ class GetFeedRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/feed"
     }
@@ -164,7 +164,7 @@ class GetFeedRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetFeedResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetFeedResponse> {
-        let future: RequestFuture<GetFeedResponse> = client.send(self)
+        let future: RequestFuture<GetFeedResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -172,7 +172,7 @@ class GetFeedRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future

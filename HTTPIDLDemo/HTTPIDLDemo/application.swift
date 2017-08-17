@@ -292,7 +292,7 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -300,7 +300,7 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/test/urlencoded/query/encoder"
     }
@@ -333,7 +333,7 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTestUrlencodedQueryEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestUrlencodedQueryEncoderResponse> {
-        let future: RequestFuture<GetTestUrlencodedQueryEncoderResponse> = client.send(self)
+        let future: RequestFuture<GetTestUrlencodedQueryEncoderResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -341,7 +341,7 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -369,7 +369,7 @@ class PostTestUrlencodedFormEncoderRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -377,7 +377,7 @@ class PostTestUrlencodedFormEncoderRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/test/urlencoded/form/encoder"
     }
@@ -410,7 +410,7 @@ class PostTestUrlencodedFormEncoderRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostTestUrlencodedFormEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestUrlencodedFormEncoderResponse> {
-        let future: RequestFuture<PostTestUrlencodedFormEncoderResponse> = client.send(self)
+        let future: RequestFuture<PostTestUrlencodedFormEncoderResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -418,7 +418,7 @@ class PostTestUrlencodedFormEncoderRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -446,7 +446,7 @@ class PostTestMultipartEncoderRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -454,7 +454,7 @@ class PostTestMultipartEncoderRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/test/multipart/encoder"
     }
@@ -492,7 +492,7 @@ class PostTestMultipartEncoderRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostTestMultipartEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestMultipartEncoderResponse> {
-        let future: RequestFuture<PostTestMultipartEncoderResponse> = client.send(self)
+        let future: RequestFuture<PostTestMultipartEncoderResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -500,7 +500,7 @@ class PostTestMultipartEncoderRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -528,7 +528,7 @@ class PostTestJsonEncoderRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -536,7 +536,7 @@ class PostTestJsonEncoderRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/test/json/encoder"
     }
@@ -575,7 +575,7 @@ class PostTestJsonEncoderRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostTestJsonEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestJsonEncoderResponse> {
-        let future: RequestFuture<PostTestJsonEncoderResponse> = client.send(self)
+        let future: RequestFuture<PostTestJsonEncoderResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -583,7 +583,7 @@ class PostTestJsonEncoderRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -612,7 +612,7 @@ class GetStickerMediaIdRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -620,7 +620,7 @@ class GetStickerMediaIdRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/sticker/\(mediaId)"
     }
@@ -642,7 +642,7 @@ class GetStickerMediaIdRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetStickerMediaIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStickerMediaIdResponse> {
-        let future: RequestFuture<GetStickerMediaIdResponse> = client.send(self)
+        let future: RequestFuture<GetStickerMediaIdResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -650,7 +650,7 @@ class GetStickerMediaIdRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -689,7 +689,7 @@ class GetUnderLineRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -697,7 +697,7 @@ class GetUnderLineRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/under_line"
     }
@@ -715,7 +715,7 @@ class GetUnderLineRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetUnderLineResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUnderLineResponse> {
-        let future: RequestFuture<GetUnderLineResponse> = client.send(self)
+        let future: RequestFuture<GetUnderLineResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -723,7 +723,7 @@ class GetUnderLineRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -756,7 +756,7 @@ class GetTestNestedMessageRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -764,7 +764,7 @@ class GetTestNestedMessageRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/test/nested/message"
     }
@@ -902,7 +902,7 @@ class GetTestNestedMessageRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTestNestedMessageResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestNestedMessageResponse> {
-        let future: RequestFuture<GetTestNestedMessageResponse> = client.send(self)
+        let future: RequestFuture<GetTestNestedMessageResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -910,7 +910,7 @@ class GetTestNestedMessageRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -1021,7 +1021,7 @@ class GetGetRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -1029,7 +1029,7 @@ class GetGetRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/get"
     }
@@ -1039,7 +1039,7 @@ class GetGetRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetGetResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetGetResponse> {
-        let future: RequestFuture<GetGetResponse> = client.send(self)
+        let future: RequestFuture<GetGetResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1047,7 +1047,7 @@ class GetGetRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -1086,7 +1086,7 @@ class PostPostRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -1094,7 +1094,7 @@ class PostPostRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/post"
     }
@@ -1112,7 +1112,7 @@ class PostPostRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostPostResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostPostResponse> {
-        let future: RequestFuture<PostPostResponse> = client.send(self)
+        let future: RequestFuture<PostPostResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1120,7 +1120,7 @@ class PostPostRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -1142,7 +1142,7 @@ class GetUnginedTestRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -1150,7 +1150,7 @@ class GetUnginedTestRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/ungined/test"
     }
@@ -1173,7 +1173,7 @@ class GetUnginedTestRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetUnginedTestResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUnginedTestResponse> {
-        let future: RequestFuture<GetUnginedTestResponse> = client.send(self)
+        let future: RequestFuture<GetUnginedTestResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1181,7 +1181,7 @@ class GetUnginedTestRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -1212,7 +1212,7 @@ class GetTesting1Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -1220,7 +1220,7 @@ class GetTesting1Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/cgi-a/wx"
     }
@@ -1230,7 +1230,7 @@ class GetTesting1Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTesting1Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTesting1Response> {
-        let future: RequestFuture<GetTesting1Response> = client.send(self)
+        let future: RequestFuture<GetTesting1Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1238,7 +1238,7 @@ class GetTesting1Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -1261,7 +1261,7 @@ class GetTesting2Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -1269,7 +1269,7 @@ class GetTesting2Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/test/%^&**(///\(xxxx)"
     }
@@ -1296,7 +1296,7 @@ class GetTesting2Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTesting2Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTesting2Response> {
-        let future: RequestFuture<GetTesting2Response> = client.send(self)
+        let future: RequestFuture<GetTesting2Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1304,7 +1304,7 @@ class GetTesting2Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -1338,7 +1338,7 @@ class GetTesting3Request: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -1346,7 +1346,7 @@ class GetTesting3Request: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/test/?/message&_name/哎呦"
     }
@@ -1369,7 +1369,7 @@ class GetTesting3Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTesting3Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTesting3Response> {
-        let future: RequestFuture<GetTesting3Response> = client.send(self)
+        let future: RequestFuture<GetTesting3Response> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1377,7 +1377,7 @@ class GetTesting3Request: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -1399,7 +1399,7 @@ class GetTestDownloadRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -1407,7 +1407,7 @@ class GetTestDownloadRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/image/1411/1809515237271.jpg"
     }
@@ -1417,7 +1417,7 @@ class GetTestDownloadRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTestDownloadResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestDownloadResponse> {
-        let future: RequestFuture<GetTestDownloadResponse> = client.send(self)
+        let future: RequestFuture<GetTestDownloadResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1425,7 +1425,7 @@ class GetTestDownloadRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -1453,7 +1453,7 @@ class GetTestRequestContentConvertibleRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -1461,7 +1461,7 @@ class GetTestRequestContentConvertibleRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/test/RequestContentConvertible"
     }
@@ -1478,7 +1478,7 @@ class GetTestRequestContentConvertibleRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTestRequestContentConvertibleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestRequestContentConvertibleResponse> {
-        let future: RequestFuture<GetTestRequestContentConvertibleResponse> = client.send(self)
+        let future: RequestFuture<GetTestRequestContentConvertibleResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -1486,7 +1486,7 @@ class GetTestRequestContentConvertibleRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future

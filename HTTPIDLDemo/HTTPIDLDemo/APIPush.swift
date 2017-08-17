@@ -10,7 +10,7 @@ class PutPushTokenRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -18,7 +18,7 @@ class PutPushTokenRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/push/token"
     }
@@ -41,7 +41,7 @@ class PutPushTokenRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PutPushTokenResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PutPushTokenResponse> {
-        let future: RequestFuture<PutPushTokenResponse> = client.send(self)
+        let future: RequestFuture<PutPushTokenResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -49,7 +49,7 @@ class PutPushTokenRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future
@@ -63,7 +63,7 @@ class DeletePushTokenRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -71,7 +71,7 @@ class DeletePushTokenRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/push/token"
     }
@@ -81,7 +81,7 @@ class DeletePushTokenRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (DeletePushTokenResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<DeletePushTokenResponse> {
-        let future: RequestFuture<DeletePushTokenResponse> = client.send(self)
+        let future: RequestFuture<DeletePushTokenResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
@@ -89,7 +89,7 @@ class DeletePushTokenRequest: Request {
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
+        let future = manager.send(self)
         future.responseHandler = rawResponseHandler
         future.errorHandler = errorHandler
         return future

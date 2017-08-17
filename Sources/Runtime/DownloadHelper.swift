@@ -15,7 +15,7 @@ public class DownloadRequest: Request {
     public var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -23,7 +23,7 @@ public class DownloadRequest: Request {
             _configuration = newValue
         }
     }
-    public var client: Client = BaseClient.shared
+    public var manager: RequestManager = BaseRequestManager.shared
     public private(set) var uri: String
     
     public init(url: URL, savePath: String) {
@@ -36,7 +36,7 @@ public class DownloadRequest: Request {
     
     @discardableResult
     public func send(completion: @escaping (DownloadResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<DownloadResponse> {
-        let future: RequestFuture<DownloadResponse> = client.send(self)
+        let future: RequestFuture<DownloadResponse> = manager.send(self)
         future.responseHandler = completion
         future.errorHandler = errorHandler
         return future
