@@ -41,17 +41,13 @@ class PutPushTokenRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PutPushTokenResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PutPushTokenResponse> {
-        let future: RequestFuture<PutPushTokenResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<PutPushTokenResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -81,17 +77,13 @@ class DeletePushTokenRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (DeletePushTokenResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<DeletePushTokenResponse> {
-        let future: RequestFuture<DeletePushTokenResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<DeletePushTokenResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }

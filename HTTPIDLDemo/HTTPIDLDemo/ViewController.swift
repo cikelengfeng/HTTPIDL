@@ -7,15 +7,20 @@
 import UIKit
 import HTTPIDL
 
+class TestWriter: RequestRewriter {
+    func rewrite(request: HTTPRequest) -> RequestRewriterResult {
+        return RequestRewriterResult.error(error: MultipartEncoderError.unsupportedString(key: "xxxxxx", value: "xxxxx"))
+    }
+}
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        BaseClientConfiguration.shared.baseURLString = "http://httpbin.org/"
-        BaseRequestManagerConfiguration.shared.baseURLString = "http://img.171u.com/"
+        BaseRequestManagerConfiguration.shared.baseURLString = "http://httpbin.org/"
         let configuration = URLSessionConfiguration.default
         BaseRequestManager.shared.session = NSHTTPSession(configuration: configuration, delegate: nil, delegateQueue: nil)
+//        BaseRequestManager.shared.add(requestRewriter: TestWriter())
         
 //        let request = PostTestMultipartEncoderRequest()
 //        request.number = 123123123123
@@ -119,17 +124,22 @@ class ViewController: UIViewController {
 //            debugPrint("error", error)
 //        }
         
-        let filePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0].appending("/test1.jpg")
-        let urlString = "http://img.171u.com/image/1411/1809515237271.jpg"
-        debugPrint("filepath ", filePath)
-        urlString.download(toPath: filePath, completion: { (resp) in
+//        let filePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0].appending("/test1.jpg")
+//        let urlString = "http://img.171u.com/image/1411/1809515237271.jpg"
+//        debugPrint("filepath ", filePath)
+//        urlString.download(toPath: filePath, completion: { (resp) in
+//            debugPrint("resp", resp)
+//        }) { (error) in
+//            debugPrint("error", error)
+//        }
+        
+        let req = GetTestRequestContentConvertibleRequest()
+        req.body = ["1": "1", "2": 2, "3": 3.0]
+        req.send(completion: { (resp) in
             debugPrint("resp", resp)
         }) { (error) in
             debugPrint("error", error)
         }
-        
-        let req = GetTestRequestContentConvertibleRequest()
-        req.body = ["1": "1", "2": 2, "3": 3.0]
     }
 
     override func didReceiveMemoryWarning() {

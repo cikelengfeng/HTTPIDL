@@ -333,17 +333,13 @@ class GetTestUrlencodedQueryEncoderRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTestUrlencodedQueryEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestUrlencodedQueryEncoderResponse> {
-        let future: RequestFuture<GetTestUrlencodedQueryEncoderResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetTestUrlencodedQueryEncoderResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -410,17 +406,13 @@ class PostTestUrlencodedFormEncoderRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostTestUrlencodedFormEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestUrlencodedFormEncoderResponse> {
-        let future: RequestFuture<PostTestUrlencodedFormEncoderResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<PostTestUrlencodedFormEncoderResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -492,17 +484,13 @@ class PostTestMultipartEncoderRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostTestMultipartEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestMultipartEncoderResponse> {
-        let future: RequestFuture<PostTestMultipartEncoderResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<PostTestMultipartEncoderResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -575,17 +563,13 @@ class PostTestJsonEncoderRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostTestJsonEncoderResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestJsonEncoderResponse> {
-        let future: RequestFuture<PostTestJsonEncoderResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<PostTestJsonEncoderResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -642,17 +626,13 @@ class GetStickerMediaIdRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetStickerMediaIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetStickerMediaIdResponse> {
-        let future: RequestFuture<GetStickerMediaIdResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetStickerMediaIdResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -715,17 +695,13 @@ class GetUnderLineRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetUnderLineResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUnderLineResponse> {
-        let future: RequestFuture<GetUnderLineResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetUnderLineResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -902,17 +878,13 @@ class GetTestNestedMessageRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTestNestedMessageResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestNestedMessageResponse> {
-        let future: RequestFuture<GetTestNestedMessageResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetTestNestedMessageResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -1039,17 +1011,13 @@ class GetGetRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetGetResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetGetResponse> {
-        let future: RequestFuture<GetGetResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetGetResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -1112,17 +1080,13 @@ class PostPostRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostPostResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostPostResponse> {
-        let future: RequestFuture<PostPostResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<PostPostResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -1173,17 +1137,13 @@ class GetUnginedTestRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetUnginedTestResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetUnginedTestResponse> {
-        let future: RequestFuture<GetUnginedTestResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetUnginedTestResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -1230,17 +1190,13 @@ class GetTesting1Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTesting1Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTesting1Response> {
-        let future: RequestFuture<GetTesting1Response> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetTesting1Response> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -1296,17 +1252,13 @@ class GetTesting2Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTesting2Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTesting2Response> {
-        let future: RequestFuture<GetTesting2Response> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetTesting2Response> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -1369,17 +1321,13 @@ class GetTesting3Request: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTesting3Response) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTesting3Response> {
-        let future: RequestFuture<GetTesting3Response> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetTesting3Response> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -1417,17 +1365,13 @@ class GetTestDownloadRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTestDownloadResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestDownloadResponse> {
-        let future: RequestFuture<GetTestDownloadResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetTestDownloadResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -1478,17 +1422,13 @@ class GetTestRequestContentConvertibleRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetTestRequestContentConvertibleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestRequestContentConvertibleResponse> {
-        let future: RequestFuture<GetTestRequestContentConvertibleResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetTestRequestContentConvertibleResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }

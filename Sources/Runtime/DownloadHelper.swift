@@ -36,9 +36,7 @@ public class DownloadRequest: Request {
     
     @discardableResult
     public func send(completion: @escaping (DownloadResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<DownloadResponse> {
-        let future: RequestFuture<DownloadResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<DownloadResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     

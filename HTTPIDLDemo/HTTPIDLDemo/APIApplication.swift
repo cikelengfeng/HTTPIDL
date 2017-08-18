@@ -51,17 +51,13 @@ class GetApplicationSettingsRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetApplicationSettingsResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetApplicationSettingsResponse> {
-        let future: RequestFuture<GetApplicationSettingsResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetApplicationSettingsResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }

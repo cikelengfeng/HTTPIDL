@@ -100,17 +100,13 @@ class PostConnectionsFollowRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (PostConnectionsFollowResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostConnectionsFollowResponse> {
-        let future: RequestFuture<PostConnectionsFollowResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<PostConnectionsFollowResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -170,17 +166,13 @@ class GetConnectionsFollowingRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetConnectionsFollowingResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetConnectionsFollowingResponse> {
-        let future: RequestFuture<GetConnectionsFollowingResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetConnectionsFollowingResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -243,17 +235,13 @@ class DeleteConnectionsUserIdRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (DeleteConnectionsUserIdResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<DeleteConnectionsUserIdResponse> {
-        let future: RequestFuture<DeleteConnectionsUserIdResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<DeleteConnectionsUserIdResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -300,17 +288,13 @@ class GetConnectionsNewFollowersRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetConnectionsNewFollowersResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetConnectionsNewFollowersResponse> {
-        let future: RequestFuture<GetConnectionsNewFollowersResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetConnectionsNewFollowersResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -340,17 +324,13 @@ class DeleteConnectionsNewFollowersRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (DeleteConnectionsNewFollowersResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<DeleteConnectionsNewFollowersResponse> {
-        let future: RequestFuture<DeleteConnectionsNewFollowersResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<DeleteConnectionsNewFollowersResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -414,17 +394,13 @@ class GetConnectionsSuggestionsRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetConnectionsSuggestionsResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetConnectionsSuggestionsResponse> {
-        let future: RequestFuture<GetConnectionsSuggestionsResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetConnectionsSuggestionsResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -484,17 +460,13 @@ class GetConnectionsFollowersRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetConnectionsFollowersResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetConnectionsFollowersResponse> {
-        let future: RequestFuture<GetConnectionsFollowersResponse> = manager.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetConnectionsFollowersResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = manager.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }

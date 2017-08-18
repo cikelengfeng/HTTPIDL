@@ -95,9 +95,7 @@ class Swift3CodeGenerator:
                                                                                 'HIError) -> Void) -> RequestFuture<'
                         + response_name + '> {')
         self.push_indent()
-        self.write_line('let future: RequestFuture<' + response_name + '> = manager.send(self)')
-        self.write_line('future.responseHandler = completion')
-        self.write_line('future.errorHandler = errorHandler')
+        self.write_line('let future: RequestFuture<' + response_name + '> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)')
         self.write_line('return future')
         self.pop_indent()
         self.write_line('}')
@@ -107,9 +105,7 @@ class Swift3CodeGenerator:
         self.write_line('func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: '
                         '@escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {')
         self.push_indent()
-        self.write_line('let future = manager.send(self)')
-        self.write_line('future.responseHandler = rawResponseHandler')
-        self.write_line('future.errorHandler = errorHandler')
+        self.write_line('let future = manager.send(self, responseHandler: rawResponseHandler, errorHandler: errorHandler, progressHandler: nil)')
         self.write_line('return future')
         self.pop_indent()
         self.write_line('}')

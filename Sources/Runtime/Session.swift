@@ -7,8 +7,8 @@
 import Foundation
 
 public protocol RequestManager {
-    func send<ResponseType: Response>(_ request: Request) -> RequestFuture<ResponseType>
-    func send(_ request: Request) -> RequestFuture<HTTPResponse>
+    func send<ResponseType: Response>(_ request: Request, responseHandler: ((_ response: ResponseType) -> Void)?, errorHandler: ((_ error: HIError) -> Void)?, progressHandler: ((_ progress: Progress) -> Void)?) -> RequestFuture<ResponseType>
+    func send(_ request: Request, responseHandler: ((_ response: HTTPResponse) -> Void)?, errorHandler: ((_ error: HIError) -> Void)?, progressHandler: ((_ progress: Progress) -> Void)?) -> RequestFuture<HTTPResponse>
     
     var configuration: RequestManagerConfiguration {get set}
     
@@ -305,8 +305,11 @@ public class BaseRequestManager: RequestManager {
         self.receive(error: error, request: future.request)
     }
     
-    public func send<ResponseType : Response>(_ request: Request) -> RequestFuture<ResponseType> {
+    public func send<ResponseType>(_ request: Request, responseHandler: ((ResponseType) -> Void)?, errorHandler: ((HIError) -> Void)?, progressHandler: ((Progress) -> Void)?) -> RequestFuture<ResponseType> where ResponseType : Response {
         let future = RequestFuture<ResponseType>(request: request)
+        future.responseHandler = responseHandler
+        future.errorHandler = errorHandler
+        future.progressHandler = progressHandler
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
@@ -354,8 +357,11 @@ public class BaseRequestManager: RequestManager {
         return future
     }
     
-    public func send(_ request: Request) -> RequestFuture<HTTPResponse> {
+    public func send(_ request: Request, responseHandler: ((HTTPResponse) -> Void)?, errorHandler: ((HIError) -> Void)?, progressHandler: ((Progress) -> Void)?) -> RequestFuture<HTTPResponse> {
         let future = RequestFuture<HTTPResponse>(request: request)
+        future.responseHandler = responseHandler
+        future.errorHandler = errorHandler
+        future.progressHandler = progressHandler
         do {
             self.willSend(request: request)
             self.willEncode(request: request)
