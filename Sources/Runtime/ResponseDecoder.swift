@@ -61,16 +61,11 @@ public enum JSONDecoderError: HIError {
 }
 
 public struct JSONDecoder: Decoder {
-    public var outputStream: OutputStream? {
-        get {
-            return OutputStream(toMemory: ())
-        }
-    }
-
+    public private(set) var outputStream: OutputStream?
     public var jsonReadOptions: JSONSerialization.ReadingOptions = .allowFragments
     
     public init() {
-        
+        self.outputStream = OutputStream(toMemory: ())
     }
     
     public func decode(_ response: HTTPResponse) throws -> ResponseContent? {
