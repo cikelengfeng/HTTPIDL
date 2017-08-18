@@ -1390,9 +1390,9 @@ struct GetTestDownloadResponse: Response {
     }
 }
 
-class GetTestRequestContentConvertibleRequest: Request {
+class PostTestRequestContentConvertibleRequest: Request {
     
-    var method: String = "GET"
+    var method: String = "POST"
     private var _configuration: RequestConfiguration?
     var configuration: RequestConfiguration {
         get {
@@ -1421,8 +1421,8 @@ class GetTestRequestContentConvertibleRequest: Request {
     }
     
     @discardableResult
-    func send(completion: @escaping (GetTestRequestContentConvertibleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetTestRequestContentConvertibleResponse> {
-        let future: RequestFuture<GetTestRequestContentConvertibleResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
+    func send(completion: @escaping (PostTestRequestContentConvertibleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<PostTestRequestContentConvertibleResponse> {
+        let future: RequestFuture<PostTestRequestContentConvertibleResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
@@ -1433,7 +1433,7 @@ class GetTestRequestContentConvertibleRequest: Request {
     }
 }
 
-struct GetTestRequestContentConvertibleResponse: Response {
+struct PostTestRequestContentConvertibleResponse: Response {
     
     let rawResponse: HTTPResponse
     init(content: ResponseContent?, rawResponse: HTTPResponse) throws {

@@ -190,11 +190,11 @@ FILE;
 }
 
 MESSAGE /test/RequestContentConvertible{
-GET REQUEST {
+POST REQUEST {
 DICT<STRING, RequestContentConvertible>;
 }
 
-GET RESPONSE {
+POST RESPONSE {
 
 }
 }

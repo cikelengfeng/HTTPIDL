@@ -12,10 +12,14 @@ class CompoundInputStream: InputStream {
     
     private let subStream: [InputStream]
     private var currentIndex: Int
+    private var _delegate: StreamDelegate?
+    private var _streamError: Error?
+    private var _streamStatus: Stream.Status
     
     init(subStream: [InputStream]) {
         self.subStream = subStream
         self.currentIndex = 0
+        self._streamStatus = Stream.Status.notOpen
         super.init(data: Data())
     }
     
@@ -23,12 +27,21 @@ class CompoundInputStream: InputStream {
         guard self.currentIndex < self.subStream.count else {
             return 0
         }
+        _streamStatus = .reading
         let current = self.subStream[self.currentIndex]
         let count = current.read(buffer, maxLength: len)
         if !current.hasBytesAvailable {
             self.currentIndex += 1
+            if self.currentIndex == self.subStream.count {
+                _streamStatus = .atEnd
+                self.delegate?.stream?(self, handle: Stream.Event.endEncountered)
+            }
         }
         return count
+    }
+    
+    override func getBuffer(_ buffer: UnsafeMutablePointer<UnsafeMutablePointer<UInt8>?>, length len: UnsafeMutablePointer<Int>) -> Bool {
+        return false
     }
     
     override var hasBytesAvailable: Bool {
@@ -42,14 +55,63 @@ class CompoundInputStream: InputStream {
     }
     
     override func open() {
+        _streamStatus = Stream.Status.opening
         self.subStream.forEach { (s) in
             s.open()
         }
+        _streamStatus = Stream.Status.open
+        self.delegate?.stream?(self, handle: Stream.Event.openCompleted)
     }
     
     override func close() {
         self.subStream.forEach { (s) in
             s.close()
         }
+        _streamStatus = Stream.Status.closed
+    }
+    
+    override var delegate: StreamDelegate? {
+        get {
+            return _delegate
+        }
+        set {
+            _delegate = newValue
+        }
+    }
+    
+    override var streamStatus: Stream.Status {
+        return _streamStatus
+    }
+    
+    override var streamError: Error? {
+        return _streamError
+    }
+    
+    override func schedule(in aRunLoop: RunLoop, forMode mode: RunLoopMode) {
+        self.subStream.forEach { (s) in
+            s.schedule(in: aRunLoop, forMode: mode)
+        }
+    }
+    
+    override func remove(from aRunLoop: RunLoop, forMode mode: RunLoopMode) {
+        self.subStream.forEach { (s) in
+            s.remove(from: aRunLoop, forMode: mode)
+        }
+    }
+    
+    override func property(forKey key: Stream.PropertyKey) -> Any? {
+        guard self.currentIndex < self.subStream.count else {
+            return nil
+        }
+        let current = self.subStream[self.currentIndex]
+        return current.property(forKey: key)
+    }
+    
+    override func setProperty(_ property: Any?, forKey key: Stream.PropertyKey) -> Bool {
+        guard self.currentIndex < self.subStream.count else {
+            return false
+        }
+        let current = self.subStream[self.currentIndex]
+        return current.setProperty(property, forKey: key)
     }
 }
