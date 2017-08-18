@@ -536,7 +536,7 @@ class HTTPIDLDemoTests: XCTestCase {
                 return
             }
             
-        } catch let error {
+        } catch _ {
             XCTFail()
         }
     }
