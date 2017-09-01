@@ -20,6 +20,7 @@ public protocol HTTPRequest {
     var shouldUsePipelining: Bool? {get set}
     var shouldHandleCookies: Bool? {get set}
     var allowsCellularAccess: Bool? {get set}
+    var chunkedTransfer: Bool? {get set}
     
 }
 
@@ -33,7 +34,8 @@ public struct HTTPBaseRequest: HTTPRequest {
     public var timeoutInterval: TimeInterval?
     public var shouldUsePipelining: Bool?
     public var shouldHandleCookies: Bool?
-    public var allowsCellularAccess: Bool? 
+    public var allowsCellularAccess: Bool?
+    public var chunkedTransfer: Bool?
     
     public init(method: String, url: URL, headers: [String: String], bodyStream: InputStream?) {
         self.method = method
@@ -50,6 +52,7 @@ public struct HTTPBaseRequest: HTTPRequest {
         shouldUsePipelining = httpRequest.shouldUsePipelining
         shouldHandleCookies = httpRequest.shouldHandleCookies
         allowsCellularAccess = httpRequest.allowsCellularAccess
+        chunkedTransfer = httpRequest.chunkedTransfer
     }
     
 }

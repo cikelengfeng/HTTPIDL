@@ -320,7 +320,11 @@ public class NSHTTPSession: NSObject, HTTPSession {
             urlRequest.setValue(kv.value, forHTTPHeaderField: kv.key)
         }
         urlRequest.httpMethod = request.method
-        urlRequest.httpBody = request.bodyStream?.data()
+        if let ct = request.chunkedTransfer, ct {
+            urlRequest.httpBodyStream = request.bodyStream
+        } else {
+            urlRequest.httpBody = request.bodyStream?.data()
+        }
         if let cachePolicy = request.cachePolicy {
             urlRequest.cachePolicy = cachePolicy
         }

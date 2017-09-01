@@ -28,6 +28,7 @@ public protocol RequestConfiguration {
     var shouldUsePipelining: Bool? {get set}
     var shouldHandleCookies: Bool? {get set}
     var allowsCellularAccess: Bool? {get set}
+    var bodyStreaming: Bool? {get set}
     
     mutating func append(headers: [String: String])
 }
@@ -125,6 +126,7 @@ public struct BaseRequestConfiguration: RequestConfiguration {
     public var timeoutInterval: TimeInterval?
     public var networkServiceType: NetworkServiceType?
     public var cachePolicy: CachePolicy?
+    public var bodyStreaming: Bool?
     
     public mutating func append(headers: [String: String]) {
         let newHeader = headers.reduce(self.headers , { (soFar, soGood) in
@@ -136,7 +138,7 @@ public struct BaseRequestConfiguration: RequestConfiguration {
     }
     
     public static func create(from clientConfiguration: RequestManagerConfiguration, request: Request) -> RequestConfiguration {
-        return BaseRequestConfiguration(baseURLString: clientConfiguration.baseURLString, headers: clientConfiguration.headers, callbackQueue: clientConfiguration.callbackQueue, encoder: clientConfiguration.encoderStrategy(request), decoder: clientConfiguration.decoderStrategy(request), allowsCellularAccess: nil, shouldHandleCookies: nil, shouldUsePipelining: nil, timeoutInterval: nil, networkServiceType: nil, cachePolicy: nil)
+        return BaseRequestConfiguration(baseURLString: clientConfiguration.baseURLString, headers: clientConfiguration.headers, callbackQueue: clientConfiguration.callbackQueue, encoder: clientConfiguration.encoderStrategy(request), decoder: clientConfiguration.decoderStrategy(request), allowsCellularAccess: nil, shouldHandleCookies: nil, shouldUsePipelining: nil, timeoutInterval: nil, networkServiceType: nil, cachePolicy: nil, bodyStreaming: nil)
     }
 }
 
