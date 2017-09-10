@@ -8,7 +8,7 @@ Usage:
 
 Options:
   -h --help             Show this screen.
-  -d inputDirectory     扫描并编译文件夹内所有.hjidl文件
+  -d inputDirectory     扫描并编译文件夹内所有.http文件
   -f inputFile          编译指定文件
   -o outputDirectory    输出文件夹
 
