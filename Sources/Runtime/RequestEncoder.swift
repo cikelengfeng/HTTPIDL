@@ -5,7 +5,6 @@
 //  Created by 徐 东 on 2016/12/30//
 
 import Foundation
-import Gzip
 
 public protocol Encoder {
     func encode(_ request: Request) throws -> HTTPRequest
@@ -364,30 +363,6 @@ public struct URLEncodedFormEncoder: Encoder {
         let stream = InputStream(data: data)
         
         return HTTPBaseRequest(method: request.method, url: url, headers: headers , bodyStream: stream)
-    }
-}
-
-public struct GzipEncoder: Encoder {
-    
-    public let encoderImpl: Encoder
-    
-    public init(encoder: Encoder) {
-        self.encoderImpl = encoder
-    }
-    
-    public func encode(_ request: Request) throws -> HTTPRequest {
-        var httpRequest = try encoderImpl.encode(request)
-        var headers = httpRequest.headers
-        if headers["Content-Encoding"] == nil {
-            headers["Content-Encoding"] = "gzip"
-        }
-        httpRequest.headers = headers
-        let rawBody = httpRequest.bodyStream?.data()
-        let gzipData = try rawBody?.gzipped()
-        if let gzData = gzipData {
-            httpRequest.bodyStream = InputStream(data: gzData)
-        }
-        return httpRequest
     }
 }
 

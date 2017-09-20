@@ -1,7 +1,5 @@
 PODS:
-  - GzipSwift (3.1.4)
-  - HTTPIDL (1.1.0):
-    - GzipSwift (= 3.1.4)
+  - HTTPIDL (1.1.4)
 
 DEPENDENCIES:
   - HTTPIDL (from `~/git/HTTPIDL`)
@@ -11,8 +9,7 @@ EXTERNAL SOURCES:
     :path: ~/git/HTTPIDL
 
 SPEC CHECKSUMS:
-  GzipSwift: 11ddb2bf253b1cd7b60bb169da20f62ac4348769
-  HTTPIDL: f35f865002da13e354d9f66e2fd5f07eea119cd1
+  HTTPIDL: 5f90a2f4e502d12c691ba6624bfb16f906f41f35
 
 PODFILE CHECKSUM: cd7644fbb38af7c6e7694ec3eec6138ee8846314
 

@@ -22,7 +22,6 @@
 		4221E4411EB82F3800A5EAA6 /* APIUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4221E4351EB82F3800A5EAA6 /* APIUser.swift */; };
 		4221E4431EB8570700A5EAA6 /* CustomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4221E4421EB8570700A5EAA6 /* CustomType.swift */; };
 		423A3F331E26209D00806D65 /* HTTPIDLDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423A3F311E26209D00806D65 /* HTTPIDLDemoTests.swift */; };
-		423A3F341E26209D00806D65 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 423A3F321E26209D00806D65 /* Info.plist */; };
 		423A3F361E26331100806D65 /* URLHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423A3F351E26331100806D65 /* URLHelper.swift */; };
 		423C32011E21F08000D74B2E /* application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423C32001E21F08000D74B2E /* application.swift */; };
 		424CB4CA1E290FF6001F8729 /* test.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 424CB4C91E290FF6001F8729 /* test.JPG */; };
@@ -248,7 +247,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "dx lab";
 				TargetAttributes = {
 					423A3F211E26201C00806D65 = {
@@ -289,7 +288,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				423A3F341E26209D00806D65 /* Info.plist in Resources */,
 				42C475C01E29F65E0044415F /* China.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

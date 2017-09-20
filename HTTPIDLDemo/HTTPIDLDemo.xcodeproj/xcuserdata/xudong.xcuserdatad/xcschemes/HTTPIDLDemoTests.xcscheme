@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0820"
+   LastUpgradeVersion = "0830"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -16,7 +16,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "423A3F011E2616C400806D65"
+               BlueprintIdentifier = "423A3F211E26201C00806D65"
                BuildableName = "HTTPIDLDemoTests.xctest"
                BlueprintName = "HTTPIDLDemoTests"
                ReferencedContainer = "container:HTTPIDLDemo.xcodeproj">
