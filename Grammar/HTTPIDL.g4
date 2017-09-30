@@ -53,7 +53,7 @@ method
 
 uri
     :
-    ( SLASH  uriPathComponent
+    ( SLASH  uriPathComponent?
     )*
     ;
 
