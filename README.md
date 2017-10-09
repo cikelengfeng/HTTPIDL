@@ -79,7 +79,7 @@ class GetMyExampleRequest: Request {
             _configuration = newValue
         }
     }
-    var client: Client = BaseClient.shared
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         return "/my/example"
     }
@@ -102,17 +102,13 @@ class GetMyExampleRequest: Request {
     
     @discardableResult
     func send(completion: @escaping (GetMyExampleResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<GetMyExampleResponse> {
-        let future: RequestFuture<GetMyExampleResponse> = client.send(self)
-        future.responseHandler = completion
-        future.errorHandler = errorHandler
+        let future: RequestFuture<GetMyExampleResponse> = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
     
     @discardableResult
     func send(rawResponseHandler: @escaping (HTTPResponse) -> Void, errorHandler: @escaping (HIError) -> Void) -> RequestFuture<HTTPResponse> {
-        let future = client.send(self)
-        future.responseHandler = rawResponseHandler
-        future.errorHandler = errorHandler
+        let future = manager.send(self, responseHandler: completion, errorHandler: errorHandler, progressHandler: nil)
         return future
     }
 }
@@ -156,7 +152,7 @@ request.send(completion: { (response) in
 ```
 public protocol Request {
     var method: String {get} //此请求对象的method
-    var configuration: Configuration {get set} //此请求对象的配置，包括baseURLString, headers
+    var configuration: RequestConfiguration {get set} //此请求对象的配置，包括baseURLString, headers
     var uri: String {get} //此请求对象的uri
     var content: RequestContent? {get} //此请求的内容，对应http request body
 }
@@ -165,20 +161,31 @@ public protocol Request {
 实现了Request协议的对象都可以使用以下代码发送：
 ```
 let request = //your hand-writed request
-request.configuration.encoder = HTTPURLEncodedQueryRequestEncoder.shared
+request.configuration.encoder = URLEncodedQueryEncoder.shared
 BaseClient.shared.send(request)
 ```
 
 ## 内置编码器
 ### URL Encoded Query 编码器
-类名：HTTPURLEncodedQueryRequestEncoder
+类名：URLEncodedQueryEncoder
 此编码器会将请求的content属性加入到url的query中，例如有如下请求：
 ```
 class GetMyExampleRequest: Request {
     
     var method: String = "GET"
-    var configuration: Configuration = BaseConfiguration.shared
-    var client: Client = BaseClient.shared
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
+        get {
+            guard let config = _configuration else {
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         get {
             return "/my/example"
@@ -201,7 +208,7 @@ func test() {
 	let request = GetMyExampleRequest()
 	request.t1 = 123
 	request.t2 = "hey"
-	request.configuration.encoder = HTTPURLEncodedQueryRequestEncoder.shared
+	request.configuration.encoder = URLEncodedQueryEncoder.shared
 	BaseClient.shared.send(request)
 }
 ```
@@ -214,14 +221,25 @@ Host: here.is.you.host
 ```
 
 ### URL Encoded Form 编码器
-类名：HTTPURLEncodedFormRequestEncoder
+类名：URLEncodedFormEncoder
 此编码器会将请求的content转换成request body中url encode编码的表单，例如有如下请求：
 ```
 class PostMyExampleRequest: Request {
     
     var method: String = "POST"
-    var configuration: Configuration = BaseConfiguration.shared
-    var client: Client = BaseClient.shared
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
+        get {
+            guard let config = _configuration else {
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         get {
             return "/my/example"
@@ -244,7 +262,7 @@ func test() {
 	let request = PostMyExampleRequest()
 	request.t1 = 123
 	request.t2 = "hey"
-	request.configuration.encoder = HTTPURLEncodedFormRequestEncoder.shared
+	request.configuration.encoder = URLEncodedFormEncoder.shared
 	BaseClient.shared.send(request)
 }
 ```
@@ -260,14 +278,25 @@ t1=123&t2=hey
 ```
 
 ### JSON 编码器
-类名：HTTPJSONRequestEncoder
+类名：JSONEncoder
 此编码器会将请求的content转换成request body中的JSON，例如有如下请求：
 ```
 class PostTestJsonEncoderRequest: Request {
     
     var method: String = "POST"
-    var configuration: Configuration = BaseConfiguration.shared
-    var client: Client = BaseClient.shared
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
+        get {
+            guard let config = _configuration else {
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         get {
             return "/test/json/encoder"
@@ -320,15 +349,26 @@ Content-Length: 87
 ```
 
 ### Multipart 编码器
-类名：HTTPMultipartRequestEncoder
+类名：MutlipartEncoder
 此编码器会将请求的content转换成request body中的multipart form，例如有如下请求：
 ```
 
 class PostTestMultipartEncoderRequest: Request {
     
     var method: String = "POST"
-    var configuration: Configuration = BaseConfiguration.shared
-    var client: Client = BaseClient.shared
+    private var _configuration: RequestConfiguration?
+    var configuration: RequestConfiguration {
+        get {
+            guard let config = _configuration else {
+                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+            }
+            return config
+        }
+        set {
+            _configuration = newValue
+        }
+    }
+    var manager: RequestManager = BaseRequestManager.shared
     var uri: String {
         get {
             return "/test/multipart/encoder"
@@ -366,7 +406,7 @@ let request = PostTestMultipartEncoderRequest()
         request.t4 = "jude"
         let data = try! Data(contentsOf: Bundle.main.url(forResource: "test", withExtension: "JPG")!)
         request.t5 = HTTPData(with: data, fileName: "test", mimeType: "image/jpeg")
-	request.configuration.encoder = HTTPMultipartRequestEncoder.shared
+	request.configuration.encoder = MutlipartEncoder.shared
         request.send(completion: { (response) in
             
         }) { (error) in
@@ -407,20 +447,20 @@ Content-Disposition: form-data; name="ttt"
 
 ## 内置解码器
 ### JSON 解码器
-类名：HTTPResponseJSONDecoder
+类名：JSONDecoder
 此解码器会将response body 当做JSON 来解析成与之同构的ResponseContent
 
 ## 观察者（Observer）
-观察者是一组由Client协议实现类管理的对象，他们需要实现HTTPRequestObserver 或 HTTPResponseObserver协议：
+观察者是一组由Client协议实现类管理的对象，他们需要实现RequestObserver 或 ResponseObserver协议：
 ```
-public protocol HTTPRequestObserver: class {
+public protocol RequestObserver: class {
     func willSend(request: Request)
     func didSend(request: Request)
     func willEncode(request: Request)
     func didEncode(request: Request, encoded: HTTPRequest)
 }
 
-public protocol HTTPResponseObserver: class {
+public protocol ResponseObserver: class {
     func receive(error: HIError)
     func receive(rawResponse: HTTPResponse)
     func willDecode(rawResponse: HTTPResponse)
@@ -431,25 +471,25 @@ public protocol HTTPResponseObserver: class {
 观察者可以在请求发送中的各个时间点接收到回调，在这些回调中可以做一些特殊逻辑，如：打印日志
 
 ## Rewriter
-Rewriter是一组由Client协议实现类管理的对象，他们需要实现HTTPRequestRewriter 或 HTTPResponseRewriter协议：
+Rewriter是一组由Client协议实现类管理的对象，他们需要实现RequestRewriter 或 ResponseRewriter协议：
 ```
-public enum HTTPRequestRewriterResult {
+public enum RequestRewriterResult {
     case request(request: HTTPRequest)
     case response(response: HTTPResponse)
     case error(error: HIError)
 }
 
-public protocol HTTPRequestRewriter: class {
-    func rewrite(request: HTTPRequest) -> HTTPRequestRewriterResult
+public protocol RequestRewriter: class {
+    func rewrite(request: HTTPRequest) -> RequestRewriterResult
 }
 
-public enum HTTPResponseRewriterResult {
+public enum ResponseRewriterResult {
     case response(response: HTTPResponse)
     case error(error: HIError)
 }
 
-public protocol HTTPResponseRewriter: class {
-    func rewrite(response: HTTPResponse) -> HTTPResponseRewriterResult
+public protocol ResponseRewriter: class {
+    func rewrite(response: HTTPResponse) -> ResponseRewriterResult
 }
 ```
 
