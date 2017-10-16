@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "HTTPIDL"
-  s.version      = "1.1.4"
+  s.version      = "1.1.5"
   s.summary      = "http idl"
 
   # This description is used to generate tags and improve search results.
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-  HTTPIDL是一套HTTP网络库和代码生成工具的集合，目前支持Swift 3。
+  HTTPIDL是一套HTTP网络库和代码生成工具的集合，目前支持Swift 3/4。
 
   ## 特色
   * 自动生成swift 3代码，同时支持手写

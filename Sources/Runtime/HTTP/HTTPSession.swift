@@ -280,7 +280,7 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
 
 public class NSHTTPSession: NSObject, HTTPSession {
     
-    public static let shared = { _ -> NSHTTPSession in
+    public static let shared = { () -> NSHTTPSession in
         let configuration = URLSessionConfiguration.default
         let queue = OperationQueue()
         queue.name = "org.httpidl.nsclient.default-callback"
