@@ -7,7 +7,7 @@ HTTPIDL致力于帮助开发者将精力专注于业务逻辑，尽可能少的�
 
 ## 特色
 * 类型安全
-* 自动生成swift 3代码，同时支持手写
+* 自动生成swift 3/4代码，同时支持手写
 * URL / JSON / URLEncodedForm 请求内容编码方式（甚至支持组合编码方式）
 * 上传 File / Data / MultipartFormData
 * JSON 响应内容自动转换为 Model
