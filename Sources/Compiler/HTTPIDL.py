@@ -19,7 +19,7 @@ from docopt import docopt
 from Compiler import HTTPIDLCompiler
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='1.1.5')
+    arguments = docopt(__doc__, version='1.1.6')
     # print(arguments)
     output_directory_path = arguments['-o']
     compiler = HTTPIDLCompiler()
