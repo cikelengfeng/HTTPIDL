@@ -613,7 +613,7 @@ open class MultipartFormData {
             }
             return ss
         }
-        let compoundStream = CompoundInputStream(subStream: partStream)
+        let compoundStream = CompoundInputStream.create(withSubStream: partStream)
         return compoundStream
     }
 }

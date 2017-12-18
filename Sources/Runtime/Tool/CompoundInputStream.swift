@@ -10,17 +10,16 @@ import Foundation
 
 class CompoundInputStream: InputStream {
     
-    private let subStream: [InputStream]
-    private var currentIndex: Int
+    private var subStream: [InputStream] = []
+    private var currentIndex: Int = 0
     private var _delegate: StreamDelegate?
     private var _streamError: Error?
-    private var _streamStatus: Stream.Status
+    private var _streamStatus: Stream.Status = Stream.Status.notOpen
     
-    init(subStream: [InputStream]) {
-        self.subStream = subStream
-        self.currentIndex = 0
-        self._streamStatus = Stream.Status.notOpen
-        super.init(data: Data())
+    class func create(withSubStream subStream: [InputStream]) -> CompoundInputStream {
+        let stream = CompoundInputStream()
+        stream.subStream = subStream
+        return stream
     }
     
     override func read(_ buffer: UnsafeMutablePointer<UInt8>, maxLength len: Int) -> Int {
