@@ -339,6 +339,17 @@ public struct SingleBodyEncoder: Encoder {
     }
 }
 
+public enum URLEncodedFormEncoderError: HIError {
+    case urlEncodedError(key: String, value:String)
+    
+    public var errorDescription: String? {
+        switch self {
+        case .urlEncodedError(let key, let value):
+            return "url encoded form error: 参数无法被编码，key: " + key + " value: " + value
+        }
+    }
+}
+
 public struct URLEncodedFormEncoder: Encoder {
     public static let shared = URLEncodedFormEncoder()
     
@@ -357,7 +368,12 @@ public struct URLEncodedFormEncoder: Encoder {
         }
         
         let query = try queryItems(rootContent: content)
-        guard let data = query.map({ return "\($0)=\($1)" }).joined(separator: "&").data(using: String.Encoding.utf8) else {
+        guard let data = try query.map({
+            guard let urlEncoded = $1.urlEncodedForHTTP() else {
+                throw URLEncodedFormEncoderError.urlEncodedError(key: $0, value: $1)
+            }
+            return "\($0)=" + urlEncoded
+        }).joined(separator: "&").data(using: String.Encoding.utf8) else {
             return HTTPBaseRequest(method: request.method, url: url, headers: headers, bodyStream: nil)
         }
         let stream = InputStream(data: data)

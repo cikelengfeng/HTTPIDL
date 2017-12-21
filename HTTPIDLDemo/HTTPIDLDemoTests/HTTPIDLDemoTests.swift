@@ -32,7 +32,7 @@ struct TestRequest: Request {
 }
 
 struct TestHTTPRequest: HTTPRequest {
-
+    var chunkedTransfer: Bool?
     
     static let stub = TestHTTPRequest(method: "GET", url: URL(fileURLWithPath: "xxxx"), headers: [:], bodyStream: nil)
     
@@ -387,6 +387,7 @@ class HTTPIDLDemoTests: XCTestCase {
             "bool": RequestContent.number(value: true),
             "double": RequestContent.number(value: 0.023131),
             "string": RequestContent.string(value: "hey"),
+            "string1": RequestContent.string(value: "hey+jude"),
             "file": RequestContent.file(value: fileURL, fileName: nil, mimeType: "image/*"),
             "data": RequestContent.data(value: data, fileName: "xxx", mimeType: "image/jpeg"),
             "array": RequestContent.array(value: [
@@ -446,6 +447,11 @@ class HTTPIDLDemoTests: XCTestCase {
                 return
             }
             XCTAssert(string == "hey")
+            guard let string1 = formDict["string1"] as? String else {
+                XCTFail()
+                return
+            }
+            XCTAssert(string1 == "hey%2Bjude")
             
             guard let file = formDict["file"] as? String else {
                 XCTFail()
@@ -478,7 +484,7 @@ class HTTPIDLDemoTests: XCTestCase {
     
     func testJSONDecoder() {
         
-        let decoder = JSONDecoder()
+        let decoder = HTTPIDL.JSONDecoder()
         let jsonDict: [String : Any] = ["number": 123, "bool": true, "string": "hey jude", "array": [1, 2], "dict": ["foo": "bar"]]
         let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
         let outputStream = decoder.outputStream!

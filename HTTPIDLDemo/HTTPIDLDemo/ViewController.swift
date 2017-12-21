@@ -134,10 +134,10 @@ class ViewController: UIViewController {
 //        }
         
         let req = PostTestRequestContentConvertibleRequest()
-        req.body = ["1": "1", "2": 2, "3": 3.0]
-        req.configuration.encoder = MultipartEncoder.shared
+        req.body = ["1": "1", "2": 2, "3": 3.0, "string": "hey+jude"]
+//        req.configuration.encoder = MultipartEncoder.shared
 //        req.configuration.encoder = JSONEncoder.shared
-        req.configuration.decoder = BinaryDecoder()
+//        req.configuration.decoder = BinaryDecoder()
         req.send(completion: { (resp) in
             debugPrint("resp", resp)
         }) { (error) in
