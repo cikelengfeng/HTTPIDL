@@ -369,10 +369,10 @@ public struct URLEncodedFormEncoder: Encoder {
         
         let query = try queryItems(rootContent: content)
         guard let data = try query.map({
-            guard let urlEncoded = $1.urlEncodedForHTTP() else {
+            guard let urlEncodedName = $0.urlEncodedForHTTPForm(), let urlEncodedValue = $1.urlEncodedForHTTPForm() else {
                 throw URLEncodedFormEncoderError.urlEncodedError(key: $0, value: $1)
             }
-            return "\($0)=" + urlEncoded
+            return urlEncodedName + "=" + urlEncodedValue
         }).joined(separator: "&").data(using: String.Encoding.utf8) else {
             return HTTPBaseRequest(method: request.method, url: url, headers: headers, bodyStream: nil)
         }

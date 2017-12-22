@@ -388,6 +388,9 @@ class HTTPIDLDemoTests: XCTestCase {
             "double": RequestContent.number(value: 0.023131),
             "string": RequestContent.string(value: "hey"),
             "string1": RequestContent.string(value: "hey+jude"),
+            "stri+ng2": RequestContent.string(value: "hey+jude"),
+            "stri+ng3": RequestContent.string(value: "hey jude"),
+            "stri ng4": RequestContent.string(value: "hey jude"),
             "file": RequestContent.file(value: fileURL, fileName: nil, mimeType: "image/*"),
             "data": RequestContent.data(value: data, fileName: "xxx", mimeType: "image/jpeg"),
             "array": RequestContent.array(value: [
@@ -452,6 +455,21 @@ class HTTPIDLDemoTests: XCTestCase {
                 return
             }
             XCTAssert(string1 == "hey%2Bjude")
+            guard let string2 = formDict["stri%2Bng2"] as? String else {
+                XCTFail()
+                return
+            }
+            XCTAssert(string2 == "hey%2Bjude")
+            guard let string3 = formDict["stri%2Bng3"] as? String else {
+                XCTFail()
+                return
+            }
+            XCTAssert(string3 == "hey+jude")
+            guard let string4 = formDict["stri+ng4"] as? String else {
+                XCTFail()
+                return
+            }
+            XCTAssert(string4 == "hey+jude")
             
             guard let file = formDict["file"] as? String else {
                 XCTFail()
