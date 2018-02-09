@@ -1,6 +1,6 @@
 # HTTPIDL
 HTTPIDL is collection of type-safe HTTP network library and code generator, it supports Swift 3/4.
-HTTPIDL aim to help developer focus on the bussniss logic, cencern HTTP detail as less as possible(you have to know HTTP detail only when you need to extend HTTPIDL)
+HTTPIDL aim at help developer focus on the bussniss logic, cencern HTTP detail as less as possible(you have to know HTTP detail only when you need to extend HTTPIDL)
 
 ## Status
 ![UnitTest](https://img.shields.io/badge/test-passing-brightgreen.svg)   ![Cocoapods](https://img.shields.io/badge/pod-1.1.9-blue.svg)
@@ -26,6 +26,7 @@ HTTPIDL aim to help developer focus on the bussniss logic, cencern HTTP detail a
 ## Installation
 ### CocoaPods
 CocoaPods is a dependency manager for Cocoa projects. You can install it with the following command:
+
 `$ gem install cocoapods`
 
 To integrate HTTPIDL into your Xcode project using CocoaPods, specify it in your Podfile:
@@ -38,6 +39,7 @@ end
 ```
 
 Then, run the following command:
+
 `$ pod install`
 
 ## Get Started
@@ -59,7 +61,7 @@ MESSAGE /my/example {
 Then, run the following command：
 `python Pods/HTTPIDL/Sources/Compiler/HTTPIDL.py -d /your/httpidl/directory -o /your/httpidl/idl_output`
 
-Then, request and response code file is placed in /your/httpidl/idl_output, generated code like following:
+Then, request and response code file is placed in /your/httpidl/idl_output, generate following code:
 ```
 import Foundation
 import HTTPIDL
@@ -132,7 +134,7 @@ struct GetMyExampleResponse: Response {
 ```
 
 
-You can write HTTP request code like following now:
+You can send HTTP request by following code:
 ```
 import HTTPIDL
 
@@ -148,8 +150,7 @@ request.send(completion: { (response) in
 
 ### Hande-writed request
 
-在HTTPIDL中，无论自动生成还是手写的请求都要实现Request协议：
-In HTTPIDL, whether generated code or hande-writed code need to conform to 'Request' Protocol
+In HTTPIDL, whether generated code or hande-writed code need to conform to 'Request' Protocol:
 ```
 public protocol Request {
     var method: String {get} //HTTP method
