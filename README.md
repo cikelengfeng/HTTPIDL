@@ -1,5 +1,5 @@
 # HTTPIDL
-HTTPIDL is collection of type-safe HTTP network library and code generator, it supports Swift 3/4.
+HTTPIDL is a collection of type-safe HTTP network library and code generator, it supports Swift 3/4.
 HTTPIDL aim at help developer focus on the bussniss logic, cencern HTTP detail as less as possible(you have to know HTTP detail only when you need to extend HTTPIDL)
 
 ## Status
