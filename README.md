@@ -1,6 +1,6 @@
 # HTTPIDL
-HTTPIDL is a collection of type-safe HTTP network library and code generator, it supports Swift 3/4.
-HTTPIDL aim at help developer focus on the bussniss logic, cencern HTTP detail as less as possible(you have to know HTTP detail only when you need to extend HTTPIDL)
+HTTPIDL is a collection of tools for type-safe HTTP networking and generating code from the specific IDL, it supports Swift 3/4.
+HTTPIDL aims to help developer focus on the bussniss logic, cencern HTTP detail as less as possible(you have to know HTTP detail only when you need to extend HTTPIDL)
 
 ## Status
 ![UnitTest](https://img.shields.io/badge/test-passing-brightgreen.svg)   ![Cocoapods](https://img.shields.io/badge/pod-1.1.9-blue.svg)
@@ -73,7 +73,7 @@ class GetMyExampleRequest: Request {
     var configuration: RequestConfiguration {
         get {
             guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
+                return BaseRequestConfiguration.create(from: manager.configuration, request: self)
             }
             return config
         }
@@ -164,7 +164,7 @@ Classes conform to 'Request' protocol can be sent by following code：
 ```
 let request = //your hand-writed request
 request.configuration.encoder = URLEncodedQueryEncoder.shared
-BaseClient.shared.send(request)
+BaseRequestManager.shared.send(request)
 ```
 
 
