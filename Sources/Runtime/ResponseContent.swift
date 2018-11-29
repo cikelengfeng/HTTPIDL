@@ -31,7 +31,7 @@ extension Int64: ResponseContentConvertible {
         }
         switch content {
         case .number(let value):
-            self.init(value)
+            self.init(truncating: value)
         case .string(let value):
             self.init(value)
         case .array, .dictionary, .data, .file:
@@ -47,7 +47,7 @@ extension UInt64: ResponseContentConvertible {
         }
         switch content {
         case .number(let value):
-            self.init(value)
+            self.init(truncating: value)
         case .string(let value):
             self.init(value)
         case .array, .dictionary, .data, .file:
@@ -63,7 +63,7 @@ extension Int32: ResponseContentConvertible {
         }
         switch content {
         case .number(let value):
-            self.init(value)
+            self.init(truncating: value)
         case .string(let value):
             self.init(value)
         case .array, .dictionary, .data, .file:
@@ -79,7 +79,7 @@ extension UInt32: ResponseContentConvertible {
         }
         switch content {
         case .number(let value):
-            self.init(value)
+            self.init(truncating: value)
         case .string(let value):
             self.init(value)
         case .array, .dictionary, .data, .file:
@@ -95,7 +95,7 @@ extension Int: ResponseContentConvertible {
         }
         switch content {
         case .number(let value):
-            self.init(value)
+            self.init(truncating: value)
         case .string(let value):
             self.init(value)
         case .array, .dictionary, .data, .file:
@@ -111,7 +111,7 @@ extension UInt: ResponseContentConvertible {
         }
         switch content {
         case .number(let value):
-            self.init(value)
+            self.init(truncating: value)
         case .string(let value):
             self.init(value)
         case .array, .dictionary, .data, .file:
@@ -127,7 +127,7 @@ extension Bool: ResponseContentConvertible {
         }
         switch content {
         case .number(let value):
-            self.init(value)
+            self.init(truncating: value)
         case .array, .dictionary, .data, .string, .file:
             return nil
         }
@@ -141,7 +141,7 @@ extension Double: ResponseContentConvertible {
         }
         switch content {
         case .number(let value):
-            self.init(value)
+            self.init(truncating: value)
         case .string(let value):
             self.init(value)
         case .array, .dictionary, .data, .file:
@@ -175,7 +175,7 @@ public extension Array where Element: ResponseContentConvertible {
         }
         switch content {
         case .array(let value):
-            self.init(value.flatMap({
+            self.init(value.compactMap({
                 return Element(content: $0)
             }))
         case .dictionary, .data, .string, .number, .file:

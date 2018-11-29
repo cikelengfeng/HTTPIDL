@@ -18,7 +18,7 @@ private func decode(json: Any) throws -> ResponseContent? {
     }else if let tmp = json as? String {
         return .string(value: tmp)
     } else if let tmp = json as? [Any] {
-        return .array(value: try tmp.flatMap({
+        return .array(value: try tmp.compactMap({
             return try decode(json: $0)
         }))
     } else if json is [String: Any], let tmp = json as? [String: Any] {
@@ -39,7 +39,7 @@ private func decodeRoot(json: Any) throws -> ResponseContent? {
             return ret
         }))
     } else if let tmp = json as? [Any] {
-        return .array(value: try tmp.flatMap({ (element) in
+        return .array(value: try tmp.compactMap({ (element) in
             return try decode(json: element)
         }))
     } else {
