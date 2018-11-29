@@ -19,7 +19,7 @@ extension InputStream {
             data.append(buffer, count: count)
         }
         self.close()
-        buffer.deallocate(capacity: bufferSize)
+        buffer.deallocate()
         return data
     }
 }
