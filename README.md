@@ -23,6 +23,8 @@ HTTPIDL aims to help developer focus on the bussniss logic, cencern HTTP detail 
 * Swift 3 +
 * python 2.7.x
 
+*note: you can use version 1.1.9 in swift 3
+
 ## Installation
 ### CocoaPods
 CocoaPods is a dependency manager for Cocoa projects. You can install it with the following command:
