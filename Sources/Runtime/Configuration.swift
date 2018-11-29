@@ -50,7 +50,7 @@ public func convert(networkServiceType: NetworkServiceType) -> URLRequest.Networ
     case .background: return .background
     case .voice: return .voice
     case .networkServiceTypeCallSignaling: if #available(iOS 10.0, *) {
-        return .networkServiceTypeCallSignaling
+        return .callSignaling
     } else {
         return .default
         }
