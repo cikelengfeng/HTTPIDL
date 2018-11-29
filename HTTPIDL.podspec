@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "HTTPIDL"
-  s.version      = "1.1.12"
+  s.version      = "1.1.13"
   s.summary      = "http idl"
 
   # This description is used to generate tags and improve search results.
@@ -101,7 +101,7 @@ Pod::Spec.new do |s|
   #  For header files it will include any header in the folder.
   #  Not including the public_header_files will make all headers public.
   #
-  s.swift_version = 4.2
+  s.swift_version = "4.2"
   s.source_files  = "Sources/Runtime/**/*.swift"
   s.exclude_files = "Sources/Exclude"
 
