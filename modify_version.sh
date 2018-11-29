@@ -1,7 +1,7 @@
 if echo $1 | grep -q -E '^\d+\.\d+\.\d+$'
 then
     echo unittest is running now
-    if xcodebuild test -workspace HTTPIDLDemo/HTTPIDLDemo.xcworkspace -scheme HTTPIDLDemoTests -destination 'platform=iOS Simulator,name=ip6 8.1,OS=8.1' -destination 'platform=iOS Simulator,name=iPhone 6,OS=11.1'
+    if xcodebuild test -workspace HTTPIDLDemo/HTTPIDLDemo.xcworkspace -scheme HTTPIDLDemoTests -destination 'platform=iOS Simulator,name=ip6 8.1,OS=8.1' -destination 'platform=iOS Simulator,name=iPhone X,OS=12.1'
     then 
         echo target version is $1
         sed -i.bak "s/s\.version.*=.*/s.version      = \"$1\"/g" HTTPIDL.podspec
