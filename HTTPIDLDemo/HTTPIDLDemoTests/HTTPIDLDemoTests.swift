@@ -88,7 +88,7 @@ class HTTPIDLDemoTests: XCTestCase {
     
     func testURLEncodedQueryRequest() {
         let encoder = URLEncodedQueryEncoder.shared
-        var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
+        var testRequest = TestRequest(content: RequestContent.number(value: NSNumber(value: 12312312312321313 as Int64)))
         do {
             let _ = try encoder.encode(testRequest)
             XCTFail("url encode 不支持int64型的根参数")
@@ -137,7 +137,7 @@ class HTTPIDLDemoTests: XCTestCase {
         } catch _ {
         }
         
-        testRequest.content = RequestContent.array(value: [RequestContent.number(value: 12312312312321313)])
+        testRequest.content = RequestContent.array(value: [RequestContent.number(value: NSNumber(value: 12312312312321313 as Int64))])
         do {
             let _ = try encoder.encode(testRequest)
             XCTFail("url encode 不支持array型的根参数")
@@ -149,7 +149,7 @@ class HTTPIDLDemoTests: XCTestCase {
         let data = dataString.data(using: String.Encoding.utf8)!
         testRequest.content = RequestContent.dictionary(value: [
                                                                 "int32": RequestContent.number(value: 123123),
-                                                                "int64": RequestContent.number(value: 12312312312312),
+                                                                "int64": RequestContent.number(value: NSNumber(value: 12312312312312 as Int64)),
                                                                 "bool": RequestContent.number(value: true),
                                                                 "double": RequestContent.number(value: 0.023131),
                                                                 "string": RequestContent.string(value: "hey"),
@@ -157,7 +157,7 @@ class HTTPIDLDemoTests: XCTestCase {
                                                                 "data": RequestContent.data(value: data, fileName: "xxx", mimeType: "image/jpeg"),
                                                                 "array": RequestContent.array(value: [
                                                                                                     RequestContent.number(value: 123123),
-                                                                                                    RequestContent.number(value: 12312312312312),
+                                                                                                    RequestContent.number(value: NSNumber(value: 12312312312312 as Int64)),
                                                                                                     RequestContent.number(value: true),
                                                                                                     RequestContent.number(value: 0.023131),
                                                                                                     RequestContent.string(value: "hey"),
@@ -226,7 +226,7 @@ class HTTPIDLDemoTests: XCTestCase {
     func testJSONEncoder() {
         let encoder = JSONEncoder.shared
         
-        var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
+        var testRequest = TestRequest(content: RequestContent.number(value: NSNumber(value: 12312312312321313 as Int64)))
         do {
             let _ = try encoder.encode(testRequest)
             XCTFail("json encode 不支持int64型的根参数")
@@ -278,7 +278,7 @@ class HTTPIDLDemoTests: XCTestCase {
         
         testRequest.content = RequestContent.array(value: [
             RequestContent.number(value: 123123),
-            RequestContent.number(value: 12312312312312),
+            RequestContent.number(value: NSNumber(value: 12312312312312 as Int64)),
             RequestContent.number(value: true),
             RequestContent.number(value: 0.023131),
             RequestContent.string(value: "hey")
@@ -322,7 +322,7 @@ class HTTPIDLDemoTests: XCTestCase {
     
     func testURLEncodedFormEncoder() {
         let encoder = URLEncodedFormEncoder.shared
-        var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
+        var testRequest = TestRequest(content: RequestContent.number(value: NSNumber(value: 12312312312321313 as Int64)))
         do {
             let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("url encode 不支持int64型的根参数")
@@ -371,7 +371,7 @@ class HTTPIDLDemoTests: XCTestCase {
         } catch _ {
         }
         
-        testRequest.content = RequestContent.array(value: [RequestContent.number(value: 12312312312321313)])
+        testRequest.content = RequestContent.array(value: [RequestContent.number(value: NSNumber(value: 12312312312321313 as Int64))])
         do {
             let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("url encode 不支持array型的根参数")
@@ -383,7 +383,7 @@ class HTTPIDLDemoTests: XCTestCase {
         let data = dataString.data(using: String.Encoding.utf8)!
         testRequest.content = RequestContent.dictionary(value: [
             "int32": RequestContent.number(value: 123123),
-            "int64": RequestContent.number(value: 12312312312312),
+            "int64": RequestContent.number(value: NSNumber(value: 12312312312312 as Int64)),
             "bool": RequestContent.number(value: true),
             "double": RequestContent.number(value: 0.023131),
             "string": RequestContent.string(value: "hey"),
@@ -395,7 +395,7 @@ class HTTPIDLDemoTests: XCTestCase {
             "data": RequestContent.data(value: data, fileName: "xxx", mimeType: "image/jpeg"),
             "array": RequestContent.array(value: [
                 RequestContent.number(value: 123123),
-                RequestContent.number(value: 12312312312312),
+                RequestContent.number(value: NSNumber(value: 12312312312312 as Int64)),
                 RequestContent.number(value: true),
                 RequestContent.number(value: 0.023131),
                 RequestContent.string(value: "hey"),
@@ -567,7 +567,7 @@ class HTTPIDLDemoTests: XCTestCase {
     
     func testMultipartFormEncoder() {
         let encoder = MultipartEncoder.shared
-        var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
+        var testRequest = TestRequest(content: RequestContent.number(value: NSNumber(value: 12312312312321313 as Int64)))
         do {
             let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持int64型的根参数")
@@ -616,7 +616,7 @@ class HTTPIDLDemoTests: XCTestCase {
         } catch _ {
         }
         
-        testRequest.content = RequestContent.array(value: [RequestContent.number(value: 12312312312321313)])
+        testRequest.content = RequestContent.array(value: [RequestContent.number(value: NSNumber(value: 12312312312321313 as Int64))])
         do {
             let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持array型的根参数")
@@ -626,7 +626,7 @@ class HTTPIDLDemoTests: XCTestCase {
         let dataString = "xxxxx"
         let data = dataString.data(using: String.Encoding.utf8)!
         testRequest.content = RequestContent.dictionary(value: [
-                        "number": RequestContent.number(value: 123123123123),
+                        "number": RequestContent.number(value: NSNumber(value: 123123123123 as Int64)),
                         "bool": RequestContent.number(value: false),
                         "string": RequestContent.string(value: "yellow submarine"),
                         "file": RequestContent.file(value: Bundle.main.url(forResource: "China", withExtension: "png")!, fileName: "test_file", mimeType: "image/png"),
@@ -643,7 +643,7 @@ class HTTPIDLDemoTests: XCTestCase {
         
     func testBinaryEncoder() {
         let encoder = BinaryEncoder.shared
-        var testRequest = TestRequest(content: RequestContent.number(value: 12312312312321313))
+        var testRequest = TestRequest(content: RequestContent.number(value: NSNumber(value: 12312312312321313 as Int64)))
         do {
             let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("binary encode 不支持int64型的根参数")
@@ -678,14 +678,14 @@ class HTTPIDLDemoTests: XCTestCase {
         } catch _ {
         }
         
-        testRequest.content = RequestContent.array(value: [RequestContent.number(value: 12312312312321313)])
+        testRequest.content = RequestContent.array(value: [RequestContent.number(value: NSNumber(value: 12312312312321313 as Int64))])
         do {
             let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持array型的根参数")
         } catch _ {
         }
         
-        testRequest.content = RequestContent.dictionary(value: ["xxx": RequestContent.number(value: 12312312312321313)])
+        testRequest.content = RequestContent.dictionary(value: ["xxx": RequestContent.number(value: NSNumber(value: 12312312312321313 as Int64))])
         do {
             let _ = try encoder.encode(testRequest).bodyStream!.data()
             XCTFail("multipart encode 不支持dictionary型的根参数")
