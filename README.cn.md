@@ -165,45 +165,26 @@ request.configuration.encoder = URLEncodedQueryEncoder.shared
 BaseClient.shared.send(request)
 ```
 
+或者你可以使用下边这些简单的方法
+`HTTPIDL.get`
+`HTTPIDL.getJSON`
+`HTTPIDL.post`
+`HTTPIDL.postJSON`
+`HTTPIDL.delete`
+`HTTPIDL.deleteJSON`
+`HTTPIDL.put`
+`HTTPIDL.putJSON`
+`HTTPIDL.patch`
+`HTTPIDL.patchJSON`
+`HTTPIDL.send`
+`String.download`
+`URL.download`
+
 ## 内置编码器
 ### URL Encoded Query 编码器
 类名：URLEncodedQueryEncoder
 此编码器会将请求的content属性加入到url的query中，例如有如下请求：
 ```
-class GetMyExampleRequest: Request {
-    
-    var method: String = "GET"
-    private var _configuration: RequestConfiguration?
-    var configuration: RequestConfiguration {
-        get {
-            guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
-            }
-            return config
-        }
-        set {
-            _configuration = newValue
-        }
-    }
-    var manager: RequestManager = BaseRequestManager.shared
-    var uri: String {
-        get {
-            return "/my/example"
-        }
-    }
-    var t1: Int32?
-    var t2: String?
-    var content: RequestContent? {
-        var result = [String:RequestContent]()
-        if let tmp = t1 {
-            result["t"] = tmp.asRequestContent()
-        }
-        if let tmp = t2 {
-            result["tt"] = tmp.asRequestContent()
-        }
-        return .dictionary(value: result)
-    }
-
 func test() {
 	let request = GetMyExampleRequest()
 	request.t1 = 123
@@ -224,40 +205,6 @@ Host: here.is.you.host
 类名：URLEncodedFormEncoder
 此编码器会将请求的content转换成request body中url encode编码的表单，例如有如下请求：
 ```
-class PostMyExampleRequest: Request {
-    
-    var method: String = "POST"
-    private var _configuration: RequestConfiguration?
-    var configuration: RequestConfiguration {
-        get {
-            guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
-            }
-            return config
-        }
-        set {
-            _configuration = newValue
-        }
-    }
-    var manager: RequestManager = BaseRequestManager.shared
-    var uri: String {
-        get {
-            return "/my/example"
-        }
-    }
-    var t1: Int32?
-    var t2: String?
-    var content: RequestContent? {
-        var result = [String:RequestContent]()
-        if let tmp = t1 {
-            result["t"] = tmp.asRequestContent()
-        }
-        if let tmp = t2 {
-            result["tt"] = tmp.asRequestContent()
-        }
-        return .dictionary(value: result)
-    }
-
 func test() {
 	let request = PostMyExampleRequest()
 	request.t1 = 123
@@ -281,53 +228,6 @@ t1=123&t2=hey
 类名：JSONEncoder
 此编码器会将请求的content转换成request body中的JSON，例如有如下请求：
 ```
-class PostTestJsonEncoderRequest: Request {
-    
-    var method: String = "POST"
-    private var _configuration: RequestConfiguration?
-    var configuration: RequestConfiguration {
-        get {
-            guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
-            }
-            return config
-        }
-        set {
-            _configuration = newValue
-        }
-    }
-    var manager: RequestManager = BaseRequestManager.shared
-    var uri: String {
-        get {
-            return "/test/json/encoder"
-        }
-    }
-    var t1: Int64?
-    var t2: Int32?
-    var t3: Double?
-    var t4: String?
-    var t5: [String]?
-    var content: RequestContent? {
-        var result = [String:RequestContent]()
-        if let tmp = t1 {
-            result["t"] = tmp.asRequestContent()
-        }
-        if let tmp = t2 {
-            result["tt"] = tmp.asRequestContent()
-        }
-        if let tmp = t3 {
-            result["ttt"] = tmp.asRequestContent()
-        }
-        if let tmp = t4 {
-            result["tttt"] = tmp.asRequestContent()
-        }
-        if let tmp = t5 {
-            result["ttttt"] = tmp.asRequestContent()
-        }
-        return .dictionary(value: result)
-    }
-}
-
 func test() {
 	let request = PostTestJsonEncoderRequest()
     request.t1 = 123123123123
@@ -352,66 +252,19 @@ Content-Length: 87
 类名：MutlipartEncoder
 此编码器会将请求的content转换成request body中的multipart form，例如有如下请求：
 ```
-
-class PostTestMultipartEncoderRequest: Request {
-    
-    var method: String = "POST"
-    private var _configuration: RequestConfiguration?
-    var configuration: RequestConfiguration {
-        get {
-            guard let config = _configuration else {
-                return BaseRequestConfiguration.create(from: client.configuration, request: self)
-            }
-            return config
-        }
-        set {
-            _configuration = newValue
-        }
-    }
-    var manager: RequestManager = BaseRequestManager.shared
-    var uri: String {
-        get {
-            return "/test/multipart/encoder"
-        }
-    }
-    var t1: Int64?
-    var t2: Int32?
-    var t3: Double?
-    var t4: String?
-    var t5: HTTPData?
-    var content: RequestContent? {
-        var result = [String:RequestContent]()
-        if let tmp = t1 {
-            result["t"] = tmp.asRequestContent()
-        }
-        if let tmp = t2 {
-            result["tt"] = tmp.asRequestContent()
-        }
-        if let tmp = t3 {
-            result["ttt"] = tmp.asRequestContent()
-        }
-        if let tmp = t4 {
-            result["tttt"] = tmp.asRequestContent()
-        }
-        if let tmp = t5 {
-            result["tttttt"] = tmp.asRequestContent()
-        }
-        return .dictionary(value: result)
-    }
-}
 let request = PostTestMultipartEncoderRequest()
-        request.t1 = 123123123123
-        request.t2 = 123
-        request.t3 = 1.1
-        request.t4 = "jude"
-        let data = try! Data(contentsOf: Bundle.main.url(forResource: "test", withExtension: "JPG")!)
-        request.t5 = HTTPData(with: data, fileName: "test", mimeType: "image/jpeg")
-	request.configuration.encoder = MutlipartEncoder.shared
-        request.send(completion: { (response) in
-            
-        }) { (error) in
-            
-        }
+request.t1 = 123123123123
+request.t2 = 123
+request.t3 = 1.1
+request.t4 = "jude"
+let data = try! Data(contentsOf: Bundle.main.url(forResource: "test", withExtension: "JPG")!)
+request.t5 = HTTPData(with: data, fileName: "test", mimeType: "image/jpeg")
+request.configuration.encoder = MutlipartEncoder.shared
+request.send(completion: { (response) in
+    
+}) { (error) in
+    
+}
 ```
 
 此请求最终发送的http request如下：

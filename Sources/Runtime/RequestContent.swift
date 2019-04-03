@@ -168,6 +168,19 @@ extension Array where Element == RequestContentConvertible {
     }
 }
 
+extension Array: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        let value = self.compactMap { (element) -> RequestContent? in
+            guard let convertible = element as? RequestContentConvertible else {
+                assertionFailure("request content value: \(element) in Array must adopt RequestContentConvertible protocol!")
+                return nil
+            }
+            return convertible.asRequestContent()
+        }
+        return .array(value: value)
+    }
+}
+
 extension Dictionary where Key: RequestContentKeyType, Value: RequestContentConvertible {
     public func asRequestContent() -> RequestContent {
         let value = self.reduce([String: RequestContent]()) { (soFar, soGood) -> [String: RequestContent] in
@@ -184,6 +197,25 @@ extension Dictionary where Key: RequestContentKeyType, Value == RequestContentCo
         let value = self.reduce([String: RequestContent]()) { (soFar, soGood) -> [String: RequestContent] in
             var result = soFar
             result[soGood.key.asHTTPParamterKey()] = soGood.value.asRequestContent()
+            return result
+        }
+        return .dictionary(value: value)
+    }
+}
+
+extension Dictionary: RequestContentConvertible {
+    public func asRequestContent() -> RequestContent {
+        let value = self.reduce([String: RequestContent]()) { (soFar, soGood) -> [String: RequestContent] in
+            guard let key = soGood.key as? RequestContentKeyType else {
+                assert(false, "request content key:\(soGood.key) must adopt RequestContentKeyType protocol!")
+                return soFar
+            }
+            guard let value = soGood.value as? RequestContentConvertible else {
+                assert(false, "request content value:\(soGood.value) must adopt RequestContentConvertible protocol!")
+                return soFar
+            }
+            var result = soFar
+            result[key.asHTTPParamterKey()] = value.asRequestContent()
             return result
         }
         return .dictionary(value: value)

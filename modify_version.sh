@@ -1,9 +1,8 @@
 if echo $1 | grep -q -E '^\d+\.\d+\.\d+$'
 then
     echo unittest is running now
-    id1=$(xcrun simctl create testsim1 'iPhone 6' '8.1')
-    id2=$(xcrun simctl create testsim2 'iPhone X' '12.1')
-    if xcodebuild test -workspace HTTPIDLDemo/HTTPIDLDemo.xcworkspace -scheme HTTPIDLDemoTests -destination "id=$id1" -destination "id=$id2"
+    id1=$(xcrun simctl create testsim1 'iPhone X' '12.1')
+    if xcodebuild test -workspace HTTPIDLDemo/HTTPIDLDemo.xcworkspace -scheme HTTPIDLDemoTests -destination "id=$id1"
     then 
         echo target version is $1
         sed -i.bak "s/s\.version.*=.*/s.version      = \"$1\"/g" HTTPIDL.podspec
@@ -18,7 +17,6 @@ then
         echo unittest failed, go back and eat your shit
     fi
     xcrun simctl delete $id1
-    xcrun simctl delete $id2
 else
     echo argument invalid, version must match '^\d+\.\d+\.\d+$' "(e.g. 1.2.42)"
 fi

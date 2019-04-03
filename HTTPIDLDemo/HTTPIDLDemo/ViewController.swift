@@ -133,13 +133,21 @@ class ViewController: UIViewController {
 //            debugPrint("error", error)
 //        }
         
-        let req = PostTestRequestContentConvertibleRequest()
-        req.body = ["1": "1", "2": 2, "3": 3.0, "string": "hey+jude"]
+//        let req = PostTestRequestContentConvertibleRequest()
+//        req.body = ["1": "1", "2": 2, "3": 3.0, "string": "hey+jude"]
 //        req.configuration.encoder = MultipartEncoder.shared
 //        req.configuration.encoder = JSONEncoder.shared
 //        req.configuration.decoder = BinaryDecoder()
-        req.send(completion: { (resp) in
-            debugPrint("resp", resp)
+//        req.send(completion: { (resp) in
+//            debugPrint("resp", resp)
+//        }) { (error) in
+//            debugPrint("error", error)
+//        }
+        
+        let url = URL(string: "http://httpbin.org/patch")!
+        HTTPIDL.patch(url: url, params: ["1":"1_","2": 2], completion: { (resp) in
+            debugPrint("req", resp.rawResponse.request.url)
+            debugPrint("resp", resp.body)
         }) { (error) in
             debugPrint("error", error)
         }

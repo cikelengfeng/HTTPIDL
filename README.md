@@ -3,7 +3,7 @@ HTTPIDL is a collection of tools for type-safe HTTP networking and generating co
 HTTPIDL aims to help developer focus on the bussniss logic, cencern HTTP detail as less as possible(you have to know HTTP detail only when you need to extend HTTPIDL)
 
 ## Status
-![UnitTest](https://img.shields.io/badge/test-passing-brightgreen.svg)   ![Cocoapods](https://img.shields.io/badge/pod-1.1.13-blue.svg)
+![UnitTest](https://img.shields.io/badge/test-passing-brightgreen.svg)   ![Cocoapods](https://img.shields.io/badge/pod-1.1.10-blue.svg)
 
 ## Feature
 * Type-Safe
@@ -169,6 +169,20 @@ request.configuration.encoder = URLEncodedQueryEncoder.shared
 BaseRequestManager.shared.send(request)
 ```
 
+Or you can use these simple methods below
+`HTTPIDL.get`
+`HTTPIDL.getJSON`
+`HTTPIDL.post`
+`HTTPIDL.postJSON`
+`HTTPIDL.delete`
+`HTTPIDL.deleteJSON`
+`HTTPIDL.put`
+`HTTPIDL.putJSON`
+`HTTPIDL.patch`
+`HTTPIDL.patchJSON`
+`HTTPIDL.send`
+`String.download`
+`URL.download`
 
 ## Roadmap
 1. Optimize Error Handling (version 1.2.0) 
