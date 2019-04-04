@@ -170,19 +170,21 @@ BaseRequestManager.shared.send(request)
 ```
 
 Or you can use these simple methods below
-`HTTPIDL.get`
-`HTTPIDL.getJSON`
-`HTTPIDL.post`
-`HTTPIDL.postJSON`
-`HTTPIDL.delete`
-`HTTPIDL.deleteJSON`
-`HTTPIDL.put`
-`HTTPIDL.putJSON`
-`HTTPIDL.patch`
-`HTTPIDL.patchJSON`
-`HTTPIDL.send`
-`String.download`
-`URL.download`
+```
+HTTPIDL.get
+HTTPIDL.getJSON
+HTTPIDL.post
+HTTPIDL.postJSON
+HTTPIDL.delete
+HTTPIDL.deleteJSON
+HTTPIDL.put
+HTTPIDL.putJSON
+HTTPIDL.patch
+HTTPIDL.patchJSON
+HTTPIDL.send
+String.download
+URL.download
+```
 
 ## Roadmap
 1. Optimize Error Handling (version 1.2.0) 

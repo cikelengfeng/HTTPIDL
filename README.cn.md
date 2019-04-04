@@ -166,19 +166,21 @@ BaseClient.shared.send(request)
 ```
 
 或者你可以使用下边这些简单的方法
-`HTTPIDL.get`
-`HTTPIDL.getJSON`
-`HTTPIDL.post`
-`HTTPIDL.postJSON`
-`HTTPIDL.delete`
-`HTTPIDL.deleteJSON`
-`HTTPIDL.put`
-`HTTPIDL.putJSON`
-`HTTPIDL.patch`
-`HTTPIDL.patchJSON`
-`HTTPIDL.send`
-`String.download`
-`URL.download`
+```
+HTTPIDL.get
+HTTPIDL.getJSON
+HTTPIDL.post
+HTTPIDL.postJSON
+HTTPIDL.delete
+HTTPIDL.deleteJSON
+HTTPIDL.put
+HTTPIDL.putJSON
+HTTPIDL.patch
+HTTPIDL.patchJSON
+HTTPIDL.send
+String.download
+URL.download
+```
 
 ## 内置编码器
 ### URL Encoded Query 编码器

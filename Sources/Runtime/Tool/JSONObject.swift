@@ -32,7 +32,7 @@ public enum HTTPJSONEncoderError: HIError {
 
 public extension RequestContent {
     
-    public func jsonObject() throws -> Any {
+    func jsonObject() throws -> Any {
         switch self {
         case .number, .string:
             throw HTTPJSONEncoderError.illegalRootRequestContent(parameter: self)
@@ -71,7 +71,7 @@ public extension RequestContent {
 
 public extension ResponseContent {
     
-    public func jsonObject() throws -> Any {
+    func jsonObject() throws -> Any {
         switch self {
         case .number, .string:
             throw HTTPJSONEncoderError.illegalRootResponseContent(parameter: self)

@@ -12,7 +12,7 @@ then
         git tag $1
         git push origin
         git push origin --tags
-        pod trunk push
+        pod trunk push --skip-tests
     else 
         echo unittest failed, go back and eat your shit
     fi

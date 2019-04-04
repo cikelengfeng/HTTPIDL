@@ -169,7 +169,7 @@ extension String: ResponseContentConvertible {
 }
 
 public extension Array where Element: ResponseContentConvertible {
-    public init?(content: ResponseContent?) {
+    init?(content: ResponseContent?) {
         guard let content = content else {
             return nil
         }
@@ -191,7 +191,7 @@ extension String: ResponseContentKeyType {
 }
 
 public extension Dictionary where Key: ResponseContentKeyType, Value: ResponseContentConvertible {
-    public init?(content: ResponseContent?) {
+    init?(content: ResponseContent?) {
         guard let content = content else {
             return nil
         }
