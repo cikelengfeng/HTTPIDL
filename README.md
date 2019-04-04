@@ -3,7 +3,7 @@ HTTPIDL is a collection of tools for type-safe HTTP networking and generating co
 HTTPIDL aims to help developer focus on the bussniss logic, cencern HTTP detail as less as possible(you have to know HTTP detail only when you need to extend HTTPIDL)
 
 ## Status
-![UnitTest](https://img.shields.io/badge/test-passing-brightgreen.svg)   ![Cocoapods](https://img.shields.io/badge/pod-1.1.14-blue.svg)
+![UnitTest](https://img.shields.io/badge/test-passing-brightgreen.svg)   ![Cocoapods](https://img.shields.io/badge/pod-1.1.15-blue.svg)
 
 ## Feature
 * Type-Safe
