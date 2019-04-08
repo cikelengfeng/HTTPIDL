@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         BaseRequestManagerConfiguration.shared.baseURLString = "http://httpbin.org/"
         let configuration = URLSessionConfiguration.default
-        BaseRequestManager.shared.session = NSHTTPSession(configuration: configuration, delegate: nil, delegateQueue: nil)
+        BaseRequestManager.shared.httpClient = NSHTTPSession(configuration: configuration, delegate: nil, delegateQueue: nil)
 //        BaseRequestManager.shared.add(requestRewriter: TestWriter())
         
 //        let request = PostTestMultipartEncoderRequest()

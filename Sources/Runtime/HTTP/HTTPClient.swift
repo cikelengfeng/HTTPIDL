@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol HTTPSession {
+public protocol HTTPClient {
     func send(_ request: HTTPRequest, usingOutput outputStream: OutputStream?) -> HTTPRequestFuture
 }
 
@@ -278,7 +278,7 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
     }
 }
 
-public class NSHTTPSession: NSObject, HTTPSession {
+public class NSHTTPSession: NSObject, HTTPClient {
     
     public static let shared = { () -> NSHTTPSession in
         let configuration = URLSessionConfiguration.default
