@@ -7,7 +7,7 @@ HTTPIDL aims to help developer focus on the bussniss logic, cencern HTTP detail 
 
 ## Feature
 * Type-Safe
-* Swift 3/4 code generator, hand-writed code is also supported
+* Swift 3/4 code generator, handwritten code is also supported
 * URL / JSON / URLEncodedForm request encoders（even combination of encoders is supported）
 * Upload File / Data / MultipartFormData
 * Convert JSON response body to Model object automatically (you can extend response decoder to support other response body type)
@@ -150,9 +150,9 @@ request.send(completion: { (response) in
         }
 ```
 
-### Hande-writed request
+### Handwritten request
 
-In HTTPIDL, whether generated code or hande-writed code need to conform to 'Request' Protocol:
+In HTTPIDL, whether the generated code or handwritten code must conform to 'Request' Protocol:
 ```
 public protocol Request {
     var method: String {get} //HTTP method
@@ -164,7 +164,7 @@ public protocol Request {
 
 Classes conform to 'Request' protocol can be sent by following code：
 ```
-let request = //your hand-writed request
+let request = //your handwritten request
 request.configuration.encoder = URLEncodedQueryEncoder.shared
 BaseRequestManager.shared.send(request)
 ```
