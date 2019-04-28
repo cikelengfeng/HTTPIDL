@@ -143,7 +143,8 @@ class NSHTTPRequestFuture: NSObject, HTTPRequestFuture {
 
 fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
     let fallthroughDelegate: URLSessionDataDelegate?
-    var taskMap: [Int: (future: HTTPRequestFuture, resp: HTTPResponse)]
+    private var taskMap: [Int: (future: HTTPRequestFuture, resp: HTTPResponse)]
+    private let lock = NSLock()
     
     init(fallthroughDelegate: URLSessionDataDelegate?) {
         self.fallthroughDelegate = fallthroughDelegate
@@ -151,7 +152,7 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
     }
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-        guard let fr = self.taskMap[dataTask.taskIdentifier] else {
+        guard let fr = self.task(forKey: dataTask.taskIdentifier) else {
             assert(false, "request future is nil, it's impossible!!!")
             completionHandler(.cancel)
             return
@@ -164,7 +165,7 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
         }
         let resp = fr.resp
         let newResp = HTTPBaseResponse(with: httpResp.statusCode, headers: httpResp.allHeaderFields as? [String: String] ?? [:], bodyStream: resp.bodyStream, request: resp.request)
-        self.taskMap[dataTask.taskIdentifier] = (future, newResp)
+        self.set(task: (future, newResp), key: dataTask.taskIdentifier)
         newResp.bodyStream?.open()
         guard let method = fallthroughDelegate?.urlSession(_:dataTask:didReceive:completionHandler:) else {
             completionHandler(.allow)
@@ -177,7 +178,7 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
         defer {
             fallthroughDelegate?.urlSession?(session, dataTask: dataTask, didReceive: data)
         }
-        guard let fr = self.taskMap[dataTask.taskIdentifier] else {
+        guard let fr = self.task(forKey: dataTask.taskIdentifier) else {
             return
         }
         guard let output = fr.resp.bodyStream else {
@@ -195,7 +196,7 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
         defer {
             fallthroughDelegate?.urlSession?(session, task: task, didCompleteWithError: error)
         }
-        guard let fr = self.taskMap[task.taskIdentifier] else {
+        guard let fr = self.task(forKey: task.taskIdentifier) else {
             return
         }
         let future = fr.future
@@ -207,7 +208,7 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
         }
         resp.bodyStream?.close()
         future.notify(response: resp)
-        self.taskMap.removeValue(forKey: task.taskIdentifier)
+        self.removeTask(forKey: task.taskIdentifier)
     }
     
     // MARK: fallthrough
@@ -276,20 +277,41 @@ fileprivate class TaskManager: NSObject, URLSessionDataDelegate {
         }
         method(session, task, response, request, completionHandler)
     }
+    
+    fileprivate func set(task: (future: HTTPRequestFuture, resp: HTTPResponse)?, key: Int) {
+        self.lock.lock()
+        self.taskMap[key] = task
+        self.lock.unlock()
+    }
+    
+    fileprivate func task(forKey key: Int) -> (future: HTTPRequestFuture, resp: HTTPResponse)? {
+        var ret: (future: HTTPRequestFuture, resp: HTTPResponse)? = nil
+        self.lock.lock()
+        ret = self.taskMap[key]
+        self.lock.unlock()
+        return ret;
+    }
+    
+    fileprivate func removeTask(forKey key: Int) {
+        self.lock.lock()
+        self.taskMap.removeValue(forKey: key)
+        self.lock.unlock()
+    }
 }
 
 public class NSHTTPSession: NSObject, HTTPClient {
     
-    public static let shared = { () -> NSHTTPSession in
-        let configuration = URLSessionConfiguration.default
-        let queue = OperationQueue()
-        queue.name = "org.httpidl.nsclient.default-callback"
-        let client = NSHTTPSession(configuration: configuration, delegate: nil, delegateQueue: queue)
-        return client
-    }()
+    public static let shared = NSHTTPSession()
     
     public let session: URLSession
     private let taskManager: TaskManager
+    
+    private override convenience init() {
+        let configuration = URLSessionConfiguration.default
+        let queue = OperationQueue()
+        queue.name = "org.httpidl.nsclient.default-callback"
+        self.init(configuration: configuration, delegate: nil, delegateQueue: queue)
+    }
     
     public init(configuration: URLSessionConfiguration, delegate: URLSessionDataDelegate?, delegateQueue: OperationQueue?) {
         self.taskManager = TaskManager(fallthroughDelegate: delegate)
@@ -304,7 +326,7 @@ public class NSHTTPSession: NSObject, HTTPClient {
             let task = session.dataTask(with: dataRequest)
             
             future.task = task
-            self.taskManager.taskMap[task.taskIdentifier] = (future, HTTPBaseResponse(with: 0, headers: [:], bodyStream: outputStream, request: request))
+            self.taskManager.set(task: (future, HTTPBaseResponse(with: 0, headers: [:], bodyStream: outputStream, request: request)), key: task.taskIdentifier)
             task.resume()
         } catch let err {
             session.delegateQueue.addOperation {

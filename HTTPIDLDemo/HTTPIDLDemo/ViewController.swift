@@ -144,12 +144,21 @@ class ViewController: UIViewController {
 //            debugPrint("error", error)
 //        }
         
-        let url = URL(string: "http://httpbin.org/patch")!
-        HTTPIDL.patch(url: url, params: ["1":"1_","2": 2], completion: { (resp) in
-            debugPrint("req", resp.rawResponse.request.url)
-            debugPrint("resp", resp.body)
-        }) { (error) in
-            debugPrint("error", error)
+        var counter = 0
+        for index in 0...1000 {
+            DispatchQueue.global().async {
+                let url = URL(string: "http://httpbin.org/patch")!
+                HTTPIDL.patch(url: url, params: ["1":"1_","2": 2], completion: { (resp) in
+                    debugPrint("req", resp.rawResponse.request.url)
+                    debugPrint("resp", resp.body)
+                    debugPrint("resp \(counter)")
+                    counter += 1
+                }) { (error) in
+                    debugPrint("error", error)
+                    debugPrint("error \(counter)")
+                    counter += 1
+                }
+            }
         }
     }
 
